@@ -1,0 +1,10 @@
+{
+  "prettier.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "files.associations": {
+    "*.css": "css"
+  },
+  "editor.formatOnSave": false
+}

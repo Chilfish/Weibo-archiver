@@ -1,0 +1,19 @@
+#plugin-app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  @apply text="gray-700 dark:gray-200";
+}
+
+html.dark #plugin-app main {
+  background: #121212;
+}
+
+body {
+  position: relative;
+}
