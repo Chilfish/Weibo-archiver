@@ -37,6 +37,7 @@ export default defineConfig({
       dts: true,
       dirs: [
         './src/composables',
+        './src/stores',
       ],
       vueTemplate: true,
       resolvers: [ElementPlusResolver()],
