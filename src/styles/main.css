@@ -6,14 +6,17 @@
   position: absolute;
   top: 0;
   right: 0;
-
-  @apply text="gray-700 dark:gray-200";
+  z-index: 9999;
 }
 
-html.dark #plugin-app main {
-  background: #121212;
+#plugin-app button {
+  --uno: btn;
 }
 
 body {
   position: relative;
+}
+
+.el-popper {
+  z-index: 9999 !important;
 }

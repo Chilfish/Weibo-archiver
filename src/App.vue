@@ -1,8 +1,11 @@
+<script setup>
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+</script>
+
 <template>
-  <main p="x-4 y-10" text="center" font-sans>
-    <button @click="toggleDark()">
-      {{ isDark }}
-    </button>
-    <RouterView />
-  </main>
+  <el-config-provider :locale="zhCn">
+    <main class="font-sans">
+      <RouterView />
+    </main>
+  </el-config-provider>
 </template>

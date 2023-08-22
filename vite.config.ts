@@ -6,8 +6,14 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 import monkey, { cdn, util } from 'vite-plugin-monkey'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
+  server: {
+    hmr: {
+      protocol: 'ws',
+    },
+  },
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
@@ -33,11 +39,13 @@ export default defineConfig({
         './src/composables',
       ],
       vueTemplate: true,
+      resolvers: [ElementPlusResolver()],
     }),
 
     // https://github.com/antfu/vite-plugin-components
     Components({
       dts: true,
+      resolvers: [ElementPlusResolver()],
     }),
 
     UnoCSS(),
@@ -47,7 +55,7 @@ export default defineConfig({
       userscript: {
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
-        match: ['https://chilfish.top/'], // todo
+        match: ['https://weibo.com/u/*'],
       },
       build: {
         externalGlobals: {
