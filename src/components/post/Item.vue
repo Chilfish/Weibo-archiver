@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
+import { parseImg } from '~/utils'
 
 const props = defineProps<{
   post: Post
 }>()
 
 const text = fetchLongText(props.post)
+const imgs = parseImg(props.post.pic_ids, props.post.pic_infos)
 </script>
 
 <template>
@@ -19,7 +21,7 @@ const text = fetchLongText(props.post)
 
     <main>
       <p class="whitespace-pre-wrap text-4" v-html="text" />
-
+      <gallery :imgs="imgs" />
       <slot />
     </main>
 

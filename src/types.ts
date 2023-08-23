@@ -4,6 +4,12 @@ export interface User {
   profile_image_url: string
 }
 
+export interface PicInfo {
+  largest: {
+    url: string
+  }
+}
+
 export interface Post {
   id: string
   mblogid: string
@@ -18,7 +24,7 @@ export interface Post {
 
   pic_num: number
   pic_ids: string[]
-  pics: string[] // 从 pic_infos[pic_id].largest.url 中提取原图链接
+  pic_infos: Record<string, PicInfo> // 从 pic_infos[pic_id].largest.url 中提取原图链接
 
   reposts_count: number
   comments_count: number
