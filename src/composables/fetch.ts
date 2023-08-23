@@ -26,17 +26,25 @@ export async function fetchPosts(page: number): Promise<PostMeta | null> {
   else
     return null
 
+  const posts = filterPosts(res.list)
+    .filter(post => post.user.id === useUserStore().uid)
+  usePostStore().add(posts)
+
   return {
     ...res,
-    list: res.list ? filterPosts(res.list) : [],
+    list: posts,
   }
 }
 
 export function fetchLongText(post: Post) {
-  const { data } = weiFetch(`/longtext?id=${post.mblogid}`)
-    .json<{ data: { longTextContent: string } }>()
+  const text = ref(post.text)
 
-  const text = computed(() => data.value?.data.longTextContent || post.text)
+  if (post.isLongText) {
+    const { data } = weiFetch(`/longtext?id=${post.mblogid}`)
+      .json<{ data: { longTextContent: string } }>()
+
+    text.value = data.value?.data.longTextContent || post.text
+  }
 
   return parseText(text.value)
 }

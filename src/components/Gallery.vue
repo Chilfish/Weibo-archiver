@@ -1,20 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   imgs: string[]
 }>()
-
-const cols = computed(() => {
-  const len = props.imgs.length
-  if (len < 4)
-    return len + 1
-  return len > 9 ? 4 : 3
-})
 </script>
 
 <template>
   <div
-    :class="`grid-cols-${cols}`"
-    class="grid-rows-auto grid mt-2 gap-1"
+    class="grid grid-cols-3 mt-2 w-fit items-start justify-start gap-1"
   >
     <el-image
       v-for="img in imgs"
@@ -24,7 +16,13 @@ const cols = computed(() => {
       :hide-on-click-modal="true"
       :preview-src-list="imgs"
       fit="cover"
-      class="h-full max-h-52 max-w-48 w-full cursor-pointer rounded"
-    />
+      class="h-xs max-h-52 max-w-48 w-xs cursor-pointer rounded"
+    >
+      <template #placeholder>
+        <div class="p-20 text-center font-bold">
+          Loading
+        </div>
+      </template>
+    </el-image>
   </div>
 </template>

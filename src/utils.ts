@@ -1,4 +1,6 @@
+import { createVNode, render } from 'vue'
 import type { PicInfo, Post } from './types'
+import PostList from '~/components/post/List.vue'
 
 export const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -24,7 +26,9 @@ export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>
 /**
  * 数据清洗
  */
-export function filterPosts(posts: any[]): Post[] {
+export function filterPosts(posts?: any[]): Post[] {
+  if (!posts || !posts.length || !posts[0]?.id)
+    return []
   return posts.map(post => ({
     id: post.id,
     text: post.text_raw,
@@ -39,9 +43,20 @@ export function filterPosts(posts: any[]): Post[] {
       profile_image_url: post.user.profile_image_url,
     },
     source: post.source,
-    region_name: post.user.region_name,
+    region_name: post.region_name,
     isLongText: post.isLongText,
     mblogid: post.mblogid,
-    retweeted_status: post.retweeted_status ? filterPosts([post.retweeted_status])[0] : undefined,
+    retweeted_status: filterPosts([post.retweeted_status])[0],
   }))
+}
+
+export function preview() {
+  const container = document.createElement('div')
+  const vnode = createVNode(PostList)
+  render(vnode, container)
+
+  const app = document.querySelector('#app') || document.querySelector('#preview')!
+  app.id = 'preview'
+  app.innerHTML = ''
+  app.appendChild(container)
 }

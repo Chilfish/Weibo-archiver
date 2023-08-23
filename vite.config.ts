@@ -57,7 +57,9 @@ export default defineConfig({
       userscript: {
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
-        match: ['https://weibo.com/u/*'],
+        match: [
+          'https://weibo.com/u/*',
+        ],
       },
       build: {
         externalGlobals: {

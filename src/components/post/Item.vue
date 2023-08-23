@@ -18,7 +18,7 @@ const text = fetchLongText(props.post)
     </div>
 
     <main>
-      <p class="whitespace-pre-wrap text-4" v-html="text" />
+      <p class="whitespace-pre-wrap text-4 text-black" v-html="text" />
       <gallery :imgs="post.imgs" />
       <slot />
     </main>
