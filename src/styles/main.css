@@ -1,36 +1,28 @@
 #plugin-app {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 9999;
+  --uno: absolute top-0 right-0 z-9999;
 }
 
 .btns button {
   --uno: btn;
 }
 
+.icons > span {
+  --uno: inline-flex items-center hover:text-teal-700 cursor-pointer;
+}
+
+.icons .icon {
+  --uno: mx-2;
+}
+
 body {
-  position: relative;
+  --uno: relative;
 }
 
 .el-popper {
-  z-index: 9999 !important;
+  --uno: z-9999!;
 }
 
 span.icon {
-  display: inline-block;
-  max-width: 1.8rem;
-  max-height: 1.8rem;
-  user-select: none;
+  --uno: inline-flex items-center max-w-4 max-h-4 select-none cursor-pointer;
 }
 
-.loading {
-  --un-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="none" stroke="currentColor" stroke-dasharray="15" stroke-dashoffset="15" stroke-linecap="round" stroke-width="2" d="M12 3C16.9706 3 21 7.02944 21 12"%3E%3Canimate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15%3B0"%2F%3E%3CanimateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12%3B360 12 12"%2F%3E%3C%2Fpath%3E%3C%2Fsvg%3E');
-
-  width: 1.2em;
-  height: 1.2em;
-  color: inherit;
-  background-color: currentcolor;
-  mask: var(--un-icon) no-repeat;
-  mask-size: 100% 100%;
-}

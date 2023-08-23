@@ -28,6 +28,9 @@ devDependencies:
   '@iconify-json/carbon':
     specifier: ^1.1.20
     version: 1.1.20
+  '@iconify-json/tabler':
+    specifier: ^1.1.89
+    version: 1.1.89
   '@types/node':
     specifier: ^20.5.2
     version: 20.5.2
@@ -540,6 +543,12 @@ packages:
 
   /@iconify-json/carbon@1.1.20:
     resolution: {integrity: sha512-ed/3FDCjicQARWaSGIDZpaF+rWmxoSqrmHYZV2aEicufp0yciG44y9OEmArxxr/0U6bEC3zJbKMSOSw4CKeBJg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/tabler@1.1.89:
+    resolution: {integrity: sha512-G2NFjRcmAeMO08I+6uJh05NmMrL74kU+tbbd4DSmlAfnkcCZg9ugojOPCRkT33IBlPSr7pXAO2EXHJwrAKP2lg==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

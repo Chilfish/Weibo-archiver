@@ -1,5 +1,5 @@
 export interface User {
-  uid: string
+  idstr: string
   screen_name: string
   profile_image_url: string
 }
@@ -7,7 +7,7 @@ export interface User {
 export interface Post {
   id: string
   mblogid: string
-  create_at: string
+  created_at: string
   user: User
   text_raw: string
   /**
@@ -24,6 +24,8 @@ export interface Post {
   comments_count: number
   attitudes_count: number
 
+  source: string
+  region_name: string
   retweeted_status?: Post
 }
 

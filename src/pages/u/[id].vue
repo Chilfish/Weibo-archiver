@@ -19,12 +19,8 @@ function start() {
     fetchAll()
 }
 
-watchEffect(() => {
-  if (isFinished.value) {
-    const res = data.value?.data
-    console.log(res)
-  }
-})
+// 过滤掉主页上例如 “ta点赞过的微博” 这些不是用户自己发的微博
+const filteredList = computed(() => data.value?.data.list.filter(post => post.user.idstr === id))
 </script>
 
 <template>
@@ -58,11 +54,11 @@ watchEffect(() => {
   </div>
 
   <el-dialog
-    v-if="data"
+    v-if="filteredList && isFinished"
     v-model="showPreview"
     class="w-90%! rounded-2!"
-    header="预览"
+    title="预览"
   >
-    <post-list :list="data.data.list" />
+    <post-list :list="filteredList" />
   </el-dialog>
 </template>
