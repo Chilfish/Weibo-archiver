@@ -2,7 +2,7 @@
 import { shortcuts } from '~/default'
 import { preview } from '~/utils'
 
-const id = useRoute().params.id as string
+const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 useUserStore().setUid(id)
 
 const dateRange = ref([] as Date[])
@@ -26,7 +26,7 @@ async function start() {
 
     <p>请选择要存档的范围，默认为从头到尾</p>
 
-    <!-- @vue-expect-error -->
+    <!-- @ts-expect-error -->
     <el-date-picker
       v-model="dateRange"
       unlink-panels
@@ -42,10 +42,7 @@ async function start() {
         开始
       </button>
 
-      <button
-        :disabled="!isFinish"
-        @click="preview()"
-      >
+      <button :disabled="!isFinish" @click="preview()">
         预览
       </button>
     </div>

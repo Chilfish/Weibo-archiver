@@ -1,6 +1,6 @@
 import { createVNode, render } from 'vue'
+import PostList from '@cp/post/List.vue'
 import type { PicInfo, Post } from './types'
-import PostList from '~/components/post/List.vue'
 
 export const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms))
 

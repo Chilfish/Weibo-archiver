@@ -1,7 +1,6 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
@@ -23,9 +22,6 @@ export default defineConfig({
   plugins: [
     Vue(),
 
-    // https://github.com/hannoeru/vite-plugin-pages
-    Pages(),
-
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       imports: [
@@ -34,7 +30,7 @@ export default defineConfig({
         '@vueuse/core',
         util.unimportPreset, // monkey GM_api
       ],
-      dts: true,
+      dts: './src/types/auto-imports.d.ts',
       dirs: [
         './src/composables',
         './src/stores',
@@ -45,7 +41,7 @@ export default defineConfig({
 
     // https://github.com/antfu/vite-plugin-components
     Components({
-      dts: true,
+      dts: './src/types/components.d.ts',
       resolvers: [ElementPlusResolver()],
       directoryAsNamespace: true,
     }),
@@ -56,14 +52,17 @@ export default defineConfig({
       entry: 'src/main.ts',
       userscript: {
         icon: 'https://vitejs.dev/logo.svg',
-        namespace: 'npm/vite-plugin-monkey',
+        namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
         ],
       },
       build: {
         externalGlobals: {
-          vue: cdn.jsdelivr('Vue', 'dist/vue.global.prod.js'),
+          vue: cdn.unpkg('Vue', 'dist/vue.global.prod.js'),
+        },
+        externalResource: {
+          'element-plus/dist/index.css': cdn.unpkg(),
         },
       },
     }),

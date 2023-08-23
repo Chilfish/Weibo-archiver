@@ -4,8 +4,6 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 <template>
   <el-config-provider :locale="zhCn">
-    <main class="font-sans">
-      <RouterView />
-    </main>
+    <Ctrl class="font-sans" />
   </el-config-provider>
 </template>
