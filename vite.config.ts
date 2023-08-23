@@ -47,6 +47,7 @@ export default defineConfig({
     Components({
       dts: true,
       resolvers: [ElementPlusResolver()],
+      directoryAsNamespace: true,
     }),
 
     UnoCSS(),

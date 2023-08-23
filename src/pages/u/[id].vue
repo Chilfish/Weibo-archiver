@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { shortcuts } from '~/default'
-import type { PostMeta } from '~/types'
 
 const id = useRoute().params.id as string
 useUserStore().setUid(id)
@@ -8,11 +7,7 @@ useUserStore().setUid(id)
 const dateRange = ref([] as Date[])
 const showPreview = ref(false)
 
-const {
-  data,
-  isFinished,
-  execute: fetchAll,
-} = weiFetch(`/mymblog?uid=${useUserStore().uid}&feature=0`).json<{ data: PostMeta }>()
+const { data, execute: fetchAll } = fetchPosts()
 
 function start() {
   if (dateRange.value?.length === 0 || !dateRange.value)
@@ -54,7 +49,7 @@ const filteredList = computed(() => data.value?.data.list.filter(post => post.us
   </div>
 
   <el-dialog
-    v-if="filteredList && isFinished"
+    v-if="filteredList"
     v-model="showPreview"
     class="w-90%! rounded-2!"
     title="预览"

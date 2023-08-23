@@ -26,3 +26,6 @@ span.icon {
   --uno: inline-flex items-center max-w-4 max-h-4 select-none cursor-pointer;
 }
 
+.el-link, a {
+  @apply hover:decoration-none;
+}
