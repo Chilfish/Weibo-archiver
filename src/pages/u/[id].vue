@@ -1,21 +1,35 @@
 <script setup lang="ts">
 import { shortcuts } from '~/default'
+import type { PostMeta } from '~/types'
 
 const id = useRoute().params.id as string
 useUserStore().setUid(id)
 
 const dateRange = ref([] as Date[])
 const showPreview = ref(false)
+const curPage = ref(1)
 
-const { data, execute: fetchAll } = fetchPosts()
+const data = ref< PostMeta | null>(null)
 
-function start() {
+async function start() {
   if (dateRange.value?.length === 0 || !dateRange.value)
-    fetchAll()
+    data.value = await fetchPosts(curPage.value)
 }
 
 // 过滤掉主页上例如 “ta点赞过的微博” 这些不是用户自己发的微博
-const filteredList = computed(() => data.value?.data.list.filter(post => post.user.idstr === id))
+const filteredList = computed(() => data.value?.list.filter(post => post.user.idstr === id))
+
+const pages = computed(() => {
+  const total = data.value?.total
+  if (!total)
+    return 0
+
+  return Math.ceil(total / 20)
+})
+
+watch(curPage, async () => {
+  data.value = await fetchPosts(curPage.value)
+})
 </script>
 
 <template>
@@ -54,6 +68,14 @@ const filteredList = computed(() => data.value?.data.list.filter(post => post.us
     class="w-90%! rounded-2!"
     title="预览"
   >
-    <post-list :list="filteredList" />
+    <div class="flex flex-col items-center justify-center">
+      <post-list :list="filteredList" />
+
+      <div class="btns mt-4 flex gap-4">
+        <button :disabled="curPage === pages" @click="curPage++">
+          下一页
+        </button>
+      </div>
+    </div>
   </el-dialog>
 </template>
