@@ -1,8 +1,10 @@
-export async function fetchPosts() {
-  const { error, data } = await useFetch(`https://weibo.com/ajax/statuses/mymblog?uid=${useUserStore().uid}`)
+import { createFetch } from '@vueuse/core'
 
-  return {
-    data,
-    error,
-  }
-}
+export const weiFetch = createFetch({
+  baseUrl: 'https://weibo.com/ajax/statuses',
+  combination: 'overwrite',
+  options: {
+    immediate: false,
+    timeout: 1000,
+  },
+})

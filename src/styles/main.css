@@ -1,15 +1,11 @@
 #plugin-app {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
   position: absolute;
   top: 0;
   right: 0;
   z-index: 9999;
 }
 
-#plugin-app button {
+.btns button {
   --uno: btn;
 }
 

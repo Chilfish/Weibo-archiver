@@ -1,21 +1,29 @@
 <script setup lang="ts">
 import { shortcuts } from '~/default'
+import type { PostMeta } from '~/types'
 
 const id = useRoute().params.id as string
-const dateRange = ref([] as Date[])
 useUserStore().setUid(id)
+
+const dateRange = ref([] as Date[])
+const showPreview = ref(false)
 
 const {
   data,
-  isFetching,
-  execute: start,
-} = useFetch<any>(`https://weibo.com/ajax/statuses/mymblog?uid=${useUserStore().uid}`, { immediate: false }).json()
+  isFinished,
+  execute: fetchAll,
+} = weiFetch(`/mymblog?uid=${useUserStore().uid}&feature=0`).json<{ data: PostMeta }>()
+
+function start() {
+  if (dateRange.value?.length === 0 || !dateRange.value)
+    fetchAll()
+}
 
 watchEffect(() => {
-  if (isFetching.value)
-    return
-  const res = data.value?.data
-  console.log(res)
+  if (isFinished.value) {
+    const res = data.value?.data
+    console.log(res)
+  }
 })
 </script>
 
@@ -38,14 +46,23 @@ watchEffect(() => {
       :shortcuts="shortcuts"
     />
 
-    <div>
-      <span class="loading icon" />
-    </div>
-
-    <div class="flex gap-4">
+    <div class="btns flex gap-4">
       <button @click="start()">
         开始
       </button>
+
+      <button @click="showPreview = true">
+        预览
+      </button>
     </div>
   </div>
+
+  <el-dialog
+    v-if="data"
+    v-model="showPreview"
+    class="w-90%! rounded-2!"
+    header="预览"
+  >
+    <post-list :list="data.data.list" />
+  </el-dialog>
 </template>
