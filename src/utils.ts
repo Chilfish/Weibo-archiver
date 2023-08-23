@@ -1,4 +1,4 @@
-import type { PicInfo } from './types'
+import type { PicInfo, Post } from './types'
 
 export const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -15,6 +15,33 @@ export function parseText(text: string) {
   return text.replace(reg, (_, user) => link(`@${user}`, url + user))
 }
 
-export function parseImg(pic_ids: string[], img_infos: Record<string, PicInfo>) {
+export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>) {
+  if (!pic_ids || !img_infos)
+    return []
   return pic_ids.map(id => img_infos[id].largest.url)
+}
+
+/**
+ * 数据清洗
+ */
+export function filterPosts(posts: any[]): Post[] {
+  return posts.map(post => ({
+    id: post.id,
+    text: post.text_raw,
+    imgs: parseImg(post.pic_ids, post.pic_infos),
+    reposts_count: post.reposts_count,
+    comments_count: post.comments_count,
+    attitudes_count: post.attitudes_count,
+    created_at: post.created_at,
+    user: {
+      id: post.user.idstr,
+      screen_name: post.user.screen_name,
+      profile_image_url: post.user.profile_image_url,
+    },
+    source: post.source,
+    region_name: post.user.region_name,
+    isLongText: post.isLongText,
+    mblogid: post.mblogid,
+    retweeted_status: post.retweeted_status ? filterPosts([post.retweeted_status])[0] : undefined,
+  }))
 }

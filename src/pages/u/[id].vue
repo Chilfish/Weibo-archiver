@@ -17,7 +17,7 @@ async function start() {
 }
 
 // 过滤掉主页上例如 “ta点赞过的微博” 这些不是用户自己发的微博
-const filteredList = computed(() => data.value?.list.filter(post => post.user.idstr === id))
+const filteredList = computed(() => data.value?.list.filter(post => post.user.id === id))
 
 const pages = computed(() => {
   const total = data.value?.total

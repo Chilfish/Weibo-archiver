@@ -1,5 +1,5 @@
 export interface User {
-  idstr: string
+  id: string
   screen_name: string
   profile_image_url: string
 }
@@ -15,16 +15,13 @@ export interface Post {
   mblogid: string
   created_at: string
   user: User
-  text_raw: string
+  text: string
   /**
    *  需要展开的长文本
    *  https://weibo.com/ajax/statuses/longtext?id=${mblogid}
    */
   isLongText: boolean
-
-  pic_num: number
-  pic_ids: string[]
-  pic_infos: Record<string, PicInfo> // 从 pic_infos[pic_id].largest.url 中提取原图链接
+  imgs: string[]
 
   reposts_count: number
   comments_count: number
