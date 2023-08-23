@@ -1,4 +1,5 @@
 import { createFetch } from '@vueuse/core'
+import { parseText } from '~/utils'
 import type { Post, PostMeta } from '~/types'
 
 export const weiFetch = createFetch({
@@ -13,6 +14,9 @@ const since_id = ref('')
 export async function fetchPosts(page: number) {
   if (page === 0)
     return null
+  if (page === 1)
+    since_id.value = ''
+
   const { data } = await weiFetch(`/mymblog?uid=${useUserStore().uid}&feature=0&page=${page}&since_id=${since_id.value}`)
     .json<{ data: PostMeta }>()
 
@@ -29,5 +33,5 @@ export function fetchLongText(post: Post) {
 
   const text = computed(() => data.value?.data.longTextContent || post.text_raw)
 
-  return text
+  return parseText(text.value)
 }

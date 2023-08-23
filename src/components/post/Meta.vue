@@ -11,9 +11,9 @@ const detailUrl = `https://weibo.com/${useUserStore().uid}/${props.post.mblogid}
 
 <template>
   <div
-    class="flex justify-end gap-3 text-2 text-gray"
+    class="flex flex-wrap items-center justify-end gap-1 text-2 text-gray sm:gap-3"
   >
-    <span v-if="post.source.length">
+    <span v-if="post.source.length" class="hidden sm:inline">
       来自 <span v-html="post.source" />
     </span>
 

@@ -29,3 +29,7 @@ span.icon {
 .el-link, a {
   @apply hover:decoration-none;
 }
+
+#plugin-app a{
+  --uno: text-teal-600 hover:text-teal-700;
+}

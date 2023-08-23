@@ -12,16 +12,17 @@ const text = fetchLongText(props.post)
   <article
     class="flex flex-col gap-2 rounded-2 bg-white p-3"
   >
-    <post-meta :post="post" />
+    <div class="flex justify-between">
+      <profile :user="post.user" />
+      <post-meta :post="post" />
+    </div>
 
     <main>
-      <p class="whitespace-pre-wrap text-4">
-        {{ text }}
-      </p>
+      <p class="whitespace-pre-wrap text-4" v-html="text" />
 
       <slot />
     </main>
 
-    <post-action :post="post" />
+    <post-action class="justify-start!" :post="post" />
   </article>
 </template>
