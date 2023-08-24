@@ -9,3 +9,4 @@ node_modules
 
 auto-imports.d.ts
 components.d.ts
+data.js

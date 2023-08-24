@@ -1,5 +1,5 @@
 #plugin-app {
-  --uno: absolute top-0 right-0 z-9999;
+  --uno: w-full absolute top-0 right-0 z-9999;
 }
 
 .btns button {

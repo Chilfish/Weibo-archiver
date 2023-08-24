@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shortcuts } from '~/default'
-import { preview } from '~/utils'
+import { exportData, preview } from '~/utils'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
@@ -8,6 +8,9 @@ const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
 await fetchUser(id, name)
 
 const postStore = usePostStore()
+
+const res = await fetchPosts(postStore.curPage)
+postStore.setTotal(res?.total || 0)
 
 const dateRange = ref([] as Date[])
 const isStart = ref(false)
@@ -30,7 +33,7 @@ watch(isStop, async () => {
 </script>
 
 <template>
-  <div class="fixed right-4 top-20 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl">
+  <div class="fixed right-4 top-4 z-9999 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl">
     <h2 class="text-5 font-bold">
       Weibo archiver, user: {{ useUserStore().name }}
     </h2>
@@ -51,7 +54,6 @@ watch(isStop, async () => {
     />
 
     <el-progress
-      v-show="isStart"
       :percentage="percentage"
       :format="progressText"
     />
@@ -67,6 +69,10 @@ watch(isStop, async () => {
 
       <button v-show="isStart" @click="isStop = !isStop">
         {{ isStop ? '继续' : '暂停' }}
+      </button>
+
+      <button @click="exportData()">
+        导出
       </button>
     </div>
   </div>

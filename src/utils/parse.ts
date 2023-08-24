@@ -1,8 +1,4 @@
-import { createVNode, render } from 'vue'
-import PreviewVue from '@cp/Preview.vue'
-import type { PicInfo, Post } from './types'
-
-export const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms))
+import type { PicInfo, Post } from '~/types'
 
 export const weibo = 'https://weibo.com'
 
@@ -20,7 +16,9 @@ export function parseText(text: string) {
 export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>) {
   if (!pic_ids || !img_infos)
     return []
-  return pic_ids.map(id => img_infos[id].largest.url)
+  const imgs = pic_ids.map(id => img_infos[id].largest.url)
+  usePostStore().addImgs(imgs)
+  return imgs
 }
 
 /**
@@ -48,15 +46,4 @@ export function filterPosts(posts?: any[]): Post[] {
     mblogid: post.mblogid,
     retweeted_status: filterPosts([post.retweeted_status])[0],
   }))
-}
-
-export function preview() {
-  const container = document.createElement('div')
-  const vnode = createVNode(PreviewVue)
-  render(vnode, container)
-
-  const app = document.querySelector('#app') || document.querySelector('#preview')!
-  app.id = 'preview'
-  app.innerHTML = ''
-  app.appendChild(container)
 }

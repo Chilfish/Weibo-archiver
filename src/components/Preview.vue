@@ -4,18 +4,16 @@ import { preview } from '~/utils'
 const postStore = usePostStore()
 const curPage = ref(postStore.curPage)
 const posts = computed(() => postStore.get())
-const isFinished = ref(true)
 
 watch(curPage, async (newPage) => {
-  isFinished.value = false
-
   // 到新页面才加载
-  if (newPage > postStore.fetchedPage)
-    await fetchPosts(curPage.value)
-
+  if (newPage > postStore.fetchedPage) {
+    const res = await fetchPosts(curPage.value)
+    postStore.add(res!.list)
+  }
   postStore.setCurPage(newPage)
 
-  preview()
+  await preview()
 })
 </script>
 
@@ -28,14 +26,14 @@ watch(curPage, async (newPage) => {
     <div class="mt-4 select-none">
       <div class="btns mb-4 flex justify-center gap-4">
         <button
-          :disabled="curPage === 1 || !isFinished"
+          :disabled="curPage === 1"
           @click="curPage--"
         >
           上一页
         </button>
 
         <button
-          :disabled="curPage === postStore.pages || !isFinished"
+          :disabled="curPage === postStore.pages"
           @click="curPage++"
         >
           下一页

@@ -50,8 +50,6 @@ export async function fetchPosts(page: number) {
       }),
   )
 
-  usePostStore().add(posts)
-
   return {
     ...res,
     list: posts,
@@ -75,13 +73,12 @@ export async function fetchLongText(post: Post) {
 
 export async function fetchAll(isStop = ref(false)) {
   const postStore = usePostStore()
-  const res = await fetchPosts(postStore.curPage)
-
-  postStore.setTotal(res?.total || 0)
 
   for (let page = postStore.fetchedPage + 1; page <= postStore.pages; page++) {
     await delay(1000)
     const data = await fetchPosts(page)
+
+    usePostStore().add(data!.list)
     if (isStop.value) {
       data?.abort()
       return
