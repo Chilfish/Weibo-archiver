@@ -1,0 +1,16 @@
+{
+  "name": "@weibo-archiver/preview",
+  "version": "0.0.2",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite --open",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@weibo-archiver/core": "workspace:^"
+  }
+}

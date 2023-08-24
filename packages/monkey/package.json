@@ -1,0 +1,17 @@
+{
+  "name": "@weibo-archiver/monkey",
+  "version": "0.0.2",
+  "private": true,
+  "author": "Chilfish",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --port=3333 --open",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@weibo-archiver/core": "workspace:^"
+  },
+  "devDependencies": {
+    "vite-plugin-monkey": "^3.4.2"
+  }
+}

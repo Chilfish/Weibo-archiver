@@ -1,0 +1,9 @@
+{
+  "name": "@weibo-archiver/core",
+  "version": "0.0.2",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.ts"
+}
