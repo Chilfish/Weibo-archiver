@@ -7,6 +7,10 @@ import UnoCSS from 'unocss/vite'
 import monkey, { cdn, util } from 'vite-plugin-monkey'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+import { initData } from './src/utils/init.server'
+
+initData()
+
 export default defineConfig({
   resolve: {
     alias: {

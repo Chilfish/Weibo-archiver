@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shortcuts } from '~/default'
-import { exportData, preview } from '~/utils'
+import { exportData } from '~/utils'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
@@ -11,6 +11,7 @@ const postStore = usePostStore()
 
 const res = await fetchPosts(postStore.curPage)
 postStore.setTotal(res?.total || 0)
+postStore.add(res?.list || [])
 
 const dateRange = ref([] as Date[])
 const isStart = ref(false)
@@ -61,10 +62,6 @@ watch(isStop, async () => {
     <div class="btns flex gap-4">
       <button @click="start">
         开始
-      </button>
-
-      <button :disabled="!isStart" @click="preview()">
-        预览
       </button>
 
       <button v-show="isStart" @click="isStop = !isStop">

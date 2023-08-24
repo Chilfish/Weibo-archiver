@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import { posts as data } from './data'
+import { _imgs, _posts } from './data'
 import type { Post } from '~/types'
 
 export const usePostStore = defineStore('post', () => {
-  const posts = ref(data as unknown as Post[])
-  const imgs = ref([] as string[])
+  const posts = ref(_posts as unknown as Post[])
+  const imgs = ref(new Set(_imgs as unknown as string[]))
 
   const curPage = ref(1)
   const fetchedPage = ref(posts.value.length / 20)
@@ -35,8 +35,8 @@ export const usePostStore = defineStore('post', () => {
     return posts.value.slice((p - 1) * 20, p * 20)
   }
 
-  function addImgs(newImgs: string[]) {
-    imgs.value = [...imgs.value, ...newImgs]
+  function addImgs(newImgs: Set<string> | string[]) {
+    imgs.value = new Set([...imgs.value, ...newImgs])
   }
 
   return {

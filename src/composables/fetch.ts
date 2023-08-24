@@ -46,6 +46,11 @@ export async function fetchPosts(page: number) {
       .map(async (post) => {
         const text = await fetchLongText(post)
         post.text = text
+
+        const reTweet = post?.retweeted_status
+        if (reTweet)
+          reTweet.text = await fetchLongText(reTweet)
+
         return post
       }),
   )
@@ -75,7 +80,7 @@ export async function fetchAll(isStop = ref(false)) {
   const postStore = usePostStore()
 
   for (let page = postStore.fetchedPage + 1; page <= postStore.pages; page++) {
-    await delay(1000)
+    await delay(2000)
     const data = await fetchPosts(page)
 
     usePostStore().add(data!.list)

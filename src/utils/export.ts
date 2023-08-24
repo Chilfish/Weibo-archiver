@@ -21,14 +21,16 @@ export async function exportData() {
   const zip = new JSZip()
   const postStore = usePostStore()
 
-  zip.file('data.js', `export const posts = ${JSON.stringify(postStore.posts)}`)
-  zip.file('imgs.txt', postStore.imgs.join(',\n'))
+  const data = `export const _posts = ${JSON.stringify(postStore.posts)}` + '\n'
+  + `export const _imgs = ${JSON.stringify(Array.from(postStore.imgs))}`
+
+  zip.file('data.js', data)
 
   const html = await exportHTML()
   zip.file('index.html', html)
 
   zip.generateAsync({ type: 'blob' }).then((content) => {
-    saveAs(content, 'exporter.zip')
+    saveAs(content, 'data.zip')
   })
 }
 
