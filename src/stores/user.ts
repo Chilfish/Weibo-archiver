@@ -2,13 +2,16 @@ import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
   const uid = ref('')
+  const name = ref('')
 
-  const setUid = (id: string) => {
-    uid.value = id
+  function set(id?: string, n?: string) {
+    id && (uid.value = id)
+    n && (name.value = n)
   }
 
   return {
+    name,
     uid,
-    setUid,
+    set,
   }
 })

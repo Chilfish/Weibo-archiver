@@ -8,11 +8,6 @@ import monkey, { cdn, util } from 'vite-plugin-monkey'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
-  server: {
-    hmr: {
-      protocol: 'ws',
-    },
-  },
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
@@ -55,6 +50,7 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
+          'https://weibo.com/n/*',
         ],
       },
       build: {

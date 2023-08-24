@@ -3,7 +3,9 @@ import { shortcuts } from '~/default'
 import { preview } from '~/utils'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
-useUserStore().setUid(id)
+const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
+
+await fetchUser(id, name)
 
 const dateRange = ref([] as Date[])
 const postStore = usePostStore()
@@ -21,7 +23,7 @@ async function start() {
 <template>
   <div class="fixed right-4 top-20 w-md flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black">
     <h2 class="text-5 font-bold">
-      Weibo archiver, id: {{ id }}
+      Weibo archiver, user: {{ useUserStore().name }}
     </h2>
 
     <p>请选择要存档的范围，默认为从头到尾</p>

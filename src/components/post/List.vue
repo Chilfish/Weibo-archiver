@@ -21,16 +21,20 @@ watch(curPage, async (newPage, _) => {
 <template>
   <div class="w-full flex flex-col items-center justify-center bg-light-700 py-8">
     <div class="m-auto flex flex-col gap-4 rounded px-8 sm:max-w-55rem">
-      <post-item
-        v-for="item in posts"
-        :key="item.id"
-        :post="item"
-      >
-        <post-retweeted
-          v-if="item.retweeted_status"
-          :post="item.retweeted_status"
-        />
-      </post-item>
+      <Suspense>
+        <post-item
+          v-for="item in posts"
+          :key="item.id"
+          :post="item"
+        >
+          <Suspense>
+            <post-retweeted
+              v-if="item.retweeted_status"
+              :post="item.retweeted_status"
+            />
+          </Suspense>
+        </post-item>
+      </Suspense>
     </div>
 
     <div class="btns mt-4 flex select-none items-center gap-4">

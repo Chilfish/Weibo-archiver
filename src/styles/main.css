@@ -34,6 +34,6 @@ span.icon {
   --uno: text-teal-600 hover:text-teal-700;
 }
 
-#preview div {
+#preview p {
   --uno: text-black;
 }
