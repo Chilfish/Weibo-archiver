@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
-const props = defineProps<{
+defineProps<{
   post: Post
 }>()
-
-const text = await fetchLongText(props.post)
 </script>
 
 <template>
@@ -18,7 +16,10 @@ const text = await fetchLongText(props.post)
     </div>
 
     <main>
-      <p class="whitespace-pre-wrap break-all text-4 text-black" v-html="text" />
+      <p
+        class="whitespace-pre-wrap break-all text-4 text-black"
+        v-html="post.text"
+      />
       <gallery :imgs="post.imgs" />
       <slot />
     </main>

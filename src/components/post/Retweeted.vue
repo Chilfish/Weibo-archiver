@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import type { Post } from '~/types'
 
-const props = defineProps<{
+defineProps<{
   post: Post
 }>()
-
-const text = await fetchLongText(props.post)
 </script>
 
 <template>
   <article class="mt-4 flex flex-col gap-2 rounded-2 bg-light p-3">
     <profile :user="post.user" />
     <main>
-      <p class="whitespace-pre-wrap break-all text-4 text-black" v-html="text" />
+      <p
+        class="whitespace-pre-wrap break-all text-4 text-black"
+        v-html="post.text"
+      />
       <gallery :imgs="post.imgs" />
     </main>
     <div class="flex justify-between text-gray">

@@ -4,15 +4,14 @@ import type { Post } from '~/types'
 export const usePostStore = defineStore('post', () => {
   const posts = ref<Post[]>([])
   const curPage = ref(1)
-  const viewedPage = ref(1)
+  const fetchedPage = ref(0)
   const total = ref(0)
 
   const pages = computed(() => {
     return Math.ceil(total.value / 20)
   })
 
-  function setPage(val: number) {
-    viewedPage.value = Math.max(val, viewedPage.value)
+  function setCurPage(val: number) {
     curPage.value = val
   }
 
@@ -22,6 +21,7 @@ export const usePostStore = defineStore('post', () => {
 
   function add(newPosts: Post[]) {
     posts.value = [...posts.value, ...newPosts]
+    fetchedPage.value++
   }
 
   function get(page?: number): Post[] {
@@ -37,8 +37,8 @@ export const usePostStore = defineStore('post', () => {
     total,
     pages,
     curPage,
-    viewedPage,
-    setPage,
+    fetchedPage,
+    setCurPage,
     add,
     setTotal,
     get,

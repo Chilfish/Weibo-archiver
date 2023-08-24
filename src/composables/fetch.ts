@@ -1,6 +1,6 @@
 import { createFetch } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
-import { filterPosts, parseText } from '~/utils'
+import { delay, filterPosts, parseText } from '~/utils'
 import type { Post, PostMeta } from '~/types'
 
 export const weiFetch = createFetch({
@@ -25,13 +25,13 @@ export async function fetchUser(id?: string, name?: string) {
 // 并且只能往前，同一个 id 对于即便不同 page 的结果也是一样的
 const since_id = ref('')
 
-export async function fetchPosts(page: number): Promise<PostMeta | null> {
+export async function fetchPosts(page: number) {
   if (page === 0)
     return null
   if (page === 1)
     since_id.value = ''
 
-  const { data } = await weiFetch(`/statuses/mymblog?uid=${useUserStore().uid}&feature=0&page=${page}&since_id=${since_id.value}`)
+  const { data, abort } = await weiFetch(`/statuses/mymblog?uid=${useUserStore().uid}&feature=0&page=${page}&since_id=${since_id.value}`)
     .json<{ data: PostMeta }>()
 
   const res = data.value?.data
@@ -40,13 +40,22 @@ export async function fetchPosts(page: number): Promise<PostMeta | null> {
   else
     return null
 
-  const posts = filterPosts(res.list)
-    .filter(post => post.user.id === useUserStore().uid)
+  const posts = await Promise.all(
+    filterPosts(res.list)
+      .filter(post => post.user.id === useUserStore().uid)
+      .map(async (post) => {
+        const text = await fetchLongText(post)
+        post.text = text
+        return post
+      }),
+  )
+
   usePostStore().add(posts)
 
   return {
     ...res,
     list: posts,
+    abort,
   }
 }
 
@@ -54,6 +63,7 @@ export async function fetchLongText(post: Post) {
   const text = ref(post.text)
 
   if (post.isLongText) {
+    await delay(1000)
     const { data } = await weiFetch(`/statuses/longtext?id=${post.mblogid}`)
       .json<{ data: { longTextContent: string } }>()
 
@@ -61,4 +71,20 @@ export async function fetchLongText(post: Post) {
   }
 
   return parseText(text.value)
+}
+
+export async function fetchAll(isStop = ref(false)) {
+  const postStore = usePostStore()
+  const res = await fetchPosts(postStore.curPage)
+
+  postStore.setTotal(res?.total || 0)
+
+  for (let page = postStore.fetchedPage + 1; page <= postStore.pages; page++) {
+    await delay(1000)
+    const data = await fetchPosts(page)
+    if (isStop.value) {
+      data?.abort()
+      return
+    }
+  }
 }

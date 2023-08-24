@@ -1,5 +1,5 @@
 import { createVNode, render } from 'vue'
-import PostList from '@cp/post/List.vue'
+import PreviewVue from '@cp/Preview.vue'
 import type { PicInfo, Post } from './types'
 
 export const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms))
@@ -52,7 +52,7 @@ export function filterPosts(posts?: any[]): Post[] {
 
 export function preview() {
   const container = document.createElement('div')
-  const vnode = createVNode(PostList)
+  const vnode = createVNode(PreviewVue)
   render(vnode, container)
 
   const app = document.querySelector('#app') || document.querySelector('#preview')!
