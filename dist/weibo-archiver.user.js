@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         weibo-backup
+// @name         weibo-archiver
 // @namespace    chilfish/monkey
 // @version      0.0.1
 // @author       Chilfish

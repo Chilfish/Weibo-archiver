@@ -1,5 +1,5 @@
 {
-  "name": "weibo-backup",
+  "name": "weibo-archiver",
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@8.6.12",
