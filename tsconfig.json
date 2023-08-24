@@ -9,7 +9,7 @@
       "ESNext"
     ],
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "noUnusedLocals": true,
     "paths": {
       "@cp/*": [
@@ -19,7 +19,6 @@
         "src/*"
       ]
     },
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,

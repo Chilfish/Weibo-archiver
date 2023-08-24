@@ -1,6 +1,4 @@
-import PreviewVue from '@cp/Preview.vue'
 import JSZip from 'jszip'
-import { createVNode, render } from 'vue'
 
 function saveAs(blob: Blob, filename: string) {
   const link = document.createElement('a')
@@ -21,22 +19,13 @@ export async function exportData() {
   const zip = new JSZip()
   const postStore = usePostStore()
 
-  const data = `export const _posts = ${JSON.stringify(postStore.posts)}` + '\n'
-  + `export const _imgs = ${JSON.stringify(Array.from(postStore.imgs))}`
-
+  const data = `export const _ = ${JSON.stringify(postStore.posts)}`
   zip.file('data.js', data)
 
-  const html = await exportHTML()
-  zip.file('index.html', html)
+  const imgs = Array.from(postStore.imgs).join(',\n') // csv 格式
+  zip.file('imgs.csv', imgs)
 
   zip.generateAsync({ type: 'blob' }).then((content) => {
     saveAs(content, 'data.zip')
   })
-}
-
-async function exportHTML() {
-  const container = document.createElement('div')
-  const vnode = createVNode(PreviewVue)
-  render(vnode, container)
-  return container.innerHTML
 }

@@ -24,6 +24,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
     "@iconify-json/tabler": "^1.1.89",
+    "@rollup/plugin-node-resolve": "^15.2.1",
     "@types/node": "^20.5.4",
     "@unocss/eslint-config": "^0.55.2",
     "@unocss/reset": "^0.55.2",

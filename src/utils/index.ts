@@ -14,7 +14,9 @@ export async function preview() {
   const vnode = h(PreviewVue)
   render(vnode, container)
 
-  const app = document.querySelector('#preview')!
-  app.innerHTML = ''
-  app.appendChild(container)
+  const app = document.querySelector('#preview')
+  if (app) {
+    app.innerHTML = ''
+    app.appendChild(container)
+  }
 }
