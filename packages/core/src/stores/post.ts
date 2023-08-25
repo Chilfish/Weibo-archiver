@@ -8,6 +8,8 @@ export const usePostStore = defineStore('post', () => {
   // 用于导出图片链接
   const imgs = ref(new Set<string>())
 
+  const viewImg = ref('')
+
   const curPage = ref(1)
   const fetchedPage = ref(Math.round(posts.value.length / 20))
   const total = ref(posts.value.length)
@@ -44,9 +46,17 @@ export const usePostStore = defineStore('post', () => {
     })
   }
 
+  /**
+   * 全局弹窗预览图片
+   */
+  function setViewImg(img: string) {
+    viewImg.value = img
+  }
+
   return {
     posts,
     imgs,
+    viewImg,
     total,
     pages,
     curPage,
@@ -56,5 +66,6 @@ export const usePostStore = defineStore('post', () => {
     addImgs,
     setTotal,
     get,
+    setViewImg,
   }
 })
