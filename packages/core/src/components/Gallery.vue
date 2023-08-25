@@ -16,7 +16,7 @@ defineProps<{
       :hide-on-click-modal="true"
       :preview-src-list="imgs"
       fit="cover"
-      referrerpolicy="no-referrer"
+      :referrerpolicy="referrerPolicy"
       class="h-xs max-h-52 max-w-48 w-xs cursor-pointer rounded"
     >
       <template #placeholder>

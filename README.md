@@ -37,7 +37,7 @@ live-server
 - `/preview` 是用于最终查看微博
 - `/monkey` 是用于打包成油猴脚本的
 
-只需要在根目录中 `pnpm i`，`pnpm dev -F monkey` 对应的是在 /monkey 中的 `pnpm dev` 
+只需要在根目录中 `pnpm i`，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev` 
 
 ---
 

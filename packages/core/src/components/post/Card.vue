@@ -16,7 +16,7 @@ defineProps<{
     <el-image
       class="mr-2 h-30 w-30 rounded-2"
       fit="cover"
-      referrerpolicy="no-referrer"
+      :referrerpolicy="referrerPolicy"
       :lazy="true"
       :src="previewImg(card.img)"
     />

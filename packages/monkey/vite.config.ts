@@ -15,7 +15,10 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
-        icon: 'https://vitejs.dev/logo.svg',
+        name: 'Weibo Archiver',
+        homepage: 'https://github.com/Chilfish/Weibo-Archiver',
+        source: 'https://github.com/Chilfish/Weibo-Archiver/tree/main/packages/monkey',
+        icon: 'https://github.com/Chilfish/Weibo-archiver/raw/main/docs/Speechless48.webp',
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
@@ -24,10 +27,16 @@ export default defineConfig({
       },
       build: {
         externalGlobals: {
-          vue: cdn.unpkg('Vue', 'dist/vue.global.prod.js'),
+          vue: cdn.jsdelivr('Vue', 'dist/vue.global.prod.js'),
+          pinia: [
+            'Pinia',
+            'https://unpkg.com/vue-demi@latest/lib/index.iife.js',
+            version =>
+              `https://unpkg.com/pinia@${version}/dist/pinia.iife.js`,
+          ],
         },
         externalResource: {
-          'element-plus/dist/index.css': cdn.unpkg(),
+          'element-plus/dist/index.mini.css': cdn.unpkg(),
         },
         fileName: 'weibo-archiver.user.js',
       },

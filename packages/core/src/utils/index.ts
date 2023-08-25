@@ -6,6 +6,8 @@ export * from './export'
 
 export const isInMonkey = document.URL.includes('weibo.com')
 
+export const referrerPolicy = isInMonkey ? 'no-referrer' : 'origin'
+
 const $ = (selector: string) => document.querySelector(selector)
 
 export function delay(ms: number) {
