@@ -6,7 +6,7 @@ export * from './export'
 
 export const isInMonkey = document.URL.includes('weibo.com')
 
-export const referrerPolicy = isInMonkey ? 'no-referrer' : 'origin'
+export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
 
 const $ = (selector: string) => document.querySelector(selector)
 

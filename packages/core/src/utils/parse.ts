@@ -2,7 +2,7 @@ import type { CardInfo, PicInfo, Post } from '@core/types'
 
 export const weibo = 'https://weibo.com'
 
-export const link = (text: string, url = weibo) => `<a href="${url}" target="_blank">${text}</a>`
+export const link = (text: string, url = weibo) => `<a href="${url}">${text}</a>`
 
 function matchImgDir(prefix: string) {
   const imgDir: Record<string, string> = {
@@ -18,9 +18,13 @@ function matchImgDir(prefix: string) {
  * 解析正文，例如 @user => link(user, userUrl)
  */
 export function parseText(text: string) {
-  const url = `${weibo}/n/`
-  const reg = /@([^:，\s]+)/g
-  return text.replace(reg, (_, user) => link(`@${user}`, url + user))
+  return text
+    .replace(
+      /<a[^>]*>(@[^<]+)<\/a>/g, // @用户
+      (_, user) => link(`${user}`, `${weibo}/n/${user.replace('@', '')}`),
+    )
+    .replace(/<img[^>]+alt="([^"]*)"[^>]*>/gm, (_, alt) => alt) // 表情图片
+    .replace(/<img[^>]*>/gm, '') // 图标
 }
 
 /**
@@ -58,6 +62,31 @@ export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>
 }
 
 /**
+ * 解析转发的卡片
+ */
+function parseCard(url_struct?: any[], card?: any): CardInfo | undefined {
+  if (!url_struct || !card)
+    return undefined
+
+  const link = url_struct.find((e: any) => e.page_id === card.page_id)?.long_url
+  const title = card.page_title === '' ? card.content1 : card.page_title
+  let desc = card.content2 === '' ? card.content1 : card.content2
+
+  if (card.object_type === 'video') {
+    const viewed = card?.media_info?.online_users
+    const title = card?.media_info?.video_title
+    desc = `${title} - ${viewed}`
+  }
+
+  return {
+    link,
+    title,
+    desc,
+    img: card.page_pic,
+  }
+}
+
+/**
  * 数据清洗
  */
 export function filterPosts(posts?: any[]): Post[] {
@@ -65,19 +94,9 @@ export function filterPosts(posts?: any[]): Post[] {
     return []
   return posts.map((post) => {
     try {
-      let card: undefined | CardInfo
-      if (post.url_struct?.[0]?.long_url) {
-        card = {
-          link: post.url_struct?.[0]?.long_url,
-          title: post.page_info?.page_title,
-          desc: post.page_info?.content2 || post.page_info?.content1,
-          img: post.page_info?.page_pic,
-        }
-      }
-
       const res: Post = {
         id: post.id,
-        text: post.text_raw,
+        text: post.text,
         imgs: parseImg(post.pic_ids, post.pic_infos),
         reposts_count: post.reposts_count,
         comments_count: post.comments_count,
@@ -93,7 +112,7 @@ export function filterPosts(posts?: any[]): Post[] {
         isLongText: post.isLongText,
         mblogid: post.mblogid,
         retweeted_status: filterPosts([post.retweeted_status])[0],
-        card,
+        card: parseCard(post.url_struct, post.page_info),
       }
       const avatar = res.user?.profile_image_url
       usePostStore().addImgs([avatar, res.card?.img])

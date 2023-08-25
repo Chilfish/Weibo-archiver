@@ -37,3 +37,7 @@ span.icon {
 #preview p {
   --uno: text-black;
 }
+
+main p a[target="_blank"]:after {
+  --uno: content-empty i-tabler-share-3 ml-2px inline-block;
+}
