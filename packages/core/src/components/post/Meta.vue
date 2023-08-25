@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 const date = useDateFormat(props.post.created_at, 'YY-MM-DD HH:mm dddd')
-const detailUrl = `https://weibo.com/${useUserStore().uid}/${props.post.mblogid}`
+const detailUrl = `https://weibo.com/${props.post.user.id}/${props.post.mblogid}`
 </script>
 
 <template>
