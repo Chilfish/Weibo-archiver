@@ -16,10 +16,7 @@ defineProps<{
     </div>
 
     <main>
-      <p
-        class="whitespace-pre-wrap break-all text-4 text-black"
-        v-html="post.text"
-      />
+      <post-text :text="post.text" />
       <gallery :imgs="post.imgs" />
       <post-card v-if="post.card && !post.retweeted_status" :card="post.card" />
       <slot />

@@ -18,13 +18,24 @@ function matchImgDir(prefix: string) {
  * 解析正文，例如 @user => link(user, userUrl)
  */
 export function parseText(text: string) {
-  return text
+  let parsed = text
     .replace(
       /<a[^>]*>(@[^<]+)<\/a>/g, // @用户
       (_, user) => link(`${user}`, `${weibo}/n/${user.replace('@', '')}`),
     )
     .replace(/<img[^>]+alt="([^"]*)"[^>]*>/gm, (_, alt) => alt) // 表情图片
     .replace(/<img[^>]*>/gm, '') // 图标
+
+  const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/gm.exec(parsed)
+
+  if (retweetImg && retweetImg[1]) {
+    usePostStore().addImgs([retweetImg[1]])
+    const img = replaceImg(retweetImg[1])
+
+    parsed = parsed.replace(retweetImg[0], `img://${img}`) // 解析这个 img 协议
+  }
+
+  return parsed
 }
 
 /**

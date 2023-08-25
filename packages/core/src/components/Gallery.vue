@@ -16,6 +16,7 @@ const p_imgs = props.imgs.map(previewImg)
       :src="img"
       :lazy="true"
       :hide-on-click-modal="true"
+      :preview-teleported="true"
       :preview-src-list="imgs"
       fit="cover"
       :referrerpolicy="referrerPolicy"
