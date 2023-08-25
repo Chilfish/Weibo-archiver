@@ -9,7 +9,7 @@ defineProps<{
     class="grid grid-cols-3 mt-2 w-fit items-start justify-start gap-1"
   >
     <el-image
-      v-for="img in imgs"
+      v-for="img in imgs.map(previewImg)"
       :key="img"
       :src="img"
       :lazy="true"

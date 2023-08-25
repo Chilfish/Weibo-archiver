@@ -4,6 +4,8 @@ import PreviewVue from '../components/Preview.vue'
 export * from './parse'
 export * from './export'
 
+export const isInMonkey = document.URL.includes('weibo.com')
+
 const $ = (selector: string) => document.querySelector(selector)
 
 export function delay(ms: number) {
