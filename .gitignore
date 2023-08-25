@@ -2,6 +2,7 @@
 .vite-ssg-dist
 .vite-ssg-temp
 *.local
+dist
 dist-ssr
 node_modules
 .idea/
@@ -9,4 +10,3 @@ node_modules
 
 auto-imports.d.ts
 components.d.ts
-data.js

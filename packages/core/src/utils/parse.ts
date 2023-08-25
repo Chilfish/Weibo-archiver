@@ -53,6 +53,7 @@ export function filterPosts(posts?: any[]): Post[] {
     }
     catch (e) {
       console.log(e, post)
+      ElMessage.error(`数据解析失败, id: ${post.id}, ${post.text}`)
       return null
     }
   }).filter((e): e is Post => !!e)

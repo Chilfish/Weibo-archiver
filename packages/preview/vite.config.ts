@@ -6,8 +6,6 @@ import config, { core, packages, root } from '../../vite.config'
 const dataJs = path.resolve(core, 'stores/data.js')
 const index = path.resolve(packages, 'preview/index.html')
 
-console.log({ dataJs, index })
-
 export default defineConfig({
   ...config,
   build: {

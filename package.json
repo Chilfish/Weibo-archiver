@@ -7,10 +7,11 @@
   "author": "Chilfish",
   "license": "MIT",
   "scripts": {
-    "build:preview": "pnpm -F @weibo-archiver/preview build",
-    "build:monkey": "pnpm -F @weibo-archiver/monkey build",
-    "dev:preview": "pnpm -F @weibo-archiver/preview dev",
-    "dev:monkey": "pnpm -F @weibo-archiver/monkey dev",
+    "build:preview": "pnpm -F preview build",
+    "build:monkey": "pnpm -F monkey build",
+    "dev:preview": "pnpm -F preview dev",
+    "dev:monkey": "pnpm -F monkey dev",
+    "preview": "pnpm -F preview preview",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
     "up": "taze major -I",
@@ -25,7 +26,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
     "@iconify-json/tabler": "^1.1.89",
-    "@rollup/plugin-node-resolve": "^15.2.1",
     "@types/node": "^20.5.4",
     "@unocss/eslint-config": "^0.55.2",
     "@unocss/reset": "^0.55.2",

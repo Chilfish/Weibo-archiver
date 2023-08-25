@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { shortcuts } from './default'
-
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
 
@@ -11,6 +9,8 @@ const postStore = usePostStore()
 const res = await fetchPosts(postStore.curPage)
 postStore.setTotal(res?.total || 0)
 postStore.add(res?.list || [])
+
+preview()
 
 const dateRange = ref([] as Date[])
 const isStart = ref(false)

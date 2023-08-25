@@ -8,9 +8,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build"
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@weibo-archiver/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.1"
   }
 }

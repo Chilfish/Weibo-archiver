@@ -4,6 +4,8 @@ import PreviewVue from '../components/Preview.vue'
 export * from './parse'
 export * from './export'
 
+const $ = (selector: string) => document.querySelector(selector)
+
 export function delay(ms: number) {
   const randomMs = Math.random() * ms
   return new Promise(resolve => setTimeout(resolve, randomMs))
@@ -14,7 +16,7 @@ export async function preview() {
   const vnode = h(PreviewVue)
   render(vnode, container)
 
-  const app = document.querySelector('#preview')
+  const app = $('#app') || $('#preview')
   if (app) {
     app.innerHTML = ''
     app.appendChild(container)

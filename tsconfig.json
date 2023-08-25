@@ -13,6 +13,7 @@
       "@weibo-archiver/*": ["packages/*/src"],
       "@core/*": ["packages/core/src/*"]
     },
+    "outDir": "dist/ts",
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
@@ -32,8 +33,5 @@
     "packages/**/src/**/*.vue",
     "packages/**/src/vite.config.ts",
     "vite.config.ts"
-  ],
-  "files": [
-    "packages/core/index.ts"
   ]
 }

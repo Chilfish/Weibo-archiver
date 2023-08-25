@@ -3,7 +3,9 @@ import type { Post } from '@core/types'
 import { _ as _posts } from './data'
 
 export const usePostStore = defineStore('post', () => {
+  // 必须是外部导入优先, 这样才能在 build 中直接引用
   const posts = ref(_posts as unknown as Post[])
+  // 用于导出图片链接
   const imgs = ref(new Set<string>())
 
   const curPage = ref(1)
