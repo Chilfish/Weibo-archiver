@@ -18,7 +18,7 @@ export default defineConfig({
         name: 'Weibo Archiver',
         homepage: 'https://github.com/Chilfish/Weibo-Archiver',
         source: 'https://github.com/Chilfish/Weibo-Archiver/tree/main/packages/monkey',
-        icon: 'https://github.com/Chilfish/Weibo-archiver/raw/main/docs/Speechless48.webp',
+        icon: 'https://github.com/Chilfish/Weibo-archiver/raw/main/docs/Speechless48.png',
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
