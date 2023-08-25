@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Post } from '@core/types'
+import type { CardInfo, Post } from '@core/types'
 
 defineProps<{
   post: Post
+  card?: CardInfo
 }>()
 </script>
 
@@ -16,6 +17,7 @@ defineProps<{
         v-html="post.text"
       />
       <gallery :imgs="post.imgs" />
+      <post-card v-if="card" :card="card" />
     </main>
     <div class="flex justify-between text-gray">
       <post-meta :post="post" />

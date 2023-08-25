@@ -18,6 +18,7 @@ defineProps<{
           <post-retweeted
             v-if="item.retweeted_status"
             :post="item.retweeted_status"
+            :card="item.card"
           />
         </Suspense>
       </post-item>

@@ -10,6 +10,13 @@ export interface PicInfo {
   }
 }
 
+export interface CardInfo {
+  link: string
+  title: string
+  img: string
+  desc?: string
+}
+
 export interface Post {
   id: string
   mblogid: string
@@ -29,7 +36,15 @@ export interface Post {
 
   source: string
   region_name: string
-  retweeted_status?: Post
+
+  /**
+   * 转发的卡片（page_info, url_struct）
+   */
+  card?: CardInfo
+  /**
+   * 转发的微博
+   */
+  retweeted_status?: Omit<Post, 'retweeted_status' | 'card'>
 }
 
 export interface Comment {

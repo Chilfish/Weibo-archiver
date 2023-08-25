@@ -21,6 +21,7 @@ defineProps<{
         v-html="post.text"
       />
       <gallery :imgs="post.imgs" />
+      <post-card v-if="post.card && !post.retweeted_status" :card="post.card" />
       <slot />
     </main>
 

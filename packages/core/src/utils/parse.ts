@@ -1,8 +1,18 @@
-import type { PicInfo, Post } from '@core/types'
+import type { CardInfo, PicInfo, Post } from '@core/types'
 
 export const weibo = 'https://weibo.com'
 
 export const link = (text: string, url = weibo) => `<a href="${url}" target="_blank">${text}</a>`
+
+function matchImgDir(prefix: string) {
+  const imgDir: Record<string, string> = {
+    'hdslb.com': 'bfs/community-share', // bilibili
+    'weibo.com': 'orj360', // weibo
+  }
+
+  const [match] = Object.entries(imgDir).find(([key]) => prefix.includes(key)) || []
+  return match ? imgDir[match] : 'orj360'
+}
 
 /**
  * 解析正文，例如 @user => link(user, userUrl)
@@ -32,7 +42,8 @@ export function previewImg(img: string) {
   if (!isInMonkey)
     return img
   const [prefix, name] = img.split('/').pop()!.split('-')
-  return `https://${prefix}/orj360/${name}`
+  const dir = matchImgDir(prefix)
+  return `https://${prefix}/${dir}/${name}`
 }
 
 /**
@@ -54,6 +65,16 @@ export function filterPosts(posts?: any[]): Post[] {
     return []
   return posts.map((post) => {
     try {
+      let card: undefined | CardInfo
+      if (post.url_struct?.[0]?.long_url) {
+        card = {
+          link: post.url_struct?.[0]?.long_url,
+          title: post.page_info?.page_title,
+          desc: post.page_info?.content2 || post.page_info?.content1,
+          img: post.page_info?.page_pic,
+        }
+      }
+
       const res: Post = {
         id: post.id,
         text: post.text_raw,
@@ -72,11 +93,13 @@ export function filterPosts(posts?: any[]): Post[] {
         isLongText: post.isLongText,
         mblogid: post.mblogid,
         retweeted_status: filterPosts([post.retweeted_status])[0],
+        card,
       }
       const avatar = res.user?.profile_image_url
-      usePostStore().addImgs([avatar])
+      usePostStore().addImgs([avatar, res.card?.img])
 
       res.user && (res.user.profile_image_url = replaceImg(avatar))
+      res.card && (res.card.img = replaceImg(res.card.img))
       return res
     }
     catch (e) {

@@ -37,8 +37,11 @@ export const usePostStore = defineStore('post', () => {
     return posts.value.slice((p - 1) * 20, p * 20)
   }
 
-  function addImgs(newImgs: Set<string> | string[]) {
-    imgs.value = new Set([...imgs.value, ...newImgs])
+  function addImgs(newImgs: Set<string> | (string | null | undefined)[]) {
+    newImgs.forEach((img) => {
+      if (img)
+        imgs.value.add(img)
+    })
   }
 
   return {
