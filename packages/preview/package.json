@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
     "preview": "vite preview"
   },
   "dependencies": {
