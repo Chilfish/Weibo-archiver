@@ -41,8 +41,10 @@ export async function fetchPosts(page: number) {
 
   await Promise.all(
     res.list.map(async (post) => {
-      if (post.comments_count > 0)
+      if (post.comments_count > 0) {
         post.comments = await fetchComments(post.id)
+        post.text = parseText(post.text)
+      }
     }),
   )
 

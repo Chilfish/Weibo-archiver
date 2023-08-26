@@ -10,9 +10,9 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
 
 <template>
   <div
-    class="flex flex-wrap items-center justify-end gap-1 text-2 text-gray sm:gap-3"
+    class="flex flex-wrap items-center justify-end gap-1 text-3 text-gray sm:gap-3"
   >
-    <span v-if="meta?.source?.length" class="hidden sm:inline">
+    <span v-if="meta.source" class="hidden sm:inline">
       来自 <span v-html="meta.source" />
     </span>
 
@@ -22,7 +22,7 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
       :underline="false"
       :href="meta.detail_url"
       target="_blank"
-      class="text-2! text-gray-400! hover:text-gray-600!"
+      class="text-3! text-gray-400! hover:text-gray-600!"
     >
       {{ date }}
     </el-link>

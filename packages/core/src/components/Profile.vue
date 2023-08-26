@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <a
-    class="my-1 mr-auto flex items-center gap-2"
+    class="mr-auto flex items-center gap-2"
     :href="`https://weibo.com/u/${user.id}`"
     target="_blank"
   >

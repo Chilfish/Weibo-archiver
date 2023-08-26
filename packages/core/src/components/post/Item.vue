@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <article
-    class="flex flex-col gap-2 rounded-2 bg-white p-3"
+    class="flex flex-col gap-2 rounded-2 bg-white p-4"
   >
     <div class="flex justify-between">
       <profile :user="post.user" />
@@ -29,7 +29,8 @@ defineProps<{
       class="justify-start!"
       :post="post"
     />
-    <comment-list
+
+    <post-comments
       v-if="post.comments_count > 0"
       :comments="post.comments"
     />

@@ -22,7 +22,7 @@ defineProps<{
       v-if="post.user.id"
       class="flex justify-between text-gray"
     >
-      <post-meta :post="post" />
+      <post-meta :meta="post" />
     </div>
   </article>
 </template>
