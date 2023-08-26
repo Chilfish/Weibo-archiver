@@ -8,7 +8,7 @@ export const usePostStore = defineStore('post', () => {
   // 用于导出图片链接
   const imgs = ref(new Set<string>())
 
-  const viewImg = ref('')
+  const viewImg = ref('/favicon.svg')
 
   const curPage = ref(1)
   const fetchedPage = ref(Math.round(posts.value.length / 20))

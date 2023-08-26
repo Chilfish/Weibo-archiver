@@ -32,7 +32,7 @@ export function parseText(text: string) {
     usePostStore().addImgs([retweetImg[1]])
     const img = replaceImg(retweetImg[1])
 
-    parsed = parsed.replace(retweetImg[0], `img://${img}`) // 解析这个 img 协议
+    parsed = parsed.replace(retweetImg[0], `[img://${img}]`)
   }
 
   return parsed

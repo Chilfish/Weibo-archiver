@@ -30,7 +30,8 @@ span.icon {
   --uno: hover:decoration-none;
 }
 
-#preview a{
+#preview a,
+p button{
   --uno: text-teal-600 hover:text-teal-700;
 }
 

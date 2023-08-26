@@ -3,10 +3,18 @@ const props = defineProps<{
   text: string
 }>()
 
-const {
-  text: parsedText,
-  imgs,
-} = useProtocol(props.text)
+const parsedText = parseProtocol(props.text)
+
+// 或许不该这么写......
+onMounted(async () => {
+  const btns = await waitForElement('button')
+
+  btns?.forEach(e => e.onclick = () => {
+    const url = e.dataset.src
+    if (url)
+      usePostStore().setViewImg(url)
+  })
+})
 </script>
 
 <template>
