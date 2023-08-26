@@ -133,6 +133,7 @@ export function filterPosts(posts?: any[]): Post[] {
         region_name: post.region_name,
         isLongText: post.isLongText,
         mblogid: post.mblogid,
+        detail_url: `${weibo}/${post?.user?.id}/${post.mblogid}`,
         retweeted_status: filterPosts([post.retweeted_status])[0],
         card: parseCard(post.url_struct, post.page_info),
         comments: filterComments(post.comments),

@@ -1,27 +1,26 @@
 <script setup lang="ts">
-import type { Post } from '@core/types'
+import type { Meta } from '@core/types'
 
 const props = defineProps<{
-  post: Post
+  meta: Meta
 }>()
 
-const date = useDateFormat(props.post.created_at, 'YY-MM-DD HH:mm dddd')
-const detailUrl = `https://weibo.com/${props.post.user.id}/${props.post.mblogid}`
+const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
 </script>
 
 <template>
   <div
     class="flex flex-wrap items-center justify-end gap-1 text-2 text-gray sm:gap-3"
   >
-    <span v-if="post.source.length" class="hidden sm:inline">
-      来自 <span v-html="post.source" />
+    <span v-if="meta?.source?.length" class="hidden sm:inline">
+      来自 <span v-html="meta.source" />
     </span>
 
-    <span> {{ post.region_name }} </span>
+    <span> {{ meta.region_name }} </span>
 
     <el-link
       :underline="false"
-      :href="detailUrl"
+      :href="meta.detail_url"
       target="_blank"
       class="text-2! text-gray-400! hover:text-gray-600!"
     >

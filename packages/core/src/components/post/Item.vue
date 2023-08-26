@@ -12,16 +12,26 @@ defineProps<{
   >
     <div class="flex justify-between">
       <profile :user="post.user" />
-      <post-meta :post="post" />
+      <post-meta :meta="post" />
     </div>
 
     <main>
       <post-text :text="post.text" />
       <gallery :imgs="post.imgs" />
-      <post-card v-if="post.card && !post.retweeted_status" :card="post.card" />
+      <post-card
+        v-if="post.card && !post.retweeted_status"
+        :card="post.card"
+      />
       <slot />
     </main>
 
-    <post-action class="justify-start!" :post="post" />
+    <post-action
+      class="justify-start!"
+      :post="post"
+    />
+    <comment-list
+      v-if="post.comments_count > 0"
+      :comments="post.comments"
+    />
   </article>
 </template>
