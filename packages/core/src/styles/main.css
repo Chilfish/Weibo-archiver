@@ -1,5 +1,5 @@
 :root {
-  --uno: relative text-13px! scroll-smooth;
+  @apply relative text-13px ! scroll-smooth;
 }
 
 html,
@@ -28,7 +28,7 @@ html::-webkit-scrollbar {
 }
 
 .icons > span {
-  --uno: inline-flex items-center text-gray hover:text-teal-700 cursor-pointer;
+  --uno: text-4 inline-flex items-center text-gray hover:text-teal-700 cursor-pointer;
 }
 
 .icons .icon {

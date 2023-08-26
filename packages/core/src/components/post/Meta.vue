@@ -12,12 +12,6 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
   <div
     class="flex flex-wrap items-center justify-end gap-1 text-3 text-gray sm:gap-3"
   >
-    <span v-if="meta.source" class="hidden sm:inline">
-      来自 <span v-html="meta.source" />
-    </span>
-
-    <span> {{ meta.region_name }} </span>
-
     <el-link
       :underline="false"
       :href="meta.detail_url"
@@ -26,5 +20,11 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
     >
       {{ date }}
     </el-link>
+
+    <span> {{ meta.region_name }} </span>
+
+    <span v-if="meta.source" class="hidden sm:inline">
+      来自 <span v-html="meta.source" />
+    </span>
   </div>
 </template>

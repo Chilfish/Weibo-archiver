@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="m-auto flex flex-col gap-4 rounded px-8 sm:max-w-55rem">
+  <div class="m-auto flex flex-col gap-3 rounded px-8 sm:max-w-60rem">
     <Suspense>
       <post-item
         v-for="item in posts"

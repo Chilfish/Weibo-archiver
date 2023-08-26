@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 b-t">
+  <div class="flex flex-col b-t">
     <article
       v-for="comment in comments"
       :key="comment.id"
