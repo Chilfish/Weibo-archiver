@@ -41,7 +41,6 @@ export async function fetchPosts(page: number) {
 
   let posts = await Promise.all(
     res.list
-      .filter(post => post.user.id === useUserStore().uid)
       .map(async (post) => {
         if (post.comments_count > 0)
           post.comments = await fetchComments(post.id)
@@ -51,6 +50,7 @@ export async function fetchPosts(page: number) {
 
   posts = await Promise.all(
     filterPosts(res.list)
+      .filter(post => post.user.id === useUserStore().uid)
       .map(async (post) => {
         const text = await fetchLongText(post)
         post.text = text
