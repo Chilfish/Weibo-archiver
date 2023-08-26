@@ -1,18 +1,8 @@
-import type { CardInfo, PicInfo, Post } from '@core/types'
+import type { CardInfo, Comment, PicInfo, Post } from '@core/types'
 
 export const weibo = 'https://weibo.com'
 
 export const link = (text: string, url = weibo) => `<a href="${url}">${text}</a>`
-
-function matchImgDir(prefix: string) {
-  const imgDir: Record<string, string> = {
-    'hdslb.com': 'bfs/community-share', // bilibili
-    'weibo.com': 'orj360', // weibo
-  }
-
-  const [match] = Object.entries(imgDir).find(([key]) => prefix.includes(key)) || []
-  return match ? imgDir[match] : 'orj360'
-}
 
 /**
  * 解析正文，例如 @user => link(user, userUrl)
@@ -48,17 +38,6 @@ export function replaceImg(img: string) {
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
   const prefix = img.match(/^(?:https?:\/\/)?([^:\/\n]+)/im)?.[1] // 域名
   return `./assets/img/${prefix}-${name}`
-}
-
-/**
- * 在油猴中还原预览图片
- */
-export function previewImg(img: string) {
-  if (!isInMonkey)
-    return img
-  const [prefix, name] = img.split('/').pop()!.split('-')
-  const dir = matchImgDir(prefix)
-  return `https://${prefix}/${dir}/${name}`
 }
 
 /**
@@ -98,6 +77,38 @@ function parseCard(url_struct?: any[], card?: any): CardInfo | undefined {
 }
 
 /**
+ * 过滤评论区数据
+ */
+export function filterComments(comments?: any[]): Comment[] {
+  if (!comments || !comments.length || !comments[0]?.id)
+    return []
+  return comments.map((comment) => {
+    try {
+      const res: Comment = {
+        id: comment?.idstr,
+        text: comment?.text,
+        img: comment?.url_struct?.[0]?.long_url,
+        created_at: comment?.created_at,
+        user: {
+          id: comment?.user?.idstr,
+          screen_name: comment?.user?.screen_name,
+          profile_image_url: comment?.user?.profile_image_url,
+        },
+        region_name: comment?.source,
+        like_count: comment?.like_counts,
+        comments_count: comment?.total_number,
+      }
+      return res
+    }
+    catch (e) {
+      console.log(e, comment)
+      ElMessage.error(`数据解析失败, id: ${comment.id}, ${comment.text}`)
+      return null
+    }
+  }).filter((e): e is Comment => !!e)
+}
+
+/**
  * 数据清洗
  */
 export function filterPosts(posts?: any[]): Post[] {
@@ -111,7 +122,7 @@ export function filterPosts(posts?: any[]): Post[] {
         imgs: parseImg(post.pic_ids, post.pic_infos),
         reposts_count: post.reposts_count,
         comments_count: post.comments_count,
-        attitudes_count: post.attitudes_count,
+        like_count: post.attitudes_count,
         created_at: post.created_at,
         user: {
           id: post.user?.idstr,
@@ -124,6 +135,7 @@ export function filterPosts(posts?: any[]): Post[] {
         mblogid: post.mblogid,
         retweeted_status: filterPosts([post.retweeted_status])[0],
         card: parseCard(post.url_struct, post.page_info),
+        comments: filterComments(post.comments),
       }
       const avatar = res.user?.profile_image_url
       usePostStore().addImgs([avatar, res.card?.img])

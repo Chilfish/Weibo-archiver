@@ -20,7 +20,7 @@ defineProps<{
 
     <span>
       <span class="icon i-tabler-heart" />
-      <span>{{ post.attitudes_count }}</span>
+      <span>{{ post.like_count }}</span>
     </span>
   </div>
 </template>

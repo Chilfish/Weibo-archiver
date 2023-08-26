@@ -1,6 +1,6 @@
 import { createFetch } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
-import type { Post, PostMeta } from '@core/types'
+import type { Comment, Post, PostMeta } from '@core/types'
 
 export const weiFetch = createFetch({
   baseUrl: 'https://weibo.com/ajax',
@@ -39,6 +39,13 @@ export async function fetchPosts(page: number) {
   else
     return null
 
+  await Promise.all(
+    res.list.map(async (post) => {
+      if (post.comments_count > 0)
+        post.comments = await fetchComments(post.id)
+    }),
+  )
+
   const posts = await Promise.all(
     filterPosts(res.list)
       .filter(post => post.user.id === useUserStore().uid)
@@ -73,6 +80,17 @@ export async function fetchLongText(post: Post) {
   }
 
   return parseText(text.value)
+}
+
+/**
+ * 获取前 5 条评论 并集于 博主的评论
+ * @param pid 微博的数字 id
+ */
+export async function fetchComments(pid: string): Promise<Comment[]> {
+  await delay(2000)
+  const { data } = await weiFetch(`/statuses/buildComments?flow=0&is_reload=1&id=${pid}&is_show_bulletin=2`).json<{ data: Comment[] }>()
+
+  return data.value?.data || []
 }
 
 export async function fetchAll(isStop = ref(false)) {
