@@ -7,7 +7,9 @@ export const link = (text: string, url = weibo) => `<a href="${url}">${text}</a>
 /**
  * 解析正文，例如 @user => link(user, userUrl)
  */
-export function parseText(text: string) {
+export function parseText(text?: string) {
+  if (!text)
+    return ''
   let parsed = text
     .replace(
       /<a[^>]*>(@[^<]+)<\/a>/g, // @用户
@@ -86,7 +88,7 @@ export function filterComments(comments?: any[]): Comment[] {
     try {
       const res: Comment = {
         id: comment?.idstr,
-        text: comment?.text,
+        text: parseText(comment?.text), // 评论区就没见过折叠长文本
         img: comment?.url_struct?.[0]?.long_url,
         created_at: comment?.created_at,
         user: {
@@ -118,7 +120,7 @@ export function filterPosts(posts?: any[]): Post[] {
     try {
       const res: Post = {
         id: post.id,
-        text: post.text,
+        text: post.text, // 不解析，因为有些长文本会被截断
         imgs: parseImg(post.pic_ids, post.pic_infos),
         reposts_count: post.reposts_count,
         comments_count: post.comments_count,
@@ -147,5 +149,5 @@ export function filterPosts(posts?: any[]): Post[] {
       ElMessage.error(`数据解析失败, id: ${post.id}, ${post.text}`)
       return null
     }
-  }).filter((e): e is Post => !!e)
+  }).filter((e): e is Post => !!e && e.user.id === useUserStore().uid)
 }

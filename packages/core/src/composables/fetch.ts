@@ -39,18 +39,17 @@ export async function fetchPosts(page: number) {
   else
     return null
 
-  await Promise.all(
-    res.list.map(async (post) => {
-      if (post.comments_count > 0) {
-        post.comments = await fetchComments(post.id)
-        post.text = parseText(post.text)
-      }
-    }),
+  let posts = await Promise.all(
+    res.list
+      .map(async (post) => {
+        if (post.comments_count > 0)
+          post.comments = await fetchComments(post.id)
+        return post
+      }),
   )
 
-  const posts = await Promise.all(
+  posts = await Promise.all(
     filterPosts(res.list)
-      .filter(post => post.user.id === useUserStore().uid)
       .map(async (post) => {
         const text = await fetchLongText(post)
         post.text = text
@@ -85,14 +84,25 @@ export async function fetchLongText(post: Post) {
 }
 
 /**
- * 获取前 5 条评论 并集于 博主的评论
+ * 获取前 3 条评论 并集于 博主的评论
  * @param pid 微博的数字 id
  */
 export async function fetchComments(pid: string): Promise<Comment[]> {
-  await delay(2000)
+  await delay(3000)
   const { data } = await weiFetch(`/statuses/buildComments?flow=0&is_reload=1&id=${pid}&is_show_bulletin=2`).json<{ data: Comment[] }>()
 
-  return data.value?.data || []
+  const res = data.value?.data
+  if (!res)
+    return []
+
+  const userComments = res.filter(comment => comment.user.id === useUserStore().uid)
+  const othersComments = res.filter(comment => comment.user.id !== useUserStore().uid)
+
+  return Array
+    .from(new Set([
+      ...userComments,
+      ...othersComments.slice(0, 3),
+    ]))
 }
 
 export async function fetchAll(isStop = ref(false)) {
