@@ -4,7 +4,11 @@
 
 ![monkey](docs/monkey.webp)
 
-![preview](docs/preview.webp)
+![宫格图片](docs/v0.1.0.webp)
+
+![卡片预览](docs/v0.1.1.webp)
+
+![图片预览](docs/v0.1.2.webp)
 
 ### 使用方式
 
