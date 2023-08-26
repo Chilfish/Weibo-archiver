@@ -11,11 +11,12 @@ export const usePostStore = defineStore('post', () => {
   const viewImg = ref(imgViewSrc)
 
   const curPage = ref(1)
-  const fetchedPage = ref(Math.round(posts.value.length / 20))
+  const postsPerPage = ref(20) // 每页显示的帖子数量 ppp
+  const fetchedPage = ref(Math.round(posts.value.length / postsPerPage.value))
   const total = ref(posts.value.length)
 
   const pages = computed(() => {
-    return Math.ceil(total.value / 20)
+    return Math.ceil(total.value / postsPerPage.value)
   })
 
   function setCurPage(val: number) {
@@ -27,6 +28,7 @@ export const usePostStore = defineStore('post', () => {
   }
 
   function add(newPosts: Post[]) {
+    postsPerPage.value = newPosts.length
     posts.value = [...posts.value, ...newPosts]
     fetchedPage.value++
   }
@@ -36,7 +38,7 @@ export const usePostStore = defineStore('post', () => {
     if (!p)
       p = curPage.value
 
-    return posts.value.slice((p - 1) * 20, p * 20)
+    return posts.value.slice((p - 1) * postsPerPage.value, p * postsPerPage.value)
   }
 
   function addImgs(newImgs: Set<string> | (string | null | undefined)[]) {
