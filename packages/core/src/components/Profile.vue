@@ -14,7 +14,7 @@ defineProps<{
   >
     <el-avatar
       :size="30"
-      :src="user.profile_image_url"
+      :src="replaceImg(user.profile_image_url)"
     />
 
     <span class="text-3! font-bold! hover:text-teal-700!">

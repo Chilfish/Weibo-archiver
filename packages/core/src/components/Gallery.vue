@@ -9,13 +9,13 @@ defineProps<{
     class="grid grid-cols-3 mt-2 w-fit items-start justify-start gap-1"
   >
     <el-image
-      v-for="img in imgs"
+      v-for="img in imgs.map(replaceImg)"
       :key="img"
       :src="img"
       :lazy="true"
       :hide-on-click-modal="true"
       :preview-teleported="true"
-      :preview-src-list="imgs"
+      :preview-src-list="imgs.map(replaceImg)"
       fit="cover"
       :referrerpolicy="referrerPolicy"
       class="h-xs max-h-52 max-w-48 w-xs cursor-pointer rounded"

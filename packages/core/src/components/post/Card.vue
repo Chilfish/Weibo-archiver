@@ -18,7 +18,7 @@ defineProps<{
       fit="cover"
       :referrerpolicy="referrerPolicy"
       :lazy="true"
-      :src="card.img"
+      :src="replaceImg(card.img)"
     />
     <div>
       <h4 class="text-black">{{ card.title }}</h4>

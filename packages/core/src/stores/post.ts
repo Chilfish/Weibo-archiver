@@ -50,7 +50,7 @@ export const usePostStore = defineStore('post', () => {
    * 全局弹窗预览图片
    */
   function setViewImg(img: string) {
-    viewImg.value = img
+    viewImg.value = replaceImg(img)
   }
 
   return {

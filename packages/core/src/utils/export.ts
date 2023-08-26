@@ -24,7 +24,6 @@ export async function exportData() {
 
   const imgs = Array
     .from(postStore.imgs)
-    .map(replaceImg)
     .join(',\n') // csv 格式
   zip.file('imgs.csv', imgs)
 
