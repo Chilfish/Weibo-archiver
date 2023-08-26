@@ -30,7 +30,7 @@ export function parseText(text: string) {
 
   if (retweetImg && retweetImg[1]) {
     usePostStore().addImgs([retweetImg[1]])
-    const img = replaceImg(retweetImg[1])
+    const img = retweetImg[1]
 
     parsed = parsed.replace(retweetImg[0], `[img://${img}]`)
   }
@@ -69,7 +69,7 @@ export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>
     return []
   const imgs = pic_ids.map(id => img_infos[id].largest.url)
   usePostStore().addImgs(new Set(imgs))
-  return imgs.map(replaceImg)
+  return imgs
 }
 
 /**
@@ -127,9 +127,6 @@ export function filterPosts(posts?: any[]): Post[] {
       }
       const avatar = res.user?.profile_image_url
       usePostStore().addImgs([avatar, res.card?.img])
-
-      res.user && (res.user.profile_image_url = replaceImg(avatar))
-      res.card && (res.card.img = replaceImg(res.card.img))
       return res
     }
     catch (e) {

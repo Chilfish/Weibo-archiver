@@ -22,7 +22,10 @@ export async function exportData() {
   const data = `export const _ = ${JSON.stringify(postStore.posts)}`
   zip.file('data.js', data)
 
-  const imgs = Array.from(postStore.imgs).join(',\n') // csv 格式
+  const imgs = Array
+    .from(postStore.imgs)
+    .map(replaceImg)
+    .join(',\n') // csv 格式
   zip.file('imgs.csv', imgs)
 
   zip.generateAsync({ type: 'blob' }).then((content) => {

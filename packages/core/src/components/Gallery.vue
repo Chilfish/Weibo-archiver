@@ -1,9 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   imgs: string[]
 }>()
-
-const p_imgs = props.imgs.map(previewImg)
 </script>
 
 <template>
@@ -11,7 +9,7 @@ const p_imgs = props.imgs.map(previewImg)
     class="grid grid-cols-3 mt-2 w-fit items-start justify-start gap-1"
   >
     <el-image
-      v-for="img in p_imgs"
+      v-for="img in imgs"
       :key="img"
       :src="img"
       :lazy="true"
