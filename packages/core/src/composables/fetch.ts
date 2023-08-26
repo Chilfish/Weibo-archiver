@@ -41,6 +41,7 @@ export async function fetchPosts(page: number) {
 
   let posts = await Promise.all(
     res.list
+      .filter(post => post.user.id === useUserStore().uid)
       .map(async (post) => {
         if (post.comments_count > 0)
           post.comments = await fetchComments(post.id)

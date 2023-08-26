@@ -149,5 +149,5 @@ export function filterPosts(posts?: any[]): Post[] {
       ElMessage.error(`数据解析失败, id: ${post.id}, ${post.text}`)
       return null
     }
-  }).filter((e): e is Post => !!e && e.user.id === useUserStore().uid)
+  }).filter((e): e is Post => !!e)
 }
