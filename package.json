@@ -1,6 +1,6 @@
 {
   "name": "weibo-archiver",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "packageManager": "pnpm@8.6.12",
   "description": "weibo-backup",
