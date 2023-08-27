@@ -21,34 +21,21 @@ watch(curPage, async (newPage) => {
 <template>
   <div
     id="preview"
-    class="min-h-screen w-full flex flex-col items-center justify-center bg-light-700 py-4"
+    class="min-h-screen w-full flex flex-col items-center justify-center bg-light-700 pb-4"
   >
     <Suspense>
       <post-list :posts="posts" />
     </Suspense>
 
-    <div class="mt-4 select-none">
-      <div class="btns mb-4 flex justify-center gap-4">
-        <button
-          :disabled="curPage === 1 || !isFinish"
-          @click="curPage--"
-        >
-          上一页
-        </button>
-
-        <button
-          :disabled="curPage === postStore.pages || !postStore.fetchedPage
-            || !isFinish"
-          @click="curPage++"
-        >
-          下一页
-        </button>
-      </div>
-
-      <div>
-        第 {{ curPage }} 页，已经获取了 {{ postStore.fetchedPage }} 页，
-        共 {{ postStore.pages }} 页、{{ postStore.total }} 条微博
-      </div>
-    </div>
+    <el-pagination
+      v-model:current-page="curPage"
+      v-model:page-size="postStore.postsPerPage"
+      layout="sizes, total, prev, pager, next, jumper"
+      :default-page-size="20"
+      :page-sizes="[20, 30, 50, 100]"
+      :background="true"
+      :total="postStore.total"
+      @current-change="curPage = $event"
+    />
   </div>
 </template>

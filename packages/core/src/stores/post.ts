@@ -61,6 +61,7 @@ export const usePostStore = defineStore('post', () => {
     viewImg,
     total,
     pages,
+    postsPerPage,
     curPage,
     fetchedPage,
     setCurPage,
