@@ -20,7 +20,7 @@ export async function exportData() {
   const postStore = usePostStore()
 
   const data = `export const _ = ${JSON.stringify(postStore.posts)}`
-  zip.file('data.js', data)
+  zip.file('data.mjs', data)
 
   const imgs = Array
     .from(postStore.imgs)
