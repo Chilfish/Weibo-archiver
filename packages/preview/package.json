@@ -12,7 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@weibo-archiver/core": "workspace:^"
+    "@weibo-archiver/core": "workspace:^",
+    "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.1"

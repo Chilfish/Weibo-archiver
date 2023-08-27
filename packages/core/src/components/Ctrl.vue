@@ -10,7 +10,7 @@ const res = await fetchPosts(postStore.curPage)
 postStore.setTotal(res?.total || 0)
 postStore.add(res?.list || [])
 
-preview()
+await preview()
 
 const dateRange = ref([] as Date[])
 const isStart = ref(false)
@@ -44,9 +44,12 @@ watch(isStop, async () => {
 
     <p>请选择要存档的范围，默认为从头到尾</p>
 
-    <!-- @ts-expect-error -->
+    <!-- @vue-expect-error -->
     <el-date-picker
-      v-model="dateRange" unlink-panels type="daterange" start-placeholder="开始日期" end-placeholder="结束日期"
+      v-model="dateRange"
+      unlink-panels type="daterange"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
       range-separator="到" :shortcuts="shortcuts"
     />
 

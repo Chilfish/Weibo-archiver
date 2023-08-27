@@ -15,6 +15,9 @@ export function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, randomMs))
 }
 
+/**
+ * 在油猴中 Preview 结果
+ */
 export async function preview() {
   const container = document.createElement('div')
   const vnode = h(PreviewVue)
