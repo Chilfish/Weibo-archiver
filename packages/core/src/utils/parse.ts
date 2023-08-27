@@ -151,3 +151,29 @@ export function filterPosts(posts?: any[]): Post[] {
     }
   }).filter((e): e is Post => !!e)
 }
+
+export default async function parser(posts: Post[]) {
+  const res = await Promise.all(
+    posts
+      .map(async (post) => {
+        if (post.comments_count > 0)
+          post.comments = await fetchComments(post.id)
+        return post
+      }),
+  )
+
+  return await Promise.all(
+    filterPosts(res)
+      .filter(post => post.user.id === useUserStore().uid)
+      .map(async (post) => {
+        const text = await fetchLongText(post)
+        post.text = text
+
+        const reTweet = post?.retweeted_status
+        if (reTweet)
+          reTweet.text = await fetchLongText(reTweet)
+
+        return post
+      }),
+  )
+}

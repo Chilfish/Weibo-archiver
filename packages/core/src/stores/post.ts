@@ -19,8 +19,29 @@ export const usePostStore = defineStore('post', () => {
     return Math.ceil(total.value / postsPerPage.value)
   })
 
+  const dateRange = ref([new Date(), new Date()])
+
+  function reset() {
+    posts.value = []
+    imgs.value = new Set<string>()
+    viewImg.value = imgViewSrc
+    curPage.value = 1
+    postsPerPage.value = 20
+    fetchedPage.value = 0
+    total.value = 0
+    dateRange.value = [new Date(), new Date()]
+  }
+
+  function setDateRange(range: [Date, Date]) {
+    dateRange.value = range
+  }
+
   function setCurPage(val: number) {
     curPage.value = val
+  }
+
+  function setFetchedPage(val: number) {
+    fetchedPage.value = val
   }
 
   function setTotal(num: number) {
@@ -61,14 +82,19 @@ export const usePostStore = defineStore('post', () => {
     viewImg,
     total,
     pages,
+    dateRange,
     postsPerPage,
     curPage,
     fetchedPage,
+
     setCurPage,
+    setFetchedPage,
+    setDateRange,
+    setViewImg,
     add,
     addImgs,
     setTotal,
     get,
-    setViewImg,
+    reset,
   }
 })

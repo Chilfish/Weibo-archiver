@@ -36,7 +36,7 @@ html::-webkit-scrollbar {
 }
 
 .el-popper {
-  --uno: z-9999 !;
+  @apply z-9999!;
 }
 
 span.icon {

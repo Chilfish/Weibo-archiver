@@ -26,6 +26,6 @@ export async function preview() {
   const app = $('#app') || $('#preview')
   if (app) {
     app.innerHTML = ''
-    app.appendChild(container)
+    app.appendChild(container.firstElementChild!)
   }
 }

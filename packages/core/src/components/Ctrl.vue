@@ -6,29 +6,36 @@ await fetchUser(id, name)
 
 const postStore = usePostStore()
 
-const res = await fetchPosts(postStore.curPage)
-postStore.setTotal(res?.total || 0)
-postStore.add(res?.list || [])
-
-await preview()
-
 const dateRange = ref([] as Date[])
 const isStart = ref(false)
 const isStop = ref(false)
+const isFinish = ref(false)
+const isFetchAll = computed(() => dateRange.value?.length === 0 || !dateRange.value)
 
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
 
 async function start() {
-  if (dateRange.value?.length === 0 || !dateRange.value) {
+  postStore.reset()
+  if (isFetchAll.value) {
     isStart.value = true
     await fetchAll(isStop)
+    return (isFinish.value = true)
   }
+
+  const [start, end] = dateRange.value
+  isStart.value = true
+  await fetchRange(start, end, isStop)
+  isFinish.value = true
 }
 
 watch(isStop, async () => {
-  if (!isStop.value)
-    await fetchAll(isStop)
+  const [start, end] = dateRange.value
+  if (!isStop.value) {
+    isFetchAll.value
+      ? fetchAll(isStop)
+      : fetchRange(start, end, isStop)
+  }
 })
 </script>
 
@@ -60,7 +67,7 @@ watch(isStop, async () => {
         开始
       </button>
 
-      <button v-show="isStart" @click="isStop = !isStop">
+      <button v-show="isStart || !isFinish" @click="isStop = !isStop">
         {{ isStop ? '继续' : '暂停' }}
       </button>
 

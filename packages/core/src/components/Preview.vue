@@ -27,7 +27,7 @@ watch(curPage, async (newPage) => {
 <template>
   <div
     id="preview"
-    class="min-h-screen w-full flex flex-col items-center justify-center bg-light-700 pb-4"
+    class="min-h-screen w-full flex flex-col items-center bg-light-700 pb-4"
   >
     <Suspense>
       <post-list :posts="posts" />

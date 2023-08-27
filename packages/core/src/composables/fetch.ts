@@ -39,34 +39,24 @@ export async function fetchPosts(page: number) {
   else
     return null
 
-  let posts = await Promise.all(
-    res.list
-      .map(async (post) => {
-        if (post.comments_count > 0)
-          post.comments = await fetchComments(post.id)
-        return post
-      }),
-  )
-
-  posts = await Promise.all(
-    filterPosts(res.list)
-      .filter(post => post.user.id === useUserStore().uid)
-      .map(async (post) => {
-        const text = await fetchLongText(post)
-        post.text = text
-
-        const reTweet = post?.retweeted_status
-        if (reTweet)
-          reTweet.text = await fetchLongText(reTweet)
-
-        return post
-      }),
-  )
-
   return {
     ...res,
-    list: posts,
+    list: await parse(res.list),
     abort,
+  }
+}
+
+export async function fetchRangePosts(page = 1) {
+  const [s, e] = usePostStore().dateRange.map(d => Math.round(d.getTime() / 1000))
+
+  const { data, abort } = await weiFetch(`/statuses/searchProfile?uid=${useUserStore().uid}&page=${page}&starttime=${s}&endtime=${e}&hasori=1&hasret=1&hastext=1&haspic=1&hasvideo=1&hasmusic=1`)
+    .json<{ data: PostMeta }>()
+
+  const res = data.value?.data
+  return {
+    abort,
+    list: await parse(res?.list || []),
+    total: res?.total || 0,
   }
 }
 
@@ -106,17 +96,51 @@ export async function fetchComments(pid: string): Promise<Comment[]> {
     ]))
 }
 
-export async function fetchAll(isStop = ref(false)) {
+async function loopFetcher(fn: (page: number) => Promise<any>, isStop = ref(false)) {
   const postStore = usePostStore()
-
-  for (let page = postStore.fetchedPage + 1; page <= postStore.pages; page++) {
+  for (
+    let page = postStore.fetchedPage + 1;
+    postStore.posts.length < postStore.total; // 数量比页数更准确
+    page++
+  ) {
     await delay(2000)
-    const data = await fetchPosts(page)
+    const data = await fn(page)
 
-    usePostStore().add(data!.list)
+    postStore.add(data!.list)
     if (isStop.value) {
       data?.abort()
       return
     }
   }
+
+  postStore.setFetchedPage(postStore.pages)
+}
+
+/**
+ * 获取所有微博
+ */
+export async function fetchAll(isStop = ref(false)) {
+  const postStore = usePostStore()
+
+  const res = await fetchPosts(postStore.curPage)
+  postStore.setTotal(res?.total || 0)
+  postStore.add(res?.list || [])
+
+  await preview()
+  await loopFetcher(fetchPosts, isStop)
+}
+
+/**
+ * 获取指定时间范围内的微博
+ */
+export async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
+  const postStore = usePostStore()
+  postStore.setDateRange([start, end])
+
+  const res = await fetchRangePosts()
+  postStore.setTotal(res.total)
+  postStore.add(res.list)
+
+  await preview()
+  await loopFetcher(fetchRangePosts, isStop)
 }
