@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import config, { core, packages, root } from '../../vite.config'
 
-const dataJs = path.resolve(core, 'stores/data.js')
+const dataJs = path.resolve(core, 'stores/data.mjs')
 const index = path.resolve(packages, 'preview/index.html')
 
 export default defineConfig({
@@ -15,7 +15,7 @@ export default defineConfig({
         data: dataJs,
       },
       output: {
-        entryFileNames: 'assets/[name].js',
+        entryFileNames: 'assets/[name].mjs',
         globals: {
           [dataJs]: 'data',
         },

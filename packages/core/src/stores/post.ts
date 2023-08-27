@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import type { Post } from '@core/types'
-import { _ as _posts } from './data'
+import { _ as _posts } from './data.mjs'
 
 export const usePostStore = defineStore('post', () => {
   // 必须是外部导入优先, 这样才能在 build 中直接引用
-  const posts = ref(_posts as unknown as Post[])
+  const posts = ref((
+    _posts as unknown as Post[])
+    .sort((a, b) => Number(b.id) - Number(a.id)), // 按 id 也就是发布时间降序排列
+  )
   // 用于导出图片链接
   const imgs = ref(new Set<string>())
 

@@ -14,15 +14,24 @@
 
 ### 使用方式
 
-安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择（WIP）
+安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择。
 
 完成后将导出包含微博数据的 data.js（其实就是一个 export 的 json）和微博原图链接 imgs.csv。
 
-在 [releases] 中下载 preview.zip，里面包含了用于预览的 HTML 文件，只需要将 data.js 替换成导出的数据就行了。
+在 [releases] 中下载 preview.zip，里面包含了用于预览的 HTML 文件，只需要将 data.mjs 替换成导出的数据就行了。
 
-且由于导出数据图片全是本地形式的（`'./assets/img/*'`），于是需要同时使用 download.py 来下载图片（建议在 preview 根目录中打开终端）
+且由于导出数据图片全是本地形式的（`'./assets/img/*'`），于是需要同时使用 download.py 来下载图片（建议在包含 index.html 的根目录中打开终端）
+
+```shell
+cd path-to-index
+python ./scripts/download.py -u 你的 uid
+```
 
 至于查看，暂不支持直接点击 index.html 来查看，需要启动本地 HTTP 服务。可以在 index.html 目录中打开终端运行 server.py，并在浏览器中打开 http://localhost:8000
+
+```shell
+python ./scripts/server.py
+```
 
 对于 node 环境，可以全局安装 [live-server] 或是 [vite] 来启动
 
@@ -33,6 +42,14 @@ npm add -g live-server
 cd path-to-index
 
 live-server
+```
+
+### 合并追加的数据
+
+如果使用了像是时间范围内导出，并想要将它与之前的 data.mjs 合并，那么你需要先将新的 data 复制到 index.html 目录中，在终端运行
+
+```shell
+node ./scripts/merge.mjs
 ```
 
 ### 对开发者
