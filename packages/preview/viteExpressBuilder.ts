@@ -1,6 +1,7 @@
 import path from 'node:path'
 import copy from 'rollup-plugin-copy'
 import terser from '@rollup/plugin-terser'
+import json from '@rollup/plugin-json'
 import typescript from '@rollup/plugin-typescript'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
@@ -20,7 +21,7 @@ interface ViteExpressBuilder extends Omit<RollupOptions, 'external'> {
 const outDir = path.resolve(root, 'dist/preview/server')
 
 export default function viteExpressBuilder({
-  input = './src/server/main.ts',
+  input = './src/server/main.js',
   output = {
     dir: outDir,
     format: 'cjs',
@@ -39,6 +40,7 @@ export default function viteExpressBuilder({
         external: [
           'express',
           'vite-express',
+          'nodejs-jieba',
           ...Array.isArray(external) ? external : [external],
         ],
         plugins: [
@@ -48,6 +50,7 @@ export default function viteExpressBuilder({
           }),
           nodeResolve(),
           commonjs(),
+          json(),
           copy({
             targets: [
               { src: 'src/static/package.json', dest: outDir },
