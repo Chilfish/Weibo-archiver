@@ -6,4 +6,3 @@ export const root = path.resolve(src, '../../../')
 export const dist = path.resolve(root, 'dist')
 
 export * from './initData'
-export * from './cpScripts'

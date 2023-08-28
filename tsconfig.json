@@ -13,7 +13,6 @@
       "@weibo-archiver/*": ["packages/*/src"],
       "@core/*": ["packages/core/src/*"]
     },
-    "outDir": "dist/ts",
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,

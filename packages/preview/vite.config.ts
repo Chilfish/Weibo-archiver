@@ -2,6 +2,7 @@ import path from 'node:path'
 import { defineConfig } from 'vite'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import config, { core, packages, root } from '../../vite.config'
+import viteExpressBuilder from './viteExpressBuilder'
 
 const dataJs = path.resolve(core, 'stores/data.mjs')
 const index = path.resolve(packages, 'preview/index.html')
@@ -22,6 +23,10 @@ export default defineConfig({
       },
       plugins: [nodeResolve()],
     },
-    outDir: path.resolve(root, 'dist/preview'),
+    outDir: path.resolve(root, 'dist/preview/client'),
   },
+  plugins: [
+    ...config.plugins!,
+    viteExpressBuilder(),
+  ],
 })

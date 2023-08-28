@@ -6,7 +6,7 @@ const router = useRouter()
 const route = useRoute()
 
 function update(p: number) {
-  router.push(`/${p}`)
+  router.push(`/p/${p}`)
   postStore.curPage = p
 }
 

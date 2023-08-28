@@ -5,17 +5,17 @@ import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
-import '../../core/src/styles/main.css'
+import '../../../core/src/styles/main.css'
 
 const app = createApp(App)
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/1',
+    redirect: '/p/1',
   },
   {
-    path: '/:page',
+    path: '/p/:page',
     component: () => import('./Index.vue'),
   },
 ]
