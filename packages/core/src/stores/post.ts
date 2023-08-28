@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Post } from '@core/types'
-import { _ as _posts } from './data.mjs'
+import { _ as _posts } from '../static/data.mjs'
 
 export const usePostStore = defineStore('post', () => {
   // 必须是外部导入优先, 这样才能在 build 中直接引用

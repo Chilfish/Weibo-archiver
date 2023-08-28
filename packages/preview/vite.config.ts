@@ -4,7 +4,7 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import config, { core, packages, root } from '../../vite.config'
 import viteExpressBuilder from './viteExpressBuilder'
 
-const dataJs = path.resolve(core, 'stores/data.mjs')
+const dataJs = path.resolve(core, 'static/data.mjs')
 const index = path.resolve(packages, 'preview/index.html')
 
 export default defineConfig({

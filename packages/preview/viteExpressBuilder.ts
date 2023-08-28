@@ -50,7 +50,7 @@ export default function viteExpressBuilder({
           commonjs(),
           copy({
             targets: [
-              { src: 'src/server/package.json', dest: outDir },
+              { src: 'src/static/package.json', dest: outDir },
             ],
           }),
           ...Array.isArray(plugins) ? plugins : [plugins],
