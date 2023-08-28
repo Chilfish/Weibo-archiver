@@ -35,22 +35,6 @@ export const usePostStore = defineStore('post', () => {
     dateRange.value = [new Date(), new Date()]
   }
 
-  function setDateRange(range: [Date, Date]) {
-    dateRange.value = range
-  }
-
-  function setCurPage(val: number) {
-    curPage.value = val
-  }
-
-  function setFetchedPage(val: number) {
-    fetchedPage.value = val
-  }
-
-  function setTotal(num: number) {
-    total.value = num
-  }
-
   function add(newPosts: Post[]) {
     postsPerPage.value = newPosts.length
     posts.value = [...posts.value, ...newPosts]
@@ -72,13 +56,6 @@ export const usePostStore = defineStore('post', () => {
     })
   }
 
-  /**
-   * 全局弹窗预览图片
-   */
-  function setViewImg(img: string) {
-    viewImg.value = replaceImg(img)
-  }
-
   return {
     posts,
     imgs,
@@ -90,13 +67,8 @@ export const usePostStore = defineStore('post', () => {
     curPage,
     fetchedPage,
 
-    setCurPage,
-    setFetchedPage,
-    setDateRange,
-    setViewImg,
     add,
     addImgs,
-    setTotal,
     get,
     reset,
   }

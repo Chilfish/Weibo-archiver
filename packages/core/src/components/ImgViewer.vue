@@ -23,7 +23,7 @@ watch(() => postStore.viewImg, async () => {
       :preview-teleported="true"
       :referrerpolicy="referrerPolicy"
       :preview-src-list="[postStore.viewImg]"
-      @close="() => postStore.setViewImg(imgViewSrc)"
+      @close="() => postStore.viewImg = imgViewSrc"
     />
   </div>
 </template>

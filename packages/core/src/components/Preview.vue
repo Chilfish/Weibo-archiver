@@ -20,7 +20,7 @@ watch(curPage, async (newPage) => {
     postStore.add(res!.list)
     isFinish.value = true
   }
-  postStore.setCurPage(newPage)
+  postStore.curPage = newPage
 })
 </script>
 

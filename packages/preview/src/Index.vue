@@ -7,7 +7,7 @@ const route = useRoute()
 
 function update(p: number) {
   router.push(`/${p}`)
-  postStore.setCurPage(p)
+  postStore.curPage = p
 }
 
 const page = computed({

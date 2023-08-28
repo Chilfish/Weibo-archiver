@@ -12,7 +12,7 @@ onMounted(async () => {
   btns?.forEach(e => e.onclick = () => {
     const url = e.dataset.src
     if (url)
-      usePostStore().setViewImg(url)
+      usePostStore().viewImg = url
   })
 })
 </script>

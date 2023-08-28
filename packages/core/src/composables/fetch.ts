@@ -127,7 +127,7 @@ async function loopFetcher(fn: (page: number) => Promise<any>, isStop = ref(fals
   }
 
   ElMessage.success('获取完成')
-  postStore.setFetchedPage(postStore.pages)
+  postStore.fetchedPage = postStore.pages
   await exportData()
 }
 
@@ -138,7 +138,7 @@ export async function fetchAll(isStop = ref(false)) {
   const postStore = usePostStore()
 
   const res = await fetchPosts(postStore.curPage)
-  postStore.setTotal(res?.total || 0)
+  postStore.total = res?.total || 0
   postStore.add(res?.list || [])
 
   await preview()
@@ -150,10 +150,10 @@ export async function fetchAll(isStop = ref(false)) {
  */
 export async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
   const postStore = usePostStore()
-  postStore.setDateRange([start, end])
+  postStore.dateRange = [start, end]
 
   const res = await fetchRangePosts()
-  postStore.setTotal(res.total)
+  postStore.total = res?.total || 0
   postStore.add(res.list)
 
   await preview()
