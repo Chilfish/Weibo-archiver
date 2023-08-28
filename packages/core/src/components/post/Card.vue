@@ -11,7 +11,7 @@ defineProps<{
     :href="card.link"
     target="_blank"
     rel="noopener noreferrer"
-    class="mt-2 h-30 flex items-center gap-2 rounded-2 bg-gray-200 hover:bg-gray-300"
+    class="mt-4 h-30 flex items-center gap-2 rounded-2 bg-gray-200 dark:bg-dark-700 hover:bg-gray-300 hover:dark:bg-dark-5"
   >
     <el-image
       class="mr-2 h-30 w-30 rounded-2"
@@ -21,7 +21,7 @@ defineProps<{
       :src="replaceImg(card.img)"
     />
     <div>
-      <h4 class="text-black">{{ card.title }}</h4>
+      <h4>{{ card.title }}</h4>
       <p class="mt-4 text-3 text-gray-500!">{{ card.desc }}</p>
     </div>
   </a>

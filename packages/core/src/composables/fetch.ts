@@ -141,7 +141,6 @@ export async function fetchAll(isStop = ref(false)) {
   postStore.total = res?.total || 0
   postStore.add(res?.list || [])
 
-  await preview()
   await loopFetcher(fetchPosts, isStop)
 }
 
@@ -156,6 +155,5 @@ export async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
   postStore.total = res?.total || 0
   postStore.add(res.list)
 
-  await preview()
   await loopFetcher(fetchRangePosts, isStop)
 }

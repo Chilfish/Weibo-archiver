@@ -24,8 +24,10 @@ const page = computed({
 </script>
 
 <template>
-  <Preview
-    v-if="$route.params.page"
-    v-model:page="page"
-  />
+  <main>
+    <Preview
+      v-if="$route.params.page"
+      v-model:page="page"
+    />
+  </main>
 </template>

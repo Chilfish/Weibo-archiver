@@ -27,20 +27,23 @@ watch(curPage, async (newPage) => {
 <template>
   <div
     id="preview"
-    class="min-h-screen w-full flex flex-col items-center bg-light-700 pb-4"
+    class="min-h-screen w-full flex flex-col items-center bg-light-700 pb-4 dark:bg-dark-700"
   >
+    <ui-header />
     <Suspense>
-      <post-list :posts="posts" />
+      <post-list :posts="posts" class="mt-14" />
     </Suspense>
 
     <el-pagination
       v-if="!isInMonkey"
       v-model:current-page="curPage"
       v-model:page-size="postStore.postsPerPage"
+      class="flex flex-wrap items-center justify-center gap-4 px-2"
       layout="sizes, total, prev, pager, next, jumper"
+      small
+      background
       :default-page-size="20"
       :page-sizes="[20, 30, 50, 100]"
-      :background="true"
       :total="postStore.total"
       @current-change="$emit('update:page', $event)"
     />

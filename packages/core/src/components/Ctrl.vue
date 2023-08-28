@@ -21,6 +21,7 @@ async function start() {
     duration: 5000,
   })
   postStore.reset()
+  await preview()
 
   if (isFetchAll.value) {
     isStart.value = true
@@ -47,7 +48,7 @@ watch(isStop, async () => {
 
 <template>
   <div
-    class="fixed right-4 top-4 z-9999 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
+    class="fixed right-4 top-20 z-9999 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
   >
     <h2 class="text-5 font-bold">
       Weibo archiver, user: {{ useUserStore().name }}

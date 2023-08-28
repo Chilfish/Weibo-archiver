@@ -18,7 +18,7 @@ defineProps<{
       :preview-src-list="imgs.map(replaceImg)"
       fit="cover"
       :referrerpolicy="referrerPolicy"
-      class="h-xs max-h-52 max-w-48 w-xs cursor-pointer rounded"
+      class="h-28 max-h-52 max-w-48 w-28 cursor-pointer rounded sm:h-80 sm:w-80"
     >
       <template #placeholder>
         <div class="p-20 text-center font-bold">

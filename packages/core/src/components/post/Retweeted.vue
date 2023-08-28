@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <article class="mt-4 flex flex-col gap-2 rounded-2 bg-light p-3">
+  <article class="mt-4 flex flex-col gap-2 rounded-2 bg-light p-3 dark:bg-dark">
     <profile v-if="post.user.id" :user="post.user" />
     <main>
       <post-text

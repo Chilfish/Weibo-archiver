@@ -40,7 +40,7 @@ html::-webkit-scrollbar {
 }
 
 .el-popper {
-  @apply z-9999!;
+  @apply z-9999 !;
 }
 
 span.icon {
@@ -52,13 +52,14 @@ a {
   --uno: hover:decoration-none;
 }
 
-#preview a,
+a,
 p button {
   --uno: text-teal-600 hover:text-teal-700;
 }
 
-#preview p {
-  --uno: text-black;
+p,
+h4 {
+  --uno: text-black dark:text-white;
 }
 
 main p a[target="_blank"]:after {
