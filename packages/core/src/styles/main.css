@@ -18,6 +18,10 @@ html::-webkit-scrollbar {
   height: 5px !important;
 }
 
+.Nav_wrap_gHB1a,
+.Bar_main_R1N5v {
+  display: none !important;
+}
 
 #plugin-app {
   --uno: w-full absolute top-0 right-0 z-9999;

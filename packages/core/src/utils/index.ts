@@ -10,8 +10,8 @@ export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
 
 const $ = (selector: string) => document.querySelector(selector)
 
-export function delay(ms: number) {
-  const randomMs = Math.random() * ms + 500
+export function delay(ms = 2000) {
+  const randomMs = Math.random() * ms + 1000
   return new Promise(resolve => setTimeout(resolve, randomMs))
 }
 

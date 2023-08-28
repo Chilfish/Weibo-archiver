@@ -1,5 +1,5 @@
 import { createFetch } from '@vueuse/core'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
 import type { Comment, Post, PostMeta } from '@core/types'
 
 export const weiFetch = createFetch({
@@ -54,9 +54,10 @@ export async function fetchRangePosts(page = 1) {
 
   const res = data.value?.data
   return {
-    abort,
+    ...res,
     list: await parse(res?.list || []),
     total: res?.total || 0,
+    abort,
   }
 }
 
@@ -64,7 +65,7 @@ export async function fetchLongText(post: Post) {
   const text = ref(post.text)
 
   if (post.isLongText) {
-    await delay(1000)
+    await delay()
     const { data } = await weiFetch(`/statuses/longtext?id=${post.mblogid}`)
       .json<{ data: { longTextContent: string } }>()
 
@@ -103,17 +104,31 @@ async function loopFetcher(fn: (page: number) => Promise<any>, isStop = ref(fals
     postStore.posts.length < postStore.total; // 数量比页数更准确
     page++
   ) {
-    await delay(2000)
-    const data = await fn(page)
+    await delay()
+    const data = (await fn(page))!
 
-    postStore.add(data!.list)
+    // 无数据时，直接退出
+    if (data.list.length === 0) {
+      ElNotification({
+        title: '暂无更多微博了',
+        message: data.bottom_tips_text,
+        position: 'top-left',
+        type: 'warning',
+        duration: 0,
+      })
+      break
+    }
+
+    postStore.add(data.list)
     if (isStop.value) {
-      data?.abort()
+      data.abort()
       return
     }
   }
 
+  ElMessage.success('获取完成')
   postStore.setFetchedPage(postStore.pages)
+  await exportData()
 }
 
 /**

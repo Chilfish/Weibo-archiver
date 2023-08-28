@@ -16,7 +16,12 @@ const percentage = computed(() => postStore.posts.length / postStore.total * 100
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
 
 async function start() {
+  ElMessage.info({
+    message: '开始爬取中，请稍等~',
+    duration: 5000,
+  })
   postStore.reset()
+
   if (isFetchAll.value) {
     isStart.value = true
     await fetchAll(isStop)
@@ -33,8 +38,9 @@ watch(isStop, async () => {
   const [start, end] = dateRange.value
   if (!isStop.value) {
     isFetchAll.value
-      ? fetchAll(isStop)
-      : fetchRange(start, end, isStop)
+      ? await fetchAll(isStop)
+      : await fetchRange(start, end, isStop)
+    isFinish.value = true
   }
 })
 </script>
@@ -64,14 +70,14 @@ watch(isStop, async () => {
 
     <div class="btns flex gap-4">
       <button @click="start">
-        开始
+        {{ isFinish ? '重新开始' : '开始' }}
       </button>
 
-      <button v-show="isStart || !isFinish" @click="isStop = !isStop">
+      <button v-show="!isFinish && isStart" @click="isStop = !isStop">
         {{ isStop ? '继续' : '暂停' }}
       </button>
 
-      <button @click="exportData()">
+      <button v-show="isFinish" @click="exportData()">
         导出
       </button>
     </div>
