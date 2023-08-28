@@ -44,7 +44,7 @@
       "no-console": "off"
     },
     "ignorePatterns": [
-      "data.js",
+      "data.mjs",
       "dist",
       "*.py",
       "node_modules",

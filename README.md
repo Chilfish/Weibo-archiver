@@ -27,21 +27,12 @@ cd path-to-index
 python ./scripts/download.py -u 你的 uid
 ```
 
-至于查看，暂不支持直接点击 index.html 来查看，需要启动本地 HTTP 服务。可以在 index.html 目录中打开终端运行 server.py，并在浏览器中打开 http://localhost:8000
+至于查看结果，不支持直接点击 index.html 来查看，需要启动本地 HTTP 服务。需要在压缩包下的 server 目录运行
 
 ```shell
-python ./scripts/server.py
-```
+npm i
 
-对于 node 环境，可以全局安装 [live-server] 或是 [vite] 来启动
-
-```shell
-# vite 也同理
-npm add -g live-server
-
-cd path-to-index
-
-live-server
+npm run start
 ```
 
 ### 合并追加的数据

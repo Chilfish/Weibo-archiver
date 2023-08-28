@@ -1,5 +1,4 @@
 import path from 'node:path'
-import copy from 'rollup-plugin-copy'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
@@ -49,16 +48,4 @@ export default defineConfig({
     UnoCSS(),
     InitData(),
   ],
-
-  build: {
-    rollupOptions: {
-      plugins: [
-        copy({
-          targets: [
-            { src: 'scripts/**', dest: 'dist/preview/scripts' },
-          ],
-        }),
-      ],
-    },
-  },
 })

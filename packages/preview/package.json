@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server/main.ts -w src/server",
-    "build": "vite build --emptyOutDir"
+    "build": "vite build"
   },
   "dependencies": {
     "@weibo-archiver/core": "workspace:^",
