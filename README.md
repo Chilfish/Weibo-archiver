@@ -12,13 +12,20 @@
 
 ![评论区](docs/v0.1.3.webp)
 
+![夜间模式](docs/v0.1.6.webp)
+
 ### 使用方式
+
 
 安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择。
 
-完成后将导出包含微博数据的 data.js（其实就是一个 export 的 json）和微博原图链接 imgs.csv。
+由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区]
 
-在 [releases] 中下载 preview.zip，里面包含了用于预览的 HTML 文件，只需要将 data.mjs 替换成导出的数据就行了。
+---
+
+完成后将导出包含微博数据的 data.mjs（其实就是一个 export 的 json）和微博原图链接 imgs.csv。
+
+在 [releases] 中下载 preview.7z，里面包含了用于预览的 HTML 文件，需要将 assets 目录下的 data.mjs 替换成刚导出的 data 文件，同时将导出的 imgs.csv 复制到 preview 文件夹中。
 
 且由于导出数据图片全是本地形式的（`'./assets/img/*'`），于是需要同时使用 download.py 来下载图片（建议在包含 index.html 的根目录中打开终端）
 
@@ -27,12 +34,21 @@ cd path-to-index
 python ./scripts/download.py -u 你的 uid
 ```
 
-至于查看结果，不支持直接点击 index.html 来查看，需要启动本地 HTTP 服务。需要在压缩包下的 server 目录运行
+至于查看，暂不支持直接点击 index.html 来查看，需要启动本地 HTTP 服务。可以在 index.html 目录中打开终端运行 server.py，并在浏览器中打开 http://localhost:8000
 
 ```shell
-npm i
+python ./scripts/server.py
+```
 
-npm run start
+对于 node 环境，可以全局安装 [live-server] 或是 [vite] 来启动
+
+```shell
+# vite 也同理
+npm add -g live-server
+
+cd path-to-index
+
+live-server
 ```
 
 ### 合并追加的数据
@@ -75,3 +91,4 @@ node ./scripts/merge.mjs
 [speechless]: https://github.com/meterscao/Speechless
 [live-server]: https://www.npmjs.com/package/live-server
 [vite]: https://cn.vitejs.dev/guide/
+[讨论区]: https://github.com/Chilfish/Weibo-archiver/issues/1
