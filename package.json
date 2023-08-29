@@ -1,6 +1,6 @@
 {
   "name": "weibo-archiver",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "packageManager": "pnpm@8.6.12",
   "description": "weibo-backup",
@@ -19,10 +19,13 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-terser": "^0.4.3",
     "@types/node": "^20.5.7",
     "eslint": "^8.48.0",
     "lint-staged": "^14.0.1",
     "pnpm": "^8.7.0",
+    "rollup-plugin-copy": "^3.4.0",
     "simple-git-hooks": "^2.9.0",
     "taze": "^0.11.2",
     "typescript": "^5.2.2"
@@ -42,11 +45,13 @@
       "no-console": "off"
     },
     "ignorePatterns": [
-      "data.js",
+      "data.mjs",
       "dist",
       "*.py",
       "node_modules",
-      "*.webp"
+      "*.webp",
+      "dirIndex.json",
+      "userDict.utf8"
     ]
   }
 }

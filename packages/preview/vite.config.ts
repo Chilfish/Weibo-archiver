@@ -1,9 +1,10 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import nodeResolve from '@rollup/plugin-node-resolve'
+import copy from 'rollup-plugin-copy'
 import config, { core, packages, root } from '../../vite.config'
 
-const dataJs = path.resolve(core, 'stores/data.mjs')
+const dataJs = path.resolve(core, 'static/data.mjs')
 const index = path.resolve(packages, 'preview/index.html')
 
 export default defineConfig({
@@ -20,8 +21,21 @@ export default defineConfig({
           [dataJs]: 'data',
         },
       },
-      plugins: [nodeResolve()],
+      plugins: [
+        nodeResolve(),
+        copy({
+          targets: [
+            {
+              src: '../../scripts/**',
+              dest: '../../dist/preview/scripts',
+            },
+          ],
+        }),
+      ],
     },
     outDir: path.resolve(root, 'dist/preview'),
   },
+  plugins: [
+    ...config.plugins!,
+  ],
 })

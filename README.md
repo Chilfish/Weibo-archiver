@@ -12,11 +12,14 @@
 
 ![评论区](docs/v0.1.3.webp)
 
+![夜间模式](docs/v0.1.6.webp)
+
 ### 使用方式
+
 
 安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择。
 
-由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区](https://github.com/Chilfish/Weibo-archiver/issues/1)
+由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区]
 
 ---
 
@@ -88,3 +91,4 @@ node ./scripts/merge.mjs
 [speechless]: https://github.com/meterscao/Speechless
 [live-server]: https://www.npmjs.com/package/live-server
 [vite]: https://cn.vitejs.dev/guide/
+[讨论区]: https://github.com/Chilfish/Weibo-archiver/issues/1

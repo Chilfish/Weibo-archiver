@@ -12,11 +12,15 @@ const app = createApp(App)
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/1',
+    redirect: '/p/1',
   },
   {
-    path: '/:page',
+    path: '/p/:page',
     component: () => import('./Index.vue'),
+  },
+  {
+    path: '/s',
+    component: () => import('./Search.vue'),
   },
 ]
 
