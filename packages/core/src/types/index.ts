@@ -20,7 +20,7 @@ export interface CardInfo {
 }
 
 export interface Meta {
-  id: string
+  id: number
   region_name: string
   created_at: string
   detail_url?: string

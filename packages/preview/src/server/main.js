@@ -15,8 +15,8 @@ ViteExpress.config({
 })
 
 app.get('/search', (req, res) => {
-  const { word } = req.query
-  const ids = search(decodeURIComponent(word))
+  const { q } = req.query
+  const ids = search(decodeURIComponent(q))
   res.json(ids)
 })
 

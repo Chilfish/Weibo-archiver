@@ -18,6 +18,10 @@ const routes: RouteRecordRaw[] = [
     path: '/p/:page',
     component: () => import('./Index.vue'),
   },
+  {
+    path: '/s',
+    component: () => import('./Search.vue'),
+  },
 ]
 
 const router = createRouter({

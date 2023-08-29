@@ -1,5 +1,6 @@
 <template>
   <app-main>
+    <ui-header />
     <Suspense>
       <Ctrl />
     </Suspense>

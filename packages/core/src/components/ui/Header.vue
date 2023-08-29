@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+
 const { y } = useWindowScroll()
 const isScrollingDown = ref(false)
 watch(
@@ -14,24 +16,40 @@ const headerStyle = computed(() => {
   }
 })
 
-const searchInput = ref('')
+const searchInput = ref(useRoute().query?.q?.toString() || '')
+const router = useRouter()
+
+async function search() {
+  const res = await useSearch(searchInput.value)
+  if (res.length)
+    router.push(`/s?q=${searchInput.value}&page=1`)
+}
 </script>
 
 <template>
   <header
     :style="headerStyle"
-    class="fixed top-0 z-999 h-16 w-full flex items-center justify-between gap-4 bg-[#69696A30] px-6 backdrop-blur-8 transition-all"
+    class="fixed top-0 z-999 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-6 backdrop-blur-8 transition-all"
   >
-    <label
-      class="relative h-12 w-3/5 sm:w-2/5"
+    <span
+      class="icon i-tabler-brand-weibo"
+      @click="$router.push('/p/1')"
+    />
+
+    <form
+      class="relative ml-4 mr-auto h-12 w-3/5 sm:w-2/5"
+      @submit.prevent="search"
     >
-      <span class="icon i-tabler-search absolute left-3 top-50% translate-y-[-50%]" />
+      <span
+        class="icon i-tabler-search absolute left-3 top-50% translate-y-[-50%]"
+        @click="search"
+      />
       <input
         v-model="searchInput"
         class="w-full rounded-2 bg-gray-100 p-3 pl-9 text-4 dark:bg-dark-700"
         placeholder="搜索我的微博"
       >
-    </label>
+    </form>
 
     <button
       class="btn"

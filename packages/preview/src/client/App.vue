@@ -1,10 +1,11 @@
-<script setup lang="ts">
-import Index from './Index.vue'
-</script>
-
 <template>
   <app-main>
-    <Index />
+    <ui-header />
+
+    <suspense>
+      <router-view />
+    </suspense>
+
     <img-viewer />
   </app-main>
 </template>

@@ -1,12 +1,25 @@
 import { join, resolve } from 'node:path'
 import { readFile, writeFile } from 'node:fs/promises'
-import { cut, load } from 'nodejs-jieba'
+import {
+  DEFAULT_DICT,
+  DEFAULT_HMM_DICT,
+  DEFAULT_IDF_DICT,
+  DEFAULT_STOP_WORD_DICT,
+  cut,
+  load,
+} from 'nodejs-jieba'
 import { _ as posts } from '../../../core/src/static/data.mjs'
 
 const root = resolve(resolve(), 'src/server')
 const dictPath = resolve(root, 'userDict.utf8')
 
-load({ userDict: dictPath })
+load({
+  userDict: dictPath,
+  dict: DEFAULT_DICT,
+  hmmDict: DEFAULT_HMM_DICT,
+  idfDict: DEFAULT_IDF_DICT,
+  stopWordDict: DEFAULT_STOP_WORD_DICT,
+})
 
 /**
  * 分词-id 索引
@@ -67,10 +80,13 @@ export function init() {
  */
 export default function search(word) {
   const cuts = cut(word)
+
   const ids = new Set()
-  cuts.forEach((word) => {
-    if (index[word])
-      index[word].forEach(id => ids.add(id))
-  })
+  cuts
+    .map(word => word.trim().toLowerCase())
+    .forEach((word) => {
+      if (index[word])
+        index[word].forEach(id => ids.add(id))
+    })
   return [...ids]
 }
