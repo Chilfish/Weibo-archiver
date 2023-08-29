@@ -3,7 +3,7 @@ import express from 'express'
 
 // eslint-disable-next-line import/default
 import ViteExpress from 'vite-express'
-import { result } from './search.js'
+import search, { init } from './search.js'
 
 const app = express()
 
@@ -14,11 +14,13 @@ ViteExpress.config({
   },
 })
 
-app.get('/hello', (_, res) => {
-  res.send('Hello Vite + Vue + TypeScript!')
+app.get('/search', (req, res) => {
+  const { word } = req.query
+  const ids = search(decodeURIComponent(word))
+  res.json(ids)
 })
 
 ViteExpress.listen(app, 3003, async () => {
-  console.log('分词：', result)
   console.log('Server is listening on port 3003...')
+  init()
 })

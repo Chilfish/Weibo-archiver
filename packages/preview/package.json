@@ -9,7 +9,7 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server/main.js -w src/server",
+    "dev": "nodemon src/server/main.js -w src/server/*.js",
     "build": "vite build"
   },
   "dependencies": {

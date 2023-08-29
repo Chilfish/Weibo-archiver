@@ -48,7 +48,9 @@
       "dist",
       "*.py",
       "node_modules",
-      "*.webp"
+      "*.webp",
+      "dirIndex.json",
+      "userDict.utf8"
     ]
   }
 }
