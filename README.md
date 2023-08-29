@@ -16,9 +16,13 @@
 
 安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择。
 
-完成后将导出包含微博数据的 data.js（其实就是一个 export 的 json）和微博原图链接 imgs.csv。
+由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区](https://github.com/Chilfish/Weibo-archiver/issues/1)
 
-在 [releases] 中下载 preview.zip，里面包含了用于预览的 HTML 文件，只需要将 data.mjs 替换成导出的数据就行了。
+---
+
+完成后将导出包含微博数据的 data.mjs（其实就是一个 export 的 json）和微博原图链接 imgs.csv。
+
+在 [releases] 中下载 preview.7z，里面包含了用于预览的 HTML 文件，需要将 assets 目录下的 data.mjs 替换成刚导出的 data 文件，同时将导出的 imgs.csv 复制到 preview 文件夹中。
 
 且由于导出数据图片全是本地形式的（`'./assets/img/*'`），于是需要同时使用 download.py 来下载图片（建议在包含 index.html 的根目录中打开终端）
 
