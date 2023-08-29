@@ -17,7 +17,10 @@ ViteExpress.config({
 app.get('/search', (req, res) => {
   const { q } = req.query
   const ids = search(decodeURIComponent(q))
-  res.json(ids)
+  res.json({
+    ids,
+    count: ids.length,
+  })
 })
 
 ViteExpress.listen(app, 3003, async () => {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
-const { q, page } = useRoute().query
+const { q } = useRoute().query
 const postStore = usePostStore()
-const curPage = ref(Number(page) || 1)
+const curPage = ref(1)
 
 if (q && postStore.resultPosts.length === 0)
   await useSearch(q.toString())
@@ -16,6 +16,15 @@ onBeforeRouteLeave((to, from) => {
 
 <template>
   <main>
-    <Preview v-model:page="curPage" />
+    <Preview
+      v-if="postStore.resultPosts.length > 0"
+      :page="curPage"
+    />
+    <h1
+      v-else
+      class="mt-20 text-center text-2xl font-bold"
+    >
+      没有相关结果: {{ q }}
+    </h1>
   </main>
 </template>

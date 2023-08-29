@@ -88,5 +88,6 @@ export default function search(word) {
       if (index[word])
         index[word].forEach(id => ids.add(id))
     })
-  return [...ids]
+
+  return ids.size ? [...ids] : []
 }

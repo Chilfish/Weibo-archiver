@@ -22,7 +22,7 @@ const router = useRouter()
 async function search() {
   const res = await useSearch(searchInput.value)
   if (res.length)
-    router.push(`/s?q=${searchInput.value}&page=1`)
+    router.push(`/s?q=${searchInput.value}`)
 }
 </script>
 
