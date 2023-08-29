@@ -30,7 +30,7 @@ watch(curPage, async (newPage) => {
     class="min-h-screen w-full flex flex-col items-center bg-light-700 pb-4 dark:bg-dark-700"
   >
     <Suspense>
-      <post-list :posts="posts" class="mt-14" />
+      <post-list :posts="posts" />
     </Suspense>
 
     <el-pagination

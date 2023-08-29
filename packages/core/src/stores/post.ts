@@ -20,10 +20,15 @@ export const usePostStore = defineStore('post', () => {
   const postsPerPage = ref(20) // 每页显示的帖子数量 ppp
   const fetchedPage = ref(Math.round(posts.value.length / postsPerPage.value))
 
-  const total = computed(() => {
-    return resultPosts.value.length === 0
-      ? posts.value.length
-      : resultPosts.value.length
+  const total = computed({
+    get() {
+      return resultPosts.value.length === 0
+        ? posts.value.length
+        : resultPosts.value.length
+    },
+    set(val: number) {
+      total.value = val
+    },
   })
 
   const pages = computed(() => {
