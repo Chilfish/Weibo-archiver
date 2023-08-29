@@ -1,5 +1,6 @@
 import type { Post } from '../types'
 
+// 也许应该用全文搜索库
 export async function useSearch(p: string): Promise<Post[]> {
   const postStore = usePostStore()
 

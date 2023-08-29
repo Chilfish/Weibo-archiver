@@ -5,7 +5,7 @@ import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
-import '../../../core/src/styles/main.css'
+import '../../core/src/styles/main.css'
 
 const app = createApp(App)
 
