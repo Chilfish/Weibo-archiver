@@ -24,7 +24,7 @@ onBeforeRouteLeave((to, from) => {
       v-else
       class="mt-20 text-center text-2xl font-bold"
     >
-      没有相关结果: {{ q }}
+      没有相关结果
     </h1>
   </main>
 </template>

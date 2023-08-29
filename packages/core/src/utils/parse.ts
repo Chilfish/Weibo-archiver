@@ -39,7 +39,7 @@ export function replaceImg(img: string) {
     return img
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
   const prefix = img.match(/^(?:https?:\/\/)?([^:\/\n]+)/im)?.[1] // 域名
-  return `./assets/img/${prefix}-${name}`
+  return `/assets/img/${prefix}-${name}`
 }
 
 /**
