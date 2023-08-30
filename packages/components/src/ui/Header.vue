@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
+import { usePostStore } from '@weibo-archiver/stores'
 
 const { y } = useWindowScroll()
 const isScrollingDown = ref(false)
@@ -20,7 +21,7 @@ const searchInput = ref(useRoute().query?.q?.toString() || '')
 const router = useRouter()
 
 async function search() {
-  const res = await useSearch(searchInput.value)
+  const res = await usePostStore().searchText(searchInput.value)
   if (res.length)
     router.push(`/s?q=${searchInput.value}`)
 }

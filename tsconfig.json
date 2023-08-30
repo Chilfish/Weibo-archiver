@@ -9,9 +9,7 @@
     "moduleResolution": "Bundler",
     "noUnusedLocals": true,
     "paths": {
-      "@/*": ["./*"],
-      "@weibo-archiver/*": ["packages/*/src"],
-      "@core/*": ["packages/core/src/*"]
+      "@weibo-archiver/*": ["packages/*"]
     },
     "skipLibCheck": true,
     "strict": true,

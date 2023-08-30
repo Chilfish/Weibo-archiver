@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { render } from 'vue'
+import { usePostStore, useUserStore } from '@weibo-archiver/stores'
 import PreviewVue from './Preview.vue'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
 
-await fetchUser(id, name)
+const userData = await fetchUser(id, name)
+useUserStore().set(userData.id, userData.name)
 
 const postStore = usePostStore()
 
@@ -40,13 +42,13 @@ async function start() {
 
   if (isFetchAll.value) {
     isStart.value = true
-    await fetchAll(isStop)
+    await postStore.fetchAll(isStop)
     return (isFinish.value = true)
   }
 
   const [start, end] = dateRange.value
   isStart.value = true
-  await fetchRange(start, end, isStop)
+  await postStore.fetchRange(start, end, isStop)
   isFinish.value = true
 }
 
@@ -54,8 +56,8 @@ watch(isStop, async () => {
   const [start, end] = dateRange.value
   if (!isStop.value) {
     isFetchAll.value
-      ? await fetchAll(isStop)
-      : await fetchRange(start, end, isStop)
+      ? await postStore.fetchAll(isStop)
+      : await postStore.fetchRange(start, end, isStop)
     isFinish.value = true
   }
 })
@@ -73,6 +75,7 @@ watch(isStop, async () => {
 
     <p>请选择要存档的范围，默认为从头到尾</p>
 
+    <!-- @ts-expect-error -->
     <!-- @vue-expect-error -->
     <el-date-picker
       v-model="dateRange"
@@ -89,11 +92,14 @@ watch(isStop, async () => {
         {{ isFinish ? '重新开始' : '开始' }}
       </button>
 
-      <button v-show="!isFinish && isStart" @click="isStop = !isStop">
+      <button v-show="isStart" @click="isStop = !isStop">
         {{ isStop ? '继续' : '暂停' }}
       </button>
 
-      <button v-show="isFinish" @click="exportData()">
+      <button
+        v-show="isFinish"
+        @click="exportData(postStore.posts, userData.id)"
+      >
         导出
       </button>
     </div>

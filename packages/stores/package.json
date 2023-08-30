@@ -1,0 +1,13 @@
+{
+  "name": "@weibo-archiver/stores",
+  "version": "0.1.7",
+  "description": "Pinia stores for @weibo-archiver/components",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.ts",
+  "dependencies": {
+    "@weibo-archiver/core": "workspace:^",
+    "pinia": "^2.1.6"
+  }
+}

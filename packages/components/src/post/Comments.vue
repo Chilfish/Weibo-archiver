@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Comment } from '@core/types'
+import type { Comment } from '@weibo-archiver/core'
 
 defineProps<{
   comments: Comment[]

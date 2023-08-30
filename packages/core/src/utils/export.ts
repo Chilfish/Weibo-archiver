@@ -1,4 +1,6 @@
 import JSZip from 'jszip'
+import type { Post } from '../types'
+import imgsParser from './parse'
 
 function saveAs(blob: Blob, filename: string) {
   const link = document.createElement('a')
@@ -15,17 +17,19 @@ function saveAs(blob: Blob, filename: string) {
   body.removeChild(link)
 }
 
-export async function exportData() {
+export async function exportData(
+  posts: Post[],
+  uid: string,
+) {
   const zip = new JSZip()
-  const postStore = usePostStore()
 
-  const data = `export const _ = ${JSON.stringify(postStore.posts)}`
+  const data = `export const _ = ${JSON.stringify(posts)}`
   zip.file('data.mjs', data)
 
-  const imgs = Array
-    .from(postStore.imgs)
-    .join(',\n') // csv 格式
-  zip.file('imgs.csv', imgs)
+  const imgs = await imgsParser(posts)
+
+  const imgsData = Array.from(imgs).join(',\n') // csv 格式
+  zip.file('imgs.csv', imgsData)
 
   zip.generateAsync({ type: 'blob' }).then((content) => {
     saveAs(content, 'data.zip')

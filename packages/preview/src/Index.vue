@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
+import { usePostStore } from '@weibo-archiver/stores'
 
 const postStore = usePostStore()
 const router = useRouter()

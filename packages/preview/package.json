@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@weibo-archiver/components": "workspace:^",
-    "@weibo-archiver/core": "workspace:^",
+    "@weibo-archiver/stores": "workspace:^",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {

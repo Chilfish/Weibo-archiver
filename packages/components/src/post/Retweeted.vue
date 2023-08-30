@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo, Post } from '@core/types'
+import type { CardInfo, Post } from '@weibo-archiver/core'
 
 defineProps<{
   post: Post

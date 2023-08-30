@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { usePostStore } from '@weibo-archiver/stores'
+
 const postStore = usePostStore()
 
 watch(() => postStore.viewImg, async () => {
