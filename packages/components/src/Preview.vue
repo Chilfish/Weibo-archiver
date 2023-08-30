@@ -12,14 +12,7 @@ const curPage = ref(props.page || postStore.curPage)
 const posts = computed(() => postStore.get())
 const isFinish = ref(true)
 
-watch(curPage, async (newPage) => {
-  // 到新页面才加载
-  if (newPage > postStore.fetchedPage) {
-    isFinish.value = false
-    const res = await fetchPosts(curPage.value)
-    postStore.add(res!.list)
-    isFinish.value = true
-  }
+watch(curPage, (newPage) => {
   postStore.curPage = newPage
 })
 </script>
