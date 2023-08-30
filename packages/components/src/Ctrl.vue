@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { render } from 'vue'
-import { usePostStore, useUserStore } from '@weibo-archiver/stores'
 import PreviewVue from './Preview.vue'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
@@ -68,7 +67,7 @@ watch(isStop, async () => {
     class="fixed right-4 top-20 z-9999 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
   >
     <h2 class="text-5 font-bold">
-      Weibo archiver, user: {{ useUserStore().name }}
+      Weibo archiver, user: {{ userData.name }}
     </h2>
 
     <el-alert title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而不得不重头来过" type="warning" />

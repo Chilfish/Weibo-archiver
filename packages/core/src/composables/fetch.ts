@@ -121,7 +121,6 @@ export async function fetchComments(
 export async function loopFetcher(
   { start, stopFn, fetchFn, onResult, onEnd, isAbort }: LoopFetchParams,
 ) {
-  console.log({ start, stopFn, fetchFn, onResult, onEnd, isAbort })
   let page = start
   while (!stopFn()) {
     await delay()

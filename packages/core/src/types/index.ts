@@ -38,10 +38,7 @@ export interface Post extends Meta {
   comments_count: number
   like_count: number
 
-  /**
-   * 发布者，但被删或者被夹了的话就没有
-   */
-  user?: User
+  user: User
   /**
    * 转发的卡片（page_info, url_struct）
    */
@@ -49,9 +46,13 @@ export interface Post extends Meta {
   /**
    * 转发的微博
    */
-  retweeted_status?: Omit<Post, 'retweeted_status' | 'card'>
+  retweeted_status?: Retweet
 
   comments: Comment[]
+}
+
+export type Retweet = Omit<Post, 'retweeted_status' | 'card' | 'user'> & {
+  user?: User // 转发的微博可能被删除或是被夹
 }
 
 export type Comment = Pick<Post, 'user' | 'text' | 'like_count' | 'comments_count' > & {

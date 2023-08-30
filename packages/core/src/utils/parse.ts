@@ -85,18 +85,18 @@ export function filterComments(comments?: any[]): Comment[] {
   return comments.map((comment) => {
     try {
       const res: Comment = {
-        id: comment?.idstr,
-        text: parseText(comment?.text), // 评论区就没见过折叠长文本
-        img: comment?.url_struct?.[0]?.long_url,
-        created_at: comment?.created_at,
+        id: comment.idstr,
+        text: parseText(comment.text), // 评论区就没见过折叠长文本
+        img: comment.url_struct?.[0]?.long_url,
+        created_at: comment.created_at,
         user: {
-          id: comment?.user?.idstr,
-          screen_name: comment?.user?.screen_name,
-          profile_image_url: comment?.user?.profile_image_url,
+          id: comment.user?.idstr,
+          screen_name: comment.user?.screen_name,
+          profile_image_url: comment.user?.profile_image_url,
         },
-        region_name: comment?.source,
-        like_count: comment?.like_counts,
-        comments_count: comment?.total_number,
+        region_name: comment.source,
+        like_count: comment.like_counts,
+        comments_count: comment.total_number,
       }
       return res
     }

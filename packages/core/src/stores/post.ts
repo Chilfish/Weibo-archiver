@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { LoopFetchParams, Post } from '@weibo-archiver/core'
+import type { LoopFetchParams, Post } from '../types'
 import { _ as _posts } from '../static/data.mjs'
 import { useUserStore } from './user'
 

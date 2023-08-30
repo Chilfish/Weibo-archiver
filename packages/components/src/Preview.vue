@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { usePostStore } from '@weibo-archiver/stores'
-
 const props = defineProps({
   page: Number,
 })

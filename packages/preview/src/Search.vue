@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
-import { usePostStore } from '@weibo-archiver/stores'
 
 const { q } = useRoute().query
 const postStore = usePostStore()
