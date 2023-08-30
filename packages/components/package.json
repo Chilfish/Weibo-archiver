@@ -1,0 +1,21 @@
+{
+  "name": "@weibo-archiver/components",
+  "version": "0.1.6",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.ts",
+  "dependencies": {
+    "@weibo-archiver/core": "workspace:^",
+    "element-plus": "^2.3.9",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@iconify-json/tabler": "^1.1.89",
+    "@unocss/eslint-config": "^0.55.2",
+    "@unocss/reset": "^0.55.2",
+    "@unocss/transformer-directives": "^0.55.2",
+    "unocss": "^0.55.2"
+  }
+}

@@ -9,7 +9,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@weibo-archiver/core": "workspace:^"
+    "@weibo-archiver/components": "workspace:^"
   },
   "devDependencies": {
     "vite-plugin-monkey": "^3.4.2"

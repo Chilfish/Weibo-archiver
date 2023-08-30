@@ -17,7 +17,7 @@ watch(() => postStore.viewImg, async () => {
     <el-image
       fit="cover"
       class="h-0 w-0"
-      :src="postStore.viewImg"
+      :src="replaceImg(postStore.viewImg)"
       :lazy="true"
       :hide-on-click-modal="true"
       :preview-teleported="true"

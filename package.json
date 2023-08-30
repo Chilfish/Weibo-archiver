@@ -17,6 +17,10 @@
     "up": "taze major -I",
     "postinstall": "npx simple-git-hooks"
   },
+  "dependencies": {
+    "@vueuse/core": "^10.3.0",
+    "vue": "^3.3.4"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.41.0",
     "@rollup/plugin-node-resolve": "^15.2.1",
@@ -28,7 +32,9 @@
     "rollup-plugin-copy": "^3.4.0",
     "simple-git-hooks": "^2.9.0",
     "taze": "^0.11.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.1"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

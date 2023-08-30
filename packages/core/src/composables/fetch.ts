@@ -1,5 +1,4 @@
 import { createFetch } from '@vueuse/core'
-import { ElMessage, ElNotification } from 'element-plus'
 import type { Comment, Post, PostMeta } from '@core/types'
 
 export const weiFetch = createFetch({
@@ -108,16 +107,8 @@ async function loopFetcher(fn: (page: number) => Promise<any>, isStop = ref(fals
     const data = (await fn(page))!
 
     // 无数据时，直接退出
-    if (data.list.length === 0) {
-      ElNotification({
-        title: '暂无更多微博了',
-        message: data.bottom_tips_text,
-        position: 'top-left',
-        type: 'warning',
-        duration: 0,
-      })
-      break
-    }
+    if (data.list.length === 0)
+      return null
 
     postStore.add(data.list)
     if (isStop.value) {
@@ -126,7 +117,6 @@ async function loopFetcher(fn: (page: number) => Promise<any>, isStop = ref(fals
     }
   }
 
-  ElMessage.success('获取完成')
   postStore.fetchedPage = postStore.pages
   await exportData()
 }
@@ -141,7 +131,7 @@ export async function fetchAll(isStop = ref(false)) {
   postStore.total = res?.total || 0
   postStore.add(res?.list || [])
 
-  await loopFetcher(fetchPosts, isStop)
+  return await loopFetcher(fetchPosts, isStop)
 }
 
 /**
@@ -155,5 +145,5 @@ export async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
   postStore.total = res?.total || 0
   postStore.add(res.list)
 
-  await loopFetcher(fetchRangePosts, isStop)
+  return await loopFetcher(fetchRangePosts, isStop)
 }

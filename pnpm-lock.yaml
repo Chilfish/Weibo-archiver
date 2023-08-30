@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@vueuse/core':
+        specifier: ^10.3.0
+        version: 10.3.0(vue@3.3.4)
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^0.41.0
@@ -41,18 +48,21 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
+      unplugin-auto-import:
+        specifier: ^0.16.6
+        version: 0.16.6(@vueuse/core@10.3.0)
+      unplugin-vue-components:
+        specifier: ^0.25.1
+        version: 0.25.1(vue@3.3.4)
 
-  packages/core:
+  packages/components:
     dependencies:
-      '@vueuse/core':
-        specifier: ^10.3.0
-        version: 10.3.0(vue@3.3.4)
+      '@weibo-archiver/core':
+        specifier: workspace:^
+        version: link:../core
       element-plus:
         specifier: ^2.3.9
         version: 2.3.9(vue@3.3.4)
-      pinia:
-        specifier: ^2.1.6
-        version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
       vue:
         specifier: ^3.3.4
         version: 3.3.4
@@ -69,6 +79,16 @@ importers:
       '@unocss/transformer-directives':
         specifier: ^0.55.2
         version: 0.55.2
+      unocss:
+        specifier: ^0.55.2
+        version: 0.55.2(postcss@8.4.28)(vite@4.4.9)
+
+  packages/core:
+    dependencies:
+      pinia:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
+    devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^4.3.3
         version: 4.3.3(vite@4.4.9)(vue@3.3.4)
@@ -81,12 +101,6 @@ importers:
       unocss:
         specifier: ^0.55.2
         version: 0.55.2(postcss@8.4.28)(vite@4.4.9)
-      unplugin-auto-import:
-        specifier: ^0.16.6
-        version: 0.16.6(@vueuse/core@10.3.0)
-      unplugin-vue-components:
-        specifier: ^0.25.1
-        version: 0.25.1(vue@3.3.4)
       vite:
         specifier: ^4.4.9
         version: 4.4.9(@types/node@20.5.7)
@@ -96,9 +110,9 @@ importers:
 
   packages/monkey:
     dependencies:
-      '@weibo-archiver/core':
+      '@weibo-archiver/components':
         specifier: workspace:^
-        version: link:../core
+        version: link:../components
     devDependencies:
       vite-plugin-monkey:
         specifier: ^3.4.2
@@ -106,6 +120,9 @@ importers:
 
   packages/preview:
     dependencies:
+      '@weibo-archiver/components':
+        specifier: workspace:^
+        version: link:../components
       '@weibo-archiver/core':
         specifier: workspace:^
         version: link:../core

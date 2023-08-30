@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { render } from 'vue'
+import PreviewVue from './Preview.vue'
+
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
 
@@ -14,6 +17,18 @@ const isFetchAll = computed(() => dateRange.value?.length === 0 || !dateRange.va
 
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
+
+async function preview() {
+  const container = document.createElement('div')
+  const vnode = h(PreviewVue)
+  render(vnode, container)
+
+  const app = document.querySelector('#app')
+  if (app) {
+    app.innerHTML = ''
+    app.appendChild(container.firstElementChild!)
+  }
+}
 
 async function start() {
   ElMessage.info({

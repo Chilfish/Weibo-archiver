@@ -30,6 +30,7 @@ export default defineConfig({
       dts: path.resolve(core, 'types/auto-imports.d.ts'),
       dirs: [
         path.resolve(core, '**'),
+        path.resolve(packages, 'components/src'),
       ],
       vueTemplate: true,
       resolvers: [ElementPlusResolver()],
@@ -37,9 +38,9 @@ export default defineConfig({
 
     // https://github.com/antfu/vite-plugin-components
     Components({
-      dts: path.resolve(core, 'types/components.d.ts'),
+      dts: path.resolve(packages, 'components/src/components.d.ts'),
       dirs: [
-        path.resolve(core, 'components'),
+        path.resolve(packages, 'components/src'),
       ],
       resolvers: [ElementPlusResolver()],
       directoryAsNamespace: true,
