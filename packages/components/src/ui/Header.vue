@@ -25,6 +25,9 @@ async function search() {
   if (res.length)
     router.push(`/s?q=${searchInput.value}`)
 }
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>

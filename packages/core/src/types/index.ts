@@ -1,3 +1,5 @@
+import type { Ref } from 'vue'
+
 export * from './protocol'
 
 export interface User {

@@ -9,6 +9,7 @@
   "scripts": {
     "build:preview": "pnpm -F preview build",
     "build:monkey": "pnpm -F monkey build",
+    "build:core": "pnpm -F core build",
     "dev:preview": "pnpm -F preview dev",
     "dev:monkey": "pnpm -F monkey dev",
     "preview": "pnpm -F preview preview",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.3.0",
+    "rollup": "^3.28.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {

@@ -6,7 +6,11 @@
   "license": "ISC",
   "keywords": [],
   "main": "index.ts",
+  "scripts": {
+    "build": "rollup -c --bundleConfigAsCjs"
+  },
   "devDependencies": {
     "jszip": "^3.10.1"
   }
+
 }

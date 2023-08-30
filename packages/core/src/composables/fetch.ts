@@ -7,7 +7,7 @@ export const weiFetch = createFetch({
   combination: 'overwrite',
   options: {
     onFetchError(ctx) {
-      ElMessage.error(ctx.error?.message || 'Fetch Error')
+      console.log(ctx.error?.message || 'Fetch Error')
       return ctx
     },
   },
