@@ -1,7 +1,7 @@
 {
   "name": "@weibo-archiver/preview",
   "type": "module",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "description": "",
   "author": "",
@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@weibo-archiver/components": "workspace:^",
-    "@weibo-archiver/stores": "workspace:^",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {

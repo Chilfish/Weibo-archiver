@@ -11,9 +11,6 @@ importers:
       '@vueuse/core':
         specifier: ^10.3.0
         version: 10.3.0(vue@3.3.4)
-      rollup:
-        specifier: ^3.28.1
-        version: 3.28.1
       vue:
         specifier: ^3.3.4
         version: 3.3.4
@@ -48,6 +45,9 @@ importers:
       pnpm:
         specifier: ^8.7.0
         version: 8.7.0
+      rollup:
+        specifier: ^3.28.1
+        version: 3.28.1
       rollup-plugin-copy:
         specifier: ^3.4.0
         version: 3.4.0
@@ -75,9 +75,6 @@ importers:
       '@weibo-archiver/core':
         specifier: workspace:^
         version: link:../core
-      '@weibo-archiver/stores':
-        specifier: workspace:^
-        version: link:../stores
       element-plus:
         specifier: ^2.3.9
         version: 2.3.9(vue@3.3.4)
@@ -102,6 +99,10 @@ importers:
         version: 0.55.2(postcss@8.4.28)(rollup@3.28.1)(vite@4.4.9)
 
   packages/core:
+    dependencies:
+      pinia:
+        specifier: ^2.1.6
+        version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
     devDependencies:
       jszip:
         specifier: ^3.10.1
@@ -122,9 +123,6 @@ importers:
       '@weibo-archiver/components':
         specifier: workspace:^
         version: link:../components
-      '@weibo-archiver/stores':
-        specifier: workspace:^
-        version: link:../stores
       vue-router:
         specifier: ^4.2.4
         version: 4.2.4(vue@3.3.4)
@@ -132,24 +130,6 @@ importers:
       rollup-plugin-copy:
         specifier: ^3.4.0
         version: 3.4.0
-
-  packages/stores:
-    dependencies:
-      '@weibo-archiver/core':
-        specifier: workspace:^
-        version: link:../core
-      pinia:
-        specifier: ^2.1.6
-        version: 2.1.6(typescript@5.2.2)(vue@3.3.4)
-
-  test:
-    dependencies:
-      '@weibo-archiver/core':
-        specifier: workspace:^
-        version: link:../packages/core
-      '@weibo-archiver/stores':
-        specifier: workspace:^
-        version: link:../packages/stores
 
 packages:
 
@@ -2748,6 +2728,7 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /function-bind@1.1.1:
@@ -4280,6 +4261,7 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
 
   /run-applescript@5.0.0:
     resolution: {integrity: sha512-XcT5rBksx1QdIhlFOCtgZkB99ZEouFZ1E2Kc2LHqNW13U3/74YGdkQRmThTwxy4QIyookibDKYZOPqX//6BlAg==}

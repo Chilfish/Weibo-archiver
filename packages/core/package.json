@@ -1,13 +1,16 @@
 {
   "name": "@weibo-archiver/core",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "",
-  "author": "",
+  "author": "Chilfish",
   "license": "ISC",
   "keywords": [],
   "main": "index.ts",
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs"
+  },
+  "dependencies": {
+    "pinia": "^2.1.6"
   },
   "devDependencies": {
     "jszip": "^3.10.1"
