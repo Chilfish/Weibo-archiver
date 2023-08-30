@@ -5,7 +5,8 @@ import PreviewVue from './Preview.vue'
 const id = document.URL.match(/\/(\d+)/)?.[1] || ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
 
-await fetchUser(id, name)
+const userData = await fetchUser(id, name)
+useUserStore().set(userData.id, userData.name)
 
 const postStore = usePostStore()
 
@@ -40,13 +41,13 @@ async function start() {
 
   if (isFetchAll.value) {
     isStart.value = true
-    await fetchAll(isStop)
+    await postStore.fetchAll(isStop)
     return (isFinish.value = true)
   }
 
   const [start, end] = dateRange.value
   isStart.value = true
-  await fetchRange(start, end, isStop)
+  await postStore.fetchRange(start, end, isStop)
   isFinish.value = true
 }
 
@@ -54,8 +55,8 @@ watch(isStop, async () => {
   const [start, end] = dateRange.value
   if (!isStop.value) {
     isFetchAll.value
-      ? await fetchAll(isStop)
-      : await fetchRange(start, end, isStop)
+      ? await postStore.fetchAll(isStop)
+      : await postStore.fetchRange(start, end, isStop)
     isFinish.value = true
   }
 })
@@ -66,13 +67,14 @@ watch(isStop, async () => {
     class="fixed right-4 top-20 z-9999 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
   >
     <h2 class="text-5 font-bold">
-      Weibo archiver, user: {{ useUserStore().name }}
+      Weibo archiver, user: {{ userData.name }}
     </h2>
 
     <el-alert title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而不得不重头来过" type="warning" />
 
     <p>请选择要存档的范围，默认为从头到尾</p>
 
+    <!-- @ts-expect-error -->
     <!-- @vue-expect-error -->
     <el-date-picker
       v-model="dateRange"
@@ -89,11 +91,14 @@ watch(isStop, async () => {
         {{ isFinish ? '重新开始' : '开始' }}
       </button>
 
-      <button v-show="!isFinish && isStart" @click="isStop = !isStop">
+      <button v-show="isStart" @click="isStop = !isStop">
         {{ isStop ? '继续' : '暂停' }}
       </button>
 
-      <button v-show="isFinish" @click="exportData()">
+      <button
+        v-show="isFinish"
+        @click="exportData(postStore.posts, userData.id)"
+      >
         导出
       </button>
     </div>

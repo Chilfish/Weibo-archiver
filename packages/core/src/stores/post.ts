@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import type { Post } from '@core/types'
+import type { LoopFetchParams, Post } from '../types'
 import { _ as _posts } from '../static/data.mjs'
+import { useUserStore } from './user'
 
 export const usePostStore = defineStore('post', () => {
   // 必须是外部导入优先, 这样才能在 build 中直接引用
@@ -10,9 +11,6 @@ export const usePostStore = defineStore('post', () => {
   )
 
   const resultPosts = ref([] as Post[])
-
-  // 用于导出图片链接
-  const imgs = ref(new Set<string>())
 
   const viewImg = ref(imgViewSrc)
 
@@ -36,10 +34,11 @@ export const usePostStore = defineStore('post', () => {
 
   const dateRange = ref([new Date(), new Date()])
 
+  const userStore = useUserStore()
+
   function reset() {
     posts.value = []
     resultPosts.value = []
-    imgs.value = new Set<string>()
     viewImg.value = imgViewSrc
     curPage.value = 1
     postsPerPage.value = 20
@@ -68,17 +67,67 @@ export const usePostStore = defineStore('post', () => {
     return posts.value.filter(post => post.id === id)
   }
 
-  function addImgs(newImgs: Set<string> | (string | null | undefined)[]) {
-    newImgs.forEach((img) => {
-      if (img)
-        imgs.value.add(img)
+  const fetchParams = reactive<LoopFetchParams>({
+    start: fetchedPage.value + 1,
+    stopFn: () => posts.value.length >= total.value,
+    onResult: res => add(res),
+    onEnd: async () => {
+      fetchedPage.value = pages.value
+      await exportData(posts.value, userStore.uid)
+    },
+  })
+
+  /**
+    * 获取所有微博
+  */
+  async function fetchAll(isStop = ref(false)) {
+    const res = await fetchPosts(userStore.uid, 1)
+
+    total.value = res?.total || 0
+    add(res?.list || [])
+
+    return await loopFetcher({
+      ...fetchParams,
+      start: fetchedPage.value + 1,
+      isAbort: isStop,
+      fetchFn: page => fetchPosts(userStore.uid, page),
     })
+  }
+
+  /**
+ * 获取指定时间范围内的微博
+ */
+  async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
+    dateRange.value = [start, end]
+
+    const res = await fetchRangePosts(userStore.uid, start, end, 1)
+    total.value = res?.total || 0
+    add(res?.list || [])
+
+    return await loopFetcher({
+      ...fetchParams,
+      start: fetchedPage.value + 1,
+      isAbort: isStop,
+      fetchFn: page => fetchRangePosts(userStore.uid, start, end, page),
+    })
+  }
+
+  async function searchText(p: string): Promise<Post[]> {
+    const res = posts.value.filter((post) => {
+      const word = p.toLowerCase().trim().replace(/ /g, '')
+      const regex = new RegExp(word, 'igm')
+      return regex.test(post.text)
+        || (post.card && regex.test(post.card?.title))
+        || (post.retweeted_status && regex.test(post.retweeted_status?.text))
+    })
+
+    resultPosts.value = res
+    return res
   }
 
   return {
     posts,
     resultPosts,
-    imgs,
     viewImg,
     total,
     pages,
@@ -88,9 +137,12 @@ export const usePostStore = defineStore('post', () => {
     fetchedPage,
 
     add,
-    addImgs,
     get,
     getById,
     reset,
+
+    fetchAll,
+    fetchRange,
+    searchText,
   }
 })

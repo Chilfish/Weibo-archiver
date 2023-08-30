@@ -14,8 +14,7 @@ export const core = path.resolve(packages, 'core/src')
 export default defineConfig({
   resolve: {
     alias: {
-      '@/': root,
-      '@core/': core,
+      '@weibo-archiver/': `${packages}/`,
     },
   },
   plugins: [

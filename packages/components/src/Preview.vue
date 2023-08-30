@@ -10,7 +10,6 @@ defineEmits({
 const postStore = usePostStore()
 const curPage = ref(props.page || postStore.curPage)
 const posts = computed(() => postStore.get())
-const isFinish = ref(true)
 
 watch(curPage, (newPage) => {
   postStore.curPage = newPage
@@ -47,14 +46,14 @@ watch(curPage, (newPage) => {
     >
       <div class="btns mb-4 flex justify-center gap-4">
         <button
-          :disabled="curPage === 1 || !postStore.fetchedPage || !isFinish"
+          :disabled="curPage === 1 || !postStore.fetchedPage"
           @click="curPage--"
         >
           上一页
         </button>
 
         <button
-          :disabled="curPage === postStore.pages || !postStore.fetchedPage || !isFinish"
+          :disabled="curPage === postStore.pages || !postStore.fetchedPage || curPage === postStore.fetchedPage"
           @click="curPage++"
         >
           下一页

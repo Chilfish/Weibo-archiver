@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Meta } from '@core/types'
+import type { Meta } from '@weibo-archiver/core'
 
 const props = defineProps<{
   meta: Meta

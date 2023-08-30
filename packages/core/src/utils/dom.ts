@@ -3,7 +3,7 @@
  */
 export function waitForElement<T extends Element = HTMLElement>(
   selector: string,
-  $ = (e: string) => document.querySelectorAll<T>(e),
+  $ = (e: string) => document?.querySelectorAll<T>(e),
 ) {
   return new Promise<NodeListOf<T> | null>((resolve) => {
     if ($(selector))
@@ -16,7 +16,7 @@ export function waitForElement<T extends Element = HTMLElement>(
       }
     })
 
-    observer.observe(document.body, {
+    observer.observe(document?.body, {
       childList: true,
       subtree: true,
     })

@@ -1,12 +1,13 @@
 import { createFetch } from '@vueuse/core'
-import type { Comment, Post, PostMeta } from '@core/types'
+import type { Comment, FetchReturn, LoopFetchParams, Post, PostMeta } from '../types'
+import { postsParser } from '../utils'
 
 export const weiFetch = createFetch({
   baseUrl: 'https://weibo.com/ajax',
   combination: 'overwrite',
   options: {
     onFetchError(ctx) {
-      ElMessage.error(ctx.error?.message || 'Fetch Error')
+      console.log(ctx.error?.message || 'Fetch Error')
       return ctx
     },
   },
@@ -16,51 +17,67 @@ export async function fetchUser(id?: string, name?: string) {
   const { data } = await weiFetch(`/user/popcard/get?screen_name=${name}&id=${id}`).json()
 
   const { idstr, screen_name } = data.value?.data || {}
-  useUserStore().set(idstr, screen_name)
+  return {
+    id: idstr,
+    name: screen_name,
+  }
 }
 
 // 鉴权字段，必须得登录才获取得了，不然匿名只能获取前两页
 // 并且只能往前，同一个 id 对于即便不同 page 的结果也是一样的
-const since_id = ref('')
+let since_id = ''
 
-export async function fetchPosts(page: number) {
+export async function fetchPosts(
+  uid: string,
+  page = 1,
+): FetchReturn {
   if (page === 0)
     return null
   if (page === 1)
-    since_id.value = ''
+    since_id = ''
 
-  const { data, abort } = await weiFetch(`/statuses/mymblog?uid=${useUserStore().uid}&feature=0&page=${page}&since_id=${since_id.value}`)
+  const {
+    data,
+    abort,
+  } = await weiFetch(`/statuses/mymblog?uid=${uid}&feature=0&page=${page}&since_id=${since_id}`)
     .json<{ data: PostMeta }>()
 
   const res = data.value?.data
   if (res)
-    since_id.value = res.since_id
+    since_id = res.since_id
   else
     return null
 
   return {
     ...res,
-    list: await parse(res.list),
+    list: await postsParser(res.list, uid),
     abort,
   }
 }
 
-export async function fetchRangePosts(page = 1) {
-  const [s, e] = usePostStore().dateRange.map(d => Math.round(d.getTime() / 1000))
+export async function fetchRangePosts(
+  uid: string,
+  start: Date,
+  end: Date,
+  page = 1,
+): FetchReturn {
+  const s = start.getTime() / 1000
+  const e = end.getTime() / 1000
 
-  const { data, abort } = await weiFetch(`/statuses/searchProfile?uid=${useUserStore().uid}&page=${page}&starttime=${s}&endtime=${e}&hasori=1&hasret=1&hastext=1&haspic=1&hasvideo=1&hasmusic=1`)
+  const { data, abort } = await weiFetch(`/statuses/searchProfile?uid=${uid}&page=${page}&starttime=${s}&endtime=${e}&hasori=1&hasret=1&hastext=1&haspic=1&hasvideo=1&hasmusic=1`)
     .json<{ data: PostMeta }>()
 
-  const res = data.value?.data
+  const res = data.value!.data
   return {
     ...res,
-    list: await parse(res?.list || []),
-    total: res?.total || 0,
+    list: await postsParser(res?.list || [], uid),
     abort,
   }
 }
 
-export async function fetchLongText(post: Post) {
+export async function fetchLongText(
+  post: Post & { isLongText: boolean },
+): Promise<string> {
   const text = ref(post.text)
 
   if (post.isLongText) {
@@ -76,74 +93,50 @@ export async function fetchLongText(post: Post) {
 
 /**
  * 获取前 3 条评论 并集于 博主的评论
- * @param pid 微博的数字 id
  */
-export async function fetchComments(pid: string): Promise<Comment[]> {
+export async function fetchComments(
+  post: Post,
+): Promise<Comment[]> {
+  if (!post.user || post.comments_count === 0)
+    return []
+
   await delay(3000)
-  const { data } = await weiFetch(`/statuses/buildComments?flow=0&is_reload=1&id=${pid}&is_show_bulletin=2`).json<{ data: Comment[] }>()
+  const { data } = await weiFetch(`/statuses/buildComments?flow=0&is_reload=1&id=${post.id}&is_show_bulletin=2`).json<{ data: Comment[] }>()
 
   const res = data.value?.data
   if (!res)
     return []
 
-  const userComments = res.filter(comment => comment.user.id === useUserStore().uid)
-  const othersComments = res.filter(comment => comment.user.id !== useUserStore().uid)
+  const userComments = res.filter(comment => comment.user?.id === post.user?.id)
+  const othersComments = res.filter(comment => comment.user?.id !== post.user?.id)
 
-  return Array
-    .from(new Set([
+  return filterComments(Array.from(
+    new Set([
       ...userComments,
       ...othersComments.slice(0, 3),
-    ]))
+    ]),
+  ))
 }
 
-async function loopFetcher(fn: (page: number) => Promise<any>, isStop = ref(false)) {
-  const postStore = usePostStore()
-  for (
-    let page = postStore.fetchedPage + 1;
-    postStore.posts.length < postStore.total; // 数量比页数更准确
-    page++
-  ) {
+export async function loopFetcher(
+  { start, stopFn, fetchFn, onResult, onEnd, isAbort }: LoopFetchParams,
+) {
+  let page = start
+  while (!stopFn()) {
     await delay()
-    const data = (await fn(page))!
+    if (isAbort?.value)
+      return
+
+    const data = await fetchFn?.(page)
+    onResult(data!.list)
 
     // 无数据时，直接退出
-    if (data.list.length === 0)
-      return null
-
-    postStore.add(data.list)
-    if (isStop.value) {
-      data.abort()
+    if (data!.list.length === 0) {
+      await onEnd?.()
       return
     }
+    page++
   }
 
-  postStore.fetchedPage = postStore.pages
-  await exportData()
-}
-
-/**
- * 获取所有微博
- */
-export async function fetchAll(isStop = ref(false)) {
-  const postStore = usePostStore()
-
-  const res = await fetchPosts(postStore.curPage)
-  postStore.total = res?.total || 0
-  postStore.add(res?.list || [])
-
-  return await loopFetcher(fetchPosts, isStop)
-}
-
-/**
- * 获取指定时间范围内的微博
- */
-export async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
-  const postStore = usePostStore()
-  postStore.dateRange = [start, end]
-
-  const res = await fetchRangePosts()
-  postStore.total = res?.total || 0
-  postStore.add(res.list)
-
-  return await loopFetcher(fetchRangePosts, isStop)
+  await onEnd?.()
 }

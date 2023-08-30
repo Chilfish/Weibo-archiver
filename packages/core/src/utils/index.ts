@@ -1,7 +1,7 @@
 export * from './parse'
 export * from './export'
 
-export const isInMonkey = document.URL.includes('weibo.com')
+export const isInMonkey = document?.URL.includes('weibo.com')
 
 export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
 

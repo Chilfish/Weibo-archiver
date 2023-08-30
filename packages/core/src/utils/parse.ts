@@ -1,4 +1,4 @@
-import type { CardInfo, Comment, PicInfo, Post } from '@core/types'
+import type { CardInfo, Comment, ParseResult, PicInfo, Post } from '../types'
 
 export const weibo = 'https://weibo.com'
 
@@ -21,7 +21,6 @@ export function parseText(text?: string) {
   const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/gm.exec(parsed)
 
   if (retweetImg && retweetImg[1]) {
-    usePostStore().addImgs([retweetImg[1]])
     const img = retweetImg[1]
 
     parsed = parsed.replace(retweetImg[0], `[img://${img}]`)
@@ -48,9 +47,8 @@ export function replaceImg(img: string) {
 export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>) {
   if (!pic_ids || !img_infos)
     return []
-  const imgs = pic_ids.map(id => img_infos[id].largest.url)
-  usePostStore().addImgs(new Set(imgs))
-  return imgs
+
+  return pic_ids.map(id => img_infos[id].largest.url)
 }
 
 /**
@@ -87,93 +85,94 @@ export function filterComments(comments?: any[]): Comment[] {
   return comments.map((comment) => {
     try {
       const res: Comment = {
-        id: comment?.idstr,
-        text: parseText(comment?.text), // 评论区就没见过折叠长文本
-        img: comment?.url_struct?.[0]?.long_url,
-        created_at: comment?.created_at,
+        id: comment.idstr,
+        text: parseText(comment.text), // 评论区就没见过折叠长文本
+        img: comment.url_struct?.[0]?.long_url,
+        created_at: comment.created_at,
         user: {
-          id: comment?.user?.idstr,
-          screen_name: comment?.user?.screen_name,
-          profile_image_url: comment?.user?.profile_image_url,
+          id: comment.user?.idstr,
+          screen_name: comment.user?.screen_name,
+          profile_image_url: comment.user?.profile_image_url,
         },
-        region_name: comment?.source,
-        like_count: comment?.like_counts,
-        comments_count: comment?.total_number,
+        region_name: comment.source,
+        like_count: comment.like_counts,
+        comments_count: comment.total_number,
       }
       return res
     }
     catch (e) {
-      console.log(e, comment)
-      ElMessage.error(`数据解析失败, id: ${comment.id}, ${comment.text}`)
+      console.log(e, `数据解析失败, id: ${comment.id}, ${comment.text}`)
       return null
     }
   }).filter((e): e is Comment => !!e)
 }
 
-/**
- * 数据清洗
- */
-export function filterPosts(posts?: any[]): Post[] {
-  if (!posts || !posts.length || !posts[0]?.id)
-    return []
-  return posts.map((post) => {
-    try {
-      const res: Post = {
-        id: post.id,
-        text: post.text, // 不解析，因为有些长文本会被截断
-        imgs: parseImg(post.pic_ids, post.pic_infos),
-        reposts_count: post.reposts_count,
-        comments_count: post.comments_count,
-        like_count: post.attitudes_count,
-        created_at: post.created_at,
-        user: {
-          id: post.user?.idstr,
-          screen_name: post.user?.screen_name,
-          profile_image_url: post.user?.profile_image_url,
-        },
-        source: post.source,
-        region_name: post.region_name,
-        isLongText: post.isLongText,
-        mblogid: post.mblogid,
-        detail_url: `${weibo}/${post?.user?.id}/${post.mblogid}`,
-        retweeted_status: filterPosts([post.retweeted_status])[0],
-        card: parseCard(post.url_struct, post.page_info),
-        comments: filterComments(post.comments),
-      }
-      const avatar = res.user?.profile_image_url
-      usePostStore().addImgs([avatar, res.card?.img])
-      return res
+export async function postFilter(post: any): Promise<Post | undefined> {
+  if (!post || !post.id)
+    return undefined
+
+  try {
+    const res: Post = {
+      id: post.id,
+      text: await fetchLongText(post),
+      imgs: parseImg(post.pic_ids, post.pic_infos),
+      reposts_count: post.reposts_count,
+      comments_count: post.comments_count,
+      like_count: post.attitudes_count,
+      created_at: post.created_at,
+      user: {
+        id: post.user?.idstr,
+        screen_name: post.user?.screen_name,
+        profile_image_url: post.user?.profile_image_url,
+      },
+      source: post.source,
+      region_name: post.region_name,
+      mblogid: post.mblogid,
+      detail_url: `${weibo}/${post.user?.id}/${post.mblogid}`,
+      retweeted_status: await postFilter([post.retweeted_status]),
+      card: parseCard(post.url_struct, post.page_info),
+      comments: await fetchComments(post),
     }
-    catch (e) {
-      console.log(e, post)
-      ElMessage.error(`数据解析失败, id: ${post.id}, ${post.text}`)
-      return null
-    }
-  }).filter((e): e is Post => !!e)
+
+    return res
+  }
+  catch (e) {
+    console.log(e, `数据解析失败  ${post.user}, ${post.text}`)
+    return undefined
+  }
 }
 
-export default async function parser(posts: Post[]) {
+export async function postsParser(posts: any[], uid: string): Promise<Post[]> {
   const res = await Promise.all(
-    posts
-      .map(async (post) => {
-        if (post.comments_count > 0)
-          post.comments = await fetchComments(post.id)
-        return post
-      }),
+    posts.map(async post => await postFilter(post)),
   )
 
-  return await Promise.all(
-    filterPosts(res)
-      .filter(post => post.user.id === useUserStore().uid)
-      .map(async (post) => {
-        const text = await fetchLongText(post)
-        post.text = text
+  return res.filter((e): e is Post => !!e && e.user?.id === uid)
+}
 
-        const reTweet = post?.retweeted_status
-        if (reTweet)
-          reTweet.text = await fetchLongText(reTweet)
+export default function imgsParser(posts: Post[]): Set<string> {
+  const imgs = posts
+    .map((post) => {
+      return [
+        post.imgs,
+        post.retweeted_status?.imgs,
+        post.comments.map(e => e.img),
+        post.user?.profile_image_url,
+        post.card?.img,
+      ].flat()
+    })
+    .flat()
+    .filter((e): e is string => !!e)
 
-        return post
-      }),
-  )
+  return new Set(imgs)
+}
+
+export async function parsedData(posts: Post[], uid: string): Promise<ParseResult> {
+  const parsedPosts = await postsParser(posts, uid)
+  const imgs = imgsParser(parsedPosts)
+
+  return {
+    posts: parsedPosts,
+    imgs,
+  }
 }

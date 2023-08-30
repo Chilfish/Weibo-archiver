@@ -20,10 +20,13 @@ const searchInput = ref(useRoute().query?.q?.toString() || '')
 const router = useRouter()
 
 async function search() {
-  const res = await useSearch(searchInput.value)
+  const res = await usePostStore().searchText(searchInput.value)
   if (res.length)
     router.push(`/s?q=${searchInput.value}`)
 }
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
