@@ -19,7 +19,7 @@
     "postinstall": "npx simple-git-hooks"
   },
   "dependencies": {
-    "@vueuse/core": "^10.3.0",
+    "@vueuse/core": "^10.4.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "taze": "^0.11.2",
     "typescript": "^5.2.2",
     "unplugin-auto-import": "^0.16.6",
-    "unplugin-vue-components": "^0.25.1"
+    "unplugin-vue-components": "^0.25.2"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

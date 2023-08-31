@@ -3,8 +3,8 @@ import type { Post } from '../types'
 import imgsParser from './parse'
 
 function saveAs(blob: Blob, filename: string) {
-  const link = document?.createElement('a')
-  const body = document?.body
+  const link = document.createElement('a')
+  const body = document.body
 
   link.href = window.URL.createObjectURL(blob)
   link.download = filename

@@ -33,7 +33,10 @@ export function parseText(text?: string) {
  * 将图片的远程 url 替换为本地图片
  * 格式：域名-文件名
  */
-export function replaceImg(img: string) {
+export function replaceImg(img?: string) {
+  if (!img)
+    return imgViewSrc
+
   if (isInMonkey || img.includes('data:image'))
     return img
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
