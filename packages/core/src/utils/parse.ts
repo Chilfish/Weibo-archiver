@@ -132,7 +132,7 @@ export async function postFilter(post: any): Promise<Post | undefined> {
       region_name: post.region_name,
       mblogid: post.mblogid,
       detail_url: `${weibo}/${post.user?.id}/${post.mblogid}`,
-      retweeted_status: await postFilter([post.retweeted_status]),
+      retweeted_status: await postFilter(post.retweeted_status),
       card: parseCard(post.url_struct, post.page_info),
       comments: await fetchComments(post),
     }
