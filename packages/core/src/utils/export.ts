@@ -17,16 +17,13 @@ function saveAs(blob: Blob, filename: string) {
   body.removeChild(link)
 }
 
-export async function exportData(
-  posts: Post[],
-  uid: string,
-) {
+export async function exportData(posts: Post[]) {
   const zip = new JSZip()
 
   const data = `export const _ = ${JSON.stringify(posts)}`
   zip.file('data.mjs', data)
 
-  const imgs = await imgsParser(posts)
+  const imgs = imgsParser(posts)
 
   const imgsData = Array.from(imgs).join(',\n') // csv 格式
   zip.file('imgs.csv', imgsData)

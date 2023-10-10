@@ -97,7 +97,7 @@ watch(isStop, async () => {
 
       <button
         v-show="isFinish"
-        @click="exportData(postStore.posts, userData.id)"
+        @click="exportData(postStore.posts)"
       >
         导出
       </button>

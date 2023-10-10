@@ -8,12 +8,10 @@ import '../../core/src/styles/main.css'
 
 const app = createApp(App)
 
+const div = document.createElement('div')
+div.id = 'plugin-app'
+document.body.append(div)
+
 app
   .use(createPinia())
-  .mount((() => {
-    const div = document.createElement('div')
-    div.id = 'plugin-app'
-    document.body.append(div)
-    return div
-  })(),
-  )
+  .mount(div)

@@ -73,13 +73,13 @@ export const usePostStore = defineStore('post', () => {
     onResult: res => add(res),
     onEnd: async () => {
       fetchedPage.value = pages.value
-      await exportData(posts.value, userStore.uid)
+      await exportData(posts.value)
     },
   })
 
   /**
-    * 获取所有微博
-  */
+   * 获取所有微博
+   */
   async function fetchAll(isStop = ref(false)) {
     const res = await fetchPosts(userStore.uid, 1)
 
@@ -95,8 +95,8 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /**
- * 获取指定时间范围内的微博
- */
+   * 获取指定时间范围内的微博
+   */
   async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
     dateRange.value = [start, end]
 

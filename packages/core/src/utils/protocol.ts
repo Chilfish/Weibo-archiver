@@ -30,7 +30,6 @@ export function hasProtocol(text: string) {
 
 /**
  * 解析自定义协议
- * @param protocol `[${protocol}://${path}]`
  * @TODO 更完善的协议解析
  */
 export function parseProtocol(text: string) {

@@ -4,7 +4,6 @@ import { dts } from 'rollup-plugin-dts'
 import typescript from '@rollup/plugin-typescript'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import terser from '@rollup/plugin-terser'
 
 const dist = path.resolve(__dirname, '../../dist/core')
 
@@ -12,9 +11,9 @@ export default defineConfig([
   {
     input: 'index.ts',
     output: {
-      file: `${dist}/core.js`,
+      file: `${dist}/index.js`,
       format: 'esm',
-      plugins: [terser()],
+      compact: true,
     },
     plugins: [
       typescript({
@@ -32,7 +31,7 @@ export default defineConfig([
       }),
     ],
     output: {
-      file: `${dist}/core.d.ts`,
+      file: `${dist}/index.d.ts`,
       format: 'esm',
     },
   },

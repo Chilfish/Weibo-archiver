@@ -1,19 +1,9 @@
-import path from 'node:path'
 import { defineConfig } from 'vite'
 import monkey, { cdn } from 'vite-plugin-monkey'
-import terser from '@rollup/plugin-terser'
-import config, { root } from '../../vite.config'
+import config from '../../vite.config'
 
 export default defineConfig({
   ...config,
-  build: {
-    outDir: path.resolve(root, 'dist'),
-    rollupOptions: {
-      output: {
-        plugins: [terser()], // 压缩输出
-      },
-    },
-  },
   plugins: [
     ...config.plugins!,
     monkey({

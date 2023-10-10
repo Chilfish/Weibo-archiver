@@ -8,14 +8,13 @@
   "main": "index.ts",
   "dependencies": {
     "@weibo-archiver/core": "workspace:^",
-    "element-plus": "^2.3.9",
-    "vue": "^3.3.4"
+    "element-plus": "^2.3.14"
   },
   "devDependencies": {
-    "@iconify-json/tabler": "^1.1.89",
-    "@unocss/eslint-config": "^0.55.2",
-    "@unocss/reset": "^0.55.2",
-    "@unocss/transformer-directives": "^0.55.2",
-    "unocss": "^0.55.2"
+    "@iconify-json/tabler": "^1.1.94",
+    "@unocss/eslint-config": "^0.55.7",
+    "@unocss/reset": "^0.55.7",
+    "@unocss/transformer-directives": "^0.55.7",
+    "unocss": "^0.55.7"
   }
 }
