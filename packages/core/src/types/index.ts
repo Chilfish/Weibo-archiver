@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 
 export * from './protocol'
+export * from './config'
 
 export interface User {
   id: string

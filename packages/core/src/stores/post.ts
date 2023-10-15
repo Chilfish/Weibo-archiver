@@ -32,8 +32,6 @@ export const usePostStore = defineStore('post', () => {
     return Math.ceil(total.value / postsPerPage.value)
   })
 
-  const dateRange = ref([new Date(), new Date()])
-
   const userStore = useUserStore()
 
   function reset() {
@@ -43,7 +41,6 @@ export const usePostStore = defineStore('post', () => {
     curPage.value = 1
     postsPerPage.value = 20
     fetchedPage.value = 0
-    dateRange.value = [new Date(), new Date()]
   }
 
   function add(newPosts: Post[]) {
@@ -98,8 +95,6 @@ export const usePostStore = defineStore('post', () => {
    * 获取指定时间范围内的微博
    */
   async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
-    dateRange.value = [start, end]
-
     const res = await fetchRangePosts(userStore.uid, start, end, 1)
     total.value = res?.total || 0
     add(res?.list || [])
@@ -131,7 +126,6 @@ export const usePostStore = defineStore('post', () => {
     viewImg,
     total,
     pages,
-    dateRange,
     postsPerPage,
     curPage,
     fetchedPage,

@@ -2,15 +2,24 @@
 import { render } from 'vue'
 import PreviewVue from './Preview.vue'
 
-const id = document.URL.match(/\/(\d+)/)?.[1] || ''
-const name = document.URL.match(/\/n\/(.+)/)?.[1] || ''
+const id = document.URL.match(/\/(\d+)/)?.[1]
+const name = document.URL.match(/\/n\/(.+)/)?.[1]
 
 const userData = await fetchUser(id, name)
 useUserStore().set(userData.id, userData.name)
 
 const postStore = usePostStore()
+const configStore = useConfigStore()
 
-const dateRange = ref([] as Date[])
+const dateRange = computed({
+  get() {
+    return configStore.state.dateRange ?? []
+  },
+  set(val: Date[] | null) {
+    configStore.state.dateRange = val ?? []
+  },
+})
+
 const isStart = ref(false)
 const isStop = ref(false)
 const isFinish = ref(false)
@@ -45,14 +54,16 @@ async function start() {
     return (isFinish.value = true)
   }
 
-  const [start, end] = dateRange.value
-  isStart.value = true
-  await postStore.fetchRange(start, end, isStop)
-  isFinish.value = true
+  if (dateRange.value) {
+    const [start, end] = dateRange.value
+    isStart.value = true
+    await postStore.fetchRange(start, end, isStop)
+    isFinish.value = true
+  }
 }
 
 watch(isStop, async () => {
-  const [start, end] = dateRange.value
+  const [start, end] = dateRange.value ?? []
   if (!isStop.value) {
     isFetchAll.value
       ? await postStore.fetchAll(isStop)
@@ -74,14 +85,14 @@ watch(isStop, async () => {
 
     <p>请选择要存档的范围，默认为从头到尾</p>
 
-    <!-- @ts-expect-error -->
     <!-- @vue-expect-error -->
     <el-date-picker
       v-model="dateRange"
-      unlink-panels type="daterange"
+      type="daterange"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
-      range-separator="到" :shortcuts="shortcuts"
+      range-separator="到"
+      :shortcuts="shortcuts"
     />
 
     <el-progress :percentage="percentage" :format="progressText" />
