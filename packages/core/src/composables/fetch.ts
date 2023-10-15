@@ -1,6 +1,7 @@
 import { createFetch } from '@vueuse/core'
 import type { Comment, FetchReturn, LoopFetchParams, Post, PostMeta } from '../types'
 import { postsParser } from '../utils'
+import { useConfigStore } from './../stores/config'
 
 export const weiFetch = createFetch({
   baseUrl: 'https://weibo.com/ajax',
@@ -98,7 +99,9 @@ export async function fetchLongText(
 export async function fetchComments(
   post: Post,
 ): Promise<Comment[]> {
-  if (!post.user || post.comments_count === 0)
+  const config = useConfigStore().state
+
+  if (!post.user || post.comments_count === 0 || !config.comment)
     return []
 
   await delay(3000)
@@ -114,7 +117,7 @@ export async function fetchComments(
   return filterComments(Array.from(
     new Set([
       ...userComments,
-      ...othersComments.slice(0, 3),
+      ...othersComments.slice(0, config.commentCount),
     ]),
   ))
 }

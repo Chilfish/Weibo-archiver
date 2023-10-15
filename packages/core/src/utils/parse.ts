@@ -51,7 +51,10 @@ export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>
   if (!pic_ids || !img_infos)
     return []
 
-  return pic_ids.map(id => img_infos[id].largest.url)
+  const config = useConfigStore().state
+  const size = config.picLarge ? 'largest' : 'large'
+
+  return pic_ids.map(id => img_infos[id][size].url)
 }
 
 /**
@@ -110,15 +113,21 @@ export function filterComments(comments?: any[]): Comment[] {
   }).filter((e): e is Comment => !!e)
 }
 
-export async function postFilter(post: any): Promise<Post | undefined> {
-  if (!post || !post.id)
+export async function postFilter(
+  post: any,
+  isRepost = false,
+): Promise<Post | undefined> {
+  const config = useConfigStore().state
+  if (!post || !post.id || (!config.repost && !!post.retweeted_status?.id))
     return undefined
+
+  const repostImg = !isRepost || (isRepost && config.repostPic)
 
   try {
     const res: Post = {
       id: post.id,
       text: await fetchLongText(post),
-      imgs: parseImg(post.pic_ids, post.pic_infos),
+      imgs: repostImg ? parseImg(post.pic_ids, post.pic_infos) : [],
       reposts_count: post.reposts_count,
       comments_count: post.comments_count,
       like_count: post.attitudes_count,
@@ -132,9 +141,9 @@ export async function postFilter(post: any): Promise<Post | undefined> {
       region_name: post.region_name,
       mblogid: post.mblogid,
       detail_url: `${weibo}/${post.user?.id}/${post.mblogid}`,
-      retweeted_status: await postFilter(post.retweeted_status),
+      retweeted_status: await postFilter(post.retweeted_status, true),
       card: parseCard(post.url_struct, post.page_info),
-      comments: await fetchComments(post),
+      comments: config.comment ? await fetchComments(post) : [],
     }
 
     return res

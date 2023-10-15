@@ -9,11 +9,9 @@ export interface User {
   profile_image_url: string
 }
 
-export interface PicInfo {
-  largest: {
-    url: string
-  }
-}
+export type PicInfo = Record<string, {
+  url: string
+}>
 
 export interface CardInfo {
   link: string

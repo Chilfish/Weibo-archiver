@@ -15,30 +15,33 @@ const isFinish = ref(false)
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
 
+function reset() {
+  postStore.reset()
+  isStart.value = true
+  isFinish.value = false
+  isStop.value = false
+}
+
+async function fetch() {
+  configStore.isFetchAll
+    ? await postStore.fetchAll(isStop)
+    : await postStore.fetchRange(isStop)
+  isFinish.value = true
+}
+
 async function start() {
   ElMessage.info({
     message: '开始爬取中，请稍等~',
     duration: 5000,
   })
-  postStore.reset()
+  reset()
   await preview()
-  isStart.value = true
-  isFinish.value = false
-
-  configStore.isFetchAll
-    ? await postStore.fetchAll(isStop)
-    : await postStore.fetchRange(isStop)
-
-  isFinish.value = true
+  await fetch()
 }
 
 watch(isStop, async () => {
-  if (!isStop.value) {
-    configStore.isFetchAll
-      ? await postStore.fetchAll(isStop)
-      : await postStore.fetchRange(isStop)
-    isFinish.value = true
-  }
+  if (!isStop.value)
+    await fetch()
 })
 </script>
 
@@ -63,7 +66,7 @@ watch(isStop, async () => {
       </button>
 
       <button
-        v-show="isStart && !isFinish"
+        v-show="isStart"
         @click="isStop = !isStop"
       >
         {{ isStop ? '继续' : '暂停' }}
