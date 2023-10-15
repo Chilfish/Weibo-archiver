@@ -7,8 +7,7 @@
   "keywords": [],
   "main": "index.ts",
   "dependencies": {
-    "@weibo-archiver/core": "workspace:^",
-    "element-plus": "^2.3.14"
+    "@weibo-archiver/core": "workspace:^"
   },
   "devDependencies": {
     "@iconify-json/tabler": "^1.1.94",

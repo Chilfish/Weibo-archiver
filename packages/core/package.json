@@ -10,15 +10,10 @@
     "build": "rollup -c --bundleConfigAsCjs"
   },
   "dependencies": {
-    "pinia": "^2.1.6"
+    "pinia": "^2.1.6",
+    "element-plus": "^2.3.14"
   },
   "devDependencies": {
-    "jszip": "^3.10.1",
-    "@rollup/plugin-commonjs": "^25.0.5",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.5",
-    "rollup": "3.29.4",
-    "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-dts": "^6.1.0"
+    "jszip": "^3.10.1"
   }
 }

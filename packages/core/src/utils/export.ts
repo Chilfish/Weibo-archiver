@@ -1,4 +1,5 @@
 import JSZip from 'jszip'
+import { ElMessage } from 'element-plus'
 import type { Post } from '../types'
 import imgsParser from './parse'
 
@@ -23,12 +24,18 @@ export async function exportData(posts: Post[]) {
   const data = `export const _ = ${JSON.stringify(posts)}`
   zip.file('data.mjs', data)
 
-  const imgs = imgsParser(posts)
-
-  const imgsData = Array.from(imgs).join(',\n') // csv 格式
+  const imgsData = Array
+    .from(imgsParser(posts))
+    .join(',\n') // csv 格式
   zip.file('imgs.csv', imgsData)
 
-  zip.generateAsync({ type: 'blob' }).then((content) => {
-    saveAs(content, 'data.zip')
-  })
+  zip
+    .generateAsync({ type: 'blob' })
+    .then((content) => {
+      ElMessage.success({
+        message: '导出成功, 正在下载数据...',
+        duration: 5000,
+      })
+      saveAs(content, 'data.zip')
+    })
 }

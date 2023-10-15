@@ -8,7 +8,6 @@
   "scripts": {
     "build:preview": "pnpm -F preview build",
     "build:monkey": "pnpm -F monkey build",
-    "build:core": "pnpm -F core build",
     "dev:preview": "pnpm -F preview dev",
     "dev:monkey": "pnpm -F monkey dev",
     "preview": "pnpm -F preview preview",
