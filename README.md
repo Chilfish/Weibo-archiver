@@ -2,17 +2,17 @@
 
 将你的新浪微博归档，为号被完全夹没前绸缪 😭 
 
-![monkey](docs/monkey.webp)
+![monkey](docs/v0.1.10.png)
 
-![宫格图片](docs/v0.1.0.webp)
+![宫格图片](docs/v0.1.0.png)
 
-![卡片预览](docs/v0.1.1.webp)
+![卡片预览](docs/v0.1.1.png)
 
-![图片预览](docs/v0.1.2.webp)
+![图片预览](docs/v0.1.2.png)
 
-![评论区](docs/v0.1.3.webp)
+![评论区](docs/v0.1.3.png)
 
-![夜间模式](docs/v0.1.6.webp)
+![夜间模式](docs/v0.1.6.png)
 
 ### 预先说明
 
@@ -20,12 +20,13 @@
 
 打算实现的功能
 
-- [] 打包成桌面App (预选 tarui 来实现)
-- [] 只需输入用户名就能一键导出
-- [] 更多的导出选项
-- [] 多用户切换
-- [] 导入数据
-...
+- [ ] 打包成桌面App (预选 tarui 来实现)
+- [ ] 只需输入用户名就能一键导出
+- [x] 更多的导出选项
+- [ ] 多用户切换
+- [ ] 导入数据
+
+......
 
 ### 使用方式
 
@@ -106,7 +107,7 @@ node ./scripts/merge.mjs
 
 感谢 [speechless] 提供的思路
 
-[releases]: https://github.com/Chilfish/weibo-archiver/releases
+[releases]: https://github.com/Chilfish/Weibo-archiver/releases/latest
 [speechless]: https://github.com/meterscao/Speechless
 [live-server]: https://www.npmjs.com/package/live-server
 [vite]: https://cn.vitejs.dev/guide/
