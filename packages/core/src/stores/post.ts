@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { LoopFetchParams, Post } from '../types'
+import type { Post } from '../types'
 import { _ as _posts } from '../static/data.mjs'
 
 export const usePostStore = defineStore('post', () => {
@@ -15,7 +15,7 @@ export const usePostStore = defineStore('post', () => {
 
   const curPage = ref(1)
   const postsPerPage = ref(20) // 每页显示的帖子数量 ppp
-  const fetchedPage = ref(Math.round(posts.value.length / postsPerPage.value))
+  const fetchedPage = ref(0)
 
   // 总帖子数
   const total = ref(posts.value.length)
@@ -41,7 +41,7 @@ export const usePostStore = defineStore('post', () => {
   }
 
   function add(newPosts: Post[]) {
-    postsPerPage.value = newPosts.length
+    // postsPerPage.value = newPosts.length
     posts.value = [...posts.value, ...newPosts]
     fetchedPage.value++
   }
@@ -61,46 +61,29 @@ export const usePostStore = defineStore('post', () => {
     return posts.value.filter(post => post.id === id)
   }
 
-  const fetchParams = reactive<LoopFetchParams>({
-    start: fetchedPage.value + 1,
-    stopFn: () => posts.value.length >= total.value,
-    onResult: res => add(res),
-    onEnd: async () => {
-      fetchedPage.value = pages.value
-      await exportData(posts.value)
-    },
-  })
-
   /**
-   * 获取所有微博
+   * 获取微博
    */
-  async function fetchAll(isStop = ref(false)) {
-    const res = await fetchPosts(1)
+  async function fetchPosts(isStop = ref(false)) {
+    const config = useConfigStore()
+
+    const res = config.isFetchAll
+      ? await fetchAllPosts(fetchedPage.value + 1)
+      : await fetchRangePosts(fetchedPage.value + 1)
 
     total.value = res?.total || 0
     add(res?.list || [])
 
     return await loopFetcher({
-      ...fetchParams,
-      start: fetchedPage.value + 1,
+      start: fetchedPage.value,
+      stopFn: () => posts.value.length >= total.value,
+      onResult: res => add(res),
+      onEnd: async () => {
+        fetchedPage.value = pages.value
+        await exportData(posts.value)
+      },
       isAbort: isStop,
-      fetchFn: page => fetchPosts(page),
-    })
-  }
-
-  /**
-   * 获取指定时间范围内的微博
-   */
-  async function fetchRange(isStop = ref(false)) {
-    const res = await fetchRangePosts(1)
-    total.value = res?.total || 0
-    add(res?.list || [])
-
-    return await loopFetcher({
-      ...fetchParams,
-      start: fetchedPage.value + 1,
-      isAbort: isStop,
-      fetchFn: page => fetchRangePosts(page),
+      fetchFn: page => fetchAllPosts(page),
     })
   }
 
@@ -132,8 +115,7 @@ export const usePostStore = defineStore('post', () => {
     getById,
     reset,
 
-    fetchAll,
-    fetchRange,
+    fetchPosts,
     searchText,
   }
 })

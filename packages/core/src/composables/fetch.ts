@@ -28,7 +28,7 @@ export async function fetchUser(id?: string, name?: string) {
 // 并且只能往前，同一个 id 对于即便不同 page 的结果也是一样的
 let since_id = ''
 
-export async function fetchPosts(
+export async function fetchAllPosts(
   page = 1,
 ): FetchReturn {
   if (page === 0)
@@ -125,7 +125,7 @@ export async function fetchComments(
 export async function loopFetcher(
   { start, stopFn, fetchFn, onResult, onEnd, isAbort }: LoopFetchParams,
 ) {
-  let page = start
+  let page = start + 1
   while (!stopFn()) {
     await delay()
     if (isAbort?.value)

@@ -23,9 +23,7 @@ function reset() {
 }
 
 async function fetch() {
-  configStore.isFetchAll
-    ? await postStore.fetchAll(isStop)
-    : await postStore.fetchRange(isStop)
+  await postStore.fetchPosts(isStop)
   isFinish.value = true
 }
 
