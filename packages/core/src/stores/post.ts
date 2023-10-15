@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import type { LoopFetchParams, Post } from '../types'
 import { _ as _posts } from '../static/data.mjs'
-import { useUserStore } from './user'
 
 export const usePostStore = defineStore('post', () => {
   // 必须是外部导入优先, 这样才能在 build 中直接引用
@@ -31,8 +30,6 @@ export const usePostStore = defineStore('post', () => {
   const pages = computed(() => {
     return Math.ceil(total.value / postsPerPage.value)
   })
-
-  const userStore = useUserStore()
 
   function reset() {
     posts.value = []
@@ -78,7 +75,7 @@ export const usePostStore = defineStore('post', () => {
    * 获取所有微博
    */
   async function fetchAll(isStop = ref(false)) {
-    const res = await fetchPosts(userStore.uid, 1)
+    const res = await fetchPosts(1)
 
     total.value = res?.total || 0
     add(res?.list || [])
@@ -87,15 +84,15 @@ export const usePostStore = defineStore('post', () => {
       ...fetchParams,
       start: fetchedPage.value + 1,
       isAbort: isStop,
-      fetchFn: page => fetchPosts(userStore.uid, page),
+      fetchFn: page => fetchPosts(page),
     })
   }
 
   /**
    * 获取指定时间范围内的微博
    */
-  async function fetchRange(start: Date, end: Date, isStop = ref(false)) {
-    const res = await fetchRangePosts(userStore.uid, start, end, 1)
+  async function fetchRange(isStop = ref(false)) {
+    const res = await fetchRangePosts(1)
     total.value = res?.total || 0
     add(res?.list || [])
 
@@ -103,7 +100,7 @@ export const usePostStore = defineStore('post', () => {
       ...fetchParams,
       start: fetchedPage.value + 1,
       isAbort: isStop,
-      fetchFn: page => fetchRangePosts(userStore.uid, start, end, page),
+      fetchFn: page => fetchRangePosts(page),
     })
   }
 

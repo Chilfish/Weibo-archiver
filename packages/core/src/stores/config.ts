@@ -15,8 +15,11 @@ export const useConfigStore = defineStore('config', () => {
     Object.assign(state, config)
   }
 
+  const isFetchAll = computed(() => state.dateRange.length === 0)
+
   return {
     state,
+    isFetchAll,
     setConfig,
   }
 })

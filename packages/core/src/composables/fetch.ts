@@ -28,13 +28,14 @@ export async function fetchUser(id?: string, name?: string) {
 let since_id = ''
 
 export async function fetchPosts(
-  uid: string,
   page = 1,
 ): FetchReturn {
   if (page === 0)
     return null
   if (page === 1)
     since_id = ''
+
+  const uid = useUserStore().uid
 
   const {
     data,
@@ -56,11 +57,11 @@ export async function fetchPosts(
 }
 
 export async function fetchRangePosts(
-  uid: string,
-  start: Date,
-  end: Date,
   page = 1,
 ): FetchReturn {
+  const [start, end] = useConfigStore().state.dateRange
+  const uid = useUserStore().uid
+
   const s = start.getTime() / 1000
   const e = end.getTime() / 1000
 

@@ -40,8 +40,13 @@ html::-webkit-scrollbar {
 }
 
 .el-popper {
-  @apply z-9999 !;
+  @apply: !z-9999;
 }
+
+.el-message {
+  @apply: !z-9999;
+}
+
 
 span.icon {
   --uno: inline-flex items-center max-w-4 max-h-4 select-none cursor-pointer;

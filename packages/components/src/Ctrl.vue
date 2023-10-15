@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { render } from 'vue'
-import PreviewVue from './Preview.vue'
-
-const id = document.URL.match(/\/(\d+)/)?.[1]
-const name = document.URL.match(/\/n\/(.+)/)?.[1]
+const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
+const name = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
 
 const userData = await fetchUser(id, name)
 useUserStore().set(userData.id, userData.name)
@@ -11,34 +8,12 @@ useUserStore().set(userData.id, userData.name)
 const postStore = usePostStore()
 const configStore = useConfigStore()
 
-const dateRange = computed({
-  get() {
-    return configStore.state.dateRange ?? []
-  },
-  set(val: Date[] | null) {
-    configStore.state.dateRange = val ?? []
-  },
-})
-
 const isStart = ref(false)
 const isStop = ref(false)
 const isFinish = ref(false)
-const isFetchAll = computed(() => dateRange.value?.length === 0 || !dateRange.value)
 
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
-
-async function preview() {
-  const container = document.createElement('div')
-  const vnode = h(PreviewVue)
-  render(vnode, container)
-
-  const app = document.querySelector('#app')
-  if (app) {
-    app.innerHTML = ''
-    app.appendChild(container.firstElementChild!)
-  }
-}
 
 async function start() {
   ElMessage.info({
@@ -47,27 +22,21 @@ async function start() {
   })
   postStore.reset()
   await preview()
+  isStart.value = true
+  isFinish.value = false
 
-  if (isFetchAll.value) {
-    isStart.value = true
-    await postStore.fetchAll(isStop)
-    return (isFinish.value = true)
-  }
+  configStore.isFetchAll
+    ? await postStore.fetchAll(isStop)
+    : await postStore.fetchRange(isStop)
 
-  if (dateRange.value) {
-    const [start, end] = dateRange.value
-    isStart.value = true
-    await postStore.fetchRange(start, end, isStop)
-    isFinish.value = true
-  }
+  isFinish.value = true
 }
 
 watch(isStop, async () => {
-  const [start, end] = dateRange.value ?? []
   if (!isStop.value) {
-    isFetchAll.value
+    configStore.isFetchAll
       ? await postStore.fetchAll(isStop)
-      : await postStore.fetchRange(start, end, isStop)
+      : await postStore.fetchRange(isStop)
     isFinish.value = true
   }
 })
@@ -75,7 +44,7 @@ watch(isStop, async () => {
 
 <template>
   <div
-    class="fixed right-4 top-20 z-9999 w-32rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
+    class="fixed right-4 top-4 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
   >
     <h2 class="text-5 font-bold">
       Weibo archiver, user: {{ userData.name }}
@@ -83,26 +52,20 @@ watch(isStop, async () => {
 
     <el-alert title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而不得不重头来过" type="warning" />
 
-    <p>请选择要存档的范围，默认为从头到尾</p>
-
-    <!-- @vue-expect-error -->
-    <el-date-picker
-      v-model="dateRange"
-      type="daterange"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      range-separator="到"
-      :shortcuts="shortcuts"
-    />
+    <Config />
 
     <el-progress :percentage="percentage" :format="progressText" />
 
     <div class="btns flex gap-4">
       <button @click="start">
         {{ isFinish ? '重新开始' : '开始' }}
+        (获取{{ configStore.isFetchAll ? '全部' : '部分' }}微博)
       </button>
 
-      <button v-show="isStart" @click="isStop = !isStop">
+      <button
+        v-show="isStart && !isFinish"
+        @click="isStop = !isStop"
+      >
         {{ isStop ? '继续' : '暂停' }}
       </button>
 

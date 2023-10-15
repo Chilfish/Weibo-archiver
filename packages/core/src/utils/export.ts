@@ -33,8 +33,9 @@ export async function exportData(posts: Post[]) {
     .generateAsync({ type: 'blob' })
     .then((content) => {
       ElMessage.success({
-        message: '导出成功, 正在下载数据...',
-        duration: 5000,
+        message: '导出成功，正在下载数据...',
+        duration: 0,
+        showClose: true,
       })
       saveAs(content, 'data.zip')
     })
