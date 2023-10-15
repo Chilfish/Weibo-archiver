@@ -1,16 +1,11 @@
 /**
- * 图片尺寸
- */
-export type PicSize = 'largest' | 'middle'
-
-/**
  * 解析、爬取时的配置
  */
 export interface Config {
   /**
    * 下载图片的尺寸
    */
-  picSize: PicSize
+  picLarge: boolean
   /**
    * 是否包含转发的微博的图片
    */

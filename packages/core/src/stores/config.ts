@@ -3,7 +3,7 @@ import type { Config } from '../types'
 
 export const useConfigStore = defineStore('config', () => {
   const state = reactive<Config>({
-    picSize: 'largest',
+    picLarge: true,
     repostPic: true,
     repost: true,
     comment: true,
