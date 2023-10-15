@@ -1,24 +1,12 @@
 import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 import { ElMessage } from 'element-plus'
 import type { Post } from '../types'
 import imgsParser from './parse'
 
-function saveAs(blob: Blob, filename: string) {
-  const link = document.createElement('a')
-  const body = document.body
-
-  link.href = window.URL.createObjectURL(blob)
-  link.download = filename
-
-  // fix Firefox
-  link.style.display = 'none'
-  body.appendChild(link)
-
-  link.click()
-  body.removeChild(link)
-}
-
-export async function exportData(posts: Post[]) {
+export function exportData(posts: Post[]) {
+  // 只能固定版本在 3.9.1，因为油猴的升级
+  // https://github.com/Stuk/jszip/issues/864
   const zip = new JSZip()
 
   const data = `export const _ = ${JSON.stringify(posts)}`
@@ -31,12 +19,12 @@ export async function exportData(posts: Post[]) {
 
   zip
     .generateAsync({ type: 'blob' })
-    .then((content) => {
+    .then((zipFile) => {
       ElMessage.success({
         message: '导出成功，正在下载数据...',
         duration: 0,
         showClose: true,
       })
-      saveAs(content, 'data.zip')
+      saveAs(zipFile, 'weibo-archiver.zip')
     })
 }
