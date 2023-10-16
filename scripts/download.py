@@ -4,7 +4,7 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-parser.add_argument('-u', '--uid', type=str, default='1111681197', help='用户 UID，默认为夹总 1111681197')
+parser.add_argument('-u', '--uid', type=str, default='1111681197', help='用户 UID')
 parser.add_argument('-d', '--dir', type=str, default='.', help='图片列表路径')
 
 args = parser.parse_args()
@@ -27,7 +27,7 @@ def download_file(url, file_path):
     with open(file_path, 'wb') as f:
         f.write(response.content)
 
-print("downloading~")
+print("开始下载图片，请不要关闭")
 
 for url in url_list:
     try:
@@ -40,4 +40,4 @@ for url in url_list:
     except Exception as e:
         print(e)
 
-print("Done!")
+print("下载完成！")
