@@ -36,28 +36,27 @@
 
 ### 处理导出后的数据
 
-完成后将导出包含微博数据的 data.mjs（其实就是一个 export 的 json）和微博原图链接 imgs.csv。
+完成后将导出包含微博数据的 data.mjs 和微博原图链接 imgs.csv 这两个文件。
 
-在 [releases] 中下载 preview.7z，解压后里面包含了用于预览的 HTML 文件和一些工具脚本。
+在 [releases] 中下载 preview.zip，解压后里面包含了用于预览的 HTML 文件和一些工具脚本。
 
-首先需要将 assets 目录下的 data.mjs 替换成，刚导出的 data 文件，同时将导出的 imgs.csv 复制到 preview 文件夹中。
+首先需要将导出后的 data.mjs 这个文件复制并替换到预览文件夹里的 assets 目录（用于加载微博数据），将 imgs.csv 复制到 preview 文件夹中（用于下载微博图片）。
 
-且由于导出数据图片全是本地形式的（`'./assets/img/*'`），需要同时使用 download.py 来下载图片（建议在包含 index.html 的根目录中打开终端）
+接下来需要使用 scripts 文件夹里的 download.py 来下载图片，在存有 index.html 的文件中打开控制台（CMD），使用 Python 运行：
 
 ```shell
-cd path-to-index
-python ./scripts/download.py -u 你的 uid
+python ./scripts/download.py -u 你的uid
 ```
 
 ### 查看结果
 
-至于查看，暂不支持直接点击 index.html 来查看，需要启动本地 HTTP 服务。可以在 index.html 目录中打开终端运行 server.py，并在浏览器中打开 http://localhost:8000
+至于查看，暂不支持直接点击 index.html 来查看，需要启动本地 Web 服务。可以在 index.html 目录中打开终端运行 server.py，并在浏览器中打开 http://localhost:8000
 
 ```shell
 python ./scripts/server.py
 ```
 
-对于 node 环境，可以全局安装 [live-server] 或是 [vite] 来启动
+对于 Node.js 环境，可以全局安装 [live-server] 或是 [vite] 来启动
 
 ```shell
 # vite 也同理
@@ -70,7 +69,7 @@ live-server
 
 ### 合并追加的数据
 
-如果使用了像是时间范围内导出，并想要将它与之前的 data.mjs 合并，那么你需要先将新的 data 复制到 index.html 目录中，在终端运行
+如果使用了像是时间范围内导出，并想要将它与之前的 data.mjs 合并，那么你需要先将新的 data.mjs 复制到 index.html 目录中，在终端运行
 
 ```shell
 node ./scripts/merge.mjs
@@ -84,7 +83,7 @@ node ./scripts/merge.mjs
 
 - 若账号被封，但访问自己的主页微博，也能获取备份。也就是 **只要能能看得见，就能存档**
 
-- 评论区：获取时，将默认同时获取前三条热评，加上博主的评论，总数不超过 20 条
+- 评论区：获取时，将默认同时获取前三条热评，加上博主的评论，总数不超过 15 条
 
 - **完全免费**
 
