@@ -12,6 +12,7 @@ module.exports = antfu({
   rules: {
     'no-console': 'off',
     'vue/no-multiple-template-root': 'off',
+    'node/prefer-global/process': 'off',
   },
 }, {
   ignores: [

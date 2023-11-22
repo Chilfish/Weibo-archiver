@@ -1,9 +1,12 @@
 {
-  "name": "merge-data",
+  "name": "@weibo-archiver/scripts",
   "type": "module",
   "version": "0.1.10",
   "private": true,
-  "packageManager": "pnpm@8.6.12",
   "author": "Chilfish",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "argparse": "^2.0.1",
+    "vite": "^5.0.2"
+  }
 }
