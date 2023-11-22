@@ -32,7 +32,7 @@
 
 安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择。
 
-由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区]
+由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区]。v0.1.11 版本在 [#5] 有对应的改动说明 
 
 ### 处理导出后的数据
 
@@ -100,4 +100,5 @@ node ./merge.mjs
 [releases]: https://github.com/Chilfish/Weibo-archiver/releases/latest
 [speechless]: https://github.com/meterscao/Speechless
 [讨论区]: https://github.com/Chilfish/Weibo-archiver/issues/1
+[#5]: https://github.com/Chilfish/Weibo-archiver/issues/5
 [Node.js 官网]: https://nodejs.org/en/download
