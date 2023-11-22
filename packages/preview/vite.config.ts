@@ -1,6 +1,5 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
-import copy from 'rollup-plugin-copy'
 import config, { core, packages, root } from '../../vite.config'
 
 const dataJs = path.resolve(core, 'static/data.mjs')
@@ -20,16 +19,6 @@ export default defineConfig({
           [dataJs]: 'data',
         },
       },
-      plugins: [
-        copy({
-          targets: [
-            {
-              src: '../../scripts/**',
-              dest: '../../dist/preview/scripts',
-            },
-          ],
-        }),
-      ],
     },
     outDir: path.resolve(root, 'dist/preview'),
   },

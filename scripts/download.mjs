@@ -34,10 +34,8 @@ for (const url of url_list) {
     const file_name = url.split('/').pop().split('?')[0]
     const prefix = url.match(/^(?:https?:\/\/)?([^:\/\n]+)/)?.[1]
 
-    if (!prefix) {
-      console.error(`无法解析 ${url}`)
+    if (!prefix)
       continue
-    }
 
     const file_path = join(download_folder, `${prefix}-${file_name}`)
     if (!existsSync(file_path))

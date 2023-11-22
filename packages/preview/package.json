@@ -16,8 +16,5 @@
   "dependencies": {
     "@weibo-archiver/components": "workspace:^",
     "vue-router": "^4.2.5"
-  },
-  "devDependencies": {
-    "rollup-plugin-copy": "^3.5.0"
   }
 }

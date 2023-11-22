@@ -32,7 +32,8 @@
     "typescript": "^5.2.2",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
-    "vite": "^4.4.11"
+    "vite": "^4.4.11",
+    "vite-plugin-static-copy": "^0.17.1"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
