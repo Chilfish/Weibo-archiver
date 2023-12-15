@@ -80,10 +80,12 @@ export const usePostStore = defineStore('post', () => {
       onResult: res => add(res),
       onEnd: async () => {
         fetchedPage.value = pages.value
-        await exportData(posts.value)
+        exportData(posts.value)
       },
       isAbort: isStop,
-      fetchFn: page => fetchAllPosts(page),
+      fetchFn: page => config.isFetchAll
+        ? fetchAllPosts(page)
+        : fetchRangePosts(page),
     })
   }
 
