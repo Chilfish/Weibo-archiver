@@ -1,5 +1,6 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
+import { defineConfig, normalizePath } from 'vite'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 import config, { core, packages, root } from '../../vite.config'
 
 const dataJs = path.resolve(core, 'static/data.mjs')
@@ -24,5 +25,13 @@ export default defineConfig({
   },
   plugins: [
     ...config.plugins!,
+    viteStaticCopy({
+      targets: [
+        {
+          src: normalizePath(path.resolve(root, 'scripts/*')),
+          dest: normalizePath(path.resolve(root, 'dist/preview')),
+        },
+      ],
+    }),
   ],
 })

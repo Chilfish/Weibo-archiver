@@ -35,7 +35,7 @@ const toggleDark = useToggle(isDark)
     class="fixed top-0 z-999 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-6 backdrop-blur-8 transition-all"
   >
     <span
-      class="icon i-tabler-brand-weibo"
+      class="i-tabler-brand-weibo icon"
       @click="$router.push('/p/1')"
     />
 
@@ -44,7 +44,7 @@ const toggleDark = useToggle(isDark)
       @submit.prevent="search"
     >
       <span
-        class="icon i-tabler-search absolute left-3 top-50% translate-y-[-50%]"
+        class="i-tabler-search absolute left-3 top-50% icon translate-y-[-50%]"
         @click="search"
       />
       <input

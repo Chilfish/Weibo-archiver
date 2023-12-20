@@ -10,11 +10,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
     "preview": "vite preview"
   },
   "dependencies": {
     "@weibo-archiver/components": "workspace:^",
+    "vite-plugin-static-copy": "^1.0.0",
     "vue-router": "^4.2.5"
   }
 }

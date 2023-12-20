@@ -12,6 +12,6 @@
     "@weibo-archiver/components": "workspace:^"
   },
   "devDependencies": {
-    "vite-plugin-monkey": "^3.5.0"
+    "vite-plugin-monkey": "^3.5.1"
   }
 }

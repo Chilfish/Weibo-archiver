@@ -1,8 +1,7 @@
 import path from 'node:path'
 import terser from '@rollup/plugin-terser'
-import { defineConfig, normalizePath } from 'vite'
+import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
@@ -49,14 +48,6 @@ export default defineConfig({
 
     UnoCSS(),
     InitData(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: normalizePath(path.resolve(root, 'scripts/*')),
-          dest: normalizePath(path.resolve(root, 'dist/preview')),
-        },
-      ],
-    }),
   ],
   build: {
     outDir: path.resolve(root, 'dist'),

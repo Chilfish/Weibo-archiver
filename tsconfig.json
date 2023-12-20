@@ -1,34 +1,34 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
+    "target": "ESNext",
     "jsx": "preserve",
     "lib": ["DOM", "ESNext"],
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "noUnusedLocals": true,
     "paths": {
       "@weibo-archiver/*": ["packages/*"]
     },
-    "skipLibCheck": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "target": "ESNext",
     "types": [
       "vite/client"
     ],
-    "useDefineForClassFields": true
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
   "include": [
     "packages/**/src/**/*.ts",
     "packages/**/src/**/*.d.ts",
     "packages/**/src/**/*.vue",
     "packages/**/src/vite.config.ts",
     "vite.config.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
   ]
 }
