@@ -4,7 +4,16 @@ import { ElMessage } from 'element-plus'
 import type { Post } from '../types'
 import imgsParser from './parse'
 
-export function exportData(posts: Post[]) {
+// 同时下载 preview 的 zip 包
+async function downloadZip() {
+  const url = 'https://api.github.com/repos/chilfish/weibo-archiver/releases/latest'
+  const res = await (await fetch(url)).json()
+  const zipUrl = res.assets[0].browser_download_url
+
+  saveAs(zipUrl, 'preview.zip')
+}
+
+export async function exportData(posts: Post[]) {
   // 只能固定版本在 3.9.1，因为油猴的升级
   // https://github.com/Stuk/jszip/issues/864
   const zip = new JSZip()
@@ -16,6 +25,8 @@ export function exportData(posts: Post[]) {
     .from(imgsParser(posts))
     .join(',\n') // csv 格式
   zip.file('imgs.csv', imgsData)
+
+  await downloadZip()
 
   zip
     .generateAsync({ type: 'blob' })

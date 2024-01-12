@@ -330,6 +330,7 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly InitData: UnwrapRef<typeof import('../plugins/initData')['InitData']>
     readonly _: UnwrapRef<typeof import('../static/data.mjs')['_']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
@@ -646,6 +647,7 @@ declare module 'vue' {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly InitData: UnwrapRef<typeof import('../plugins/initData')['InitData']>
     readonly _: UnwrapRef<typeof import('../static/data.mjs')['_']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>

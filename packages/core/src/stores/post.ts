@@ -80,7 +80,7 @@ export const usePostStore = defineStore('post', () => {
       onResult: res => add(res),
       onEnd: async () => {
         fetchedPage.value = pages.value
-        exportData(posts.value)
+        await exportData(posts.value)
       },
       isAbort: isStop,
       fetchFn: page => config.isFetchAll
