@@ -1,4 +1,4 @@
-###  Weibo-archiver
+## Weibo-archiver
 
 将你的新浪微博归档，为号被完全夹没前绸缪 😭
 
@@ -20,7 +20,7 @@
 
 打算实现的功能
 
-- [ ] 打包成桌面App (预选 tarui 来实现)
+- [ ] 打包成桌面 App 以更方便操作
 - [ ] 只需输入用户名就能一键导出
 - [x] 更多的导出选项
 - [ ] 多用户切换
@@ -30,7 +30,9 @@
 
 ### 使用方式
 
-安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取（因为微博 api 限制了只能一页一页地往后翻页）。当然也可以按时间范围来选择。
+需要浏览器装有 [Tampermonkey](https://tampermonkey.net/) 或 [Violentmonkey](https://violentmonkey.github.io/) 插件。
+
+安装至油猴脚本：[weibo-archiver.user.js][releases]，在个人主页刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取。当然也可以按时间范围来选择。
 
 由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区]。v0.1.11 版本在 [#5] 有对应的改动说明
 
@@ -48,9 +50,11 @@
 node ./download.mjs -u 你的数字uid
 ```
 
+其中数字 uid 可以在网页版的个人主页中查看，如 https://weibo.com/u/1111681197 （如果是昵称或别的，需要手动再点一下头像来跳转到该链接）
+
 ### 查看结果
 
-至于在线查看，暂不支持直接点击 index.html 来查看，需要启动本地的服务器。还是在控制台中运行下面的命令
+至于在线查看，暂不支持直接点击 index.html 来查看，需要启动本地的服务器。还是在控制台中运行下面的命令，就会自动打开浏览器
 
 ```shell
 node ./server.mjs
@@ -82,7 +86,7 @@ node ./merge.mjs
 
 ### 对开发者
 
-项目采用 monorepo 的结构，使用 pnpm 管理
+项目采用 monorepo 的结构，使用 pnpm 管理。在 packages 目录下：
 
 - `/core` 包含了工具函数、pinia 等数据处理的核心
 - `/components` 包含 UI 部分的组件
@@ -93,10 +97,18 @@ node ./merge.mjs
 
 ### 鸣谢
 
-感谢 [speechless] 提供的思路
+- 感谢 [speechless] 提供的基本思路
+- [vite-plugin-monkey] 提供了打包成油猴脚本的工具
+
+### 赞助
+
+如果你觉得这个项目对你有帮助，可以考虑赞助我一杯咖啡😇这将给我更多的动力来维护这个项目
+
+![赞助码](https://p.chilfish.top/wx_reward.png)
 
 [releases]: https://github.com/Chilfish/Weibo-archiver/releases/latest
 [speechless]: https://github.com/meterscao/Speechless
 [讨论区]: https://github.com/Chilfish/Weibo-archiver/issues/1
 [#5]: https://github.com/Chilfish/Weibo-archiver/issues/5
 [Node.js 官网]: https://nodejs.org/en/download
+[vite-plugin-monkey]: https://github.com/lisonge/vite-plugin-monkey
