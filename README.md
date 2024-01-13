@@ -2,17 +2,17 @@
 
 将你的新浪微博归档，为号被完全夹没前绸缪 😭
 
-![monkey](docs/v0.1.10.png)
+![monkey](https://p.chilfish.top/v0.1.10.png)
 
-![宫格图片](docs/v0.1.0.png)
+![宫格图片](https://p.chilfish.top/v0.1.0.png)
 
-![卡片预览](docs/v0.1.1.png)
+![卡片预览](https://p.chilfish.top/v0.1.1.png)
 
-![图片预览](docs/v0.1.2.png)
+![图片预览](https://p.chilfish.top/v0.1.2.png)
 
-![评论区](docs/v0.1.3.png)
+![评论区](https://p.chilfish.top/v0.1.3.png)
 
-![夜间模式](docs/v0.1.6.png)
+![夜间模式](https://p.chilfish.top/v0.1.6.png)
 
 ### 预先说明
 
@@ -36,9 +36,7 @@
 
 ### 处理导出后的数据
 
-完成后将导出包含微博数据的 data.mjs 和微博原图链接 imgs.csv 这两个文件。
-
-在 [releases] 中下载 preview.zip，解压后里面包含了用于预览的 HTML 文件和一些工具脚本。
+完成后将导出包含微博数据的 data.mjs 和微博原图链接 imgs.csv 这两个文件。以及 preview.zip，解压后里面包含了用于预览的 HTML 文件和一些工具脚本。
 
 首先需要将导出后的 data.mjs 这个文件复制并替换到预览文件夹里的 assets 目录（用于加载微博数据），将 imgs.csv 复制到 preview 文件夹中（用于下载微博图片）。
 
