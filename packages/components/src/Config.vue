@@ -15,7 +15,6 @@ const dateRange = computed({
   <div class="flex flex-col gap-3">
     <p>请选择要存档的范围，默认为从头到尾</p>
 
-    <!-- @vue-expect-error -->
     <el-date-picker
       v-model="dateRange"
       type="daterange"

@@ -3,7 +3,7 @@ import { defineConfig, normalizePath } from 'vite'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import config, { core, packages, root } from '../../vite.config'
 
-const dataJs = path.resolve(core, 'static/data.mjs')
+const dataJs = path.resolve(core, 'constants/data.mjs')
 const index = path.resolve(packages, 'preview/index.html')
 
 export default defineConfig({

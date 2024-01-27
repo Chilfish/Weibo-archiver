@@ -1,5 +1,4 @@
 import path from 'node:path'
-import terser from '@rollup/plugin-terser'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
@@ -51,12 +50,6 @@ export default defineConfig({
   ],
   build: {
     outDir: path.resolve(root, 'dist'),
-    rollupOptions: {
-      output: {
-        plugins: [
-          terser(),
-        ],
-      },
-    },
+    minify: true,
   },
 })

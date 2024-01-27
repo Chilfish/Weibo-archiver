@@ -6,7 +6,7 @@ const postStore = usePostStore()
 const curPage = ref(1)
 
 if (q && postStore.resultPosts.length === 0)
-  await useSearch(q.toString())
+  await postStore.searchText(q.toString())
 
 onBeforeRouteLeave((to, from) => {
   if (to.path !== from.path)

@@ -10,6 +10,7 @@ export default defineConfig({
       entry: 'src/main.ts',
       userscript: {
         name: 'Weibo Archiver',
+        description: '将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭',
         homepage: 'https://github.com/Chilfish/Weibo-Archiver',
         source: 'https://github.com/Chilfish/Weibo-Archiver/tree/main/packages/monkey',
         icon: 'https://github.com/Chilfish/Weibo-archiver/raw/main/docs/Speechless48.png',
@@ -21,7 +22,7 @@ export default defineConfig({
       },
       build: {
         externalGlobals: {
-          vue: cdn.jsdelivr('Vue', 'dist/vue.global.prod.js'),
+          vue: cdn.unpkg('Vue', 'dist/vue.global.prod.js'),
           pinia: [
             'Pinia',
             'https://unpkg.com/vue-demi@latest/lib/index.iife.js',

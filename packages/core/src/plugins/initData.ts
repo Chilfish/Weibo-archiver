@@ -9,7 +9,7 @@ export function InitData() {
   return {
     name: 'initData',
     async buildStart() {
-      const data = path.resolve(src, 'static/data.mjs')
+      const data = path.resolve(src, 'constants/data.mjs')
       await fs.writeFile(data, 'export const _ = []\n')
 
       await fs.rm(

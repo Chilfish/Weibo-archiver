@@ -8,7 +8,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
   const InitData: typeof import('../plugins/initData')['InitData']
-  const _: typeof import('../static/data.mjs')['_']
+  const _: typeof import('../constants/data.mjs')['_']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const computed: typeof import('vue')['computed']
@@ -49,7 +49,7 @@ declare global {
   const h: typeof import('vue')['h']
   const hasProtocol: typeof import('../utils/protocol')['hasProtocol']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
-  const imgViewSrc: typeof import('../default')['imgViewSrc']
+  const imgViewSrc: typeof import('../constants/index')['imgViewSrc']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
   const isDefined: typeof import('@vueuse/core')['isDefined']
@@ -117,7 +117,7 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
-  const shortcuts: typeof import('../default')['shortcuts']
+  const shortcuts: typeof import('../constants/index')['shortcuts']
   const src: typeof import('../plugins/index')['src']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
@@ -331,9 +331,8 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly InitData: UnwrapRef<typeof import('../plugins/initData')['InitData']>
-    readonly _: UnwrapRef<typeof import('../static/data.mjs')['_']>
+    readonly _: UnwrapRef<typeof import('../constants/data.mjs')['_']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -374,7 +373,7 @@ declare module 'vue' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../utils/protocol')['hasProtocol']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
-    readonly imgViewSrc: UnwrapRef<typeof import('../default')['imgViewSrc']>
+    readonly imgViewSrc: UnwrapRef<typeof import('../constants/index')['imgViewSrc']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
@@ -442,7 +441,7 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly shortcuts: UnwrapRef<typeof import('../default')['shortcuts']>
+    readonly shortcuts: UnwrapRef<typeof import('../constants/index')['shortcuts']>
     readonly src: UnwrapRef<typeof import('../plugins/index')['src']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
@@ -649,9 +648,8 @@ declare module '@vue/runtime-core' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
     readonly InitData: UnwrapRef<typeof import('../plugins/initData')['InitData']>
-    readonly _: UnwrapRef<typeof import('../static/data.mjs')['_']>
+    readonly _: UnwrapRef<typeof import('../constants/data.mjs')['_']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -692,7 +690,7 @@ declare module '@vue/runtime-core' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../utils/protocol')['hasProtocol']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
-    readonly imgViewSrc: UnwrapRef<typeof import('../default')['imgViewSrc']>
+    readonly imgViewSrc: UnwrapRef<typeof import('../constants/index')['imgViewSrc']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
@@ -760,7 +758,7 @@ declare module '@vue/runtime-core' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly shortcuts: UnwrapRef<typeof import('../default')['shortcuts']>
+    readonly shortcuts: UnwrapRef<typeof import('../constants/index')['shortcuts']>
     readonly src: UnwrapRef<typeof import('../plugins/index')['src']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>

@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.3",
-    "@rollup/plugin-terser": "^0.4.4",
     "@types/node": "^20.11.7",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue-macros/volar": "^0.18.11",

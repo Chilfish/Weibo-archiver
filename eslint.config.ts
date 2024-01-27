@@ -1,18 +1,22 @@
 import antfu from '@antfu/eslint-config'
-import unocss from '@unocss/eslint-plugin'
 
-export default antfu({
-  rules: {
-    'no-console': 'off',
-    'no-alert': 'off',
-    'vue/no-multiple-template-root': 'off',
-    'node/prefer-global/process': 'off',
+export default antfu(
+  {
+    unocss: true,
+    formatters: true,
   },
-}, {
-  ignores: [
-    'dist',
-    '.output',
-    'node_modules',
-    '*.py',
-  ],
-}, unocss.configs.flat)
+  {
+    rules: {
+      'no-console': 'off',
+      'vue/no-multiple-template-root': 'off',
+      'node/prefer-global/process': 'off',
+      'format/prettier': 'off',
+    },
+  },
+  {
+    ignores: [
+      'dist',
+      '.output',
+    ],
+  },
+)

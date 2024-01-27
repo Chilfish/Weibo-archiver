@@ -5,3 +5,4 @@ export CI=true
 
 pnpm lint-staged
 
+pnpm typecheck
