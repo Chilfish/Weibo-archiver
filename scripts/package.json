@@ -7,6 +7,6 @@
   "license": "MIT",
   "devDependencies": {
     "argparse": "^2.0.1",
-    "vite": "^5.0.2"
+    "vite": "^5.0.12"
   }
 }

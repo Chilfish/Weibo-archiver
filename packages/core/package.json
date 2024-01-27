@@ -10,12 +10,12 @@
     "build": "rollup -c --bundleConfigAsCjs"
   },
   "dependencies": {
-    "element-plus": "^2.3.14",
+    "element-plus": "^2.5.3",
     "file-saver": "^2.0.5",
     "jszip": "3.9.1",
-    "pinia": "^2.1.6"
+    "pinia": "^2.1.7"
   },
   "devDependencies": {
-    "@types/file-saver": "^2.0.5"
+    "@types/file-saver": "^2.0.7"
   }
 }
