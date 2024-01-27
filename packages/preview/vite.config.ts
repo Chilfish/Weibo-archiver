@@ -10,6 +10,7 @@ export default defineConfig({
   ...config,
   build: {
     rollupOptions: {
+      ...config.build?.rollupOptions,
       input: {
         index,
         data: dataJs,

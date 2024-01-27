@@ -6,7 +6,6 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
-  const ElMessage: typeof import('element-plus/es')['ElMessage']
   const InitData: typeof import('../plugins/initData')['InitData']
   const _: typeof import('../constants/data.mjs')['_']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
@@ -62,6 +61,7 @@ declare global {
   const loopFetcher: typeof import('../composables/fetch')['loopFetcher']
   const makeDestructurable: typeof import('@vueuse/core')['makeDestructurable']
   const markRaw: typeof import('vue')['markRaw']
+  const naive: typeof import('../utils/naiveui')['naive']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
@@ -183,6 +183,7 @@ declare global {
   const useDeviceOrientation: typeof import('@vueuse/core')['useDeviceOrientation']
   const useDevicePixelRatio: typeof import('@vueuse/core')['useDevicePixelRatio']
   const useDevicesList: typeof import('@vueuse/core')['useDevicesList']
+  const useDialog: typeof import('naive-ui')['useDialog']
   const useDisplayMedia: typeof import('@vueuse/core')['useDisplayMedia']
   const useDocumentVisibility: typeof import('@vueuse/core')['useDocumentVisibility']
   const useDraggable: typeof import('@vueuse/core')['useDraggable']
@@ -214,6 +215,7 @@ declare global {
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
   const useKeyModifier: typeof import('@vueuse/core')['useKeyModifier']
   const useLastChanged: typeof import('@vueuse/core')['useLastChanged']
+  const useLoadingBar: typeof import('naive-ui')['useLoadingBar']
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
   const useManualRefHistory: typeof import('@vueuse/core')['useManualRefHistory']
@@ -221,6 +223,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
+  const useMessage: typeof import('naive-ui')['useMessage']
   const useMounted: typeof import('@vueuse/core')['useMounted']
   const useMouse: typeof import('@vueuse/core')['useMouse']
   const useMouseInElement: typeof import('@vueuse/core')['useMouseInElement']
@@ -228,6 +231,7 @@ declare global {
   const useMutationObserver: typeof import('@vueuse/core')['useMutationObserver']
   const useNavigatorLanguage: typeof import('@vueuse/core')['useNavigatorLanguage']
   const useNetwork: typeof import('@vueuse/core')['useNetwork']
+  const useNotification: typeof import('naive-ui')['useNotification']
   const useNow: typeof import('@vueuse/core')['useNow']
   const useObjectUrl: typeof import('@vueuse/core')['useObjectUrl']
   const useOffsetPagination: typeof import('@vueuse/core')['useOffsetPagination']
@@ -331,7 +335,6 @@ declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly InitData: UnwrapRef<typeof import('../plugins/initData')['InitData']>
     readonly _: UnwrapRef<typeof import('../constants/data.mjs')['_']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
@@ -357,7 +360,6 @@ declare module 'vue' {
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly delay: UnwrapRef<typeof import('../utils/index')['delay']>
-    readonly dist: UnwrapRef<typeof import('../plugins/index')['dist']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly exportData: UnwrapRef<typeof import('../utils/export')['exportData']>
@@ -386,6 +388,7 @@ declare module 'vue' {
     readonly loopFetcher: UnwrapRef<typeof import('../composables/fetch')['loopFetcher']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly naive: UnwrapRef<typeof import('../utils/naiveui')['naive']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -404,7 +407,6 @@ declare module 'vue' {
     readonly onStartTyping: UnwrapRef<typeof import('@vueuse/core')['onStartTyping']>
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
-    readonly packages: UnwrapRef<typeof import('../plugins/index')['packages']>
     readonly parse: UnwrapRef<typeof import('../utils/parse')['default']>
     readonly parseImg: UnwrapRef<typeof import('../utils/parse')['parseImg']>
     readonly parseProtocol: UnwrapRef<typeof import('../utils/protocol')['parseProtocol']>
@@ -413,8 +415,6 @@ declare module 'vue' {
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../utils/parse')['postFilter']>
     readonly postsParser: UnwrapRef<typeof import('../utils/parse')['postsParser']>
-    readonly preview: UnwrapRef<typeof import('../utils/index')['preview']>
-    readonly previewDir: UnwrapRef<typeof import('../plugins/index')['previewDir']>
     readonly protocolMap: UnwrapRef<typeof import('../utils/protocol')['protocolMap']>
     readonly protocols: UnwrapRef<typeof import('../utils/protocol')['protocols']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -437,12 +437,10 @@ declare module 'vue' {
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
-    readonly root: UnwrapRef<typeof import('../plugins/index')['root']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly shortcuts: UnwrapRef<typeof import('../constants/index')['shortcuts']>
-    readonly src: UnwrapRef<typeof import('../plugins/index')['src']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -648,7 +646,6 @@ declare module '@vue/runtime-core' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly InitData: UnwrapRef<typeof import('../plugins/initData')['InitData']>
     readonly _: UnwrapRef<typeof import('../constants/data.mjs')['_']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
@@ -674,7 +671,6 @@ declare module '@vue/runtime-core' {
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly delay: UnwrapRef<typeof import('../utils/index')['delay']>
-    readonly dist: UnwrapRef<typeof import('../plugins/index')['dist']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly exportData: UnwrapRef<typeof import('../utils/export')['exportData']>
@@ -703,6 +699,7 @@ declare module '@vue/runtime-core' {
     readonly loopFetcher: UnwrapRef<typeof import('../composables/fetch')['loopFetcher']>
     readonly makeDestructurable: UnwrapRef<typeof import('@vueuse/core')['makeDestructurable']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly naive: UnwrapRef<typeof import('../utils/naiveui')['naive']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -721,7 +718,6 @@ declare module '@vue/runtime-core' {
     readonly onStartTyping: UnwrapRef<typeof import('@vueuse/core')['onStartTyping']>
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
-    readonly packages: UnwrapRef<typeof import('../plugins/index')['packages']>
     readonly parse: UnwrapRef<typeof import('../utils/parse')['default']>
     readonly parseImg: UnwrapRef<typeof import('../utils/parse')['parseImg']>
     readonly parseProtocol: UnwrapRef<typeof import('../utils/protocol')['parseProtocol']>
@@ -730,8 +726,6 @@ declare module '@vue/runtime-core' {
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../utils/parse')['postFilter']>
     readonly postsParser: UnwrapRef<typeof import('../utils/parse')['postsParser']>
-    readonly preview: UnwrapRef<typeof import('../utils/index')['preview']>
-    readonly previewDir: UnwrapRef<typeof import('../plugins/index')['previewDir']>
     readonly protocolMap: UnwrapRef<typeof import('../utils/protocol')['protocolMap']>
     readonly protocols: UnwrapRef<typeof import('../utils/protocol')['protocols']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -754,12 +748,10 @@ declare module '@vue/runtime-core' {
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
-    readonly root: UnwrapRef<typeof import('../plugins/index')['root']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly shortcuts: UnwrapRef<typeof import('../constants/index')['shortcuts']>
-    readonly src: UnwrapRef<typeof import('../plugins/index')['src']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>

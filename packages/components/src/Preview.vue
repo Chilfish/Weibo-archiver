@@ -25,45 +25,15 @@ watch(curPage, (newPage) => {
       <post-list :posts="posts" />
     </Suspense>
 
-    <el-pagination
-      v-if="!isInMonkey"
-      v-model:current-page="curPage"
+    <n-pagination
+      v-model:page="curPage"
       v-model:page-size="postStore.postsPerPage"
-      class="flex flex-wrap items-center justify-center gap-4 px-2"
-      layout="sizes, total, prev, pager, next, jumper"
-      small
-      background
-      :default-page-size="20"
+      show-quick-jumper
+      show-size-picker
       :page-sizes="[20, 30, 50, 100]"
-      :total="postStore.total"
+      :page-count="postStore.total"
+
       @current-change="$emit('update:page', $event)"
     />
-
-    <!-- 在油猴获取数据的过程里，由于微博 api 的限制，必须线性地一步步翻页，不能跳转 -->
-    <div
-      v-else
-      class="flex flex-col items-center justify-center"
-    >
-      <div class="btns mb-4 flex justify-center gap-4">
-        <button
-          :disabled="curPage === 1 || !postStore.fetchedPage"
-          @click="curPage--"
-        >
-          上一页
-        </button>
-
-        <button
-          :disabled="curPage === postStore.pages || !postStore.fetchedPage || curPage === postStore.fetchedPage"
-          @click="curPage++"
-        >
-          下一页
-        </button>
-      </div>
-
-      <div>
-        第 {{ curPage }} 页，已经获取了 {{ postStore.fetchedPage }} 页，
-        共 {{ postStore.pages }} 页、{{ postStore.total }} 条微博
-      </div>
-    </div>
   </div>
 </template>

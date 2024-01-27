@@ -1,9 +1,24 @@
-<script setup>
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+<script setup lang="ts">
+import {
+  NConfigProvider,
+  NMessageProvider,
+  darkTheme,
+  dateZhCN,
+  zhCN,
+} from 'naive-ui'
+
+const isDark = useDark()
+const theme = computed(() => isDark.value ? darkTheme : null)
 </script>
 
 <template>
-  <el-config-provider :locale="zhCn">
-    <slot />
-  </el-config-provider>
+  <NConfigProvider
+    :locale="zhCN"
+    :date-locale="dateZhCN"
+    :theme="theme"
+  >
+    <NMessageProvider>
+      <slot />
+    </NMessageProvider>
+  </NConfigProvider>
 </template>

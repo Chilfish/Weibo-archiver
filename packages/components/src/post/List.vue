@@ -7,7 +7,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-col gap-4 rounded p-6 pb-8 sm:max-w-60rem">
+  <div
+    id="image-scroll-container"
+    class="h-full w-full flex flex-col gap-4 rounded p-6 pb-8 sm:max-w-60rem"
+  >
     <Suspense>
       <post-item
         v-for="item in posts"

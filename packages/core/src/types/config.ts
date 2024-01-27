@@ -26,5 +26,5 @@ export interface Config {
   /**
    * 日期范围
    */
-  dateRange: Date[]
+  dateRange: [number, number]
 }

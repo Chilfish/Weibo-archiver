@@ -1,5 +1,6 @@
 {
   "name": "@weibo-archiver/core",
+  "type": "module",
   "version": "0.1.13",
   "description": "",
   "author": "Chilfish",
@@ -10,12 +11,11 @@
     "build": "rollup -c --bundleConfigAsCjs"
   },
   "dependencies": {
-    "element-plus": "^2.5.3",
     "file-saver": "^2.0.5",
-    "jszip": "3.9.1",
-    "pinia": "^2.1.7"
+    "jszip": "3.9.1"
   },
   "devDependencies": {
-    "@types/file-saver": "^2.0.7"
+    "@types/file-saver": "^2.0.7",
+    "naive-ui": "^2.37.3"
   }
 }

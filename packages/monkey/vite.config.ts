@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import monkey, { cdn } from 'vite-plugin-monkey'
+import monkey, { cdn, util } from 'vite-plugin-monkey'
 import config from '../../vite.config'
 
 export default defineConfig({
@@ -22,16 +22,18 @@ export default defineConfig({
       },
       build: {
         externalGlobals: {
-          vue: cdn.unpkg('Vue', 'dist/vue.global.prod.js'),
-          pinia: [
+          'vue': cdn.unpkg('Vue', 'dist/vue.global.prod.js')
+            .concat(util.dataUrl(';window.Vue=Vue;')),
+          'pinia': [
             'Pinia',
             'https://unpkg.com/vue-demi@latest/lib/index.iife.js',
-            version =>
-              `https://unpkg.com/pinia@${version}/dist/pinia.iife.js`,
+            version => `https://unpkg.com/pinia@${version}/dist/pinia.iife.js`,
           ],
-        },
-        externalResource: {
-          'element-plus/dist/index.mini.css': cdn.unpkg(),
+          // 'naive-ui': cdn.unpkg('naive-ui', 'dist/index.prod.js'),
+          'file-saver': [
+            'saveAs',
+            _ => 'https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js',
+          ],
         },
         fileName: 'weibo-archiver.user.js',
       },

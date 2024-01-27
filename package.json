@@ -1,5 +1,6 @@
 {
   "name": "weibo-archiver",
+  "type": "module",
   "version": "0.1.13",
   "packageManager": "pnpm@8.14.3",
   "description": "weibo-backup",
@@ -18,6 +19,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
+    "pinia": "^2.1.7",
     "vue": "^3.4.15"
   },
   "devDependencies": {

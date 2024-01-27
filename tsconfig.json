@@ -11,7 +11,8 @@
       "@weibo-archiver/*": ["packages/*"]
     },
     "types": [
-      "vite/client"
+      "vite/client",
+      "naive-ui/volar"
     ],
     "allowJs": true,
     "strict": true,

@@ -12,14 +12,13 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
   <div
     class="flex flex-wrap items-center justify-end gap-1 text-3 text-gray sm:gap-3"
   >
-    <el-link
-      :underline="false"
+    <a
       :href="meta.detail_url"
       target="_blank"
       class="text-3! text-gray-400! hover:text-gray-600!"
     >
       {{ date }}
-    </el-link>
+    </a>
 
     <span> {{ meta.region_name }} </span>
 

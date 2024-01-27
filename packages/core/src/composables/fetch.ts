@@ -63,8 +63,8 @@ export async function fetchRangePosts(
   const [start, end] = useConfigStore().state.dateRange
   const uid = useUserStore().uid
 
-  const s = start.getTime() / 1000
-  const e = end.getTime() / 1000
+  const s = start / 1000
+  const e = end / 1000
 
   const { data, abort } = await weiFetch(`/statuses/searchProfile?uid=${uid}&page=${page}&starttime=${s}&endtime=${e}&hasori=1&hasret=1&hastext=1&haspic=1&hasvideo=1&hasmusic=1`)
     .json<{ data: PostMeta }>()

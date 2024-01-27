@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useMessage } from 'naive-ui'
+
 const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
 
+const message = useMessage()
 const userData = await fetchUser(id, name)
 useUserStore().set(userData.id, userData.name)
 
@@ -28,12 +31,11 @@ async function fetch() {
 }
 
 async function start() {
-  ElMessage.info({
-    message: '开始爬取中，请稍等~',
+  message.info('开始爬取中，请稍等~', {
     duration: 5000,
   })
+
   reset()
-  await preview()
   await fetch()
 }
 
@@ -41,21 +43,33 @@ watch(isStop, async () => {
   if (!isStop.value)
     await fetch()
 })
+
+// @ts-expect-error TODO: fix this
+window.$message = useMessage()
 </script>
 
 <template>
   <div
-    class="fixed right-4 top-4 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 bg-white p-4 text-black shadow-xl"
+    class="fixed right-4 top-4 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 p-4 shadow-xl bg-white! text-black!"
   >
     <h2 class="text-5 font-bold">
       Weibo archiver, user: {{ userData.name }}
     </h2>
 
-    <el-alert title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而不得不重头来过" type="warning" />
+    <n-alert
+      title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而不得不重头来过"
+      type="warning"
+      closable
+    />
 
     <Config />
 
-    <el-progress :percentage="percentage" :format="progressText" />
+    <n-progress
+      type="line"
+      :percentage="percentage"
+    >
+      {{ progressText() }}
+    </n-progress>
 
     <div class="btns flex gap-4">
       <button @click="start">

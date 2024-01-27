@@ -1,13 +1,14 @@
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import { ElMessage } from 'element-plus'
 import type { Post } from '../types'
 import imgsParser from './parse'
 
 // 同时下载 preview 的 zip 包
 async function downloadZip() {
   const url = 'https://api.github.com/repos/chilfish/weibo-archiver/releases/latest'
-  const res = await (await fetch(url)).json()
+  const res = await (await fetch(url, {
+    mode: 'cors',
+  })).json()
   const zipUrl = res.assets[0].browser_download_url
 
   saveAs(zipUrl, 'preview.zip')
@@ -31,11 +32,8 @@ export async function exportData(posts: Post[]) {
   zip
     .generateAsync({ type: 'blob' })
     .then((zipFile) => {
-      ElMessage.success({
-        message: '导出成功，正在下载数据...',
-        duration: 0,
-        showClose: true,
-      })
+      // @ts-expect-error is defined
+      window.$message.success('导出成功，正在下载数据...')
       saveAs(zipFile, 'weibo-archiver.zip')
     })
 }

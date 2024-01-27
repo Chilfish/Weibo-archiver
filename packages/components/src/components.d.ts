@@ -10,11 +10,6 @@ declare module 'vue' {
     AppMain: typeof import('./AppMain.vue')['default']
     Config: typeof import('./Config.vue')['default']
     Ctrl: typeof import('./Ctrl.vue')['default']
-    ElAvatar: typeof import('element-plus/es')['ElAvatar']
-    ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
-    ElImage: typeof import('element-plus/es')['ElImage']
-    ElLink: typeof import('element-plus/es')['ElLink']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
     Gallery: typeof import('./Gallery.vue')['default']
     ImgViewer: typeof import('./ImgViewer.vue')['default']
     PostAction: typeof import('./post/Action.vue')['default']
@@ -30,5 +25,6 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UiHeader: typeof import('./ui/Header.vue')['default']
+    UiImage: typeof import('./ui/Image.vue')['default']
   }
 }

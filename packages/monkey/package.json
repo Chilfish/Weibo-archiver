@@ -1,5 +1,6 @@
 {
   "name": "@weibo-archiver/monkey",
+  "type": "module",
   "version": "0.1.13",
   "private": true,
   "author": "Chilfish",

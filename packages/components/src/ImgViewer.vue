@@ -14,16 +14,9 @@ watch(() => postStore.viewImg, async () => {
     id="img-viewer"
     class="absolute right-0 top-0"
   >
-    <el-image
-      fit="cover"
+    <ui-image
       class="h-0 w-0"
       :src="replaceImg(postStore.viewImg)"
-      :lazy="true"
-      :hide-on-click-modal="true"
-      :preview-teleported="true"
-      :referrerpolicy="referrerPolicy"
-      :preview-src-list="[postStore.viewImg]"
-      @close="() => postStore.viewImg = imgViewSrc"
     />
   </div>
 </template>

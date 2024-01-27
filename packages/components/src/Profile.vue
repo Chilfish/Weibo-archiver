@@ -12,7 +12,8 @@ defineProps<{
     :href="`https://weibo.com/u/${user.id}`"
     target="_blank"
   >
-    <el-avatar
+    <n-avatar
+      round
       :size="30"
       :src="replaceImg(user.profile_image_url)"
     />

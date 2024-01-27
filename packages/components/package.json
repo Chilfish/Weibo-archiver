@@ -1,5 +1,6 @@
 {
   "name": "@weibo-archiver/components",
+  "type": "module",
   "version": "0.1.13",
   "description": "",
   "author": "",
