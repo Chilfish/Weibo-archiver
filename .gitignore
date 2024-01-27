@@ -7,3 +7,7 @@ dist-ssr
 node_modules
 .idea/
 *.log
+
+
+packages/preview/public/assets/img/
+packages/core/src/constants/data.mjs

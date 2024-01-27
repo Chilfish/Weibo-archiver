@@ -6,33 +6,40 @@ withDefaults(defineProps<{
   height?: string | number
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 }>(), {
-  fit: 'cover',
+  fit: 'contain',
   alt: 'image',
 })
 </script>
 
 <template>
-  <n-image-group>
-    <n-image
-      fit="cover"
-      lazy
-      fallback-src="/placeholder.webp"
-      :alt="alt"
-      :width="width"
-      :height="height"
-      :src="replaceImg(src)"
-      :referrerpolicy="referrerPolicy"
-      :intersection-observer-options="{
-        root: 'image-scroll-container',
-      }"
-    >
-      <template #placeholder>
-        <div
-          class="h-full w-full center"
-        >
-          Loading
-        </div>
-      </template>
-    </n-image>
-  </n-image-group>
+  <n-image
+    lazy
+    fallback-src="/placeholder.webp"
+    :src="replaceImg(src)"
+    :object-fit="fit"
+    :alt="alt"
+    :width="width"
+    :height="height"
+    :intersection-observer-options="{
+      root: 'image-scroll-container',
+    }"
+    :img-props="{
+      referrerpolicy: referrerPolicy,
+    }"
+  >
+    <template #placeholder>
+      <div
+        class="h-full w-full center"
+      >
+        Loading
+      </div>
+    </template>
+  </n-image>
 </template>
+
+<style>
+.n-image img {
+  width: 100%;
+  border-radius: 4px;
+}
+</style>

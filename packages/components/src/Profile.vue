@@ -14,6 +14,7 @@ defineProps<{
   >
     <n-avatar
       round
+      fallback-src="/placeholder.webp"
       :size="30"
       :src="replaceImg(user.profile_image_url)"
     />

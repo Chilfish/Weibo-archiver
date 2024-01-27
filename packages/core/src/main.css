@@ -1,5 +1,11 @@
 :root {
-  @apply relative text-13px! scroll-smooth;
+  font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  min-width: 0;
+  scrollbar-width: thin !important;
 }
 
 html,
@@ -16,6 +22,14 @@ html::-webkit-scrollbar-thumb {
 html::-webkit-scrollbar {
   width: 5px !important;
   height: 5px !important;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 #plugin-app {

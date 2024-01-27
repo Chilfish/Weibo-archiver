@@ -1,18 +1,40 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   imgs: string[]
 }>()
+
+const width = computed(() => {
+  const len = props.imgs.length
+  if (len <= 2)
+    return `40%`
+  if (len >= 4 && len <= 5)
+    return `24%`
+  return '32%'
+})
+
+const maxHeight = computed(() => {
+  const len = props.imgs.length
+  if (len === 1)
+    return 'fit-content'
+  return '13rem'
+})
 </script>
 
 <template>
   <div
-    class="grid grid-cols-3 mt-2 w-fit items-start justify-start gap-1"
+    class="mt-4 w-fit flex flex-wrap items-center gap-2"
   >
-    <ui-image
-      v-for="img in imgs.map(replaceImg)"
-      :key="img"
-      :src="img"
-      class="h-28 max-h-52 max-w-48 w-28 cursor-pointer rounded sm:h-80 sm:w-80"
-    />
+    <n-image-group>
+      <ui-image
+        v-for="img in imgs"
+        :key="img"
+        :src="img"
+        :style="{
+          width,
+          maxHeight,
+        }"
+        class="block overflow-hidden"
+      />
+    </n-image-group>
   </div>
 </template>
