@@ -1,4 +1,5 @@
 import {
+  NAlert,
   NAvatar,
   NCheckbox,
   NConfigProvider,
@@ -20,6 +21,7 @@ export const naive = create({
   components: [
     useMessage,
     NAvatar,
+    NAlert,
     NCheckbox,
     NConfigProvider,
     NDatePicker,

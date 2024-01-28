@@ -50,7 +50,7 @@ window.$message = useMessage()
 
 <template>
   <div
-    class="fixed right-4 top-4 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 p-4 shadow-xl bg-white! text-black!"
+    class="fixed right-4 top-20 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 p-4 shadow-xl bg-white! text-black!"
   >
     <h2 class="text-5 font-bold">
       Weibo archiver, user: {{ userData.name }}

@@ -51,6 +51,7 @@ declare global {
   const imgViewSrc: typeof import('../constants/index')['imgViewSrc']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
+  const isDark: typeof import('../composables/index')['isDark']
   const isDefined: typeof import('@vueuse/core')['isDefined']
   const isInMonkey: typeof import('../utils/index')['isInMonkey']
   const isProxy: typeof import('vue')['isProxy']
@@ -91,6 +92,7 @@ declare global {
   const postsParser: typeof import('../utils/parse')['postsParser']
   const preview: typeof import('../utils/index')['preview']
   const previewDir: typeof import('../plugins/index')['previewDir']
+  const previewZip: typeof import('../constants/index')['previewZip']
   const protocolMap: typeof import('../utils/protocol')['protocolMap']
   const protocols: typeof import('../utils/protocol')['protocols']
   const provide: typeof import('vue')['provide']
@@ -378,6 +380,7 @@ declare module 'vue' {
     readonly imgViewSrc: UnwrapRef<typeof import('../constants/index')['imgViewSrc']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
+    readonly isDark: UnwrapRef<typeof import('../composables/index')['isDark']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
     readonly isInMonkey: UnwrapRef<typeof import('../utils/index')['isInMonkey']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
@@ -415,6 +418,7 @@ declare module 'vue' {
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../utils/parse')['postFilter']>
     readonly postsParser: UnwrapRef<typeof import('../utils/parse')['postsParser']>
+    readonly previewZip: UnwrapRef<typeof import('../constants/index')['previewZip']>
     readonly protocolMap: UnwrapRef<typeof import('../utils/protocol')['protocolMap']>
     readonly protocols: UnwrapRef<typeof import('../utils/protocol')['protocols']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -440,7 +444,6 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly shortcuts: UnwrapRef<typeof import('../constants/index')['shortcuts']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -689,6 +692,7 @@ declare module '@vue/runtime-core' {
     readonly imgViewSrc: UnwrapRef<typeof import('../constants/index')['imgViewSrc']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
+    readonly isDark: UnwrapRef<typeof import('../composables/index')['isDark']>
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
     readonly isInMonkey: UnwrapRef<typeof import('../utils/index')['isInMonkey']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
@@ -726,6 +730,7 @@ declare module '@vue/runtime-core' {
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../utils/parse')['postFilter']>
     readonly postsParser: UnwrapRef<typeof import('../utils/parse')['postsParser']>
+    readonly previewZip: UnwrapRef<typeof import('../constants/index')['previewZip']>
     readonly protocolMap: UnwrapRef<typeof import('../utils/protocol')['protocolMap']>
     readonly protocols: UnwrapRef<typeof import('../utils/protocol')['protocols']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -751,7 +756,6 @@ declare module '@vue/runtime-core' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly shortcuts: UnwrapRef<typeof import('../constants/index')['shortcuts']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>

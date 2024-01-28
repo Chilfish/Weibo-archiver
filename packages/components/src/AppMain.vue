@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isDark, isInMonkey } from '@weibo-archiver/core'
 import {
   NConfigProvider,
   NMessageProvider,
@@ -7,11 +8,8 @@ import {
   zhCN,
 } from 'naive-ui'
 
-const isDark = useDark({
-  storageKey: 'theme',
-  disableTransition: false,
-})
-const theme = computed(() => isDark.value ? darkTheme : null)
+// 如果在油猴脚本中，或者不是暗黑模式，不使用暗黑主题
+const theme = computed(() => isInMonkey || !isDark.value ? null : darkTheme)
 </script>
 
 <template>

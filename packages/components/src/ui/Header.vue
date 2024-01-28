@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isDark } from '@weibo-archiver/core'
 import { useRoute, useRouter } from 'vue-router'
 
 const { y } = useWindowScroll()
@@ -25,10 +26,6 @@ async function search() {
     router.push(`/s?q=${searchInput.value}`)
 }
 
-const isDark = useDark({
-  storageKey: 'theme',
-  disableTransition: false,
-})
 const toggleDark = useToggle(isDark)
 </script>
 
