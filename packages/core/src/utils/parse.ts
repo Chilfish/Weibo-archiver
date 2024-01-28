@@ -17,6 +17,7 @@ export function parseText(text?: string) {
     )
     .replace(/<img[^>]+alt="([^"]*)"[^>]*>/gm, (_, alt) => alt) // 表情图片
     .replace(/<img[^>]*>/gm, '') // 图标
+    .replace(/\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
 
   const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/gm.exec(parsed)
 

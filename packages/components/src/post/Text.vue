@@ -4,6 +4,7 @@ const props = defineProps<{
 }>()
 
 const parsedText = parseProtocol(props.text)
+  .replace(/\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
 const postStore = usePostStore()
 const textRef = ref<HTMLParagraphElement | null>(null)
 
