@@ -1,4 +1,4 @@
-const version = '0.1.13'
+const version = '0.2.0'
 
 /**
  * 预览压缩包下载地址
