@@ -2,17 +2,15 @@
 
 将你的新浪微博归档，为号被完全夹没前绸缪 😭
 
-![monkey](https://p.chilfish.top/v0.1.10.png)
+![monkey](https://p.chilfish.top/weibo/cover.png)
 
-![宫格图片](https://p.chilfish.top/v0.1.0.png)
+![宫格图片](https://p.chilfish.top/weibo/gallery.png)
 
-![卡片预览](https://p.chilfish.top/v0.1.1.png)
+![卡片预览](https://p.chilfish.top/weibo/repost.png)
 
-![图片预览](https://p.chilfish.top/v0.1.2.png)
+![图片预览](https://p.chilfish.top/weibo/inline-image.png)
 
-![评论区](https://p.chilfish.top/v0.1.3.png)
-
-![夜间模式](https://p.chilfish.top/v0.1.6.png)
+![夜间模式](https://p.chilfish.top/weibo/darkmode.png)
 
 ### 使用方式
 
@@ -104,5 +102,5 @@ node ./merge.mjs
 [Node.js 官网]: https://nodejs.org/en/download
 [vite-plugin-monkey]: https://github.com/lisonge/vite-plugin-monkey
 [个人镜像地址]: https://p.chilfish.top/weibo-archiver.user.js
-[项目的 Todo]: https://github.com/Chilfish/Weibo-archiver/issues/6
+[项目的 Todo]: https://github.com/Chilfish/Weibo-archiver/issues/7
 [赞助地址]: https://chilfish.top/sponsors
