@@ -4,7 +4,7 @@
 
 * {
   box-sizing: border-box;
-  min-width: 0;
+  /* min-width: 0; */
   scrollbar-width: thin !important;
 }
 
