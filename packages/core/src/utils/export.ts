@@ -1,20 +1,10 @@
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
+import { previewZip } from '../constants'
 import type { Post } from '../types'
 import imgsParser from './parse'
 
-// 同时下载 preview 的 zip 包
-async function downloadZip() {
-  const url = 'https://api.github.com/repos/chilfish/weibo-archiver/releases/latest'
-  const res = await (await fetch(url, {
-    mode: 'cors',
-  })).json()
-  const zipUrl = res.assets[0].browser_download_url
-
-  saveAs(zipUrl, 'preview.zip')
-}
-
-export async function exportData(posts: Post[]) {
+export function exportData(posts: Post[]) {
   // 只能固定版本在 3.9.1，因为油猴的升级
   // https://github.com/Stuk/jszip/issues/864
   const zip = new JSZip()
@@ -27,8 +17,6 @@ export async function exportData(posts: Post[]) {
     .join(',\n') // csv 格式
   zip.file('imgs.csv', imgsData)
 
-  await downloadZip()
-
   zip
     .generateAsync({ type: 'blob' })
     .then((zipFile) => {
@@ -36,4 +24,5 @@ export async function exportData(posts: Post[]) {
       window.$message.success('导出成功，正在下载数据...')
       saveAs(zipFile, 'weibo-archiver.zip')
     })
+  saveAs(previewZip, 'preview.zip')
 }

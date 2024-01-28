@@ -1,41 +1,9 @@
-export const shortcuts = [
-  {
-    text: '最近一周',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    },
-  },
-  {
-    text: '最近一个月',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    },
-  },
-  {
-    text: '最近三个月',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    },
-  },
-  {
-    text: '最近半年', // 在锁微博半年时很有用
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 180)
-      return [start, end]
-    },
-  },
-]
+const version = '0.1.13'
+
+/**
+ * 预览压缩包下载地址
+ */
+export const previewZip = `https://github.com/Chilfish/Weibo-archiver/releases/download/${version}/preview.zip`
 
 /**
  * 占位图
