@@ -9,7 +9,9 @@ export const protocolMap: ProtocolMap = {
      * 将返回包含 <ViewImgBtn /> 组件和原文本的 VNode
      */
     parser(text: string, path: string): string {
-      return text.replace(this.reg, _ => `<button data-src="${path}">${this.text}</button>`)
+      return text.replace(this.reg, _ => `
+      <button data-src="${path}"><span class="icon i-tabler:photo"></span><span>${this.text}</span></button>
+      `.trim())
     },
   },
 }

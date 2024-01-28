@@ -4,22 +4,37 @@ const props = defineProps<{
 }>()
 
 const parsedText = parseProtocol(props.text)
+const postStore = usePostStore()
+const textRef = ref<HTMLParagraphElement | null>(null)
 
-// 或许不该这么写......
-onMounted(async () => {
-  const btns = await waitForElement('button')
+onMounted(() => {
+  textRef.value!.addEventListener('click', (e) => {
+    let target = e.target as any
+    if (target.tagName === 'SPAN')
+      target = target.parentNode
 
-  btns?.forEach(e => e.onclick = () => {
-    const url = e.dataset.src
-    if (url)
-      usePostStore().viewImg = url
+    if (target.tagName !== 'BUTTON')
+      return
+
+    const src = target.dataset.src
+    postStore.viewImg = src
   })
 })
 </script>
 
 <template>
   <p
-    class="whitespace-pre-wrap break-all text-4 text-black"
+    ref="textRef"
+    class="text whitespace-pre-wrap break-all text-4 text-black"
     v-html="parsedText"
   />
 </template>
+
+<style>
+p.text button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+</style>

@@ -3,9 +3,9 @@
  */
 export function waitForElement<T extends Element = HTMLElement>(
   selector: string,
-  $ = (e: string) => document.querySelectorAll<T>(e),
+  $ = (e: string) => document.querySelector<T>(e),
 ) {
-  return new Promise<NodeListOf<T> | null>((resolve) => {
+  return new Promise<T | null>((resolve) => {
     if ($(selector))
       return resolve($(selector))
 

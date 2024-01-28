@@ -8,11 +8,15 @@ defineProps<{
 
 <template>
   <article
-    class="flex flex-col gap-2 rounded-2 bg-white p-4 shadow-xl dark:bg-dark"
+    :id="post.mblogid"
+    class="post flex flex-col gap-2 rounded-2 bg-white p-4 shadow-xl dark:bg-dark"
   >
     <div class="flex justify-between">
       <profile :user="post.user" />
-      <post-meta :meta="post" />
+      <post-meta
+        :is-body="true"
+        :meta="post"
+      />
     </div>
 
     <main>
@@ -36,3 +40,9 @@ defineProps<{
     />
   </article>
 </template>
+
+<style>
+.post:hover .copy-id {
+ opacity: 1 !important;
+}
+</style>
