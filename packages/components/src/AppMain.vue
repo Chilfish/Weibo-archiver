@@ -7,7 +7,10 @@ import {
   zhCN,
 } from 'naive-ui'
 
-const isDark = useDark()
+const isDark = useDark({
+  storageKey: 'theme',
+  disableTransition: false,
+})
 const theme = computed(() => isDark.value ? darkTheme : null)
 </script>
 

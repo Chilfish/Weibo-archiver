@@ -12,7 +12,7 @@ watch(() => postStore.viewImg, async () => {
 <template>
   <div
     id="img-viewer"
-    class="absolute right-0 top-0"
+    class="absolute right-0 top-0 hidden"
   >
     <ui-image
       class="h-0 w-0"

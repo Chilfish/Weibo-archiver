@@ -6,9 +6,11 @@
   <app-main>
     <ui-header />
 
-    <suspense>
-      <router-view class="mt-14" />
-    </suspense>
+    <router-view v-slot="{ Component }">
+      <transition name="fade">
+        <component :is="Component" />
+      </transition>
+    </router-view>
 
     <img-viewer />
   </app-main>

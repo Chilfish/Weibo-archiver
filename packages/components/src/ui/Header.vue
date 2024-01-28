@@ -25,7 +25,10 @@ async function search() {
     router.push(`/s?q=${searchInput.value}`)
 }
 
-const isDark = useDark()
+const isDark = useDark({
+  storageKey: 'theme',
+  disableTransition: false,
+})
 const toggleDark = useToggle(isDark)
 </script>
 
@@ -55,10 +58,12 @@ const toggleDark = useToggle(isDark)
     </form>
 
     <button
-      class="btn"
       @click="toggleDark()"
     >
-      {{ isDark ? '日间' : '夜间' }}
+      <span
+        :i-tabler="isDark ? 'moon' : 'sun'"
+        class="icon"
+      />
     </button>
   </header>
 </template>
