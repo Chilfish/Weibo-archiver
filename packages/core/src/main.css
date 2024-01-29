@@ -57,6 +57,10 @@ p button {
   --uno: text-teal-600 hover:text-teal-700;
 }
 
+p {
+  --uno: text-black dark:text-light;
+}
+
 /* 微博的样式 */
 .woo-box-flex img {
   display: initial !important;

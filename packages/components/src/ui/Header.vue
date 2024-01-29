@@ -24,7 +24,7 @@ const searchInput = ref(route.query?.q?.toString() || '')
 async function search() {
   const res = await usePostStore().searchText(searchInput.value)
   if (res.length)
-    router.push(`/s?q=${searchInput.value}`)
+    router.push(`/s/1?q=${searchInput.value}`)
 }
 
 const toggleDark = useToggle(isDark)

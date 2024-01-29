@@ -4,14 +4,17 @@ export function usePagination() {
   const postStore = usePostStore()
   const router = useRouter()
   const route = useRoute()
+  const path = ref(route.path.replace(/\/\d+$/, '') || '/p')
+  const query = ref(route.query)
 
   const pageSize = ref(postStore.postsPerPage)
   const curPage = ref(postStore.curPage)
 
   watch([pageSize, curPage], ([newPageSize, newCurPage]) => {
     router.push({
-      path: `/p/${newCurPage}`,
+      path: `${path.value}/${newCurPage}`,
       query: {
+        ...query.value,
         pageSize: newPageSize,
       },
     })

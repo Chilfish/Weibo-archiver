@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./Index.vue'),
   },
   {
-    path: '/s',
+    path: '/s/:page(\\d+)',
     component: () => import('./Search.vue'),
   },
 ]
