@@ -1,14 +1,10 @@
 import {
   NAlert,
-  NAvatar,
   NCheckbox,
   NConfigProvider,
   NDatePicker,
-  NImage,
-  NImageGroup,
   NInputNumber,
   NMessageProvider,
-  NPagination,
   NProgress,
   create,
   useMessage,
@@ -20,16 +16,12 @@ import {
 export const naive = create({
   components: [
     useMessage,
-    NAvatar,
     NAlert,
     NCheckbox,
     NConfigProvider,
     NDatePicker,
-    NImage,
-    NImageGroup,
     NInputNumber,
     NMessageProvider,
-    NPagination,
     NProgress,
   ],
 })

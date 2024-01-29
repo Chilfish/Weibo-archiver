@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import { naive } from '../../core/src/utils/naiveui'
 import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
@@ -33,5 +32,4 @@ const router = createRouter({
 app
   .use(router)
   .use(createPinia())
-  .use(naive)
   .mount('#app')

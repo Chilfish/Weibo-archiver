@@ -1,11 +1,17 @@
 import { defineConfig } from 'vite'
 import monkey, { cdn, util } from 'vite-plugin-monkey'
-import config from '../../vite.config'
+import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+
+import config, { autoComponentConfig, autoImportConfig } from '../../vite.config'
 
 export default defineConfig({
   ...config,
   plugins: [
     ...config.plugins!,
+    AutoImport(autoImportConfig),
+    Components(autoComponentConfig),
+
     monkey({
       entry: 'src/main.ts',
       userscript: {
