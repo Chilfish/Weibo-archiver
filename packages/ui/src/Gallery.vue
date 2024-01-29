@@ -25,7 +25,7 @@ const maxHeight = computed(() => {
     class="mt-4 w-fit flex flex-wrap items-center gap-2"
   >
     <n-image-group>
-      <ui-image
+      <main-image
         v-for="img in imgs"
         :key="img"
         :src="img"

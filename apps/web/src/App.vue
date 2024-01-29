@@ -4,7 +4,7 @@
 
 <template>
   <app-main>
-    <ui-header />
+    <main-header />
 
     <router-view v-slot="{ Component }">
       <transition name="fade">
