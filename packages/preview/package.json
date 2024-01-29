@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@weibo-archiver/components": "workspace:^",
-    "vite-plugin-static-copy": "^1.0.1",
-    "vue-router": "^4.2.5"
+    "vite-plugin-static-copy": "^1.0.1"
   }
 }

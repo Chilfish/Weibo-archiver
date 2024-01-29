@@ -8,7 +8,6 @@ defineProps<{
 
 <template>
   <div
-    id="image-scroll-container"
     class="h-full w-full flex flex-col gap-4 rounded p-6 pb-8 sm:max-w-60rem"
   >
     <post-item

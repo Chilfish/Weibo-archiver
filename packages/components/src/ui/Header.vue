@@ -17,8 +17,9 @@ const headerStyle = computed(() => {
   }
 })
 
-const searchInput = ref(useRoute().query?.q?.toString() || '')
 const router = useRouter()
+const route = useRoute()
+const searchInput = ref(route.query?.q?.toString() || '')
 
 async function search() {
   const res = await usePostStore().searchText(searchInput.value)
@@ -27,6 +28,10 @@ async function search() {
 }
 
 const toggleDark = useToggle(isDark)
+
+onMounted(() => {
+  searchInput.value = route.query?.q?.toString() || ''
+})
 </script>
 
 <template>

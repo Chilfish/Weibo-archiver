@@ -3,10 +3,11 @@ import { onBeforeRouteLeave, useRoute } from 'vue-router'
 
 const { q } = useRoute().query
 const postStore = usePostStore()
-const curPage = ref(1)
 
-if (q && postStore.resultPosts.length === 0)
-  await postStore.searchText(q.toString())
+onBeforeMount(async () => {
+  if (q && postStore.resultPosts.length === 0)
+    await postStore.searchText(q.toString())
+})
 
 onBeforeRouteLeave((to, from) => {
   if (to.path !== from.path)
@@ -15,10 +16,9 @@ onBeforeRouteLeave((to, from) => {
 </script>
 
 <template>
-  <main>
+  <main class="mt-12">
     <Preview
       v-if="postStore.resultPosts.length > 0"
-      :page="curPage"
     />
     <h1
       v-else

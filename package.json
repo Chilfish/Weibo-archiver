@@ -20,7 +20,8 @@
   "dependencies": {
     "@vueuse/core": "^10.7.2",
     "pinia": "^2.1.7",
-    "vue": "^3.4.15"
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.3",

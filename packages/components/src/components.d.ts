@@ -18,6 +18,7 @@ declare module 'vue' {
     PostItem: typeof import('./post/Item.vue')['default']
     PostList: typeof import('./post/List.vue')['default']
     PostMeta: typeof import('./post/Meta.vue')['default']
+    PostPagination: typeof import('./post/Pagination.vue')['default']
     PostRetweeted: typeof import('./post/Retweeted.vue')['default']
     PostText: typeof import('./post/Text.vue')['default']
     Preview: typeof import('./Preview.vue')['default']
