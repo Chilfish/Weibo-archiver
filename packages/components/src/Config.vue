@@ -14,7 +14,9 @@ const dateRange = computed({
 
 <template>
   <div class="flex flex-col gap-3">
-    <p>请选择要存档的范围，默认为从头到尾</p>
+    <p class="text-black">
+      请选择要存档的范围，默认为所有微博
+    </p>
 
     <n-date-picker
       v-model:value="dateRange"
@@ -25,7 +27,7 @@ const dateRange = computed({
     <div class="center flex-wrap justify-start gap-2">
       <n-checkbox
         v-model:checked="configStore.state.picLarge"
-        label="下载原图"
+        label="导出原图"
       />
       <n-checkbox
         v-model:checked="configStore.state.comment"
@@ -38,7 +40,7 @@ const dateRange = computed({
       <n-checkbox
         v-show="configStore.state.repost"
         v-model:checked="configStore.state.repostPic"
-        label="同时也下载转发微博的图片"
+        label="同时也导出转发微博的图片"
       />
     </div>
 
