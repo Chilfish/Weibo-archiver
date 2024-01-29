@@ -22,7 +22,7 @@
 
 有关项目的进展路线等，可见 [项目的 Todo] 部分
 
-### 处理导出后的数据
+#### 处理导出后的数据
 
 完成后将导出包含微博数据的 data.mjs 和微博原图链接 imgs.csv 这两个文件。以及 preview.zip，解压后里面包含了用于预览的 HTML 文件和一些工具脚本。
 
@@ -38,7 +38,7 @@ node ./download.mjs -u 你的数字uid
 
 其中数字 uid 可以在网页版的个人主页中查看，如 https://weibo.com/u/1111681197 （如果是昵称或别的，需要手动再点一下头像来跳转到该链接）
 
-### 查看结果
+#### 查看结果
 
 至于在线查看，暂不支持直接点击 index.html 来查看，需要启动本地的服务器。还是在控制台中运行下面的命令，就会自动打开浏览器
 
@@ -46,7 +46,7 @@ node ./download.mjs -u 你的数字uid
 node ./server.mjs
 ```
 
-### 合并追加的数据
+#### 合并追加的数据
 
 如果使用了像是时间范围内导出，并想要将它与之前的 data.mjs 合并，那么你需要先将新的 data.mjs 复制到 index.html 目录中，在终端运行
 
@@ -74,14 +74,24 @@ node ./merge.mjs
 
 ### 对开发者
 
-项目采用 monorepo 的结构，使用 pnpm 管理。在 packages 目录下：
+项目采用 monorepo 的结构，使用 pnpm 管理。
+
+在 packages 目录下：
 
 - `/core` 包含了工具函数、pinia 等数据处理的核心
-- `/components` 包含 UI 部分的组件
-- `/preview` 是用于最终查看微博的 UI 部分
-- `/monkey` 是用于打包成油猴脚本的
+- `/ui` 包含 UI 部分的组件代码
 
-只需要在根目录中 `pnpm i`，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
+在 apps 目录下，为最终的应用
+
+- `/web` 是用于最终查看微博数据的网页
+- `/monkey` 用于打包成油猴脚本
+- `/desktop` 桌面端版本
+
+只需要在根目录中 `pnpm i` 即为所有子项目安转依赖，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
+
+目前我还在学习着 electron 开发，桌面端部分还得再等等🥺原型什么的还在设计
+
+有关项目的进展路线等，可见 [项目的 Todo] 部分
 
 ### 鸣谢
 
