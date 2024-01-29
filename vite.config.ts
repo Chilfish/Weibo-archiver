@@ -11,9 +11,9 @@ export const packages = path.resolve(root, 'packages')
 export const core = path.resolve(packages, 'core/src')
 
 export const autoComponentConfig: autoComponentOptions = {
-  dts: path.resolve(packages, 'components/src/components.d.ts'),
+  dts: path.resolve(packages, 'ui/src/components.d.ts'),
   dirs: [
-    path.resolve(packages, 'components/src'),
+    path.resolve(packages, 'ui/src'),
   ],
   directoryAsNamespace: true,
 }
@@ -26,7 +26,7 @@ export const autoImportConfig: autoImportOptions = {
   dts: path.resolve(core, 'types/auto-imports.d.ts'),
   dirs: [
     path.resolve(core, '**'),
-    path.resolve(packages, 'components/src'),
+    path.resolve(packages, 'ui/src'),
   ],
   vueTemplate: true,
 }

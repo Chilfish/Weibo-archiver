@@ -6,10 +6,10 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 
-import config, { autoComponentConfig, autoImportConfig, core, packages, root } from '../../vite.config'
+import config, { autoComponentConfig, autoImportConfig, core, root } from '../../vite.config'
 
 const dataJs = path.resolve(core, 'constants/data.mjs')
-const index = path.resolve(packages, 'preview/index.html')
+const index = path.resolve('./index.html')
 
 export default defineConfig({
   ...config,

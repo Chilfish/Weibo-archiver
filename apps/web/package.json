@@ -1,5 +1,5 @@
 {
-  "name": "@weibo-archiver/preview",
+  "name": "@weibo-archiver/web",
   "type": "module",
   "version": "0.2.1",
   "private": true,
