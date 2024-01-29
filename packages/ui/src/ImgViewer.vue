@@ -26,7 +26,7 @@ watch(() => postStore.viewImg, async () => {
     id="img-viewer"
     class="absolute right-0 top-0 hidden"
   >
-    <ui-image
+    <main-image
       class="h-0 w-0"
       :src="postStore.viewImg"
     />

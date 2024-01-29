@@ -79,24 +79,24 @@ importers:
         specifier: ^1.8.27
         version: 1.8.27(typescript@5.3.3)
 
-  packages/components:
+  apps/monkey:
     dependencies:
-      '@weibo-archiver/core':
+      '@weibo-archiver/components':
         specifier: workspace:^
-        version: link:../core
+        version: link:../../packages/ui
     devDependencies:
-      '@iconify-json/tabler':
-        specifier: ^1.1.104
-        version: 1.1.104
-      '@unocss/eslint-config':
-        specifier: ^0.58.4
-        version: 0.58.4(eslint@8.56.0)(typescript@5.3.3)
-      '@unocss/eslint-plugin':
-        specifier: ^0.58.4
-        version: 0.58.4(eslint@8.56.0)(typescript@5.3.3)
-      unocss:
-        specifier: ^0.58.4
-        version: 0.58.4(postcss@8.4.33)(vite@5.0.12)
+      vite-plugin-monkey:
+        specifier: ^3.5.1
+        version: 3.5.1(vite@5.0.12)
+
+  apps/web:
+    dependencies:
+      '@weibo-archiver/components':
+        specifier: workspace:^
+        version: link:../../packages/ui
+      vite-plugin-static-copy:
+        specifier: ^1.0.1
+        version: 1.0.1(vite@5.0.12)
 
   packages/core:
     dependencies:
@@ -114,24 +114,24 @@ importers:
         specifier: ^2.37.3
         version: 2.37.3(vue@3.4.15)
 
-  packages/monkey:
+  packages/ui:
     dependencies:
-      '@weibo-archiver/components':
+      '@weibo-archiver/core':
         specifier: workspace:^
-        version: link:../components
+        version: link:../core
     devDependencies:
-      vite-plugin-monkey:
-        specifier: ^3.5.1
-        version: 3.5.1(vite@5.0.12)
-
-  packages/preview:
-    dependencies:
-      '@weibo-archiver/components':
-        specifier: workspace:^
-        version: link:../components
-      vite-plugin-static-copy:
-        specifier: ^1.0.1
-        version: 1.0.1(vite@5.0.12)
+      '@iconify-json/tabler':
+        specifier: ^1.1.104
+        version: 1.1.104
+      '@unocss/eslint-config':
+        specifier: ^0.58.4
+        version: 0.58.4(eslint@8.56.0)(typescript@5.3.3)
+      '@unocss/eslint-plugin':
+        specifier: ^0.58.4
+        version: 0.58.4(eslint@8.56.0)(typescript@5.3.3)
+      unocss:
+        specifier: ^0.58.4
+        version: 0.58.4(postcss@8.4.33)(vite@5.0.12)
 
 packages:
 

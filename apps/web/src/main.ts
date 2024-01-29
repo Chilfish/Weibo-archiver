@@ -5,7 +5,7 @@ import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
 import 'uno.css'
-import '../../core/src/main.css'
+import '@weibo-archiver/core/src/main.css'
 
 const app = createApp(App)
 

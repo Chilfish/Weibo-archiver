@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ESNext",
     "jsx": "preserve",
@@ -8,7 +9,10 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@weibo-archiver/*": ["packages/*"]
+      "@weibo-archiver/core": ["packages/core/index.ts"],
+      "weibo-archiver/ui/*": ["packages/ui/*"],
+      "@weibo-archiver/monkey/*": ["apps/monkey/*"],
+      "@weibo-archiver/web/*": ["apps/web/*"]
     },
     "types": [
       "vite/client",
@@ -22,11 +26,10 @@
     "skipLibCheck": true
   },
   "include": [
-    "packages/**/src/**/*.ts",
-    "packages/**/src/**/*.d.ts",
-    "packages/**/src/**/*.vue",
-    "packages/**/src/vite.config.ts",
-    "vite.config.ts"
+    "apps",
+    "packages",
+    "*.ts",
+    "*.tsx"
   ],
   "exclude": [
     "dist",

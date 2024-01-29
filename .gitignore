@@ -9,7 +9,7 @@ node_modules
 *.log
 
 
-packages/preview/public/assets/img/
+apps/web/public/assets/img/
 packages/core/src/constants/data.mjs
 components.d.ts
 auto-imports.d.ts
