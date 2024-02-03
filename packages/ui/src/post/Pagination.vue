@@ -27,6 +27,7 @@ onMounted(async () => {
       :page-sizes="[20, 30, 50, 100]"
       :item-count="postStore.total"
 
+      class="center flex-wrap"
       @update:page-size="fixPagePanel"
     />
   </div>

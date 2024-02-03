@@ -3,37 +3,50 @@ const props = defineProps<{
   imgs: string[]
 }>()
 
-const width = computed(() => {
-  const len = props.imgs.length
-  if (len <= 2)
-    return `40%`
-  if (len >= 4 && len <= 5)
-    return `24%`
-  return '32%'
+const len = computed(() => props.imgs.length)
+
+const { width: windowWidth } = useWindowSize()
+
+const imgWidth = computed(() => {
+  if (windowWidth.value < 480) {
+    if (len.value === 1)
+      return '13rem'
+    return '7rem'
+  }
+
+  // 大屏
+  if (len.value === 3 || len.value > 4)
+    return '32%'
+  else if (len.value === 1)
+    return '30rem'
+  return '13rem'
 })
 
 const maxHeight = computed(() => {
-  const len = props.imgs.length
-  if (len === 1)
-    return 'fit-content'
-  return '13rem'
+  if (len.value === 1)
+    return '30rem'
+  return windowWidth.value < 480 ? '7rem' : '13rem'
 })
 </script>
 
 <template>
   <div
-    class="mt-4 w-fit flex flex-wrap items-center gap-2"
+    class="mt-4 min-w-fit flex flex-wrap items-center gap-1"
   >
     <n-image-group>
       <main-image
         v-for="img in imgs"
         :key="img"
         :src="img"
+        :width="imgWidth"
+        :min-height="windowWidth < 480 ? '10rem' : '13rem'"
+        :height="len > 1 ? imgWidth : undefined"
         :style="{
-          width,
           maxHeight,
+          width: imgWidth,
         }"
-        class="block overflow-hidden"
+        fit="cover"
+        class="block overflow-hidden transition-all"
       />
     </n-image-group>
   </div>

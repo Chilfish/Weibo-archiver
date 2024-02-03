@@ -8,7 +8,8 @@
   "keywords": [],
   "main": "index.ts",
   "dependencies": {
-    "@weibo-archiver/core": "workspace:^"
+    "@weibo-archiver/core": "workspace:^",
+    "sass": "^1.70.0"
   },
   "devDependencies": {
     "@iconify-json/tabler": "^1.1.104",

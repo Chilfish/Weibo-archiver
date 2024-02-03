@@ -30,7 +30,10 @@ export function lazyLoadImage() {
         const img = entry.target as HTMLImageElement
         const src = img.getAttribute('data-preview-src')
         img.src = src || '/placeholder.webp'
-        img.onerror = () => img.src = '/placeholder.webp'
+        img.onerror = () => {
+          img.src = '/placeholder.webp'
+          img.parentElement?.classList.add('img-error')
+        }
         observer.unobserve(img)
       }
     })
