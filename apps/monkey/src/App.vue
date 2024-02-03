@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import AppMain from '@weibo-archiver/ui/AppMain.vue'
+import Ctrl from './Ctrl.vue'
 </script>
 
 <template>
-  <app-main>
+  <AppMain>
     <Suspense>
       <Ctrl />
     </Suspense>
-    <img-viewer />
-  </app-main>
+  </AppMain>
 </template>

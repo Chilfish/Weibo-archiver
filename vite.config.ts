@@ -34,7 +34,8 @@ export const autoImportConfig: autoImportOptions = {
 export default defineConfig({
   resolve: {
     alias: {
-      '@weibo-archiver/': `${packages}/`,
+      '@weibo-archiver/core': `${packages}/core/src`,
+      '@weibo-archiver/ui': `${packages}/ui/src`,
     },
   },
   plugins: [

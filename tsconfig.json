@@ -9,8 +9,8 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@weibo-archiver/core": ["packages/core/index.ts"],
-      "weibo-archiver/ui/*": ["packages/ui/*"],
+      "@weibo-archiver/core": ["packages/core/src/index.ts"],
+      "@weibo-archiver/ui/*": ["packages/ui/src/*"],
       "@weibo-archiver/monkey/*": ["apps/monkey/*"],
       "@weibo-archiver/web/*": ["apps/web/*"]
     },

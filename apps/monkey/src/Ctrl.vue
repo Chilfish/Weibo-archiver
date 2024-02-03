@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
+import Config from './Config.vue'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
 const name = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
