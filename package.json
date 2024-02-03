@@ -3,9 +3,18 @@
   "type": "module",
   "version": "0.2.1",
   "packageManager": "pnpm@8.14.3",
-  "description": "weibo-backup",
-  "author": "Chilfish",
+  "description": "Archive your Weibo posts before being banned completely.",
+  "author": {
+    "name": "Chilfish",
+    "email": "chill4fish@gmail.com",
+    "url": "https://chilfish.top"
+  },
   "license": "MIT",
+  "homepage": "https://github.com/Chilfish/Weibo-archiver.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chilfish/Weibo-archiver.git"
+  },
   "scripts": {
     "build:web": "pnpm -F web build",
     "build:monkey": "pnpm -F monkey build",
