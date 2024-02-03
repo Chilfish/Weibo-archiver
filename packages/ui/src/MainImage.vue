@@ -15,24 +15,21 @@ withDefaults(defineProps<{
   <n-image
     lazy
     fallback-src="/placeholder.webp"
-    :src="replaceImg(src)"
+    src="/placeholder.webp"
     :object-fit="fit"
     :alt="alt"
     :width="width"
     :height="height"
-    :intersection-observer-options="{
-      root: 'image-scroll-container',
-    }"
+    :preview-src="replaceImg(src)"
     :img-props="{
       referrerpolicy: referrerPolicy,
     }"
   >
     <template #placeholder>
-      <div
-        class="h-full w-full center"
+      <img
+        src="/placeholder.webp"
+        class="h-full w-full"
       >
-        Loading
-      </div>
     </template>
   </n-image>
 </template>

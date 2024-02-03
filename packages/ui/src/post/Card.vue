@@ -15,7 +15,8 @@ defineProps<{
   >
     <main-image
       class="mr-2 h-30 w-30 rounded-2"
-      :src="replaceImg(card.img)"
+      fit="cover"
+      :src="card.img"
     />
     <div class="w-full p-2">
       <h4>{{ card.title }}</h4>
