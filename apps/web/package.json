@@ -1,40 +1,20 @@
 {
   "name": "@weibo-archiver/web",
   "type": "module",
-  "version": "0.0.7",
+  "version": "0.2.2",
   "private": true,
-  "packageManager": "pnpm@8.15.3",
-  "description": "Nuxt app for weibo-archiver",
-  "author": {
-    "name": "Chilfish",
-    "email": "chill4fish@gmail.com",
-    "url": "https://chilfish.top"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/Chilfish/weibo-archiver",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Chilfish/weibo-archiver.git"
-  },
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "main": "index.js",
   "scripts": {
-    "build": "tsx scripts/build.ts",
-    "dev": "nuxi dev",
-    "generate": "nuxi generate",
-    "postinstall": "nuxi prepare",
-    "start": "node .output/server/index.mjs",
-    "lint": "eslint .",
-    "typecheck": "nuxi typecheck",
-    "prepare": "husky install"
+    "dev": "vite --open",
+    "build": "vite build --emptyOutDir",
+    "preview": "vite preview"
   },
-  "devDependencies": {
-    "@bg-dev/nuxt-naiveui": "^1.10.1",
-    "@nuxt/image": "^1.3.0",
-    "@nuxtjs/color-mode": "^3.3.2",
-    "@pinia/nuxt": "^0.5.1",
-    "@types/fs-extra": "11.0.4",
-    "@unocss/nuxt": "^0.58.5",
-    "@vueuse/nuxt": "^10.7.2",
-    "fs-extra": "^11.2.0",
-    "nuxt": "^3.10.2"
+  "dependencies": {
+    "@weibo-archiver/ui": "workspace:^",
+    "vite-plugin-static-copy": "^1.0.1"
   }
 }

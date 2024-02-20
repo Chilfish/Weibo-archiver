@@ -1,8 +1,7 @@
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import { previewZip } from '../constants'
-import type { Post } from '../types'
-import imgsParser from './parse'
+import { imgsParser, previewZip } from '@weibo-archiver/core'
+import type { Post } from '@types'
 
 export function exportData(posts: Post[]) {
   // 只能固定版本在 3.9.1，因为油猴的升级

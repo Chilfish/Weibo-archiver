@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import { naive } from './naiveui'
+import { naive } from './utils/naiveui'
 import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'

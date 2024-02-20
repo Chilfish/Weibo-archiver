@@ -1,40 +1,14 @@
-import path from 'node:path'
 import { defineConfig } from 'vite'
 import monkey, { cdn, util } from 'vite-plugin-monkey'
 import AutoImport from 'unplugin-auto-import/vite'
-import Vue from '@vitejs/plugin-vue'
-import UnoCSS from 'unocss/vite'
 
-const root = path.resolve(__dirname, '../../')
-const packages = path.resolve(root, 'packages')
-const core = path.resolve(packages, 'core/src')
+import config, { autoImportConfig } from '../../vite.config'
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@weibo-archiver/core': `${packages}/core/src`,
-      '@weibo-archiver/ui': `${packages}/ui/src`,
-    },
-  },
-  build: {
-    outDir: path.resolve(root, 'dist'),
-    minify: true,
-  },
+  ...config,
   plugins: [
-    Vue(),
-    UnoCSS(),
-    AutoImport({
-      imports: [
-        'vue',
-        '@vueuse/core',
-      ],
-      dts: path.resolve(core, 'types/auto-imports.d.ts'),
-      dirs: [
-        path.resolve(core, '**'),
-        path.resolve(packages, 'ui/src'),
-      ],
-      vueTemplate: true,
-    }),
+    ...config.plugins!,
+    AutoImport(autoImportConfig),
 
     monkey({
       entry: 'src/main.ts',
@@ -43,7 +17,7 @@ export default defineConfig({
         description: '将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭',
         homepage: 'https://github.com/Chilfish/Weibo-Archiver',
         source: 'https://github.com/Chilfish/Weibo-Archiver/tree/main/packages/monkey',
-        icon: 'https://weibo.com/favicon.ico',
+        icon: 'https://github.com/Chilfish/Weibo-archiver/raw/main/docs/Speechless48.png',
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',

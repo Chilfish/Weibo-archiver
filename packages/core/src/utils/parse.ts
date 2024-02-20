@@ -1,4 +1,8 @@
-import type { CardInfo, Comment, ParseResult, PicInfo, Post } from '../types'
+import type { CardInfo, Comment, ParseResult, PicInfo, Post } from '@types'
+import { fetchComments, fetchLongText } from '../composables'
+import { imgViewSrc } from '../constants'
+import { useConfigStore } from '../stores'
+import { isInMonkey } from '.'
 
 export const weibo = 'https://weibo.com'
 
@@ -166,7 +170,7 @@ export async function postsParser(posts: any[], uid: string): Promise<Post[]> {
   return res.filter((e): e is Post => !!e && e.user?.id === uid)
 }
 
-export default function imgsParser(posts: Post[]): Set<string> {
+export function imgsParser(posts: Post[]): Set<string> {
   const imgs = posts
     .map((post) => {
       return [

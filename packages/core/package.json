@@ -3,19 +3,10 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "typecheck": "tsc --noEmit -p ./tsconfig.json",
-    "sqlite:gen": "drizzle-kit generate:sqlite",
-    "sqlite:push": "pnpm rebuild && drizzle-kit push:sqlite"
+    "typecheck": "tsc --noEmit -p ./tsconfig.json"
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
-    "better-sqlite3": "^9.4.1",
-    "drizzle-orm": "^0.29.3",
-    "drizzle-zod": "^0.5.1",
     "pinia": "^2.1.7"
-  },
-  "devDependencies": {
-    "@types/better-sqlite3": "^7.6.9",
-    "drizzle-kit": "^0.20.14"
   }
 }
