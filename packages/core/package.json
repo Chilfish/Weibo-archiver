@@ -1,21 +1,21 @@
 {
   "name": "@weibo-archiver/core",
   "type": "module",
-  "version": "0.2.2",
-  "description": "",
-  "author": "Chilfish",
-  "license": "ISC",
-  "keywords": [],
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "build": "rollup -c --bundleConfigAsCjs"
+    "typecheck": "tsc --noEmit -p ./tsconfig.json",
+    "sqlite:gen": "drizzle-kit generate:sqlite",
+    "sqlite:push": "pnpm rebuild && drizzle-kit push:sqlite"
   },
   "dependencies": {
-    "file-saver": "^2.0.5",
-    "jszip": "3.9.1"
+    "@vueuse/core": "^10.7.2",
+    "better-sqlite3": "^9.4.1",
+    "drizzle-orm": "^0.29.3",
+    "drizzle-zod": "^0.5.1",
+    "pinia": "^2.1.7"
   },
   "devDependencies": {
-    "@types/file-saver": "^2.0.7",
-    "naive-ui": "^2.37.3"
+    "@types/better-sqlite3": "^7.6.9",
+    "drizzle-kit": "^0.20.14"
   }
 }

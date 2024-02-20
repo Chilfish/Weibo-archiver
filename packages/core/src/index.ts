@@ -1,5 +1,5 @@
 export * from './composables'
 export * from './utils'
 export * from './constants'
-export * from './types'
 export * from './stores'
+export * from './services'

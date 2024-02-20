@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#preload": ["../preload/src/index"],
+      "~/*": ["./src/*"],
+      "@core/*": ["../../../packages/core/*"],
+      "@ui/*": ["../../../packages/ui/*"],
+      "@types": ["../../../types/index"]
+    }
+  },
+  "exclude": [
+    "../../web/**/*",
+    "../main/**/*"
+  ]
+}

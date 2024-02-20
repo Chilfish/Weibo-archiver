@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["node"]
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "../web/**/*"
+  ]
+}
