@@ -78,14 +78,15 @@ node ./merge.mjs
 
 在 packages 目录下：
 
-- `/core` 包含了工具函数、pinia 等数据处理的核心
-- `/ui` 包含 UI 部分的组件代码
+- [/core](packages/core/) 包含了工具函数、pinia 等数据处理的核心
+- [/ui](packages/ui/) 包含 UI 部分的组件代码
+- [/database](packages/database/) Sqlite3 Drizzle-ORM
 
 在 apps 目录下，为最终的应用
 
-- `/web` 是用于最终查看微博数据的网页
-- `/monkey` 用于打包成油猴脚本
-- `/desktop` 桌面端版本
+- [/web](apps/web/) 是用于最终查看微博数据的网页
+- [/monkey](apps/monkey/) 用于打包成油猴脚本
+- [/desktop](apps/desktop/) 桌面端版本
 
 只需要在根目录中 `pnpm i` 即为所有子项目安转依赖，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
 
