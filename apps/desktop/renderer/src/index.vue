@@ -4,6 +4,8 @@ import { UserIPC } from '#preload'
 watchImmediate(isDark, (value) => {
   config.set('theme', value ? 'dark' : 'light')
 })
+
+const message = useMessage()
 </script>
 
 <template>
@@ -13,20 +15,21 @@ watchImmediate(isDark, (value) => {
 
   <div class="flex gap-4">
     <Dark />
-    <Button>Naive UI</Button>
-
-    <ReactiveCounter />
+    <button
+      class="text-red"
+      @click="() => {
+        message.info('hello')
+      }"
+    >
+      naive-ui
+    </button>
   </div>
 
-  <div>
-    <p>
-      Configs:
-      {{ configRef }}
-    </p>
-  </div>
+  <p>
+    Configs: {{ configRef }}
+  </p>
 
   <File />
-  <ReactiveHash />
 
   <Sqlite
     :user-service="UserIPC"

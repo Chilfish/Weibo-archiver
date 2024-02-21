@@ -1,5 +1,5 @@
 {
-  "name": "@weibo-archiver/desktop",
+  "name": "weibo-archiver",
   "type": "module",
   "version": "0.2.2",
   "description": "the desktop app for weibo-archiver",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@weibo-archiver/core": "workspace:*",
+    "@weibo-archiver/database": "workspace:*",
     "@weibo-archiver/ui": "workspace:*",
     "conf": "^12.0.0",
     "custom-electron-titlebar": "^4.2.8",
@@ -51,6 +52,7 @@
     "@types/node": "20.11.19",
     "@vitejs/plugin-vue": "5.0.4",
     "@vue/test-utils": "2.4.4",
+    "cross-env": "^7.0.3",
     "electron": "28.2.3",
     "electron-builder": "24.9.1",
     "electron-devtools-installer": "^3.2.0",

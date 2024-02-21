@@ -30,7 +30,9 @@ export function electronViteConfig(
   return {
     resolve: {
       alias: {
-        '@core': join(PACKAGES_ROOT, 'core'),
+        '@ui': join(PACKAGES_ROOT, 'ui/src'),
+        '@core': join(PACKAGES_ROOT, 'core/src'),
+        '@database': join(PACKAGES_ROOT, 'database/src'),
       },
     },
     build: {

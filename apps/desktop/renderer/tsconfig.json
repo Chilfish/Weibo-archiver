@@ -1,12 +1,13 @@
 {
-  "extends": "../../../tsconfig.base.json",
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "#preload": ["../preload/src/index"],
       "~/*": ["./src/*"],
-      "@core/*": ["../../../packages/core/*"],
-      "@ui/*": ["../../../packages/ui/*"],
+      "@core/*": ["../../../packages/core/src/*"],
+      "@ui/*": ["../../../packages/ui/src/*"],
+      "@database/*": ["../../../packages/database/src/*"],
       "@types": ["../../../types/index"]
     }
   },

@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "vite --open",
     "build": "vite build --emptyOutDir",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@weibo-archiver/ui": "workspace:^",

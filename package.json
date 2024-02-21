@@ -16,19 +16,22 @@
     "url": "https://github.com/Chilfish/Weibo-archiver.git"
   },
   "scripts": {
-    "build:web": "pnpm -F web build",
-    "build:monkey": "pnpm -F monkey build",
     "dev:web": "pnpm -F web dev",
     "dev:monkey": "pnpm -F monkey dev",
-    "preview": "pnpm -F web preview",
+    "dev:desktop": "pnpm -C apps/desktop dev",
+    "build:web": "pnpm -F web build",
+    "build:monkey": "pnpm -F monkey build",
+    "build:desktop": "pnpm -C apps/desktop compile",
+    "rebuild:db": "pnpm -F database rebuild",
+    "rebuild:desktop": "pnpm -C apps/desktop rebuild:sqlite",
+    "preview:web": "pnpm -F web preview",
+    "typecheck:web": "pnpm -F web typecheck",
+    "typecheck:desktop": "pnpm -C apps/desktop typecheck",
     "lint": "eslint .",
-    "typecheck": "vue-tsc --noEmit",
-    "up": "taze major -rI",
-    "prepare": "husky install"
+    "prepare": "husky || true"
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
-    "naive-ui": "^2.37.3",
     "pinia": "^2.1.7",
     "vue": "^3.4.19",
     "vue-router": "^4.2.5"
@@ -43,8 +46,8 @@
     "eslint-ts-patch": "8.55.0-1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "naive-ui": "^2.37.3",
     "pnpm": "^8.15.3",
-    "taze": "^0.13.3",
     "typescript": "^5.3.3",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",

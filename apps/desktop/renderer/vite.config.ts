@@ -19,8 +19,8 @@ const config: UserConfig = {
   resolve: {
     alias: {
       '~/': join(__dirname, `src/`),
-      '@core': join(PACKAGES_ROOT, 'core'),
-      '@ui': join(PACKAGES_ROOT, 'ui'),
+      '@core': join(PACKAGES_ROOT, 'core/src'),
+      '@ui': join(PACKAGES_ROOT, 'ui/src'),
     },
   },
   server: {
@@ -57,7 +57,8 @@ const config: UserConfig = {
       ],
       dts: join(PROJECT_ROOT, 'types/auto-imports.d.ts'),
       dirs: [
-        `${PACKAGES_ROOT}/core`,
+        `${PACKAGES_ROOT}/core/src`,
+        `${PACKAGES_ROOT}/database/src`,
         'src/composables',
       ],
       vueTemplate: true,
@@ -66,12 +67,13 @@ const config: UserConfig = {
     Components({
       dts: join(PROJECT_ROOT, 'types/auto-components.d.ts'),
       dirs: [
-        `${PACKAGES_ROOT}/ui`,
+        `${PACKAGES_ROOT}/ui/src`,
         'src/components',
       ],
       resolvers: [
         NaiveUiResolver(),
       ],
+      directoryAsNamespace: true,
       types: [{
         from: 'vue-router',
         names: ['RouterLink', 'RouterView'],

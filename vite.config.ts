@@ -17,6 +17,10 @@ export const autoComponentConfig: autoComponentOptions = {
     path.resolve(packages, 'ui/src'),
   ],
   directoryAsNamespace: true,
+  types: [{
+    from: 'vue-router',
+    names: ['RouterLink', 'RouterView'],
+  }],
 }
 
 export const autoImportConfig: autoImportOptions = {

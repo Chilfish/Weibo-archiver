@@ -1,12 +1,14 @@
-import { config } from '#preload'
+import { _config } from '#preload'
 
-const configRef = ref(config.data)
+console.log(_config)
 
-config.onChange((newVal) => {
+const configRef = ref(_config.data)
+
+_config.onChange((newVal) => {
   configRef.value = newVal
 })
 
 export {
   configRef,
-  config,
+  _config as config,
 }

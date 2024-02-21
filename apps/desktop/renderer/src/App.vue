@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <MainApp>
+  <AppMain>
     <main class="flex flex-col gap-2">
       <RouterView />
     </main>
-  </MainApp>
+  </AppMain>
 </template>

@@ -1,8 +1,8 @@
 import customTitlebar from 'custom-electron-titlebar'
-import type { UserDBMethods } from '@core/database'
+import type { UserDBMethods } from '@database'
 import type { AppConfig } from '@types'
 import { IPCRenderer, registerFileRendererIPC } from '../../utils'
-import { config as _config } from './config'
+import { config } from './config'
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line no-new
@@ -24,10 +24,10 @@ export const FileIPC = {
 }
 
 type OnChange = (callback: (newValue: AppConfig, oldValue: AppConfig) => void) => Function
-export const config = {
-  set: _config.set.bind(_config),
-  get: _config.get.bind(_config),
-  onChange: _config.onDidAnyChange.bind(_config) as OnChange,
-  path: _config.path,
-  data: _config.store,
+export const _config = {
+  set: config.set.bind(config),
+  get: config.get.bind(config),
+  onChange: config.onDidAnyChange.bind(config) as OnChange,
+  path: config.path,
+  data: config.store,
 }

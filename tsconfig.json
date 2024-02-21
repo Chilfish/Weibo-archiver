@@ -10,6 +10,7 @@
     "moduleResolution": "Bundler",
     "paths": {
       "@core/*": ["packages/core/src/*"],
+      "@database/*": ["packages/database/src/*"],
       "@ui/*": ["packages/ui/src/*"],
       "@types": ["./types/index"]
     },

@@ -8,14 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppMain: typeof import('./../packages/ui/src/AppMain.vue')['default']
+    Dark: typeof import('./../packages/ui/src/Dark.vue')['default']
+    File: typeof import('./../apps/desktop/renderer/src/components/File.vue')['default']
     Gallery: typeof import('./../packages/ui/src/Gallery.vue')['default']
     ImgViewer: typeof import('./../packages/ui/src/ImgViewer.vue')['default']
     MainHeader: typeof import('./../packages/ui/src/MainHeader.vue')['default']
     MainImage: typeof import('./../packages/ui/src/MainImage.vue')['default']
-    NAvatar: typeof import('naive-ui')['NAvatar']
-    NImage: typeof import('naive-ui')['NImage']
-    NImageGroup: typeof import('naive-ui')['NImageGroup']
-    NPagination: typeof import('naive-ui')['NPagination']
     PostAction: typeof import('./../packages/ui/src/post/Action.vue')['default']
     PostCard: typeof import('./../packages/ui/src/post/Card.vue')['default']
     PostComments: typeof import('./../packages/ui/src/post/Comments.vue')['default']
@@ -29,5 +27,6 @@ declare module 'vue' {
     Profile: typeof import('./../packages/ui/src/Profile.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Sqlite: typeof import('./../apps/desktop/renderer/src/components/Sqlite.vue')['default']
   }
 }

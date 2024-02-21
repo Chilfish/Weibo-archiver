@@ -1,27 +1,37 @@
 :root {
   font-size: 14px;
+  background: #f1f2f5;
+  color: #000;
 }
 
 * {
   box-sizing: border-box;
-  /* min-width: 0; */
+  min-width: 0;
   scrollbar-width: thin !important;
 }
 
-html,
-textarea {
-  scrollbar-width: thin !important;
-}
-
-html::-webkit-resizer,
-html::-webkit-scrollbar-thumb {
+*::-webkit-resizer,
+*::-webkit-scrollbar-thumb {
   background: #aaa !important;
   border-radius: 4px !important;
 }
 
-html::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 5px !important;
   height: 5px !important;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.n-message-container.n-message-container--top {
+  top: 36px !important;
 }
 
 p {
@@ -30,6 +40,15 @@ p {
 
 html {
   scroll-behavior: smooth;
+}
+
+html.dark {
+  background: #111111;
+  color: #fff;
+}
+
+i {
+  --uno: inline-flex items-center max-w-4 max-h-4 select-none cursor-pointer;
 }
 
 #plugin-app {

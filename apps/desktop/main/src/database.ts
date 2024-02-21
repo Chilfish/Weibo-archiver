@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { app, ipcMain } from 'electron'
 import fs from 'fs-extra'
-import { UserDB, createDatabase } from '@core/database'
+import { UserDB, createDatabase } from '@database'
 
 const dataPath = app.getPath('userData')
 const resources = process.resourcesPath
@@ -9,8 +9,15 @@ const dbFile = 'weibo-data.db'
 
 const dbPath = join(dataPath, dbFile)
 
+console.log(join(app.getAppPath(), dbFile))
+
 // 如果应用文件夹中没有数据库文件，则从资源文件夹中复制
-fs.existsSync(dbPath) || fs.copySync(join(resources, dbFile), dbPath)
+if (!fs.existsSync(dbPath)) {
+  if (import.meta.env.DEV)
+    fs.copySync(join(app.getAppPath(), dbFile), dbPath)
+  else
+    fs.copySync(join(resources, dbFile), dbPath)
+}
 
 const db = createDatabase(dbPath)
 

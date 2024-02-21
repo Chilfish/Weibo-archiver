@@ -1,4 +1,3 @@
-import { join } from 'node:path'
 import Config from 'conf'
 import type { AppConfig } from '@types'
 
@@ -12,7 +11,6 @@ const path = config.path.replace(/config\.json$/, '')
 
 config.set({
   configPath: path,
-  dataPath: join(path, '../data'),
   version: import.meta.env.VITE_APP_VERSION,
 })
 
