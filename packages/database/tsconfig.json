@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./*"
+      ],
+      "@types": [
+        "../../types/index"
+      ]
+    }
+  },
+  "exclude": [
+    "../ui/**/*",
+    "../../apps/desktop/**/*",
+    "../../apps/web/**/*"
+  ]
+}

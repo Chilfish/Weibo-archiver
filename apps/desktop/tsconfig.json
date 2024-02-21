@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@database": ["../../packages/database/src"],
+      "@types": ["../../types/index"]
+    },
+    "types": [
+      "node",
+      "vite/client"
+    ]
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "../web/**/*"
+  ]
+}

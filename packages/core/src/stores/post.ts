@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Post } from '../types'
+import type { Post } from '@types'
 import { _ as _posts } from '../constants/data.mjs'
 
 export const usePostStore = defineStore('post', () => {
@@ -64,7 +64,7 @@ export const usePostStore = defineStore('post', () => {
   /**
    * 获取微博
    */
-  async function fetchPosts(isStop = ref(false)) {
+  async function fetchPosts(isStop = ref(false), onEnd?: () => void) {
     const config = useConfigStore()
 
     const res = config.isFetchAll
@@ -80,7 +80,7 @@ export const usePostStore = defineStore('post', () => {
       onResult: res => add(res),
       onEnd: async () => {
         fetchedPage.value = pages.value
-        await exportData(posts.value)
+        onEnd?.()
       },
       isAbort: isStop,
       fetchFn: page => config.isFetchAll

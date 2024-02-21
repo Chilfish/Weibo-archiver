@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isDark } from '@weibo-archiver/core'
+import { isDark } from '@core'
 import { useRoute, useRouter } from 'vue-router'
 
 const { y } = useWindowScroll()

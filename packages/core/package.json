@@ -1,21 +1,12 @@
 {
   "name": "@weibo-archiver/core",
   "type": "module",
-  "version": "0.2.2",
-  "description": "",
-  "author": "Chilfish",
-  "license": "ISC",
-  "keywords": [],
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "build": "rollup -c --bundleConfigAsCjs"
+    "typecheck": "tsc --noEmit -p ./tsconfig.json"
   },
   "dependencies": {
-    "file-saver": "^2.0.5",
-    "jszip": "3.9.1"
-  },
-  "devDependencies": {
-    "@types/file-saver": "^2.0.7",
-    "naive-ui": "^2.37.3"
+    "@vueuse/core": "^10.7.2",
+    "pinia": "^2.1.7"
   }
 }

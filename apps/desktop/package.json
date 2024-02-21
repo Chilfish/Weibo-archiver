@@ -1,0 +1,66 @@
+{
+  "name": "weibo-archiver",
+  "type": "module",
+  "version": "0.2.2",
+  "description": "the desktop app for weibo-archiver",
+  "author": {
+    "name": "Chilfish",
+    "email": "chill4fish@gmail.com",
+    "url": "https://chilfish.top"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Chilfish/weibo-archiver",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chilfish/weibo-archiver.git"
+  },
+  "main": "main/dist/index.mjs",
+  "scripts": {
+    "dev": "tsx utils/watch-electron.ts",
+    "build": "pnpm rebuild:sqlite && pnpm build:main && pnpm build:preload && pnpm build:renderer",
+    "build:main": "vite build -c main/vite.config.ts",
+    "build:preload": "vite build -c preload/vite.config.ts",
+    "build:renderer": "vite build -c renderer/vite.config.ts",
+    "compile": "cross-env MODE=production pnpm build && pnpm compile:dev",
+    "compile:dev": "electron-builder build -c .electron-builder.config.cjs",
+    "test": "pnpm test:main && pnpm test:preload && pnpm test:renderer && pnpm test:e2e",
+    "test:e2e": "pnpm build && vitest run",
+    "test:main": "vitest run -r main --passWithNoTests",
+    "test:preload": "vitest run -r preload --passWithNoTests",
+    "test:renderer": "vitest run -r renderer --passWithNoTests",
+    "lint": "eslint .",
+    "typecheck:renderer": "vue-tsc --noEmit -p renderer",
+    "typecheck": "tsc --noEmit && pnpm typecheck:renderer",
+    "sync": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./utils/update-electron-vendors.js",
+    "rebuild:sqlite": "./node_modules/.bin/electron-rebuild -fw better-sqlite3",
+    "prepare": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@weibo-archiver/core": "workspace:*",
+    "@weibo-archiver/database": "workspace:*",
+    "@weibo-archiver/ui": "workspace:*",
+    "conf": "^12.0.0",
+    "custom-electron-titlebar": "^4.2.8",
+    "electron-log": "^5.1.1",
+    "electron-updater": "6.1.7",
+    "fs-extra": "^11.2.0",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
+    "@types/fs-extra": "11.0.4",
+    "@types/node": "20.11.19",
+    "@vitejs/plugin-vue": "5.0.4",
+    "@vue/test-utils": "2.4.4",
+    "cross-env": "^7.0.3",
+    "electron": "28.2.3",
+    "electron-builder": "24.9.1",
+    "electron-devtools-installer": "^3.2.0",
+    "playwright": "1.41.2",
+    "unplugin-auto-expose": "0.3.0",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-vue-components": "^0.26.0",
+    "vite": "^5.1.3",
+    "vite-plugin-vue-devtools": "^7.0.15"
+  }
+}

@@ -11,10 +11,11 @@
   "scripts": {
     "dev": "vite --open",
     "build": "vite build --emptyOutDir",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@weibo-archiver/components": "workspace:^",
+    "@weibo-archiver/ui": "workspace:^",
     "vite-plugin-static-copy": "^1.0.1"
   }
 }

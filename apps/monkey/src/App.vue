@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppMain from '@weibo-archiver/ui/AppMain.vue'
+import AppMain from '@ui/AppMain.vue'
 import Ctrl from './Ctrl.vue'
 </script>
 

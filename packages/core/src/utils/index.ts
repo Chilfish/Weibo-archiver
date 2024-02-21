@@ -1,5 +1,8 @@
 export * from './parse'
-export * from './export'
+export * from './dom'
+export * from './protocol'
+
+export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 
 export const isInMonkey = document ? document.URL.includes('weibo.com') : false
 

@@ -28,3 +28,10 @@ export interface Config {
    */
   dateRange: [number, number]
 }
+
+export interface AppConfig {
+  version: string
+  theme: 'light' | 'dark'
+  dataPath: string
+  configPath: string
+}

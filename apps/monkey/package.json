@@ -10,9 +10,12 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@weibo-archiver/components": "workspace:^"
+    "@weibo-archiver/ui": "workspace:^",
+    "file-saver": "^2.0.5",
+    "jszip": "3.9.1"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "vite-plugin-monkey": "^3.5.1"
   }
 }
