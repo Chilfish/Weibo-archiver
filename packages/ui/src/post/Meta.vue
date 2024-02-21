@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Comment, Post, Retweet } from '@weibo-archiver/core'
+import type { Comment, Post, Retweet } from '@types'
 
 const props = defineProps<{
   meta: Post | Comment | Retweet

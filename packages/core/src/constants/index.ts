@@ -1,10 +1,3 @@
-const version = '0.2.2'
-
-/**
- * 预览压缩包下载地址
- */
-export const previewZip = `https://github.com/Chilfish/Weibo-archiver/releases/download/v${version}/preview.zip`
-
 /**
  * 占位图
  */

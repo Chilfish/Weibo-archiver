@@ -9,9 +9,10 @@ import type { Options as autoComponentOptions } from 'unplugin-vue-components/ty
 export const root = path.resolve(__dirname)
 export const packages = path.resolve(root, 'packages')
 export const core = path.resolve(packages, 'core/src')
+const ui = path.resolve(packages, 'ui/src')
 
 export const autoComponentConfig: autoComponentOptions = {
-  dts: path.resolve(packages, 'ui/src/components.d.ts'),
+  dts: path.resolve(root, 'types/auto-components.d.ts'),
   dirs: [
     path.resolve(packages, 'ui/src'),
   ],
@@ -23,10 +24,10 @@ export const autoImportConfig: autoImportOptions = {
     'vue',
     '@vueuse/core',
   ],
-  dts: path.resolve(core, 'types/auto-imports.d.ts'),
+  dts: path.resolve(root, 'types/auto-imports.d.ts'),
   dirs: [
-    path.resolve(core, '**'),
-    path.resolve(packages, 'ui/src'),
+    core,
+    ui,
   ],
   vueTemplate: true,
 }
@@ -34,8 +35,8 @@ export const autoImportConfig: autoImportOptions = {
 export default defineConfig({
   resolve: {
     alias: {
-      '@weibo-archiver/core': `${packages}/core/src`,
-      '@weibo-archiver/ui': `${packages}/ui/src`,
+      '@core': core,
+      '@ui': ui,
     },
   },
   plugins: [

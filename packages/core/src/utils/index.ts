@@ -1,4 +1,6 @@
 export * from './parse'
+export * from './dom'
+export * from './protocol'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 

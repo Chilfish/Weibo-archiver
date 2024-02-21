@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
+import { exportData } from './utils'
 import Config from './Config.vue'
 
 const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
@@ -27,7 +28,9 @@ function reset() {
 }
 
 async function fetch() {
-  await postStore.fetchPosts(isStop)
+  await postStore.fetchPosts(isStop, () => {
+    exportData(postStore.posts)
+  })
   isFinish.value = true
 }
 

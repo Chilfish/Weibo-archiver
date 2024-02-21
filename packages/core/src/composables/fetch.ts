@@ -1,5 +1,5 @@
 import { createFetch } from '@vueuse/core'
-import type { Comment, FetchReturn, LoopFetchParams, Post, PostMeta } from '../types'
+import type { Comment, FetchReturn, LoopFetchParams, Post, PostMeta } from '@types'
 import { postsParser } from '../utils'
 import { useConfigStore } from './../stores/config'
 

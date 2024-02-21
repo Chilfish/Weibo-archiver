@@ -1,7 +1,7 @@
 {
   "name": "@weibo-archiver/database",
   "type": "module",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit -p ./tsconfig.json",
     "sqlite:gen": "drizzle-kit generate:sqlite",

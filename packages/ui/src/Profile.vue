@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { User } from '@weibo-archiver/core'
+import type { User } from '@types'
 
 defineProps<{
   user: User

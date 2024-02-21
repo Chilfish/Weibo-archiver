@@ -9,10 +9,8 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@weibo-archiver/core/*": ["packages/core/src/*"],
-      "@weibo-archiver/ui/*": ["packages/ui/src/*"],
-      "@weibo-archiver/monkey/*": ["apps/monkey/*"],
-      "@weibo-archiver/web/*": ["apps/web/*"],
+      "@core/*": ["packages/core/src/*"],
+      "@ui/*": ["packages/ui/src/*"],
       "@types": ["./types/index"]
     },
     "types": [
@@ -30,7 +28,8 @@
     "apps",
     "packages",
     "*.ts",
-    "*.tsx"
+    "*.tsx",
+    "types/*.d.ts"
   ],
   "exclude": [
     "dist",

@@ -4,6 +4,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 
 import config, { autoImportConfig } from '../../vite.config'
 
+console.log(config)
+
 export default defineConfig({
   ...config,
   plugins: [

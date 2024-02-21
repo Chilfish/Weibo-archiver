@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo, Retweet } from '@weibo-archiver/core'
+import type { CardInfo, Retweet } from '@types'
 
 defineProps<{
   post: Retweet
