@@ -1,9 +1,9 @@
 import { platform } from 'node:process'
 import { app, crashReporter } from 'electron'
-
-import { mainLog, registerFileMainIPC } from '../../utils'
-import { restoreOrCreateWindow } from './mainWindow'
 import './security-restrictions'
+
+import { config, mainLog, registerFileMainIPC } from '../../utils'
+import { restoreOrCreateWindow } from './mainWindow'
 import { setupDatabaseIPC } from './database'
 
 mainLog.info('App started')
@@ -12,6 +12,8 @@ crashReporter.start({
   uploadToServer: false,
 })
 app.setPath('crashDumps', app.getPath('userData'))
+
+globalThis.fetchOptions = config.store.fetchOptions
 
 /**
  * Prevent electron from running multiple instances.

@@ -7,7 +7,7 @@ export * from './fetch'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 
-export const isInMonkey = document ? document.URL.includes('weibo.com') : false
+export const isInMonkey = typeof document !== 'undefined' ? document.URL.includes('weibo.com') : false
 
 export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
 

@@ -1,8 +1,7 @@
 import customTitlebar from 'custom-electron-titlebar'
 import type { UserDBMethods } from '@database'
 import type { AppConfig } from '@types'
-import { IPCRenderer, registerFileRendererIPC } from '../../utils'
-import { config } from './config'
+import { IPCRenderer, config, registerFileRendererIPC } from '../../utils'
 
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line no-new
