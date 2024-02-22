@@ -1,4 +1,3 @@
-export * from './fetch'
 export * from './pagination'
 
 export const isDark = useDark({

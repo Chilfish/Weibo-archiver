@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
 import { exportData } from './utils'
+import { useConfigStore, usePostStore } from './stores'
 import Config from './Config.vue'
 
-const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
-const name = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
-
 const message = useMessage()
-const userData = await fetchUser(id, name)
-useUserStore().set(userData.id, userData.name)
 
 const postStore = usePostStore()
 const configStore = useConfigStore()
@@ -27,29 +23,44 @@ function reset() {
   isStop.value = false
 }
 
-async function fetch() {
-  await postStore.fetchPosts(isStop, () => {
-    exportData(postStore.posts)
-  })
-  isFinish.value = true
+function fetch() {
+  postStore.fetchPosts(
+    configStore.state,
+    isStop,
+    () => {
+      exportData(postStore.posts)
+      isFinish.value = true
+    },
+  )
 }
 
-async function start() {
+function start() {
   message.info('开始爬取中，请稍等~', {
     duration: 5000,
   })
 
   reset()
-  await fetch()
+  fetch()
 }
 
-watch(isStop, async () => {
+watch(isStop, () => {
   if (!isStop.value)
-    await fetch()
+    fetch()
 })
 
 // @ts-expect-error TODO: fix this
 window.$message = useMessage()
+
+onMounted(async () => {
+  const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
+  const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
+  const { uid, name } = await userInfo(id, username)
+
+  configStore.setConfig({
+    uid,
+    name,
+  })
+})
 </script>
 
 <template>
@@ -57,7 +68,7 @@ window.$message = useMessage()
     class="fixed right-4 top-20 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 p-4 shadow-xl bg-white! text-black!"
   >
     <h2 class="text-5 text-black font-bold">
-      Weibo archiver, user: {{ userData.name }}
+      Weibo archiver, user: {{ configStore.state.name }}
     </h2>
 
     <n-alert
@@ -78,7 +89,7 @@ window.$message = useMessage()
     <div class="btns flex gap-4">
       <button @click="start">
         {{ isFinish ? '重新开始' : '开始' }}
-        (获取{{ configStore.isFetchAll ? '全部' : '部分' }}微博)
+        (获取{{ configStore.state.isFetchAll ? '全部' : '部分' }}微博)
       </button>
 
       <button

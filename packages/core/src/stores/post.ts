@@ -15,7 +15,6 @@ export const usePostStore = defineStore('post', () => {
 
   const curPage = ref(1)
   const postsPerPage = ref(20) // 每页显示的帖子数量 ppp
-  const fetchedPage = ref(0)
 
   // 总帖子数
   const total = ref(posts.value.length)
@@ -37,13 +36,6 @@ export const usePostStore = defineStore('post', () => {
     viewImg.value = imgViewSrc
     curPage.value = 1
     postsPerPage.value = 20
-    fetchedPage.value = 0
-  }
-
-  function add(newPosts: Post[]) {
-    // postsPerPage.value = newPosts.length
-    posts.value = [...posts.value, ...newPosts]
-    fetchedPage.value++
   }
 
   function get(page?: number): Post[] {
@@ -59,34 +51,6 @@ export const usePostStore = defineStore('post', () => {
 
   function getById(id: number): Post[] {
     return posts.value.filter(post => post.id === id)
-  }
-
-  /**
-   * 获取微博
-   */
-  async function fetchPosts(isStop = ref(false), onEnd?: () => void) {
-    const config = useConfigStore()
-
-    const res = config.isFetchAll
-      ? await fetchAllPosts(fetchedPage.value + 1)
-      : await fetchRangePosts(fetchedPage.value + 1)
-
-    total.value = res?.total || 0
-    add(res?.list || [])
-
-    return await loopFetcher({
-      start: fetchedPage.value,
-      stopFn: () => posts.value.length >= total.value,
-      onResult: res => add(res),
-      onEnd: async () => {
-        fetchedPage.value = pages.value
-        onEnd?.()
-      },
-      isAbort: isStop,
-      fetchFn: page => config.isFetchAll
-        ? fetchAllPosts(page)
-        : fetchRangePosts(page),
-    })
   }
 
   async function searchText(p: string): Promise<Post[]> {
@@ -110,14 +74,11 @@ export const usePostStore = defineStore('post', () => {
     pages,
     postsPerPage,
     curPage,
-    fetchedPage,
 
-    add,
     get,
     getById,
     reset,
 
-    fetchPosts,
     searchText,
   }
 })

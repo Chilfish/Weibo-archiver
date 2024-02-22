@@ -5,8 +5,6 @@ import Ctrl from './Ctrl.vue'
 
 <template>
   <AppMain>
-    <Suspense>
-      <Ctrl />
-    </Suspense>
+    <Ctrl />
   </AppMain>
 </template>
