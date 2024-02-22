@@ -12,6 +12,11 @@ export interface FetchOptions {
   name: string
 
   /**
+   * 用户的 cookie
+   */
+  cookie: string
+
+  /**
    * 是否获取全部微博
    */
   isFetchAll: boolean

@@ -3,6 +3,11 @@ import type { AppConfig } from '@types'
 
 const now = Date.now()
 
+const {
+  VITE_APP_VERSION: version,
+  VITE_COOKIE: cookie,
+} = import.meta.env
+
 const config = new Config<AppConfig>({
   watch: true,
   projectName: 'weibo-archiver',
@@ -10,11 +15,12 @@ const config = new Config<AppConfig>({
   defaults: {
     configPath: '',
     dataPath: '',
-    version: import.meta.env.VITE_APP_VERSION,
+    version,
     theme: 'light',
     fetchOptions: {
       uid: '',
       name: '',
+      cookie: '',
       isFetchAll: true,
       picLarge: true,
       repostPic: true,
@@ -28,9 +34,8 @@ const config = new Config<AppConfig>({
 
 const path = config.path.replace(/config\.json$/, '')
 
-config.set({
-  configPath: path,
-})
+config.set('configPath', path)
+config.set('fetchOptions.cookie', cookie ?? '')
 
 export default config
 export {

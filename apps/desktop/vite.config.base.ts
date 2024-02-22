@@ -33,6 +33,7 @@ export function electronViteConfig(
         '@ui': join(PACKAGES_ROOT, 'ui/src'),
         '@core': join(PACKAGES_ROOT, 'core/src'),
         '@database': join(PACKAGES_ROOT, 'database/src'),
+        '#preload': join(__dirname, 'preload/src'),
       },
     },
     build: {

@@ -26,6 +26,8 @@ interface ImportMetaEnv {
   readonly VITE_APP_VERSION: string
 
   readonly VITE_IS_ELECTRON: 'true' | 'false'
+
+  readonly VITE_COOKIE: string
 }
 
 interface ImportMeta {

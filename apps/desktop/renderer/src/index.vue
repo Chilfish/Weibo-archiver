@@ -1,37 +1,25 @@
 <script lang="ts" setup>
-import { UserIPC } from '#preload'
+import { FetchIPC } from '#preload'
 
 watchImmediate(isDark, (value) => {
   config.set('theme', value ? 'dark' : 'light')
 })
 
-const message = useMessage()
+const user1 = ref('')
 </script>
 
 <template>
-  <p class="text-xl">
-    App version: {{ configRef.version }}
-  </p>
-
-  <div class="flex gap-4">
-    <Dark />
-    <button
-      class="text-red"
-      @click="() => {
-        message.info('hello')
-      }"
-    >
-      naive-ui
-    </button>
+  <div>
+    {{ user1 }}
   </div>
 
-  <p>
-    Configs: {{ configRef }}
-  </p>
-
-  <File />
-
-  <Sqlite
-    :user-service="UserIPC"
-  />
+  <button
+    class="btn"
+    @click="async() => {
+      const res = await FetchIPC.userInfo('7679065628')
+      user1 = JSON.stringify(res)
+    }"
+  >
+    fetch userInfo
+  </button>
 </template>

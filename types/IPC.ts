@@ -8,3 +8,7 @@ export interface IPCFile {
 
   readFile: (path: string) => Promise<Buffer | null>
 }
+
+export interface IPCFetch {
+  userInfo: (id?: string, name?: string) => Promise<{ uid: string, name: string }>
+}

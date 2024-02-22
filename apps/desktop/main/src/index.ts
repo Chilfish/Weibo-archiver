@@ -1,8 +1,14 @@
 import { platform } from 'node:process'
 import { app, crashReporter } from 'electron'
 import './security-restrictions'
+import 'global-agent/bootstrap'
 
-import { config, mainLog, registerFileMainIPC } from '../../utils'
+import { setupFetchMainIPC } from '../../utils/fetch'
+import {
+  config,
+  mainLog,
+  setupFileMainIPC,
+} from '../../utils'
 import { restoreOrCreateWindow } from './mainWindow'
 import { setupDatabaseIPC } from './database'
 
@@ -50,7 +56,8 @@ app
   .whenReady()
   .then(() => {
     setupDatabaseIPC()
-    registerFileMainIPC()
+    setupFileMainIPC()
+    setupFetchMainIPC()
   })
   .then(restoreOrCreateWindow)
   .catch(e => console.error('Failed create window:', e))

@@ -20,6 +20,7 @@ declare global {
   const configRef: typeof import('../apps/desktop/renderer/src/composables/config')['configRef']
   const controlledComputed: typeof import('@vueuse/core')['controlledComputed']
   const controlledRef: typeof import('@vueuse/core')['controlledRef']
+  const cookie: typeof import('../packages/core/src/utils/index')['cookie']
   const createApp: typeof import('vue')['createApp']
   const createDatabase: typeof import('../packages/database/src/index')['createDatabase']
   const createEventHook: typeof import('@vueuse/core')['createEventHook']

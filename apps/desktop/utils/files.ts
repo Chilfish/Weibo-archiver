@@ -1,9 +1,9 @@
 import { dialog } from 'electron'
 import fs from 'fs-extra'
 
-import type { FileExt, IPCFile } from '@types'
+import type { IPCFile } from '@types'
 import { mainLog } from './logs'
-import { IPCMain, IPCRenderer } from './index'
+import { IPCMain } from './index'
 
 const channel = 'files'
 
@@ -41,19 +41,9 @@ const readFile: IPCFile['readFile'] = async function (path) {
   }
 }
 
-export function registerFileMainIPC() {
+export function setupFileMainIPC() {
   const IPC = new IPCMain<IPCFile>(channel)
   IPC.on('selectFolder', selectFolder)
   IPC.on('selectFile', selectFile)
   IPC.on('readFile', readFile)
-}
-
-export function registerFileRendererIPC() {
-  const IPC = new IPCRenderer<IPCFile>(channel)
-
-  return {
-    selectFolder: () => IPC.send('selectFolder'),
-    selectFile: (name?: string, ext?: FileExt) => IPC.send('selectFile', name, ext),
-    readFile: (path: string) => IPC.send('readFile', path),
-  }
 }
