@@ -6,7 +6,6 @@ import type {
   PostMeta,
 } from '@types'
 import {
-  aborter,
   getOptions,
   postsParser,
   weiFetch,
@@ -38,7 +37,6 @@ export async function fetchAllPosts(page = 1): FetchReturn {
   return {
     ...data,
     list: await postsParser(data.list),
-    abort: aborter.abort,
   }
 }
 
@@ -51,7 +49,6 @@ export async function fetchRangePosts(page = 1): FetchReturn {
   return {
     ...data,
     list: await postsParser(data.list || []),
-    abort: aborter.abort,
   }
 }
 
@@ -96,13 +93,16 @@ export async function fetchComments(post: Post): Promise<Comment[]> {
   ))
 }
 
+/**
+ * @deprecated use {@link usePausableLoop} instead
+ */
 export async function loopFetcher(
   { start, stopFn, fetchFn, onResult, onEnd, isAbort }: LoopFetchParams,
 ) {
   let page = start + 1
   while (!stopFn()) {
     await delay()
-    if (isAbort?.value)
+    if (isAbort)
       return
 
     const data = await fetchFn?.(page)

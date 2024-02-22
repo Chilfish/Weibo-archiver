@@ -2,8 +2,8 @@ import { dialog } from 'electron'
 import fs from 'fs-extra'
 
 import type { IPCFile } from '@types'
-import { mainLog } from './logs'
-import { IPCMain } from './index'
+import { mainLog } from '../../utils/logs'
+import { IPCMain } from '../../utils/index'
 
 const channel = 'files'
 

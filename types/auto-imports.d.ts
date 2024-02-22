@@ -241,6 +241,7 @@ declare global {
   const usePagination: typeof import('../packages/core/src/composables/pagination')['usePagination']
   const useParallax: typeof import('@vueuse/core')['useParallax']
   const useParentElement: typeof import('@vueuse/core')['useParentElement']
+  const usePausableLoop: typeof import('../packages/core/src/utils/index')['usePausableLoop']
   const usePerformanceObserver: typeof import('@vueuse/core')['usePerformanceObserver']
   const usePermission: typeof import('@vueuse/core')['usePermission']
   const usePointer: typeof import('@vueuse/core')['usePointer']
@@ -563,6 +564,7 @@ declare module 'vue' {
     readonly usePagination: UnwrapRef<typeof import('../packages/core/src/composables/pagination')['usePagination']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePausableLoop: UnwrapRef<typeof import('../packages/core/src/utils/index')['usePausableLoop']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
@@ -874,6 +876,7 @@ declare module '@vue/runtime-core' {
     readonly usePagination: UnwrapRef<typeof import('../packages/core/src/composables/pagination')['usePagination']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePausableLoop: UnwrapRef<typeof import('../packages/core/src/utils/index')['usePausableLoop']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>

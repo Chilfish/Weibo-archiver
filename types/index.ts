@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import type { Post, PostMeta } from './post'
 
 export * from './protocol'
@@ -44,12 +43,10 @@ export interface LoopFetchParams {
   /**
    * 中止获取数据，但还是会等到当前页获取完之后才会中止
    */
-  isAbort?: Ref<boolean>
+  isAbort?: boolean
 }
 
-export type FetchReturn = Promise<PostMeta & {
-  abort: () => void
-} | null>
+export type FetchReturn = Promise<PostMeta | null>
 
 export interface ParseResult {
   posts: Post[]

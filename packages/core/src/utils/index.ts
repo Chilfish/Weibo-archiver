@@ -25,3 +25,44 @@ export async function getOptions() {
     return config.store.fetchOptions
   }
 }
+
+/**
+ * 可暂停/恢复的循环
+ * @param fn
+ */
+export function usePausableLoop(
+  fn: () => Promise<{ isStop: boolean }>,
+) {
+  let _isPaused = false
+
+  async function startLoop() {
+    while (true) {
+      if (_isPaused)
+        break
+
+      const { isStop } = await fn()
+      if (isStop)
+        break
+    }
+  }
+
+  function pause() {
+    _isPaused = true
+  }
+
+  async function resume() {
+    _isPaused = false
+    await startLoop()
+  }
+
+  function isPaused() {
+    return _isPaused
+  }
+
+  return {
+    startLoop,
+    pause,
+    resume,
+    isPaused,
+  }
+}

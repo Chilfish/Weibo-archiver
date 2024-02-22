@@ -4,11 +4,9 @@ import './security-restrictions'
 import 'global-agent/bootstrap'
 
 import { config } from '@core/utils/config'
-import { setupFetchMainIPC } from '../../utils/fetch'
-import {
-  mainLog,
-  setupFileMainIPC,
-} from '../../utils'
+import { mainLog } from '../../utils/logs'
+import { setupFetchMainIPC } from './fetch'
+import { setupFileMainIPC } from './files'
 import { restoreOrCreateWindow } from './mainWindow'
 import { setupDatabaseIPC } from './database'
 

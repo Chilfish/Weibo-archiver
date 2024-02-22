@@ -23,15 +23,13 @@ function reset() {
   isStop.value = false
 }
 
-function fetch() {
-  postStore.fetchPosts(
-    configStore.state,
-    isStop,
-    () => {
-      exportData(postStore.posts)
-      isFinish.value = true
-    },
-  )
+let pauseFetch = () => {}
+let resumeFetch = async () => {}
+
+async function fetch() {
+  const { pause, resume } = await postStore.fetchPosts(configStore.state)
+  pauseFetch = pause
+  resumeFetch = resume
 }
 
 function start() {
@@ -43,9 +41,17 @@ function start() {
   fetch()
 }
 
-watch(isStop, () => {
-  if (!isStop.value)
-    fetch()
+watchEffect(() => {
+  if (isStop.value)
+    pauseFetch()
+  else
+    resumeFetch()
+
+  if (postStore.fetchedPage >= postStore.pages) {
+    isStart.value = false
+    isFinish.value = true
+    exportData(postStore.posts)
+  }
 })
 
 // @ts-expect-error TODO: fix this
@@ -87,10 +93,20 @@ onMounted(async () => {
     </n-progress>
 
     <div class="btns flex gap-4">
-      <button @click="start">
+      <button
+        v-show="!isStart"
+        @click="start"
+      >
         {{ isFinish ? '重新开始' : '开始' }}
         (获取{{ configStore.state.isFetchAll ? '全部' : '部分' }}微博)
       </button>
+
+      <div
+        v-show="isStart && !isFinish"
+        class="center"
+      >
+        获取中~
+      </div>
 
       <button
         v-show="isStart"
@@ -100,7 +116,7 @@ onMounted(async () => {
       </button>
 
       <button
-        v-show="isFinish"
+        v-show="isFinish || isStop"
         @click="exportData(postStore.posts)"
       >
         导出

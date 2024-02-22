@@ -46,29 +46,39 @@ export const usePostStore = defineStore('post', () => {
    */
   async function fetchPosts(
     fetchOptions: FetchOptions,
-    isStop = ref(false),
-    onEnd?: () => void,
   ) {
+    let page = fetchedPage.value + 1
     const res = fetchOptions.isFetchAll
-      ? await fetchAllPosts(fetchedPage.value + 1)
-      : await fetchRangePosts(fetchedPage.value + 1)
+      ? await fetchAllPosts(page)
+      : await fetchRangePosts(page)
 
+    // 先获取总页数
     total.value = res?.total || 0
     add(res?.list || [])
 
-    return await loopFetcher({
-      start: fetchedPage.value,
-      stopFn: () => posts.value.length >= total.value,
-      onResult: res => add(res),
-      onEnd: async () => {
-        fetchedPage.value = pages.value
-        onEnd?.()
+    const { startLoop, resume, pause } = usePausableLoop(
+      async () => {
+        page++
+        const data = fetchOptions.isFetchAll
+          ? await fetchAllPosts(page)
+          : await fetchRangePosts(page)
+
+        add(data?.list || [])
+        console.log('page', page)
+
+        // 如果已经获取到所有帖子
+        if (fetchedPage.value >= pages.value)
+          return { isStop: true }
+        return { isStop: false }
       },
-      isAbort: isStop,
-      fetchFn: page => fetchOptions.isFetchAll
-        ? fetchAllPosts(page)
-        : fetchRangePosts(page),
-    })
+    )
+
+    startLoop()
+
+    return {
+      pause,
+      resume,
+    }
   }
 
   return {
