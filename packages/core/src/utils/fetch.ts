@@ -1,10 +1,11 @@
 import { ofetch } from 'ofetch'
+import { getOptions } from './index'
 
 export const aborter = new AbortController()
 
 const cookie = typeof document !== 'undefined'
   ? document.cookie
-  : import.meta.env.VITE_COOKIE
+  : (await getOptions()).cookie
 
 export const weiFetch = ofetch.create({
   baseURL: 'https://weibo.com/ajax',

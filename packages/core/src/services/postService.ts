@@ -12,6 +12,8 @@ import {
   weiFetch,
 } from '../utils'
 
+const options = await getOptions()
+
 /**
  * 鉴权字段，必须得登录才获取得了，不然匿名只能获取前两页 <br/>
  * 并且只能往前，同一个 id 对于即便不同 page 的结果也是一样的
@@ -24,7 +26,7 @@ export async function fetchAllPosts(page = 1): FetchReturn {
   else if (page === 1)
     since_id = ''
 
-  const { uid } = getOptions()
+  const { uid } = options
 
   const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/mymblog?uid=${uid}&feature=0&page=${page}&since_id=${since_id}`)
 
@@ -41,7 +43,7 @@ export async function fetchAllPosts(page = 1): FetchReturn {
 }
 
 export async function fetchRangePosts(page = 1): FetchReturn {
-  const { uid, dateRange } = getOptions()
+  const { uid, dateRange } = options
   const [start, end] = dateRange
 
   const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/searchProfile?uid=${uid}&page=${page}&starttime=${start / 1000}&endtime=${end / 1000}&hasori=1&hasret=1&hastext=1&haspic=1&hasvideo=1&hasmusic=1`)
@@ -72,7 +74,7 @@ export async function fetchLongText(
  * 获取前 3 条评论 并集于 博主的评论
  */
 export async function fetchComments(post: Post): Promise<Comment[]> {
-  const { commentCount, comment } = getOptions()
+  const { commentCount, comment } = options
 
   if (!post.user || post.comments_count === 0 || !comment)
     return []

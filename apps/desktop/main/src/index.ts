@@ -3,9 +3,9 @@ import { app, crashReporter } from 'electron'
 import './security-restrictions'
 import 'global-agent/bootstrap'
 
+import { config } from '@core/utils/config'
 import { setupFetchMainIPC } from '../../utils/fetch'
 import {
-  config,
   mainLog,
   setupFileMainIPC,
 } from '../../utils'

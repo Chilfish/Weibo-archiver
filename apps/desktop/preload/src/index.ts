@@ -1,7 +1,8 @@
 import customTitlebar from 'custom-electron-titlebar'
 import type { UserDBMethods } from '@database'
 import type { AppConfig, IPCFetch, IPCFile } from '@types'
-import { IPCRenderer, config } from '../../utils'
+import { config } from '@core/utils/config'
+import { IPCRenderer } from '../../utils'
 
 window.addEventListener('DOMContentLoaded', () => {
   console.log('App started', customTitlebar.Titlebar.toString)

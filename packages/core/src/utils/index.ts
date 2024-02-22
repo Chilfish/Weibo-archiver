@@ -16,10 +16,12 @@ export function delay(ms = 2000) {
   return new Promise(resolve => setTimeout(resolve, randomMs))
 }
 
-export function getOptions() {
-  const options = typeof localStorage === 'undefined'
-    ? (globalThis as any).fetchOptions
-    : JSON.parse(localStorage.getItem('fetchOptions') || '{}')
-
-  return options as FetchOptions
+export async function getOptions() {
+  if (typeof localStorage !== 'undefined') {
+    return JSON.parse(localStorage.getItem('fetchOptions') || '{}') as FetchOptions
+  }
+  else {
+    const { config } = await import('./config')
+    return config.store.fetchOptions
+  }
 }
