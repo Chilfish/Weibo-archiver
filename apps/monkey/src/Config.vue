@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useConfigStore } from './stores'
+
 const configStore = useConfigStore()
 
 const dateRange = computed({
@@ -6,7 +8,6 @@ const dateRange = computed({
     return configStore.state.dateRange
   },
   set(val: [number, number]) {
-    console.log('date', val)
     configStore.state.dateRange = val ?? []
   },
 })

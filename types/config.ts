@@ -1,7 +1,21 @@
 /**
  * 解析、爬取时的配置
  */
-export interface Config {
+export interface FetchOptions {
+  /**
+   * 用户 id
+   */
+  uid: string
+  /**
+   * 用户名
+   */
+  name: string
+
+  /**
+   * 是否获取全部微博
+   */
+  isFetchAll: boolean
+
   /**
    * 下载图片的尺寸
    */
@@ -34,4 +48,6 @@ export interface AppConfig {
   theme: 'light' | 'dark'
   dataPath: string
   configPath: string
+
+  fetchOptions: FetchOptions
 }

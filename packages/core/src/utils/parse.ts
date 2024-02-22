@@ -1,8 +1,7 @@
-import type { CardInfo, Comment, ParseResult, PicInfo, Post } from '@types'
-import { fetchComments, fetchLongText } from '../composables'
+import type { CardInfo, Comment, FetchOptions, ParseResult, PicInfo, Post } from '@types'
+import { fetchComments, fetchLongText } from '../services'
 import { imgViewSrc } from '../constants'
-import { useConfigStore } from '../stores'
-import { isInMonkey } from '.'
+import { getOptions, isInMonkey } from '.'
 
 export const weibo = 'https://weibo.com'
 
@@ -55,12 +54,13 @@ export function replaceImg(img?: string) {
 /**
  * 提取原图链接
  */
-export function parseImg(pic_ids?: string[], img_infos?: Record<string, PicInfo>) {
+export function parseImg(
+  size: 'large' | 'largest',
+  pic_ids?: string[],
+  img_infos?: Record<string, PicInfo>,
+) {
   if (!pic_ids || !img_infos)
     return []
-
-  const config = useConfigStore().state
-  const size = config.picLarge ? 'largest' : 'large'
 
   return pic_ids.map(id => img_infos[id][size].url)
 }
@@ -123,13 +123,13 @@ export function filterComments(comments?: any[]): Comment[] {
 
 export async function postFilter(
   post: any,
+  options: FetchOptions,
   isRepost = false,
 ): Promise<Post | undefined> {
-  const config = useConfigStore().state
-  if (!post || !post.id || (!config.repost && !!post.retweeted_status?.id))
+  if (!post || !post.id || (!options.repost && !!post.retweeted_status?.id))
     return undefined
 
-  const repostImg = !isRepost || (isRepost && config.repostPic)
+  const repostImg = !isRepost || (isRepost && options.repostPic)
 
   try {
     const res: Post = {
@@ -149,9 +149,9 @@ export async function postFilter(
       region_name: post.region_name,
       mblogid: post.mblogid,
       detail_url: `${weibo}/${post.user?.id}/${post.mblogid}`,
-      retweeted_status: await postFilter(post.retweeted_status, true),
+      retweeted_status: await postFilter(post.retweeted_status, options, true),
       card: parseCard(post.url_struct, post.page_info),
-      comments: config.comment ? await fetchComments(post) : [],
+      comments: options.comment ? await fetchComments(post) : [],
     }
 
     return res
@@ -162,12 +162,14 @@ export async function postFilter(
   }
 }
 
-export async function postsParser(posts: any[], uid: string): Promise<Post[]> {
+export async function postsParser(posts: any[]): Promise<Post[]> {
+  const options = getOptions()
+
   const res = await Promise.all(
-    posts.map(async post => await postFilter(post)),
+    posts.map(async post => await postFilter(post, options)),
   )
 
-  return res.filter((e): e is Post => !!e && e.user?.id === uid)
+  return res.filter((e): e is Post => !!e && e.user?.id === options.uid)
 }
 
 export function imgsParser(posts: Post[]): Set<string> {
@@ -187,8 +189,8 @@ export function imgsParser(posts: Post[]): Set<string> {
   return new Set(imgs)
 }
 
-export async function parsedData(posts: Post[], uid: string): Promise<ParseResult> {
-  const parsedPosts = await postsParser(posts, uid)
+export async function parsedData(posts: Post[]): Promise<ParseResult> {
+  const parsedPosts = await postsParser(posts)
   const imgs = imgsParser(parsedPosts)
 
   return {
