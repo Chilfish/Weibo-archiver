@@ -16,42 +16,53 @@ const isFinish = ref(false)
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
 
-function reset() {
-  postStore.reset()
-  isStart.value = true
-  isFinish.value = false
-  isStop.value = false
-}
+let pauseFetch = () => {}
+let resumeFetch = async () => {}
 
-function fetch() {
-  postStore.fetchPosts(
-    configStore.state,
-    isStop,
-    () => {
-      exportData(postStore.posts)
-      isFinish.value = true
-    },
-  )
-}
-
-function start() {
+async function start() {
   message.info('开始爬取中，请稍等~', {
     duration: 5000,
   })
 
-  reset()
-  fetch()
+  postStore.reset()
+  isStart.value = true
+  isFinish.value = false
+  isStop.value = false
+
+  const { pause, resume } = await fetchPosts({
+    startPage: postStore.fetchedPage,
+    isFetchAll: configStore.state.isFetchAll,
+    setTotal: total => postStore.total = total,
+    addPosts: postStore.add,
+    stopCondition: () => postStore.fetchedPage >= postStore.pages,
+  })
+  pauseFetch = pause
+  resumeFetch = resume
 }
 
-watch(isStop, () => {
-  if (!isStop.value)
-    fetch()
+watchEffect(() => {
+  if (isStop.value)
+    pauseFetch()
+  else
+    resumeFetch()
+
+  if (!isFinish.value)
+    return
+
+  if (postStore.fetchedPage >= postStore.pages) {
+    isStart.value = false
+    isFinish.value = true
+    exportData(postStore.posts)
+  }
 })
 
 // @ts-expect-error TODO: fix this
 window.$message = useMessage()
 
 onMounted(async () => {
+  if (configStore.state.uid)
+    return
+
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
   const { uid, name } = await userInfo(id, username)
@@ -87,10 +98,20 @@ onMounted(async () => {
     </n-progress>
 
     <div class="btns flex gap-4">
-      <button @click="start">
-        {{ isFinish ? '重新开始' : '开始' }}
+      <button
+        v-show="!isStart || (!isFinish && isStop)"
+        @click="start"
+      >
+        {{ isStart ? '重新开始' : '开始' }}
         (获取{{ configStore.state.isFetchAll ? '全部' : '部分' }}微博)
       </button>
+
+      <div
+        v-show="isStart && !isFinish && !isStop"
+        class="center"
+      >
+        获取中~
+      </div>
 
       <button
         v-show="isStart"
@@ -100,7 +121,7 @@ onMounted(async () => {
       </button>
 
       <button
-        v-show="isFinish"
+        v-show="isFinish || isStop"
         @click="exportData(postStore.posts)"
       >
         导出

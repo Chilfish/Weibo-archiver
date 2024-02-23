@@ -52,6 +52,7 @@ const dateRange = computed({
       <span>要获取的评论数（最多15条）</span>
       <n-input-number
         v-model="configStore.state.commentCount"
+        :default-value="10"
         :min="0"
         :max="15"
       />

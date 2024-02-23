@@ -12,7 +12,9 @@ const LOG_LEVEL = 'warn' as LogLevel
 const sharedConfig: InlineConfig = {
   mode,
   build: {
-    watch: {},
+    watch: {
+      buildDelay: 3000,
+    },
   },
   logLevel: LOG_LEVEL,
 }

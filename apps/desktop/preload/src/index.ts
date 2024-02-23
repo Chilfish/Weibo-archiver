@@ -1,27 +1,42 @@
 import customTitlebar from 'custom-electron-titlebar'
 import type { UserDBMethods } from '@database'
-import type { AppConfig } from '@types'
-import { IPCRenderer, registerFileRendererIPC } from '../../utils'
-import { config } from './config'
+import type { AppConfig, IPCFetch, IPCFile } from '@types'
+import { config } from '@core/utils/config'
+import { IPCRenderer } from '../../utils'
 
 window.addEventListener('DOMContentLoaded', () => {
+  console.log('App started', customTitlebar.Titlebar.toString)
   // eslint-disable-next-line no-new
   new customTitlebar.Titlebar({})
 })
 
 export * from './nodeCrypto'
 
-const _UserIPC = new IPCRenderer<UserDBMethods>('IPC_USER')
-export const UserIPC = {
-  send: _UserIPC.send.bind(_UserIPC),
-}
+export const UserIPC = (() => {
+  const IPC = new IPCRenderer<UserDBMethods>('IPC_USER')
 
-const _FileIPC = registerFileRendererIPC()
-export const FileIPC = {
-  selectFolder: _FileIPC.selectFolder,
-  selectFile: _FileIPC.selectFile,
-  readFile: _FileIPC.readFile,
-}
+  return {
+    send: IPC.send.bind(IPC),
+  }
+})()
+
+export const FileIPC: IPCFile = (() => {
+  const IPC = new IPCRenderer<IPCFile>('files')
+
+  return {
+    selectFolder: () => IPC.send('selectFolder'),
+    selectFile: (name, ext) => IPC.send('selectFile', name, ext),
+    readFile: path => IPC.send('readFile', path),
+  }
+})()
+
+export const FetchIPC: IPCFetch = (() => {
+  const IPC = new IPCRenderer<IPCFetch>('fetch')
+
+  return {
+    userInfo: (id, name) => IPC.send('userInfo', id, name),
+  }
+})()
 
 type OnChange = (callback: (newValue: AppConfig, oldValue: AppConfig) => void) => Function
 export const _config = {

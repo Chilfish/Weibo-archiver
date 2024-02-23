@@ -7,7 +7,7 @@ export * from './fetch'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 
-export const isInMonkey = document ? document.URL.includes('weibo.com') : false
+export const isInMonkey = typeof document !== 'undefined' ? document.URL.includes('weibo.com') : false
 
 export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
 
@@ -16,10 +16,53 @@ export function delay(ms = 2000) {
   return new Promise(resolve => setTimeout(resolve, randomMs))
 }
 
-export function getOptions() {
-  const options = typeof localStorage === 'undefined'
-    ? (globalThis as any).fetchOptions
-    : JSON.parse(localStorage.getItem('fetchOptions') || '{}')
+export async function getOptions() {
+  if (typeof localStorage !== 'undefined') {
+    return JSON.parse(localStorage.getItem('fetchOptions') || '{}') as FetchOptions
+  }
+  else {
+    const { config } = await import('./config')
+    return config.store.fetchOptions
+  }
+}
 
-  return options as FetchOptions
+/**
+ * 可暂停/恢复的循环
+ * @param fn
+ */
+export function usePausableLoop(
+  fn: () => Promise<{ isStop: boolean }>,
+) {
+  let _isPaused = false
+
+  async function startLoop() {
+    while (true) {
+      if (_isPaused)
+        break
+
+      const { isStop } = await fn()
+      if (isStop)
+        break
+    }
+  }
+
+  function pause() {
+    _isPaused = true
+  }
+
+  async function resume() {
+    _isPaused = false
+    await startLoop()
+  }
+
+  function isPaused() {
+    return _isPaused
+  }
+
+  return {
+    startLoop,
+    pause,
+    resume,
+    isPaused,
+  }
 }

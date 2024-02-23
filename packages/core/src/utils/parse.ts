@@ -163,7 +163,7 @@ export async function postFilter(
 }
 
 export async function postsParser(posts: any[]): Promise<Post[]> {
-  const options = getOptions()
+  const options = await getOptions()
 
   const res = await Promise.all(
     posts.map(async post => await postFilter(post, options)),

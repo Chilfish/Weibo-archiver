@@ -1,9 +1,13 @@
 import { platform } from 'node:process'
 import { app, crashReporter } from 'electron'
-
-import { mainLog, registerFileMainIPC } from '../../utils'
-import { restoreOrCreateWindow } from './mainWindow'
 import './security-restrictions'
+import 'global-agent/bootstrap'
+
+import { config } from '@core/utils/config'
+import { mainLog } from '../../utils/logs'
+import { setupFetchMainIPC } from './fetch'
+import { setupFileMainIPC } from './files'
+import { restoreOrCreateWindow } from './mainWindow'
 import { setupDatabaseIPC } from './database'
 
 mainLog.info('App started')
@@ -12,6 +16,8 @@ crashReporter.start({
   uploadToServer: false,
 })
 app.setPath('crashDumps', app.getPath('userData'))
+
+globalThis.fetchOptions = config.store.fetchOptions
 
 /**
  * Prevent electron from running multiple instances.
@@ -48,7 +54,8 @@ app
   .whenReady()
   .then(() => {
     setupDatabaseIPC()
-    registerFileMainIPC()
+    setupFileMainIPC()
+    setupFetchMainIPC()
   })
   .then(restoreOrCreateWindow)
   .catch(e => console.error('Failed create window:', e))

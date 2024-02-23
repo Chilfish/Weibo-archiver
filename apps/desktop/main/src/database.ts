@@ -9,8 +9,6 @@ const dbFile = 'weibo-data.db'
 
 const dbPath = join(dataPath, dbFile)
 
-console.log(join(app.getAppPath(), dbFile))
-
 // 如果应用文件夹中没有数据库文件，则从资源文件夹中复制
 if (!fs.existsSync(dbPath)) {
   if (import.meta.env.DEV)

@@ -35,6 +35,7 @@ const config: UserConfig = {
     assetsDir: '.',
     rollupOptions: {
       input: join(__dirname, 'index.html'),
+      external: ['conf', 'drizzle-orm', 'better-sqlite3'],
     },
     emptyOutDir: true,
     reportCompressedSize: false,

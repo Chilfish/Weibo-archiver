@@ -7,6 +7,7 @@ export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const PostService: typeof import('../packages/core/src/services/postService')['PostService']
+  const UserDB: typeof import('../packages/database/src/queries/user')['UserDB']
   const aborter: typeof import('../packages/core/src/utils/fetch')['aborter']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
@@ -15,9 +16,13 @@ declare global {
   const computedEager: typeof import('@vueuse/core')['computedEager']
   const computedInject: typeof import('@vueuse/core')['computedInject']
   const computedWithControl: typeof import('@vueuse/core')['computedWithControl']
+  const config: typeof import('../apps/desktop/renderer/src/composables/config')['config']
+  const configRef: typeof import('../apps/desktop/renderer/src/composables/config')['configRef']
   const controlledComputed: typeof import('@vueuse/core')['controlledComputed']
   const controlledRef: typeof import('@vueuse/core')['controlledRef']
+  const cookie: typeof import('../packages/core/src/utils/index')['cookie']
   const createApp: typeof import('vue')['createApp']
+  const createDatabase: typeof import('../packages/database/src/index')['createDatabase']
   const createEventHook: typeof import('@vueuse/core')['createEventHook']
   const createGlobalState: typeof import('@vueuse/core')['createGlobalState']
   const createInjectionState: typeof import('@vueuse/core')['createInjectionState']
@@ -38,6 +43,7 @@ declare global {
   const fetchAllPosts: typeof import('../packages/core/src/services/postService')['fetchAllPosts']
   const fetchComments: typeof import('../packages/core/src/services/postService')['fetchComments']
   const fetchLongText: typeof import('../packages/core/src/services/postService')['fetchLongText']
+  const fetchPosts: typeof import('../packages/core/src/services/postService')['fetchPosts']
   const fetchRangePosts: typeof import('../packages/core/src/services/postService')['fetchRangePosts']
   const filterComments: typeof import('../packages/core/src/utils/parse')['filterComments']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
@@ -66,6 +72,8 @@ declare global {
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
+  const onBeforeRouteLeave: typeof import('vue-router')['onBeforeRouteLeave']
+  const onBeforeRouteUpdate: typeof import('vue-router')['onBeforeRouteUpdate']
   const onBeforeUnmount: typeof import('vue')['onBeforeUnmount']
   const onBeforeUpdate: typeof import('vue')['onBeforeUpdate']
   const onClickOutside: typeof import('@vueuse/core')['onClickOutside']
@@ -176,6 +184,7 @@ declare global {
   const useDeviceOrientation: typeof import('@vueuse/core')['useDeviceOrientation']
   const useDevicePixelRatio: typeof import('@vueuse/core')['useDevicePixelRatio']
   const useDevicesList: typeof import('@vueuse/core')['useDevicesList']
+  const useDialog: typeof import('naive-ui')['useDialog']
   const useDisplayMedia: typeof import('@vueuse/core')['useDisplayMedia']
   const useDocumentVisibility: typeof import('@vueuse/core')['useDocumentVisibility']
   const useDraggable: typeof import('@vueuse/core')['useDraggable']
@@ -207,6 +216,8 @@ declare global {
   const useIntervalFn: typeof import('@vueuse/core')['useIntervalFn']
   const useKeyModifier: typeof import('@vueuse/core')['useKeyModifier']
   const useLastChanged: typeof import('@vueuse/core')['useLastChanged']
+  const useLink: typeof import('vue-router')['useLink']
+  const useLoadingBar: typeof import('naive-ui')['useLoadingBar']
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
   const useManualRefHistory: typeof import('@vueuse/core')['useManualRefHistory']
@@ -214,6 +225,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
+  const useMessage: typeof import('naive-ui')['useMessage']
   const useMounted: typeof import('@vueuse/core')['useMounted']
   const useMouse: typeof import('@vueuse/core')['useMouse']
   const useMouseInElement: typeof import('@vueuse/core')['useMouseInElement']
@@ -221,6 +233,7 @@ declare global {
   const useMutationObserver: typeof import('@vueuse/core')['useMutationObserver']
   const useNavigatorLanguage: typeof import('@vueuse/core')['useNavigatorLanguage']
   const useNetwork: typeof import('@vueuse/core')['useNetwork']
+  const useNotification: typeof import('naive-ui')['useNotification']
   const useNow: typeof import('@vueuse/core')['useNow']
   const useObjectUrl: typeof import('@vueuse/core')['useObjectUrl']
   const useOffsetPagination: typeof import('@vueuse/core')['useOffsetPagination']
@@ -229,6 +242,7 @@ declare global {
   const usePagination: typeof import('../packages/core/src/composables/pagination')['usePagination']
   const useParallax: typeof import('@vueuse/core')['useParallax']
   const useParentElement: typeof import('@vueuse/core')['useParentElement']
+  const usePausableLoop: typeof import('../packages/core/src/utils/index')['usePausableLoop']
   const usePerformanceObserver: typeof import('@vueuse/core')['usePerformanceObserver']
   const usePermission: typeof import('@vueuse/core')['usePermission']
   const usePointer: typeof import('@vueuse/core')['usePointer']
@@ -244,6 +258,8 @@ declare global {
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
+  const useRoute: typeof import('vue-router')['useRoute']
+  const useRouter: typeof import('vue-router')['useRouter']
   const useScreenOrientation: typeof import('@vueuse/core')['useScreenOrientation']
   const useScreenSafeArea: typeof import('@vueuse/core')['useScreenSafeArea']
   const useScriptTag: typeof import('@vueuse/core')['useScriptTag']
@@ -293,6 +309,7 @@ declare global {
   const useWindowFocus: typeof import('@vueuse/core')['useWindowFocus']
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
+  const user: typeof import('../packages/database/src/schema/user')['user']
   const userInfo: typeof import('../packages/core/src/utils/fetch')['userInfo']
   const waitForElement: typeof import('../packages/core/src/utils/dom')['waitForElement']
   const watch: typeof import('vue')['watch']
@@ -357,6 +374,7 @@ declare module 'vue' {
     readonly fetchAllPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchAllPosts']>
     readonly fetchComments: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchComments']>
     readonly fetchLongText: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchLongText']>
+    readonly fetchPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchPosts']>
     readonly fetchRangePosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchRangePosts']>
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
@@ -548,6 +566,7 @@ declare module 'vue' {
     readonly usePagination: UnwrapRef<typeof import('../packages/core/src/composables/pagination')['usePagination']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePausableLoop: UnwrapRef<typeof import('../packages/core/src/utils/index')['usePausableLoop']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
@@ -599,7 +618,6 @@ declare module 'vue' {
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
-    readonly useUserStore: UnwrapRef<typeof import('../packages/core/src/stores/user')['useUserStore']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>
     readonly useVModels: UnwrapRef<typeof import('@vueuse/core')['useVModels']>
     readonly useVibrate: UnwrapRef<typeof import('@vueuse/core')['useVibrate']>
@@ -669,6 +687,7 @@ declare module '@vue/runtime-core' {
     readonly fetchAllPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchAllPosts']>
     readonly fetchComments: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchComments']>
     readonly fetchLongText: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchLongText']>
+    readonly fetchPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchPosts']>
     readonly fetchRangePosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchRangePosts']>
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
@@ -860,6 +879,7 @@ declare module '@vue/runtime-core' {
     readonly usePagination: UnwrapRef<typeof import('../packages/core/src/composables/pagination')['usePagination']>
     readonly useParallax: UnwrapRef<typeof import('@vueuse/core')['useParallax']>
     readonly useParentElement: UnwrapRef<typeof import('@vueuse/core')['useParentElement']>
+    readonly usePausableLoop: UnwrapRef<typeof import('../packages/core/src/utils/index')['usePausableLoop']>
     readonly usePerformanceObserver: UnwrapRef<typeof import('@vueuse/core')['usePerformanceObserver']>
     readonly usePermission: UnwrapRef<typeof import('@vueuse/core')['usePermission']>
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
@@ -911,7 +931,6 @@ declare module '@vue/runtime-core' {
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
-    readonly useUserStore: UnwrapRef<typeof import('../packages/core/src/stores/user')['useUserStore']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>
     readonly useVModels: UnwrapRef<typeof import('@vueuse/core')['useVModels']>
     readonly useVibrate: UnwrapRef<typeof import('@vueuse/core')['useVibrate']>
