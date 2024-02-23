@@ -93,6 +93,54 @@ export async function fetchComments(post: Post): Promise<Comment[]> {
   ))
 }
 
+interface FetchPosts {
+  startPage: number
+  isFetchAll: boolean
+  setTotal: (total: number) => void
+  addPosts: (posts: Post[]) => void
+  stopCondition: () => boolean
+}
+
+/**
+ * 爬取微博
+ */
+export async function fetchPosts(
+  { startPage, isFetchAll, setTotal, addPosts, stopCondition }: FetchPosts,
+) {
+  let page = startPage
+  const res = isFetchAll
+    ? await fetchAllPosts(page)
+    : await fetchRangePosts(page)
+
+  // 先获取总页数
+  setTotal(res?.total || 0)
+  addPosts(res?.list || [])
+
+  const { startLoop, resume, pause } = usePausableLoop(
+    async () => {
+      page++
+      const data = isFetchAll
+        ? await fetchAllPosts(page)
+        : await fetchRangePosts(page)
+
+      addPosts(data?.list || [])
+      console.log(`已获取第 ${page} 页`)
+
+      // 如果已经获取到所有帖子
+      if (stopCondition())
+        return { isStop: true }
+      return { isStop: false }
+    },
+  )
+
+  startLoop()
+
+  return {
+    pause,
+    resume,
+  }
+}
+
 /**
  * @deprecated use {@link usePausableLoop} instead
  */

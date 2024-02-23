@@ -43,6 +43,7 @@ declare global {
   const fetchAllPosts: typeof import('../packages/core/src/services/postService')['fetchAllPosts']
   const fetchComments: typeof import('../packages/core/src/services/postService')['fetchComments']
   const fetchLongText: typeof import('../packages/core/src/services/postService')['fetchLongText']
+  const fetchPosts: typeof import('../packages/core/src/services/postService')['fetchPosts']
   const fetchRangePosts: typeof import('../packages/core/src/services/postService')['fetchRangePosts']
   const filterComments: typeof import('../packages/core/src/utils/parse')['filterComments']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
@@ -373,6 +374,7 @@ declare module 'vue' {
     readonly fetchAllPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchAllPosts']>
     readonly fetchComments: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchComments']>
     readonly fetchLongText: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchLongText']>
+    readonly fetchPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchPosts']>
     readonly fetchRangePosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchRangePosts']>
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
@@ -685,6 +687,7 @@ declare module '@vue/runtime-core' {
     readonly fetchAllPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchAllPosts']>
     readonly fetchComments: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchComments']>
     readonly fetchLongText: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchLongText']>
+    readonly fetchPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchPosts']>
     readonly fetchRangePosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchRangePosts']>
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>

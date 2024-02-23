@@ -7,6 +7,7 @@ export const useConfigStore = defineStore('config', () => {
   const state = reactive<FetchOptions>({
     uid: '',
     name: '',
+    cookie: '',
     isFetchAll: true,
     picLarge: true,
     repostPic: true,
