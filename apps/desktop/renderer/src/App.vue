@@ -9,3 +9,13 @@
     </main>
   </AppMain>
 </template>
+
+<style>
+.cet-icon img {
+  height: 20px !important;
+}
+
+.cet-menubar {
+  display: none !important;
+}
+</style>

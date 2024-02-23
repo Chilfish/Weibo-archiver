@@ -5,9 +5,11 @@ import { config } from '@core/utils/config'
 import { IPCRenderer } from '../../utils'
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('App started', customTitlebar.Titlebar.toString)
   // eslint-disable-next-line no-new
-  new customTitlebar.Titlebar({})
+  new customTitlebar.Titlebar({
+    iconSize: 32,
+    titleHorizontalAlignment: 'left',
+  })
 })
 
 export * from './nodeCrypto'
