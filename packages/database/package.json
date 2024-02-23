@@ -8,8 +8,8 @@
     "sqlite:push": "pnpm rebuild && drizzle-kit push:sqlite"
   },
   "dependencies": {
-    "better-sqlite3": "^9.4.1",
-    "drizzle-orm": "^0.29.3",
+    "better-sqlite3": "^9.4.3",
+    "drizzle-orm": "^0.29.4",
     "drizzle-zod": "^0.5.1"
   },
   "devDependencies": {
