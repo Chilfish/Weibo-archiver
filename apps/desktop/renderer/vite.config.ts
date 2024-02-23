@@ -29,7 +29,7 @@ const config: UserConfig = {
     },
   },
   build: {
-    sourcemap: true,
+    // sourcemap: true,
     target: `chrome${chrome}`,
     outDir: join(__dirname, 'dist'),
     assetsDir: '.',

@@ -6,16 +6,35 @@ import App from './App.vue'
 import 'uno.css'
 import '@unocss/reset/tailwind.css'
 import '@ui/shared.css'
+import './electron.css'
 
 const app = createApp(App)
 
-const routes: RouteRecordRaw[] = [{
-  path: '/',
-  component: () => import('./index.vue'),
-}]
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('./pages/index.vue'),
+  },
+  {
+    path: '/intro',
+    name: 'Intro',
+    component: () => import('./pages/intro.vue'),
+  },
+]
+
+// const _debugRoute: RouteRecordRaw = {
+//   path: '/',
+//   component: () => import('./pages/intro.vue'),
+// }
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
+  // routes: [_debugRoute],
   routes,
 })
 

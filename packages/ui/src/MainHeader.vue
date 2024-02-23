@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { isDark } from '@core'
 import { useRoute, useRouter } from 'vue-router'
 
 const { y } = useWindowScroll()
@@ -26,8 +25,6 @@ async function search() {
   if (res.length)
     router.push(`/s/1?q=${searchInput.value}`)
 }
-
-const toggleDark = useToggle(isDark)
 
 onMounted(() => {
   searchInput.value = route.query?.q?.toString() || ''
@@ -59,13 +56,6 @@ onMounted(() => {
       >
     </form>
 
-    <button
-      @click="toggleDark()"
-    >
-      <span
-        :i-tabler="isDark ? 'moon' : 'sun'"
-        class="icon"
-      />
-    </button>
+    <Dark />
   </header>
 </template>

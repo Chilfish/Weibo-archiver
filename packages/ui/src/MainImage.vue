@@ -6,9 +6,11 @@ withDefaults(defineProps<{
   height?: string | number
   minHeight?: string | number
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+  lazy?: boolean
 }>(), {
   fit: 'contain',
   alt: 'image',
+  lazy: true,
 })
 </script>
 
@@ -16,7 +18,7 @@ withDefaults(defineProps<{
   <n-image
     lazy
     fallback-src="/placeholder.webp"
-    src="/placeholder.webp"
+    :src="lazy ? '/placeholder.webp' : src"
     :object-fit="fit"
     :alt="alt"
     :preview-src="replaceImg(src)"

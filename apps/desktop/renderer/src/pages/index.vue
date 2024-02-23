@@ -1,11 +1,17 @@
 <script lang="ts" setup>
 import { FetchIPC } from '#preload'
 
+const router = useRouter()
+
 watchImmediate(isDark, (value) => {
   config.set('theme', value ? 'dark' : 'light')
 })
 
 const user1 = ref('')
+
+const cookie = configRef.value.fetchOptions.cookie
+if (!cookie)
+  router.push('/intro')
 </script>
 
 <template>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+onMounted(() => {
+  lazyLoadImage()
+})
 </script>
 
 <template>
@@ -10,12 +12,8 @@
   </AppMain>
 </template>
 
-<style>
-.cet-icon img {
-  height: 20px !important;
-}
-
-.cet-menubar {
-  display: none !important;
+<style scoped>
+main {
+  height: calc(100dvh - 30px);
 }
 </style>

@@ -5,7 +5,6 @@ const now = Date.now()
 
 const {
   VITE_APP_VERSION: version,
-  VITE_COOKIE: cookie,
 } = import.meta.env
 
 const config = new Config<AppConfig>({
@@ -35,7 +34,7 @@ const config = new Config<AppConfig>({
 const path = config.path.replace(/config\.json$/, '')
 
 config.set('configPath', path)
-config.set('fetchOptions.cookie', cookie ?? '')
+// config.set('fetchOptions.cookie', cookie ?? '')
 
 export default config
 export {

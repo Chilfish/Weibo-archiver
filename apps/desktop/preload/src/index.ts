@@ -1,4 +1,5 @@
 import customTitlebar from 'custom-electron-titlebar'
+import { contextBridge } from 'electron'
 import type { UserDBMethods } from '@database'
 import type { AppConfig, IPCFetch, IPCFile } from '@types'
 import { config } from '@core/utils/config'
@@ -7,7 +8,6 @@ import { IPCRenderer } from '../../utils'
 window.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line no-new
   new customTitlebar.Titlebar({
-    iconSize: 32,
     titleHorizontalAlignment: 'left',
   })
 })
@@ -48,3 +48,5 @@ export const _config = {
   path: config.path,
   data: config.store,
 }
+
+contextBridge.exposeInMainWorld('config', _config)

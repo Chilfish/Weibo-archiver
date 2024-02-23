@@ -33,7 +33,7 @@
     "typecheck": "tsc --noEmit && pnpm typecheck:renderer",
     "sync": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./utils/update-electron-vendors.js",
     "rebuild:sqlite": "./node_modules/.bin/electron-rebuild -fw better-sqlite3",
-    "prepare": "electron-builder install-app-deps"
+    "postintall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "@weibo-archiver/core": "workspace:*",

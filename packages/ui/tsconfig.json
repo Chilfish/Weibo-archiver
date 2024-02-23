@@ -3,12 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "#preload": [
-        "../../apps/desktop/preload/src/index"
-      ],
-      "@types": [
-        "../../types/index"
-      ]
+      "#preload": ["../../apps/desktop/preload/src/index"],
+      "@types": ["../../types/index"],
+      "@core/*": ["../core/src/*"]
     }
   },
   "exclude": [

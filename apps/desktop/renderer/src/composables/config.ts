@@ -1,7 +1,5 @@
 import { _config } from '#preload'
 
-console.log(_config)
-
 const configRef = ref(_config.data)
 
 _config.onChange((newVal) => {
