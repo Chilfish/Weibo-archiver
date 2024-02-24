@@ -1,0 +1,19 @@
+.n-image-preview {
+  margin: 2.6rem auto;
+}
+.n-image-preview-toolbar {
+  bottom: 8px !important;
+}
+
+/* Electron 的下载图片键 */
+.n-image-preview-toolbar :nth-child(6) {
+  display: none !important;
+}
+
+.cet-icon img {
+  height: 20px !important;
+}
+
+.cet-menubar {
+  display: none !important;
+}

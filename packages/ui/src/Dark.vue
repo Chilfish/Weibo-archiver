@@ -5,6 +5,6 @@ const icon = computed(() => (isDark.value ? 'i-tabler-moon' : 'i-tabler-sun'))
 
 <template>
   <button @click="toggleDark()">
-    <i :class="icon" />
+    <i :class="`icon ${icon}`" />
   </button>
 </template>

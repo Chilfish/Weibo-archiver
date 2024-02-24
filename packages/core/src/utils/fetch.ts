@@ -1,36 +1,44 @@
+import type { FetchOptions } from 'ofetch'
 import { ofetch } from 'ofetch'
 import { getOptions } from './index'
 
 export const aborter = new AbortController()
 
-const cookie = typeof document !== 'undefined'
-  ? document.cookie
-  : (await getOptions()).cookie
+export async function weiFetch<T extends { data: any }>(
+  path: string,
+  options?: FetchOptions<'json'>,
+) {
+  const cookie = typeof document !== 'undefined'
+    ? document.cookie
+    : (await getOptions()).cookie
 
-export const weiFetch = ofetch.create({
-  baseURL: 'https://weibo.com/ajax',
-  headers: {
-    'Cookie': cookie,
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0',
-  },
-  retry: 3,
-  retryDelay: 5000,
-  signal: aborter.signal,
-  // async onResponse({ request, response, options }) {
-  //   // Log response
-  //   console.log('[fetch response]', request, response.status, response.body)
-  // },
-})
+  return ofetch<T>(`https://weibo.com/ajax${path}`, {
+    headers: {
+      'Cookie': cookie,
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0',
+    },
+    retry: 3,
+    retryDelay: 5000,
+    signal: aborter.signal,
+    ...options,
+  })
+}
 
 export async function userInfo(
   id?: string,
   name?: string,
 ): Promise<{ uid: string, name: string }> {
-  const { data } = await weiFetch(`/user/popcard/get?screen_name=${name ?? ''}&id=${id}`, {})
-  const { idstr, screen_name } = data || {}
+  const { data } = await weiFetch('/profile/info', {
+    params: {
+      id: id ?? '',
+      screen_name: name ?? '',
+    },
+  })
+  const { idstr, screen_name } = data.user || {}
 
   return {
     uid: idstr,
     name: screen_name,
+    ...data,
   }
 }

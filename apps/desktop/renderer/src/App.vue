@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+onMounted(() => {
+  lazyLoadImage()
+})
 </script>
 
 <template>
@@ -9,3 +11,9 @@
     </main>
   </AppMain>
 </template>
+
+<style scoped>
+main {
+  height: calc(100dvh - 30px);
+}
+</style>

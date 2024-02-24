@@ -1,14 +1,29 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   src: string
   alt?: string
   width?: string | number
   height?: string | number
   minHeight?: string | number
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+  lazy?: boolean
 }>(), {
   fit: 'contain',
   alt: 'image',
+  lazy: true,
+})
+
+const realSrc = ref(props.src)
+const inElectron = computed(() => import.meta.env.PROD && (isElectron || !props.src.startsWith('/')))
+
+onBeforeMount(async () => {
+  if (!inElectron.value)
+    return
+
+  const { _config } = await import('#preload')
+  const { publicPath } = _config.data
+  const src = `file://${publicPath}${props.src.slice(1)}`
+  realSrc.value = src
 })
 </script>
 
@@ -16,10 +31,10 @@ withDefaults(defineProps<{
   <n-image
     lazy
     fallback-src="/placeholder.webp"
-    src="/placeholder.webp"
+    :src="lazy ? '/placeholder.webp' : realSrc"
     :object-fit="fit"
     :alt="alt"
-    :preview-src="replaceImg(src)"
+    :preview-src="inElectron ? realSrc : replaceImg(src)"
     :img-props="{
       style: {
         minHeight,
