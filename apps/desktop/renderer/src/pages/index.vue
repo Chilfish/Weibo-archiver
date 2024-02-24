@@ -15,17 +15,19 @@ if (!cookie)
 </script>
 
 <template>
-  <div>
-    {{ user1 }}
-  </div>
+  <main class="p-4">
+    <pre>
+      {{ user1 }}
+    </pre>
 
-  <button
-    class="btn"
-    @click="async() => {
-      const res = await FetchIPC.userInfo('7679065628')
-      user1 = JSON.stringify(res)
-    }"
-  >
-    fetch userInfo
-  </button>
+    <button
+      class="btn"
+      @click="async() => {
+        const res = await FetchIPC.userInfo('', '来去之间')
+        user1 = JSON.stringify(res, null, 2)
+      }"
+    >
+      fetch userInfo
+    </button>
+  </main>
 </template>
