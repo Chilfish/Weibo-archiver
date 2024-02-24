@@ -1,5 +1,4 @@
 import customTitlebar from 'custom-electron-titlebar'
-import { contextBridge } from 'electron'
 import type { UserDBMethods } from '@database'
 import type { AppConfig, IPCFetch, IPCFile } from '@types'
 import { config } from '@core/utils/config'
@@ -48,5 +47,3 @@ export const _config = {
   path: config.path,
   data: config.store,
 }
-
-contextBridge.exposeInMainWorld('config', _config)

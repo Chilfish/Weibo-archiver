@@ -14,6 +14,9 @@ const config = new Config<AppConfig>({
   defaults: {
     configPath: '',
     dataPath: '',
+    appPath: '',
+    publicPath: '',
+    osSep: '/',
     version,
     theme: 'light',
     fetchOptions: {

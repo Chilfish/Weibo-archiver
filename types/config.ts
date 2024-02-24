@@ -53,6 +53,9 @@ export interface AppConfig {
   theme: 'light' | 'dark'
   dataPath: string
   configPath: string
+  appPath: string
+  publicPath: string
+  osSep: '\\' | '/'
 
   fetchOptions: FetchOptions
 }

@@ -1,10 +1,18 @@
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BrowserWindow, app } from 'electron'
+import { BrowserWindow, app, shell } from 'electron'
 import { attachTitlebarToWindow, setupTitlebar } from 'custom-electron-titlebar/main'
+import contextMenu from 'electron-context-menu'
 
 // setup the titlebar main process
 setupTitlebar()
+
+// setup the context menu
+contextMenu({
+  showCopyImage: true,
+  showSaveImageAs: true,
+  showSaveImage: true,
+})
 
 const {
   DEV: isDev,
@@ -27,6 +35,12 @@ async function createWindow() {
     },
   })
   attachTitlebarToWindow(browserWindow)
+
+  browserWindow.webContents.setWindowOpenHandler(({ url }) => {
+    console.log({ url })
+    shell.openExternal(url)
+    return { action: 'deny' }
+  })
 
   /**
    * If the 'show' property of the BrowserWindow's constructor is omitted from the initialization options,

@@ -15,9 +15,21 @@ mainLog.info('App started')
 crashReporter.start({
   uploadToServer: false,
 })
-app.setPath('crashDumps', app.getPath('userData'))
 
-globalThis.fetchOptions = config.store.fetchOptions
+const userDataPath = app.getPath('userData')
+const appPath = app.getAppPath()
+
+app.setPath('crashDumps', userDataPath)
+
+// setup config
+config.set('appPath', appPath)
+const separator = appPath.includes('/') ? '/' : '\\'
+const publicPath = `${appPath}${separator}renderer${separator}dist${separator}`
+config.set('publicPath', publicPath)
+config.set('osSep', separator)
+
+if (config.get('dataPath') === '')
+  config.set('dataPath', userDataPath)
 
 /**
  * Prevent electron from running multiple instances.
