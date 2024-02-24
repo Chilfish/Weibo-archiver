@@ -1,3 +1,17 @@
+<div align="center">
+  <img
+    alt="logo"
+    width="100"
+    src="https://p.chilfish.top/weibo/icon.webp"
+  />
+
+  <div>
+    <img src="https://wakatime.com/badge/user/0842a71f-c026-4b09-8aa0-f8398b4c3423/project/3416f224-f0dc-4b08-805c-af30dbd396b2.svg" alt="wakatime">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/chilfish/weibo-archiver">
+    <img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/chilfish/weibo-archiver/total">
+  </div>
+</div>
+
 ## Weibo-archiver
 
 将你的新浪微博归档，为号被完全夹没前绸缪 😭
@@ -18,7 +32,7 @@
 
 安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [个人镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或关闭页面，否则就要重新获取。当然也可以按时间范围来选择。
 
-由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [讨论区]。v0.1.11 之后的版本在 [#5] 有对应的改动说明
+由于目前更多的是面向有编程基础的用户，关于更多操作细节可见 [#1]。v0.1.11 之后的版本在 [#5] 有对应的改动说明
 
 有关项目的进展路线等，可见 [项目的 Todo] 部分
 
@@ -108,7 +122,7 @@ node ./merge.mjs
 [releases]: https://github.com/Chilfish/Weibo-archiver/releases/latest
 [speechless]: https://github.com/meterscao/Speechless
 [naive-ui]: https://www.naiveui.com/zh-CN/os-theme
-[讨论区]: https://github.com/Chilfish/Weibo-archiver/issues/1
+[#1]: https://github.com/Chilfish/Weibo-archiver/issues/1
 [#5]: https://github.com/Chilfish/Weibo-archiver/issues/5
 [Node.js 官网]: https://nodejs.org/en/download
 [vite-plugin-monkey]: https://github.com/lisonge/vite-plugin-monkey

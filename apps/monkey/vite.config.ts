@@ -17,7 +17,7 @@ export default defineConfig({
         description: '将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭',
         homepage: 'https://github.com/Chilfish/Weibo-Archiver',
         source: 'https://github.com/Chilfish/Weibo-Archiver/tree/main/packages/monkey',
-        icon: 'https://github.com/Chilfish/Weibo-archiver/raw/main/docs/Speechless48.png',
+        icon: 'https://p.chilfish.top/weibo/icon.webp',
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
