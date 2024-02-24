@@ -20,6 +20,7 @@ export async function getOptions() {
   if (typeof localStorage !== 'undefined') {
     return JSON.parse(localStorage.getItem('fetchOptions') || '{}') as FetchOptions
   }
+  // TODO: 在构建 monkey, web 时，注释下面几行
   else {
     const { config } = await import('./config')
     return config.store.fetchOptions

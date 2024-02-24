@@ -11,7 +11,7 @@ import {
   weiFetch,
 } from '../utils'
 
-const options = await getOptions()
+const options = (async () => await getOptions())()
 
 /**
  * 鉴权字段，必须得登录才获取得了，不然匿名只能获取前两页 <br/>
