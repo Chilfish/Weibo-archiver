@@ -23,22 +23,3 @@ export async function weiFetch<T extends { data: any }>(
     ...options,
   })
 }
-
-export async function userInfo(
-  id?: string,
-  name?: string,
-): Promise<{ uid: string, name: string }> {
-  const { data } = await weiFetch('/profile/info', {
-    params: {
-      uid: id ?? '',
-      screen_name: name ?? '',
-    },
-  })
-  const { idstr, screen_name } = data.user || {}
-
-  return {
-    uid: idstr,
-    name: screen_name,
-    ...data,
-  }
-}

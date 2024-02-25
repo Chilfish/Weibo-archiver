@@ -1,5 +1,5 @@
 import type { IPCFetch } from '@types'
-import { userInfo } from '@core/utils'
+import { userInfo } from '@core/services'
 import { IPCMain } from '../../utils'
 
 const channel = 'fetch'

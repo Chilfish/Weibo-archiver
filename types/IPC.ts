@@ -10,5 +10,5 @@ export interface IPCFile {
 }
 
 export interface IPCFetch {
-  userInfo: (id?: string, name?: string) => Promise<{ uid: string, name: string }>
+  userInfo: (options: { id?: string, name?: string }) => Promise<{ uid: string, name: string }>
 }

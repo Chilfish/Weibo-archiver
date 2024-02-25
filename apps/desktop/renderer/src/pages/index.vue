@@ -23,7 +23,7 @@ if (!cookie)
     <button
       class="btn"
       @click="async() => {
-        const res = await FetchIPC.userInfo('1111681197')
+        const res = await FetchIPC.userInfo({ id: '1111681197' })
         user1 = JSON.stringify(res, null, 2)
       }"
     >

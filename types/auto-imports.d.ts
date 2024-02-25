@@ -312,7 +312,8 @@ declare global {
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
   const user: typeof import('../packages/database/src/schema/user')['user']
-  const userInfo: typeof import('../packages/core/src/utils/fetch')['userInfo']
+  const userDetail: typeof import('../packages/core/src/services/userService')['userDetail']
+  const userInfo: typeof import('../packages/core/src/services/userService')['userInfo']
   const userTable: typeof import('../packages/database/src/schema/user')['userTable']
   const waitForElement: typeof import('../packages/core/src/utils/dom')['waitForElement']
   const watch: typeof import('vue')['watch']
@@ -647,7 +648,8 @@ declare module 'vue' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
-    readonly userInfo: UnwrapRef<typeof import('../packages/core/src/utils/fetch')['userInfo']>
+    readonly userDetail: UnwrapRef<typeof import('../packages/core/src/services/userService')['userDetail']>
+    readonly userInfo: UnwrapRef<typeof import('../packages/core/src/services/userService')['userInfo']>
     readonly userTable: UnwrapRef<typeof import('../packages/database/src/schema/user')['userTable']>
     readonly waitForElement: UnwrapRef<typeof import('../packages/core/src/utils/dom')['waitForElement']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
@@ -975,7 +977,8 @@ declare module '@vue/runtime-core' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
-    readonly userInfo: UnwrapRef<typeof import('../packages/core/src/utils/fetch')['userInfo']>
+    readonly userDetail: UnwrapRef<typeof import('../packages/core/src/services/userService')['userDetail']>
+    readonly userInfo: UnwrapRef<typeof import('../packages/core/src/services/userService')['userInfo']>
     readonly userTable: UnwrapRef<typeof import('../packages/database/src/schema/user')['userTable']>
     readonly waitForElement: UnwrapRef<typeof import('../packages/core/src/utils/dom')['waitForElement']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>

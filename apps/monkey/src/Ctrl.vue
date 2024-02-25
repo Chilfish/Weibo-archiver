@@ -60,12 +60,9 @@ watchEffect(() => {
 window.$message = useMessage()
 
 onMounted(async () => {
-  if (configStore.state.uid)
-    return
-
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
-  const { uid, name } = await userInfo(id, username)
+  const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
 
   configStore.setConfig({
     uid,
