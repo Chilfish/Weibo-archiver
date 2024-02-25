@@ -155,33 +155,6 @@ importers:
         specifier: ^7.0.15
         version: 7.0.15(vite@5.1.4)(vue@3.4.19)
 
-  apps/desktop/dist/win-unpacked/resources/app:
-    dependencies:
-      '@weibo-archiver/core':
-        specifier: workspace:*
-        version: link:../../../../../../packages/core
-      '@weibo-archiver/database':
-        specifier: workspace:*
-        version: link:../../../../../../packages/database
-      '@weibo-archiver/ui':
-        specifier: workspace:*
-        version: link:../../../../../../packages/ui
-      custom-electron-titlebar:
-        specifier: ^4.2.8
-        version: 4.2.8(electron@28.2.4)
-      electron-log:
-        specifier: ^5.1.1
-        version: 5.1.1
-      electron-updater:
-        specifier: 6.1.7
-        version: 6.1.7
-      fs-extra:
-        specifier: ^11.2.0
-        version: 11.2.0
-      vue-router:
-        specifier: ^4.3.0
-        version: 4.3.0(vue@3.4.19)
-
   apps/monkey:
     dependencies:
       '@weibo-archiver/ui':

@@ -129,13 +129,14 @@ export async function postFilter(
   if (!post || !post.id || (!options.repost && !!post.retweeted_status?.id))
     return undefined
 
-  const repostImg = !isRepost || (isRepost && options.repostPic)
+  const includeImgs = !isRepost || (isRepost && options.repostPic)
+  const imgSize = options.picLarge ? 'largest' : 'large'
 
   try {
     const res: Post = {
       id: post.id,
       text: await fetchLongText(post),
-      imgs: repostImg ? parseImg(post.pic_ids, post.pic_infos) : [],
+      imgs: includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : [],
       reposts_count: post.reposts_count,
       comments_count: post.comments_count,
       like_count: post.attitudes_count,

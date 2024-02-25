@@ -34,7 +34,16 @@ async function start() {
     isFetchAll: configStore.state.isFetchAll,
     setTotal: total => postStore.total = total,
     addPosts: postStore.add,
-    stopCondition: () => postStore.fetchedPage >= postStore.pages,
+    stopCondition: () => {
+      const finished = postStore.fetchedPage >= postStore.pages
+
+      if (finished) {
+        isStart.value = false
+        isFinish.value = true
+        exportData(postStore.posts)
+      }
+      return finished
+    },
   })
   pauseFetch = pause
   resumeFetch = resume
@@ -45,15 +54,6 @@ watchEffect(() => {
     pauseFetch()
   else
     resumeFetch()
-
-  if (!isFinish.value)
-    return
-
-  if (postStore.fetchedPage >= postStore.pages) {
-    isStart.value = false
-    isFinish.value = true
-    exportData(postStore.posts)
-  }
 })
 
 // @ts-expect-error TODO: fix this

@@ -14,8 +14,9 @@ const props = withDefaults(defineProps<{
 })
 
 const realSrc = ref(props.src)
-const inElectron = computed(() => import.meta.env.PROD && (isElectron || !props.src.startsWith('/')))
+const inElectron = computed(() => import.meta.env.PROD && isElectron && !props.src.startsWith('/'))
 
+// TODO: build:web 的时候注释下面这段
 onBeforeMount(async () => {
   if (!inElectron.value)
     return

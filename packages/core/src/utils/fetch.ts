@@ -30,7 +30,7 @@ export async function userInfo(
 ): Promise<{ uid: string, name: string }> {
   const { data } = await weiFetch('/profile/info', {
     params: {
-      id: id ?? '',
+      uid: id ?? '',
       screen_name: name ?? '',
     },
   })
