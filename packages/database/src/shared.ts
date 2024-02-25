@@ -18,6 +18,7 @@ export interface Comment {
 
 export interface UserDBMethods {
   getAllUsers: () => Promise<UserTable[]>
+  getById: (id: number) => Promise<UserTable | undefined>
   insertUser: (newUser: UserTable) => Promise<UserTable>
 }
 
