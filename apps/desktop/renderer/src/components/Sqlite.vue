@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { IAccessor } from '@types'
-import type { User, UserDBMethods } from '@database'
+import type { DBMethods, UserTable } from '@database'
 
 const { userService } = defineProps<{
-  userService: IAccessor<UserDBMethods>
+  userService: IAccessor<DBMethods>
 }>()
 
-const users = ref([] as User[])
+const users = ref([] as UserTable[])
 
 async function createUser() {
   const user = {
@@ -14,7 +14,7 @@ async function createUser() {
     email: 'jogn@mail.com',
   }
 
-  const newUser = await userService.send('insertUser', user)
+  const newUser = await userService.send('addUser', user)
   users.value.push(newUser)
 }
 

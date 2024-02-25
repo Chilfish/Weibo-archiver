@@ -1,7 +1,9 @@
 import { join } from 'node:path'
 import { app, ipcMain } from 'electron'
 import fs from 'fs-extra'
-import { UserDB, createDatabase } from '@database'
+import { type DBMethods, DBQuery, createDatabase } from '@database'
+
+// import { mainLog } from '../../utils'
 
 const dataPath = app.getPath('userData')
 const resources = process.resourcesPath
@@ -18,23 +20,16 @@ if (!fs.existsSync(dbPath)) {
 }
 
 const db = createDatabase(dbPath)
-
-const channels = {
-  IPC_USER: new UserDB(db),
-} as const
+const dbQuery = new DBQuery(db)
 
 export function setupDatabaseIPC() {
-  function handleDatabaseIPC(channel: string, database: any) {
-    ipcMain.handle(channel, async (
-      _event,
-      { name, payload }: any,
-    ) => {
-      const data = await database[name](...payload)
-      // mainLog.info('IPC', channel, name, data)
-      return data
-    })
-  }
-
-  for (const [channel, database] of Object.entries(channels))
-    handleDatabaseIPC(channel, database)
+  ipcMain.handle('IPC_DB', async (
+    _event,
+    { name, payload }: { name: keyof DBMethods, payload: any[] },
+  ) => {
+    // @ts-expect-error payload is any[]
+    const data = await dbQuery[name](...payload)
+    // mainLog.info('IPC', name, ...payload, data)
+    return data
+  })
 }

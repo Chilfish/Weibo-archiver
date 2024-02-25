@@ -1,10 +1,13 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-export const user = sqliteTable('users', {
-  id: integer('id').primaryKey(),
+export const userTable = sqliteTable('users', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
-  email: text('email').notNull(),
-  createAt: text('create_at').default(new Date().toISOString()),
+  avatar: text('avatar').notNull(),
+  followers: integer('followers').notNull(),
+  followings: integer('followings').notNull(),
+  bio: text('bio').notNull(),
+  createAt: text('create_at'), // /profile/detail?uid=
 })
 
-export type User = typeof user.$inferInsert
+export type UserTable = typeof userTable.$inferInsert

@@ -1,5 +1,5 @@
 import customTitlebar from 'custom-electron-titlebar'
-import type { UserDBMethods } from '@database'
+import type { DBMethods } from '@database'
 import type { AppConfig, IPCFetch, IPCFile } from '@types'
 import { config } from '@core/utils/config'
 import { IPCRenderer } from '../../utils'
@@ -13,14 +13,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
 export * from './nodeCrypto'
 
-export const UserIPC = (() => {
-  const IPC = new IPCRenderer<UserDBMethods>('IPC_USER')
+export const dbIPC = (() => {
+  const IPC = new IPCRenderer<DBMethods>('IPC_DB')
 
   return {
     send: IPC.send.bind(IPC),
   }
 })()
 
+// TODO: fileIPC
 export const FileIPC: IPCFile = (() => {
   const IPC = new IPCRenderer<IPCFile>('files')
 
