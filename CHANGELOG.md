@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.2.3
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.2...v0.2.3)
+
+### 🚀 Enhancements
+
+- 初始化 /desktop 项目结构 ([#9](https://github.com/Chilfish/Weibo-archiver/pull/9))
+
+### 🩹 Fixes
+
+- Optimize the logic of fetching ([#11](https://github.com/Chilfish/Weibo-archiver/pull/11))
+- **build:** Monkey & web ([#13](https://github.com/Chilfish/Weibo-archiver/pull/13))
+
+### 💅 Refactors
+
+- Pure post fetcher ([#10](https://github.com/Chilfish/Weibo-archiver/pull/10))
+
+### 🏡 Chore
+
+- Update deps ([c9b49b0](https://github.com/Chilfish/Weibo-archiver/commit/c9b49b0))
+- Update deps ([1266bf8](https://github.com/Chilfish/Weibo-archiver/commit/1266bf8))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.2.2
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.1...v0.2.2)
