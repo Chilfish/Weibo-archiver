@@ -10,9 +10,10 @@ CREATE TABLE `posts` (
 	`created_at` text NOT NULL,
 	`ip` text NOT NULL,
 	`post_from` text NOT NULL,
-	`repost` text NOT NULL,
-	`comments` text DEFAULT '[]' NOT NULL,
+	`repost` text,
+	`repost_text` text,
 	`card` text,
+	`comments` text DEFAULT '[]' NOT NULL,
 	FOREIGN KEY (`uid`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -21,7 +22,7 @@ CREATE TABLE `users` (
 	`name` text NOT NULL,
 	`avatar` text NOT NULL,
 	`followers` integer NOT NULL,
-	`following` integer NOT NULL,
+	`followings` integer NOT NULL,
 	`bio` text NOT NULL,
 	`create_at` text
 );

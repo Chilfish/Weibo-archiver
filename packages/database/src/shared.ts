@@ -1,4 +1,4 @@
-import type { UserTable } from './schema/user'
+import type { PostTable, UserTable } from './schema'
 
 export interface Comment {
   id: number
@@ -16,10 +16,15 @@ export interface Comment {
   img?: string
 }
 
-export interface UserDBMethods {
+export interface DBMethods {
   getAllUsers: () => Promise<UserTable[]>
-  getById: (id: number) => Promise<UserTable | undefined>
-  insertUser: (newUser: UserTable) => Promise<UserTable>
-}
+  getUserById: (id: number) => Promise<UserTable | undefined>
+  addUser: (newUser: UserTable) => Promise<UserTable>
 
-export type DBMethods = UserDBMethods
+  postCount: () => Promise<number>
+  getPosts: (page: number, pageSize: number,) => Promise<PostTable[]>
+  getAllPosts: () => Promise<PostTable[]>
+  getPostById: (id: number) => Promise<PostTable | undefined>
+  addPost: (newPost: PostTable) => Promise<PostTable>
+  searchPost: (text: string) => Promise<PostTable[]>
+}

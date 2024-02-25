@@ -5,7 +5,7 @@ export const userTable = sqliteTable('users', {
   name: text('name').notNull(),
   avatar: text('avatar').notNull(),
   followers: integer('followers').notNull(),
-  following: integer('following').notNull(),
+  followings: integer('followings').notNull(),
   bio: text('bio').notNull(),
   createAt: text('create_at'), // /profile/detail?uid=
 })

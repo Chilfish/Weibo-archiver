@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "e54c95b2-45e4-4349-9e6a-7f8bfb332189",
+  "id": "66dee71c-70f5-4a01-b464-3ebfc802ea00",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -88,7 +88,21 @@
           "name": "repost",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "repost_text": {
+          "name": "repost_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "card": {
+          "name": "card",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "comments": {
@@ -98,13 +112,6 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'[]'"
-        },
-        "card": {
-          "name": "card",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
         }
       },
       "indexes": {
@@ -165,8 +172,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "following": {
-          "name": "following",
+        "followings": {
+          "name": "followings",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,

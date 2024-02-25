@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import { postTable, userTable } from './schema'
 
 export * from './schema'
-export * from './queries/user'
+export * from './query'
 export * from './shared'
 
 export type DB = BetterSQLite3Database<{

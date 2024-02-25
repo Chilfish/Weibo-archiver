@@ -19,14 +19,15 @@ export const postTable = sqliteTable('posts', {
   ip: text('ip').notNull(),
   postFrom: text('post_from').notNull(),
 
-  repost: text('repost', { mode: 'json' }).notNull(),
-  comments: text('comments', { mode: 'json' }).default('[]').notNull(),
+  repost: text('repost', { mode: 'json' }).$type<any>(),
+  repostText: text('repost_text'), // for search
   card: text('card', { mode: 'json' }).$type<CardInfo>(),
+  comments: text('comments', { mode: 'json' }).$type<any>().default('[]').notNull(),
 })
 
 type _PostTable = Omit<typeof postTable.$inferInsert, 'repost' | 'comments'>
 
 export type PostTable = _PostTable & {
-  comment: Comment
+  comments: Comment[]
   repost: _PostTable
 }
