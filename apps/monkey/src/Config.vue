@@ -8,7 +8,8 @@ const dateRange = computed({
     return configStore.state.dateRange
   },
   set(val: [number, number]) {
-    configStore.state.dateRange = val ?? []
+    configStore.state.dateRange = val ?? [Date.now(), Date.now()]
+    configStore.state.isFetchAll = false
   },
 })
 
@@ -31,8 +32,7 @@ configStore.setConfig({ now: Date.now() })
       <button
         class="bg-#18a058 py-1 btn hover:bg-green-7"
         @click="() => {
-          const { now } = configStore.state
-          dateRange = [now, now]
+          configStore.state.isFetchAll = true
         }"
       >
         重置为所有微博
@@ -70,3 +70,9 @@ configStore.setConfig({ now: Date.now() })
     </div>
   </div>
 </template>
+
+<style>
+.n-base-clear {
+  display: none !important;
+}
+</style>

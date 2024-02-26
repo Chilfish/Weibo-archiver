@@ -16,8 +16,8 @@ const isFinish = ref(false)
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
 
-let pauseFetch = () => {}
-let resumeFetch = async () => {}
+const pauseFn = ref<() => void>()
+const resumeFn = ref<() => void>()
 
 async function start() {
   message.info('开始爬取中，请稍等~', {
@@ -30,7 +30,7 @@ async function start() {
   isStop.value = false
 
   const { pause, resume } = await fetchPosts({
-    startPage: postStore.fetchedPage,
+    startPage: () => postStore.fetchedPage + 1,
     isFetchAll: configStore.state.isFetchAll,
     setTotal: total => postStore.total = total,
     addPosts: postStore.add,
@@ -45,15 +45,19 @@ async function start() {
       return finished
     },
   })
-  pauseFetch = pause
-  resumeFetch = resume
+
+  pauseFn.value = pause
+  resumeFn.value = resume
 }
 
-watchEffect(() => {
-  if (isStop.value)
-    pauseFetch()
+watch(isStop, (val, oldVal) => {
+  if (val === oldVal)
+    return
+
+  if (val)
+    pauseFn.value?.()
   else
-    resumeFetch()
+    resumeFn.value?.()
 })
 
 // @ts-expect-error TODO: fix this
@@ -100,7 +104,7 @@ onMounted(async () => {
         @click="start"
       >
         {{ isStart ? '重新开始' : '开始' }}
-        (获取{{ configStore.state.isFetchAll ? '全部' : '部分' }}微博)
+        (获取 <strong>{{ configStore.state.isFetchAll ? '全部' : '部分' }}</strong> 微博)
       </button>
 
       <div

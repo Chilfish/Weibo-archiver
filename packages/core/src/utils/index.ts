@@ -48,10 +48,12 @@ export function usePausableLoop(
   }
 
   function pause() {
+    console.log('已暂停')
     _isPaused = true
   }
 
   async function resume() {
+    console.log('已恢复')
     _isPaused = false
     await startLoop()
   }

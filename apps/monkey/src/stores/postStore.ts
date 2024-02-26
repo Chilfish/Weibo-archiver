@@ -6,7 +6,7 @@ export const usePostStore = defineStore('post', () => {
   const posts = ref([] as Post[])
 
   // 已获取的页数
-  const fetchedPage = ref(1)
+  const fetchedPage = ref(0)
   // 每页显示的帖子数量 ppp
   const postsPerPage = ref(20)
 
@@ -21,7 +21,7 @@ export const usePostStore = defineStore('post', () => {
   function reset() {
     posts.value = []
     postsPerPage.value = 20
-    fetchedPage.value = 1
+    fetchedPage.value = 0
   }
 
   /**
