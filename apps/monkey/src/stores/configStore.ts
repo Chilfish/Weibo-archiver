@@ -8,9 +8,10 @@ export const useConfigStore = defineStore('config', () => {
   const state = reactive<FetchOptions>(localData
     ? JSON.parse(localData)
     : {
+        now,
         uid: '',
         name: '',
-        cookie: document.cookie,
+        cookie: '',
         isFetchAll: true,
         picLarge: true,
         repostPic: true,
@@ -25,8 +26,8 @@ export const useConfigStore = defineStore('config', () => {
     Object.assign(state, config)
   }
 
-  watch(() => state.dateRange, (newVal) => {
-    state.isFetchAll = newVal.every(v => v === now)
+  watchImmediate(() => state.dateRange, (newVal) => {
+    state.isFetchAll = newVal.every(v => v === state.now)
   })
 
   watchEffect(() => {

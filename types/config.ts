@@ -16,6 +16,8 @@ export interface FetchOptions {
    */
   cookie: string
 
+  now: number
+
   /**
    * 是否获取全部微博
    */

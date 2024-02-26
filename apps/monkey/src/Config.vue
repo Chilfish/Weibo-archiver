@@ -11,11 +11,13 @@ const dateRange = computed({
     configStore.state.dateRange = val ?? []
   },
 })
+
+configStore.setConfig({ now: Date.now() })
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
-    <p class="text-black">
+    <p class="text-black!">
       请选择要存档的范围，默认为所有微博
     </p>
 
@@ -26,6 +28,15 @@ const dateRange = computed({
     />
 
     <div class="center flex-wrap justify-start gap-2">
+      <button
+        class="bg-#18a058 py-1 btn hover:bg-green-7"
+        @click="() => {
+          const { now } = configStore.state
+          dateRange = [now, now]
+        }"
+      >
+        重置为所有微博
+      </button>
       <n-checkbox
         v-model:checked="configStore.state.picLarge"
         label="导出原图"
