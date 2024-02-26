@@ -132,6 +132,9 @@ export async function postFilter(
   const includeImgs = !isRepost || (isRepost && options.repostPic)
   const imgSize = options.picLarge ? 'largest' : 'large'
 
+  // 转发的微博不需要评论
+  const includeComments = !isRepost && options.comment
+
   try {
     const res: Post = {
       id: post.id,
@@ -152,7 +155,7 @@ export async function postFilter(
       detail_url: `${weibo}/${post.user?.id}/${post.mblogid}`,
       retweeted_status: await postFilter(post.retweeted_status, options, true),
       card: parseCard(post.url_struct, post.page_info),
-      comments: options.comment ? await fetchComments(post) : [],
+      comments: includeComments ? await fetchComments(post) : [],
     }
 
     return res
