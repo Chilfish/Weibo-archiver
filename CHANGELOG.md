@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.2.4
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.3...v0.2.4)
+
+### 🩹 Fixes
+
+- Weibo database schema ([#14](https://github.com/Chilfish/Weibo-archiver/pull/14))
+- Fetch user infos ([6171110](https://github.com/Chilfish/Weibo-archiver/commit/6171110))
+- **database:** Post schema & its relations with user ([e7def99](https://github.com/Chilfish/Weibo-archiver/commit/e7def99))
+- Exclude comments in repost ([df38ce8](https://github.com/Chilfish/Weibo-archiver/commit/df38ce8))
+- **monkey:** Options to set fetch all posts ([1901b2e](https://github.com/Chilfish/Weibo-archiver/commit/1901b2e))
+- **monkey:** Fetch options ([5ff6b09](https://github.com/Chilfish/Weibo-archiver/commit/5ff6b09))
+- **build:** Monkey download url ([adfdab9](https://github.com/Chilfish/Weibo-archiver/commit/adfdab9))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.2.3
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.2...v0.2.3)
