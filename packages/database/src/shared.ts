@@ -1,4 +1,4 @@
-import type { PostTable, UserTable } from './schema'
+import type { PostTable, PostTableInsert, UserTable } from './schema'
 
 export interface Comment {
   id: number
@@ -25,6 +25,6 @@ export interface DBMethods {
   getPosts: (page: number, pageSize: number,) => Promise<PostTable[]>
   getAllPosts: () => Promise<PostTable[]>
   getPostById: (id: number) => Promise<PostTable | undefined>
-  addPost: (newPost: PostTable) => Promise<PostTable>
+  addPost: (newPost: PostTableInsert) => Promise<boolean>
   searchPost: (text: string) => Promise<PostTable[]>
 }

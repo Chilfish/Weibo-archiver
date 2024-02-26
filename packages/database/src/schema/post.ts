@@ -1,7 +1,7 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import type { CardInfo } from '@types'
 import type { Comment } from '../shared'
-import { userTable } from './user'
+import { type UserTable, userTable } from './user'
 
 export const postTable = sqliteTable('posts', {
   id: integer('id').notNull().primaryKey({ autoIncrement: true }),
@@ -22,12 +22,16 @@ export const postTable = sqliteTable('posts', {
   repost: text('repost', { mode: 'json' }).$type<any>(),
   repostText: text('repost_text'), // for search
   card: text('card', { mode: 'json' }).$type<CardInfo>(),
-  comments: text('comments', { mode: 'json' }).$type<any>().default('[]').notNull(),
+  comments: text('comments', { mode: 'json' }).$type<any>(),
 })
 
 type _PostTable = Omit<typeof postTable.$inferInsert, 'repost' | 'comments'>
 
-export type PostTable = _PostTable & {
+export type PostTableInsert = _PostTable & {
   comments: Comment[]
   repost: _PostTable
+}
+
+export type PostTable = Omit<PostTableInsert, 'uid'> & {
+  user: UserTable
 }

@@ -2,16 +2,13 @@ import { type BetterSQLite3Database, drizzle } from 'drizzle-orm/better-sqlite3'
 import Database from 'better-sqlite3'
 import fs from 'fs-extra'
 
-import { postTable, userTable } from './schema'
+import * as schema from './schema'
 
 export * from './schema'
 export * from './query'
 export * from './shared'
 
-export type DB = BetterSQLite3Database<{
-  user: typeof userTable
-  post: typeof postTable
-}>
+export type DB = BetterSQLite3Database<typeof schema>
 
 export function createDatabase(path: string) {
   try {
@@ -20,10 +17,7 @@ export function createDatabase(path: string) {
 
     const sqlite = new Database(path)
     const db = drizzle(sqlite, {
-      schema: {
-        user: userTable,
-        post: postTable,
-      },
+      schema,
     })
 
     return db

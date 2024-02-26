@@ -13,7 +13,7 @@ CREATE TABLE `posts` (
 	`repost` text,
 	`repost_text` text,
 	`card` text,
-	`comments` text DEFAULT '[]' NOT NULL,
+	`comments` text,
 	FOREIGN KEY (`uid`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

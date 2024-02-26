@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "66dee71c-70f5-4a01-b464-3ebfc802ea00",
+  "id": "8a9f7f39-3e7f-4cb1-b62d-f0d5ff03b2ec",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -109,9 +109,8 @@
           "name": "comments",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'[]'"
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {

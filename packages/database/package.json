@@ -6,7 +6,8 @@
     "typecheck": "tsc --noEmit -p ./tsconfig.json",
     "sqlite:gen": "drizzle-kit generate:sqlite",
     "sqlite:up": "drizzle-kit up:sqlite",
-    "sqlite:push": "pnpm rebuild && drizzle-kit push:sqlite"
+    "sqlite:push": "pnpm rebuild && drizzle-kit push:sqlite",
+    "studio": "pnpm rebuild && drizzle-kit studio"
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",

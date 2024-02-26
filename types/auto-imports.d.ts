@@ -96,6 +96,7 @@ declare global {
   const parsedData: typeof import('../packages/core/src/utils/parse')['parsedData']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
   const postFilter: typeof import('../packages/core/src/utils/parse')['postFilter']
+  const postRelations: typeof import('../packages/database/src/schema/index')['postRelations']
   const postTable: typeof import('../packages/database/src/schema/post')['postTable']
   const postsParser: typeof import('../packages/core/src/utils/parse')['postsParser']
   const protocolMap: typeof import('../packages/core/src/utils/protocol')['protocolMap']
@@ -314,6 +315,7 @@ declare global {
   const user: typeof import('../packages/database/src/schema/user')['user']
   const userDetail: typeof import('../packages/core/src/services/userService')['userDetail']
   const userInfo: typeof import('../packages/core/src/services/userService')['userInfo']
+  const userRelations: typeof import('../packages/database/src/schema/index')['userRelations']
   const userTable: typeof import('../packages/database/src/schema/user')['userTable']
   const waitForElement: typeof import('../packages/core/src/utils/dom')['waitForElement']
   const watch: typeof import('vue')['watch']
@@ -434,6 +436,7 @@ declare module 'vue' {
     readonly parsedData: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parsedData']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postFilter']>
+    readonly postRelations: UnwrapRef<typeof import('../packages/database/src/schema/index')['postRelations']>
     readonly postTable: UnwrapRef<typeof import('../packages/database/src/schema/post')['postTable']>
     readonly postsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postsParser']>
     readonly protocolMap: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['protocolMap']>
@@ -650,6 +653,7 @@ declare module 'vue' {
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
     readonly userDetail: UnwrapRef<typeof import('../packages/core/src/services/userService')['userDetail']>
     readonly userInfo: UnwrapRef<typeof import('../packages/core/src/services/userService')['userInfo']>
+    readonly userRelations: UnwrapRef<typeof import('../packages/database/src/schema/index')['userRelations']>
     readonly userTable: UnwrapRef<typeof import('../packages/database/src/schema/user')['userTable']>
     readonly waitForElement: UnwrapRef<typeof import('../packages/core/src/utils/dom')['waitForElement']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
@@ -763,6 +767,7 @@ declare module '@vue/runtime-core' {
     readonly parsedData: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parsedData']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postFilter']>
+    readonly postRelations: UnwrapRef<typeof import('../packages/database/src/schema/index')['postRelations']>
     readonly postTable: UnwrapRef<typeof import('../packages/database/src/schema/post')['postTable']>
     readonly postsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postsParser']>
     readonly protocolMap: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['protocolMap']>
@@ -979,6 +984,7 @@ declare module '@vue/runtime-core' {
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
     readonly userDetail: UnwrapRef<typeof import('../packages/core/src/services/userService')['userDetail']>
     readonly userInfo: UnwrapRef<typeof import('../packages/core/src/services/userService')['userInfo']>
+    readonly userRelations: UnwrapRef<typeof import('../packages/database/src/schema/index')['userRelations']>
     readonly userTable: UnwrapRef<typeof import('../packages/database/src/schema/user')['userTable']>
     readonly waitForElement: UnwrapRef<typeof import('../packages/core/src/utils/dom')['waitForElement']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
