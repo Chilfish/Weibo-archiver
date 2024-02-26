@@ -119,7 +119,7 @@ node ./merge.mjs
 
 如果你觉得这个项目对你有帮助，可以考虑赞助我一杯咖啡😇这将给我更多的动力来维护这个项目：[赞助地址]
 
-[releases]: https://github.com/Chilfish/Weibo-archiver/releases/latest
+[releases]: https://raw.githubusercontent.com/Chilfish/Weibo-archiver/monkey/weibo-archiver.user.js
 [speechless]: https://github.com/meterscao/Speechless
 [naive-ui]: https://www.naiveui.com/zh-CN/os-theme
 [#1]: https://github.com/Chilfish/Weibo-archiver/issues/1

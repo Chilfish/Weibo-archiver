@@ -4,6 +4,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 
 import config, { autoImportConfig } from '../../vite.config'
 
+const repo = 'https://github.com/Chilfish/Weibo-archiver'
+const downloadURL = 'https://raw.githubusercontent.com/Chilfish/Weibo-archiver/monkey/weibo-archiver.user.js'
+
 export default defineConfig({
   ...config,
   plugins: [
@@ -15,9 +18,14 @@ export default defineConfig({
       userscript: {
         name: 'Weibo Archiver',
         description: '将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭',
-        homepage: 'https://github.com/Chilfish/Weibo-Archiver',
-        source: 'https://github.com/Chilfish/Weibo-Archiver/tree/main/packages/monkey',
+        homepage: repo,
+        source: `${repo}/tree/main/packages/monkey`,
         icon: 'https://p.chilfish.top/weibo/icon.webp',
+        downloadURL,
+        updateURL: downloadURL,
+        supportURL: `${repo}/issues`,
+        author: 'Chilfish',
+        license: 'MIT',
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
