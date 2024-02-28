@@ -1,7 +1,12 @@
-import type { CardInfo, Comment, FetchOptions, ParseResult, PicInfo, Post } from '@types'
+import type {
+  CardInfo,
+  Comment,
+  FetchOptions,
+  ParseResult,
+  PicInfo,
+  Post,
+} from '@types'
 import { fetchComments, fetchLongText } from '../services'
-import { imgViewSrc } from '../constants'
-import { imgCdn } from './../constants/index'
 import { getOptions } from '.'
 
 export const weibo = 'https://weibo.com'
@@ -32,25 +37,6 @@ export function parseText(text?: string) {
   }
 
   return parsed
-}
-
-/**
- * 将图片的远程 url 替换为本地图片
- * 格式：域名-文件名
- */
-export function replaceImg(img?: string) {
-  if (!img)
-    return imgViewSrc
-
-  if (img.includes('data:image') || img.startsWith(imgCdn))
-    return img
-
-  const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
-  const prefix = img.match(/^(?:https?:\/\/)?([^:\/\n]+)/im)?.[1] // 域名
-
-  if (!prefix || !name)
-    return img
-  return `/assets/img/${prefix}-${name}`
 }
 
 /**

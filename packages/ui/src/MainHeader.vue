@@ -19,6 +19,7 @@ const headerStyle = computed(() => {
 const router = useRouter()
 const route = useRoute()
 const searchInput = ref(route.query?.q?.toString() || '')
+const useLocalImage = useStorage('useCdn', false)
 
 async function search() {
   const res = await usePostStore().searchText(searchInput.value)
@@ -55,6 +56,14 @@ onMounted(() => {
         placeholder="搜索我的微博"
       >
     </form>
+
+    <!-- TODO: 设成 settings 的弹窗，来手动设置图床链接 -->
+    <div>
+      使用远程图片
+      <n-switch
+        v-model:value="useLocalImage"
+      />
+    </div>
 
     <Dark />
   </header>

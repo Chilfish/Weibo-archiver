@@ -16,6 +16,13 @@ const props = withDefaults(defineProps<{
 const realSrc = ref(props.src)
 const imgRef = ref<any>()
 const disconnectFn = ref<() => void>()
+const useCdn = useStorage('useCdn', false)
+
+watch(useCdn, () => {
+  realSrc.value = replaceImg(props.src)
+  imgRef.value.imageRef.src = realSrc.value
+  imgRef.value.imageRef.parentElement.classList.remove('img-error')
+})
 
 onMounted(() => {
   const img = imgRef.value.imageRef as HTMLImageElement

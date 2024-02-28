@@ -1,15 +1,26 @@
+import { destr } from 'destr'
 import type { FetchOptions } from '@types'
 
 export * from './parse'
 export * from './dom'
 export * from './protocol'
 export * from './fetch'
+export * from './image'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 
 export const isInMonkey = typeof document !== 'undefined' ? document.URL.includes('weibo.com') : false
 
 export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
+
+export function storage<T>(key: string, defaultVal: T) {
+  const str = localStorage.getItem(key)
+  if (str === null) {
+    localStorage.setItem(key, JSON.stringify(defaultVal))
+    return defaultVal
+  }
+  return destr<T>(str)
+}
 
 export function delay(ms = 2000) {
   const randomMs = Math.random() * ms + 1000

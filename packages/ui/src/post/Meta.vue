@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Comment, Post, Retweet } from '@types'
+import { useRoute } from 'vue-router'
 
 const props = defineProps<{
   meta: Post | Comment | Retweet
@@ -7,6 +8,18 @@ const props = defineProps<{
 }>()
 
 const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
+
+const route = useRoute()
+const { origin } = document.location
+
+const url = computed(() =>
+  `${origin}${route.fullPath.replace(/#.+/, '')}#${(props.meta as any).mblogid}`,
+)
+const message = useMessage()
+
+const { copy } = useClipboard({
+  source: url,
+})
 </script>
 
 <template>
@@ -15,13 +28,18 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
   >
     <a
       v-if="'mblogid' in meta && isBody"
-      :href="`#${meta.mblogid}`"
+      :href="url"
       class="copy-id opacity-0 transition-opacity"
+      @click="() => {
+        copy()
+        message.success('复制成功')
+      }"
     >
-      复制链接
+      复制本地链接
     </a>
 
     <a
+      v-if="'detail_url' in meta"
       :href="meta.detail_url"
       target="_blank"
     >
