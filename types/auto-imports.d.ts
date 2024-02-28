@@ -17,7 +17,7 @@ declare global {
   const computedEager: typeof import('@vueuse/core')['computedEager']
   const computedInject: typeof import('@vueuse/core')['computedInject']
   const computedWithControl: typeof import('@vueuse/core')['computedWithControl']
-  const config: typeof import('../apps/desktop/renderer/src/composables/config')['config']
+  const config: window.config: typeof import('../apps/desktop/renderer/src/composables/config')['config: window.config']
   const configRef: typeof import('../apps/desktop/renderer/src/composables/config')['configRef']
   const controlledComputed: typeof import('@vueuse/core')['controlledComputed']
   const controlledRef: typeof import('@vueuse/core')['controlledRef']
@@ -53,6 +53,7 @@ declare global {
   const h: typeof import('vue')['h']
   const hasProtocol: typeof import('../packages/core/src/utils/protocol')['hasProtocol']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
+  const imgCdn: typeof import('../packages/core/src/constants/index')['imgCdn']
   const imgViewSrc: typeof import('../packages/core/src/constants/index')['imgViewSrc']
   const imgsParser: typeof import('../packages/core/src/utils/parse')['imgsParser']
   const inject: typeof import('vue')['inject']
@@ -358,7 +359,6 @@ declare module 'vue' {
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
     readonly computedInject: UnwrapRef<typeof import('@vueuse/core')['computedInject']>
     readonly computedWithControl: UnwrapRef<typeof import('@vueuse/core')['computedWithControl']>
-    readonly config: UnwrapRef<typeof import('../apps/desktop/renderer/src/composables/config')['config']>
     readonly configRef: UnwrapRef<typeof import('../apps/desktop/renderer/src/composables/config')['configRef']>
     readonly controlledComputed: UnwrapRef<typeof import('@vueuse/core')['controlledComputed']>
     readonly controlledRef: UnwrapRef<typeof import('@vueuse/core')['controlledRef']>
@@ -393,6 +393,7 @@ declare module 'vue' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['hasProtocol']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
+    readonly imgCdn: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgCdn']>
     readonly imgViewSrc: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgViewSrc']>
     readonly imgsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['imgsParser']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
@@ -689,7 +690,6 @@ declare module '@vue/runtime-core' {
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
     readonly computedInject: UnwrapRef<typeof import('@vueuse/core')['computedInject']>
     readonly computedWithControl: UnwrapRef<typeof import('@vueuse/core')['computedWithControl']>
-    readonly config: UnwrapRef<typeof import('../apps/desktop/renderer/src/composables/config')['config']>
     readonly configRef: UnwrapRef<typeof import('../apps/desktop/renderer/src/composables/config')['configRef']>
     readonly controlledComputed: UnwrapRef<typeof import('@vueuse/core')['controlledComputed']>
     readonly controlledRef: UnwrapRef<typeof import('@vueuse/core')['controlledRef']>
@@ -724,6 +724,7 @@ declare module '@vue/runtime-core' {
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['hasProtocol']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
+    readonly imgCdn: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgCdn']>
     readonly imgViewSrc: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgViewSrc']>
     readonly imgsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['imgsParser']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>

@@ -23,7 +23,9 @@ export function waitForElement<T extends Element = HTMLElement>(
   })
 }
 
-export function lazyLoadImage() {
+export function lazyLoadImage(
+  imgs?: NodeListOf<HTMLImageElement> | HTMLImageElement[],
+) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -39,10 +41,15 @@ export function lazyLoadImage() {
     })
   })
 
-  const imgs = document.querySelectorAll<HTMLImageElement>('.n-image img')
+  if (imgs) {
+    imgs.forEach((img) => {
+      if (img.src.endsWith('/placeholder.webp'))
+        observer.observe(img)
+    })
+  }
 
-  imgs.forEach((img) => {
-    if (img.src.endsWith('/placeholder.webp'))
-      observer.observe(img)
-  })
+  return {
+    observe: (img: HTMLImageElement) => observer.observe(img),
+    disconnect: () => observer.disconnect(),
+  }
 }

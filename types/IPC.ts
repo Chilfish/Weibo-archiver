@@ -1,4 +1,5 @@
 import type { Buffer } from 'node:buffer'
+import type { UserInfo } from './post'
 
 export type FileExt = 'json' | 'js' | '.mjs'
 
@@ -11,4 +12,5 @@ export interface IPCFile {
 
 export interface IPCFetch {
   userInfo: (options: { id?: string, name?: string }) => Promise<{ uid: string, name: string }>
+  userDetail: (uid?: string) => Promise<UserInfo>
 }

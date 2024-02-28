@@ -14,28 +14,41 @@ const props = withDefaults(defineProps<{
 })
 
 const realSrc = ref(props.src)
-const inElectron = computed(() => import.meta.env.PROD && isElectron && !props.src.startsWith('/'))
+const imgRef = ref<any>()
+const disconnectFn = ref<() => void>()
 
-// TODO: build:web 的时候注释下面这段
-onBeforeMount(async () => {
-  if (!inElectron.value)
+onMounted(() => {
+  const img = imgRef.value.imageRef as HTMLImageElement
+  const { disconnect } = lazyLoadImage([img])
+  disconnectFn.value = disconnect
+
+  if (!isElectron) {
+    realSrc.value = replaceImg(props.src)
+    return
+  }
+
+  if (import.meta.env.DEV || !props.src.startsWith('/'))
     return
 
-  const { _config } = await import('#preload')
-  const { publicPath } = _config.data
-  const src = `file://${publicPath}${props.src.slice(1)}`
+  const config = window.config.data
+  const src = `file://${config.publicPath}${props.src.slice(1)}`
   realSrc.value = src
+})
+
+onUnmounted(() => {
+  disconnectFn.value?.()
 })
 </script>
 
 <template>
   <n-image
+    ref="imgRef"
     lazy
     fallback-src="/placeholder.webp"
     :src="lazy ? '/placeholder.webp' : realSrc"
     :object-fit="fit"
     :alt="alt"
-    :preview-src="inElectron ? realSrc : replaceImg(src)"
+    :preview-src="realSrc"
     :img-props="{
       style: {
         minHeight,

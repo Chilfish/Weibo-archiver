@@ -1,6 +1,6 @@
 <script setup lang="ts">
-onMounted(() => {
-  lazyLoadImage()
+watchImmediate(isDark, (value) => {
+  window.config.set('theme', value ? 'dark' : 'light')
 })
 </script>
 

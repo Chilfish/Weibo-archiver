@@ -42,10 +42,10 @@ export async function userDetail(uid?: string) {
 
   const detail = {
     createdAt: data.created_at,
-    birsday: data.birthday,
+    birthday: data.birthday,
   } as {
     createdAt: string
-    birsday: string
+    birthday: string
   }
 
   const info = await userInfo({ id: _uid })

@@ -1,7 +1,8 @@
 import type { CardInfo, Comment, FetchOptions, ParseResult, PicInfo, Post } from '@types'
 import { fetchComments, fetchLongText } from '../services'
 import { imgViewSrc } from '../constants'
-import { getOptions, isInMonkey } from '.'
+import { imgCdn } from './../constants/index'
+import { getOptions } from '.'
 
 export const weibo = 'https://weibo.com'
 
@@ -41,8 +42,9 @@ export function replaceImg(img?: string) {
   if (!img)
     return imgViewSrc
 
-  if (isInMonkey || img.includes('data:image'))
+  if (img.includes('data:image') || img.startsWith(imgCdn))
     return img
+
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
   const prefix = img.match(/^(?:https?:\/\/)?([^:\/\n]+)/im)?.[1] // 域名
 

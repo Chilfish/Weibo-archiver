@@ -19,7 +19,9 @@ const config = new Config<AppConfig>({
     osSep: '/',
     version,
     theme: 'light',
+    useCdn: false,
     fetchOptions: {
+      now,
       uid: '',
       name: '',
       cookie: '',
@@ -37,7 +39,9 @@ const config = new Config<AppConfig>({
 const path = config.path.replace(/config\.json$/, '')
 
 config.set('configPath', path)
-// config.set('fetchOptions.cookie', cookie ?? '')
+config.set('version', version)
+config.set('fetchOptions.now', now)
+config.set('fetchOptions.dateRange', [now, now])
 
 export default config
 export {

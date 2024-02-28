@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    $message: typeof import('naive-ui')['useMessage']
-  }
-}
-
 /// <reference types="vite/client" />
 
 /**

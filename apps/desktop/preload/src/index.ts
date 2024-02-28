@@ -1,6 +1,7 @@
 import customTitlebar from 'custom-electron-titlebar'
+import { contextBridge } from 'electron'
 import type { DBMethods } from '@database'
-import type { AppConfig, IPCFetch, IPCFile } from '@types'
+import type { IPCFetch, IPCFile } from '@types'
 import { config } from '@core/utils/config'
 import { IPCRenderer } from '../../utils'
 
@@ -21,8 +22,7 @@ export const dbIPC = (() => {
   }
 })()
 
-// TODO: fileIPC
-export const FileIPC: IPCFile = (() => {
+export const fileIPC: IPCFile = (() => {
   const IPC = new IPCRenderer<IPCFile>('files')
 
   return {
@@ -32,19 +32,20 @@ export const FileIPC: IPCFile = (() => {
   }
 })()
 
-export const FetchIPC: IPCFetch = (() => {
+export const fetchIPC: IPCFetch = (() => {
   const IPC = new IPCRenderer<IPCFetch>('fetch')
 
   return {
-    userInfo: (id, name) => IPC.send('userInfo', id, name),
+    userInfo: options => IPC.send('userInfo', options),
+    userDetail: uid => IPC.send('userDetail', uid),
   }
 })()
 
-type OnChange = (callback: (newValue: AppConfig, oldValue: AppConfig) => void) => Function
-export const _config = {
+// unplugin-auto-expose 在 hmr 时总是会导致 undefined 的问题
+contextBridge.exposeInMainWorld('config', {
   set: config.set.bind(config),
   get: config.get.bind(config),
-  onChange: config.onDidAnyChange.bind(config) as OnChange,
+  onChange: config.onDidAnyChange.bind(config),
   path: config.path,
   data: config.store,
-}
+})

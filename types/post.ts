@@ -4,6 +4,17 @@ export interface User {
   profile_image_url: string
 }
 
+export interface UserInfo {
+  uid: string
+  name: string
+  avatar: string
+  followers: number
+  followings: number
+  bio: string
+  createdAt: string
+  birthday: string
+}
+
 export type PicInfo = Record<string, {
   url: string
 }>

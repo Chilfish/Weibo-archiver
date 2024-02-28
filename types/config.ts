@@ -1,3 +1,5 @@
+import type Conf from 'conf'
+
 /**
  * 解析、爬取时的配置
  */
@@ -59,5 +61,13 @@ export interface AppConfig {
   publicPath: string
   osSep: '\\' | '/'
 
+  useCdn: boolean
   fetchOptions: FetchOptions
+}
+
+type OnChange = (callback: (newValue: AppConfig, oldValue: AppConfig) => void) => Function
+
+export type Config = Pick<Conf<AppConfig>, 'get' | 'set' | 'path'> & {
+  data: AppConfig
+  onChange: OnChange
 }

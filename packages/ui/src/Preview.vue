@@ -8,12 +8,10 @@ watch(posts, async () => {
   if (posts.value.length === 0 || !loaded.value)
     return
   await delay(4000)
-  lazyLoadImage()
 })
 
 onMounted(() => {
   loaded.value = true
-  lazyLoadImage()
 })
 </script>
 

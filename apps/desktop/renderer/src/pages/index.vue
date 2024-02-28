@@ -1,17 +1,22 @@
 <script lang="ts" setup>
-import { FetchIPC } from '#preload'
+import { fetchIPC } from '#preload'
 
 const router = useRouter()
 
-watchImmediate(isDark, (value) => {
-  config.set('theme', value ? 'dark' : 'light')
-})
-
-const user1 = ref('')
+const user1 = ref<any>()
 
 const cookie = configRef.value.fetchOptions.cookie
 if (!cookie)
   router.push('/intro')
+
+const imgUrl = computed(() => {
+  const url = user1.value?.avatar
+  if (!url)
+    return ''
+
+  const { pathname } = new URL(url)
+  return `https://cdn.ipfsscan.io/weibo${pathname}`
+})
 </script>
 
 <template>
@@ -20,14 +25,28 @@ if (!cookie)
       {{ user1 }}
     </pre>
 
-    <button
-      class="btn"
-      @click="async() => {
-        const res = await FetchIPC.userInfo({ id: '1111681197' })
-        user1 = JSON.stringify(res, null, 2)
-      }"
-    >
-      fetch userInfo
-    </button>
+    <MainImage
+      v-if="user1?.avatar"
+      :src="imgUrl"
+    />
+
+    <div class="flex gap-4">
+      <RouterLink
+        class="btn"
+        to="/intro"
+      >
+        back to intro
+      </RouterLink>
+
+      <button
+        class="btn"
+        @click="async() => {
+          const res = await fetchIPC.userDetail()
+          user1 = res
+        }"
+      >
+        fetch userInfo
+      </button>
+    </div>
   </main>
 </template>

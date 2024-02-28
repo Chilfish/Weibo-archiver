@@ -1,12 +1,5 @@
-import { _config } from '#preload'
+export const configRef = ref(window.config.data)
 
-const configRef = ref(_config.data)
-
-_config.onChange((newVal) => {
+window.config.onChange((newVal) => {
   configRef.value = newVal
 })
-
-export {
-  configRef,
-  _config as config,
-}
