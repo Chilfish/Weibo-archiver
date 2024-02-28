@@ -1,0 +1,39 @@
+name: Bug 反馈
+description: 运行时遇到的 bug
+labels: Bug
+body:
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug 描述
+      description: 请描述遇到的 bug
+      placeholder: 请输入
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 请描述如何复现这个 bug
+      placeholder: 请输入
+  - type: textarea
+    id: script-version
+    attributes:
+      label: 脚本版本
+      description: 请提供脚本版本号
+      placeholder: 请输入
+  - type: textarea
+    id: browser-version
+    attributes:
+      label: 浏览器版本
+      description: 请提供浏览器版本号
+      placeholder: 请输入
+  - type: textarea
+    id: logs
+    attributes:
+      label: 错误信息
+      description: 下载图片、启动服务时报告的错误信息, 或者浏览器开发者工具 (F12 或 Ctrl+Shift+I 召唤) 里 Console / 控制台 一栏的输出, 太长的话可以截图放下面.
+      placeholder: 请输入
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 附加截图
+      placeholder: 可在此粘贴图片
