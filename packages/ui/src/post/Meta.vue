@@ -24,11 +24,11 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
     <a
       :href="meta.detail_url"
       target="_blank"
-      title="跳转到原微博"
-      class="text-3! text-gray-400! hover:text-gray-600!"
     >
-      {{ date }}
+      跳转到原微博
     </a>
+
+    <span>{{ date }}</span>
 
     <span> {{ meta.region_name }} </span>
 

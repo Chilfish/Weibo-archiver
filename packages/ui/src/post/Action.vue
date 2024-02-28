@@ -13,10 +13,15 @@ defineProps<{
       <span>{{ post.reposts_count }}</span>
     </span>
 
-    <span>
+    <a
+      :href="`${post.detail_url}#comment`"
+      target="_blank"
+      title="打开原微博评论"
+      class="text-gray"
+    >
       <span class="i-tabler-message icon" />
       <span>{{ post.comments_count }}</span>
-    </span>
+    </a>
 
     <span>
       <span class="i-tabler-heart icon" />

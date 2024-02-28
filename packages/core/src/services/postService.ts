@@ -75,7 +75,7 @@ export async function fetchComments(post: Post): Promise<Comment[]> {
     return []
 
   await delay(3000)
-  const { data } = await weiFetch<{ data: Comment[] }>(`/statuses/buildComments?flow=0&is_reload=1&id=${post.id}&is_show_bulletin=2`)
+  const { data } = await weiFetch<{ data: Comment[] }>(`/statuses/buildComments?id=${post.id}&is_show_bulletin=0`)
 
   if (!data)
     return []
