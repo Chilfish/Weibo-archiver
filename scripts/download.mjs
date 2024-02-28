@@ -42,7 +42,7 @@ for (const url of url_list) {
       await download_file(url, file_path)
   }
   catch (e) {
-    console.error(e)
+    console.error(`下载失败：${url}，原因：${e.cause || e.message}`)
   }
 }
 
