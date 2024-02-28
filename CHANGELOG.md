@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.2.5
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.4...v0.2.5)
+
+### 🩹 Fixes
+
+- **build:** Monkey download url ([adfdab9](https://github.com/Chilfish/Weibo-archiver/commit/adfdab9))
+- Fetch comments ([#17](https://github.com/Chilfish/Weibo-archiver/pull/17))
+
+### 🏡 Chore
+
+- **release:** V0.2.4 ([3d6b87e](https://github.com/Chilfish/Weibo-archiver/commit/3d6b87e))
+- Add bug and feature issue templates ([7a2d4b8](https://github.com/Chilfish/Weibo-archiver/commit/7a2d4b8))
+- Update github configs ([b78cde5](https://github.com/Chilfish/Weibo-archiver/commit/b78cde5))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.2.4
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.3...v0.2.4)

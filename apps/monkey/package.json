@@ -1,12 +1,12 @@
 {
   "name": "@weibo-archiver/monkey",
   "type": "module",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": true,
   "author": "Chilfish",
   "license": "MIT",
   "scripts": {
-    "dev": "vite --port=3333 --open",
+    "dev": "vite --port=3333",
     "build": "vite build"
   },
   "dependencies": {
