@@ -53,6 +53,8 @@ export interface Post extends Meta {
    */
   retweeted_status?: Retweet
 
+  is_show_bulletin?: 0 | 2
+
   comments: Comment[]
 }
 

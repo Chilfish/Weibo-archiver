@@ -17,8 +17,13 @@ export const link = (text: string, url = weibo) => `<a href="${url}">${text}</a>
  * 解析正文，例如 @user => link(user, userUrl)
  */
 export function parseText(text?: string) {
-  if (!text)
-    return ''
+  if (!text) {
+    return {
+      text: '',
+      textImg: null,
+    }
+  }
+
   let parsed = text
     .replace(
       /<a[^>]*>(@[^<]+)<\/a>/g, // @用户
@@ -29,14 +34,18 @@ export function parseText(text?: string) {
     .replace(/\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
 
   const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/gm.exec(parsed)
+  let textImg = null
 
   if (retweetImg && retweetImg[1]) {
-    const img = retweetImg[1]
+    textImg = retweetImg[1]
 
-    parsed = parsed.replace(retweetImg[0], `[img://${img}]`)
+    parsed = parsed.replace(retweetImg[0], `[img://${textImg}]`)
   }
 
-  return parsed
+  return {
+    text: parsed,
+    textImg,
+  }
 }
 
 /**
@@ -86,9 +95,11 @@ export function filterComments(comments?: any[]): Comment[] {
     return []
   return comments.map((comment) => {
     try {
+      const { text } = parseText(comment.text) // 评论区就没见过折叠长文本
+
       const res: Comment = {
         id: comment.idstr,
-        text: parseText(comment.text), // 评论区就没见过折叠长文本
+        text,
         img: comment.url_struct?.[0]?.long_url,
         created_at: comment.created_at,
         user: {
@@ -124,10 +135,15 @@ export async function postFilter(
   const includeComments = !isRepost && options.comment
 
   try {
+    const { text, textImg } = await fetchLongText(post)
+    const imgs = includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : []
+
+    textImg && imgs.push(textImg)
+
     const res: Post = {
       id: post.id,
-      text: await fetchLongText(post),
-      imgs: includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : [],
+      text,
+      imgs,
       reposts_count: post.reposts_count,
       comments_count: post.comments_count,
       like_count: post.attitudes_count,

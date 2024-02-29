@@ -52,7 +52,7 @@ export async function fetchRangePosts(page = 1): FetchReturn {
 
 export async function fetchLongText(
   post: Post & { isLongText: boolean },
-): Promise<string> {
+) {
   let text = post.text
 
   if (post.isLongText) {
@@ -75,7 +75,13 @@ export async function fetchComments(post: Post): Promise<Comment[]> {
     return []
 
   await delay(3000)
-  const { data } = await weiFetch<{ data: Comment[] }>(`/statuses/buildComments?id=${post.id}&is_show_bulletin=0`)
+  const { data } = await weiFetch<{ data: Comment[] }>(`/statuses/buildComments`, {
+    params: {
+      id: post.id,
+      is_show_bulletin: post.is_show_bulletin, // 必填字段，区分旧微博和新微博
+      flow: 0, // 热评
+    },
+  })
 
   if (!data)
     return []
