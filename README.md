@@ -118,6 +118,6 @@ preview 文件夹中包含了交互式一键运行的 `run.bat` 脚本（感谢 
 [@HayashiKaori]: https://github.com/HayashiKaori
 [Node.js 官网]: https://nodejs.org/en/download
 [vite-plugin-monkey]: https://github.com/lisonge/vite-plugin-monkey
-[个人镜像地址]: https://p.chilfish.top/weibo-archiver.user.js
+[镜像地址]: https://p.chilfish.top/weibo-archiver.user.js
 [项目的 Todo]: https://github.com/Chilfish/Weibo-archiver/issues/7
 [赞助地址]: https://chilfish.top/sponsors
