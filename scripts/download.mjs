@@ -37,7 +37,7 @@ async function readCookie() {
   if (!cookie) {
     console.error(
       '⚠未填写 cookies.txt 文件，将无法下载图片\n',
-      '请在浏览器中登录微博，F12 打开控制台，输入 document.cookie，将输出的内容（不含引号）复制到 cookies.txt 文件中',
+      '请在浏览器中登录微博，F12 打开控制台，输入 document.cookie，将输出的内容（不含引号）复制到 cookies.txt 文件中，并保存。然后再运行一遍该脚本\n',
     )
     process.exit(1)
   }
