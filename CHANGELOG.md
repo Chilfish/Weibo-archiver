@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.2.7
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.6...v0.2.7)
+
+### 🚀 Enhancements
+
+- **script:** Add run.bat ([f44d239](https://github.com/Chilfish/Weibo-archiver/commit/f44d239))
+
+### 🩹 Fixes
+
+- Fetch hot comments ([#21](https://github.com/Chilfish/Weibo-archiver/pull/21))
+- **web:** Comment with img ([#23](https://github.com/Chilfish/Weibo-archiver/pull/23))
+- **fetch:** Parse comments ([bd62273](https://github.com/Chilfish/Weibo-archiver/commit/bd62273))
+
+### 🏡 Chore
+
+- **docs:** Update readme.md ([db15ea5](https://github.com/Chilfish/Weibo-archiver/commit/db15ea5))
+- **release:** V0.2.6 ([e35c4bc](https://github.com/Chilfish/Weibo-archiver/commit/e35c4bc))
+- **docs:** Fix link in readme ([e643b7b](https://github.com/Chilfish/Weibo-archiver/commit/e643b7b))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.2.6
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.5...v0.2.6)
