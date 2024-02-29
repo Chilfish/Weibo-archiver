@@ -69,7 +69,8 @@ export async function fetchLongText(
  * 获取前 3 条评论 并集于 博主的评论
  */
 export async function fetchComments(post: Post): Promise<Comment[]> {
-  const { commentCount, comment } = await getOptions()
+  const { commentCount, comment, picLarge } = await getOptions()
+  const imgSize = picLarge ? 'largest' : 'large'
 
   if (!post.user || post.comments_count === 0 || !comment)
     return []
@@ -89,12 +90,13 @@ export async function fetchComments(post: Post): Promise<Comment[]> {
   const userComments = data.filter(comment => comment.user?.id === post.user?.id)
   const othersComments = data.filter(comment => comment.user?.id !== post.user?.id)
 
-  return filterComments(Array.from(
-    new Set([
+  return filterComments(
+    Array.from(new Set([
       ...userComments,
       ...othersComments.slice(0, commentCount),
-    ]),
-  ))
+    ])),
+    imgSize,
+  )
 }
 
 interface FetchPosts {

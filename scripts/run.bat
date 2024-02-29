@@ -13,8 +13,7 @@ echo 3. 合并新微博数据
 set /p UserChoice="请输入您的选择（1、2 或 3）: "
 
 if "%UserChoice%"=="1" (
-  set /p UserID="请输入微博账号ID: "
-  node ./download.mjs -u %UserID%
+  node ./download.mjs
   pause
 ) else if "%UserChoice%"=="2" (
   node ./server.mjs
