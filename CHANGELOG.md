@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.2.6
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.5...v0.2.6)
+
+### 🚀 Enhancements
+
+- **script:** Add run.bat ([f44d239](https://github.com/Chilfish/Weibo-archiver/commit/f44d239))
+
+### 🩹 Fixes
+
+- Image component, add img cdn ([cc620f2](https://github.com/Chilfish/Weibo-archiver/commit/cc620f2))
+- **web:** Enable cdn remote image in preview ([f7f771e](https://github.com/Chilfish/Weibo-archiver/commit/f7f771e))
+- View inline image ([8503d3c](https://github.com/Chilfish/Weibo-archiver/commit/8503d3c))
+- Fetch hot comments ([#21](https://github.com/Chilfish/Weibo-archiver/pull/21))
+
+### 🏡 Chore
+
+- **docs:** Update readme.md ([db15ea5](https://github.com/Chilfish/Weibo-archiver/commit/db15ea5))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.2.5
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.4...v0.2.5)
@@ -11,7 +34,6 @@
 
 ### 🏡 Chore
 
-- **release:** V0.2.4 ([3d6b87e](https://github.com/Chilfish/Weibo-archiver/commit/3d6b87e))
 - Add bug and feature issue templates ([7a2d4b8](https://github.com/Chilfish/Weibo-archiver/commit/7a2d4b8))
 - Update github configs ([b78cde5](https://github.com/Chilfish/Weibo-archiver/commit/b78cde5))
 
