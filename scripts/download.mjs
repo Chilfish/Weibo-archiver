@@ -10,6 +10,8 @@ const args = parser.parse_args()
 
 const imgs_path = join(args.dir, 'imgs.csv')
 
+let cookie = ''
+
 /**
  * 读取图片列表
  */
@@ -36,23 +38,27 @@ async function readCookie() {
 
   if (!cookie) {
     console.error(
-      '⚠未填写 cookies.txt 文件，将无法下载图片\n',
+      '⚠未填写 cookies.txt 文件，将无法下载评论图片\n',
       '请在浏览器中登录微博，F12 打开控制台，输入 document.cookie，将输出的内容（不含引号）复制到 cookies.txt 文件中，并保存。然后再运行一遍该脚本\n',
     )
-    process.exit(1)
   }
   return cookie.trim()
 }
-
-const cookie = await readCookie()
 
 /**
  * 用于兼容旧版的bug，将评论图片转为真实的图片地址
  * @param {string} url
  */
 async function getCommentPic(url) {
-  const headers = { Cookie: cookie }
-  const res = await fetch(url, { headers })
+  if (!cookie)
+    cookie = await readCookie()
+
+  const res = await fetch(url, {
+    headers: {
+      Cookie: cookie,
+    },
+  })
+
   const text = await res.text()
   const match = text.match(/src="([^"]+)"/)
 
@@ -64,6 +70,9 @@ async function getCommentPic(url) {
  * @param {string} url 图片地址
  */
 async function download(url) {
+  if (!url)
+    return
+
   const file_name = url.split('/').pop().split('?')[0]
   const prefix = url.match(/^(?:https?:\/\/)?([^:\/\n]+)/)?.[1]
 
@@ -74,8 +83,11 @@ async function download(url) {
   if (existsSync(file_path))
     return
 
-  const headers = { Cookie: cookie }
-  const res = await fetch(url, { headers })
+  const res = await fetch(url, {
+    headers: {
+      referrer: 'https://weibo.com/',
+    },
+  })
   const buffer = await res.arrayBuffer()
 
   await writeFile(file_path, Buffer.from(buffer))
