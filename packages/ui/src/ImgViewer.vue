@@ -12,10 +12,13 @@ async function onClose() {
   }, { once: true }))
 }
 
+const src = computed(() => postStore.viewImg)
+
 watch(() => postStore.viewImg, async () => {
   if (postStore.viewImg === imgViewSrc)
     return
   const img = await waitForElement<HTMLImageElement>('#img-viewer img')
+
   img?.click()
   await onClose()
 })
@@ -28,7 +31,8 @@ watch(() => postStore.viewImg, async () => {
   >
     <main-image
       class="h-0 w-0"
-      :src="postStore.viewImg"
+      :lazy="false"
+      :src="src"
     />
   </div>
 </template>

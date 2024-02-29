@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-    class="flex flex-col gap-4 rounded px-2 py-8 sm:max-w-60rem"
+    class="flex flex-col gap-4 rounded px-2 py-8 md:w-60rem"
   >
     <post-item
       v-for="item in posts"

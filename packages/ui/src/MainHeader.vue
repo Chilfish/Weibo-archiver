@@ -58,10 +58,11 @@ onMounted(() => {
     </form>
 
     <!-- TODO: 设成 settings 的弹窗，来手动设置图床链接 -->
-    <div>
+    <div class="center gap-2 text-3">
       使用远程图片
       <n-switch
         v-model:value="useLocalImage"
+        size="small"
       />
     </div>
 

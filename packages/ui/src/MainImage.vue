@@ -24,7 +24,10 @@ watch(useCdn, () => {
   imgRef.value.imageRef.parentElement.classList.remove('img-error')
 })
 
-onMounted(() => {
+function setImgSrc() {
+  if (!imgRef.value)
+    return
+
   const img = imgRef.value.imageRef as HTMLImageElement
   const { disconnect } = lazyLoadImage([img])
   disconnectFn.value = disconnect
@@ -40,7 +43,10 @@ onMounted(() => {
   const config = window.config.data
   const src = `file://${config.publicPath}${props.src.slice(1)}`
   realSrc.value = src
-})
+}
+
+watch(() => props.src, setImgSrc)
+onMounted(setImgSrc)
 
 onUnmounted(() => {
   disconnectFn.value?.()
