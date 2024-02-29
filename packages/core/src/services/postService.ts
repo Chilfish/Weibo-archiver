@@ -70,7 +70,7 @@ export async function fetchLongText(
  */
 export async function fetchComments(post: Post): Promise<Comment[]> {
   const { commentCount, comment, picLarge } = await getOptions()
-  const imgSize = picLarge ? 'largest' : 'large'
+  const imgSize = picLarge ? 'woriginal' : 'large'
 
   if (!post.user || post.comments_count === 0 || !comment)
     return []
@@ -81,20 +81,20 @@ export async function fetchComments(post: Post): Promise<Comment[]> {
       id: post.id,
       is_show_bulletin: post.is_show_bulletin, // 必填字段，区分旧微博和新微博
       flow: 0, // 热评
+      is_reload: 1, // 获取详情页的评论
+      is_mix: 0,
+      count: 10,
+      fetch_level: 0,
+      locale: 'zh_CN',
+      uid: post.user.id,
     },
   })
 
   if (!data)
     return []
 
-  const userComments = data.filter(comment => comment.user?.id === post.user?.id)
-  const othersComments = data.filter(comment => comment.user?.id !== post.user?.id)
-
   return filterComments(
-    Array.from(new Set([
-      ...userComments,
-      ...othersComments.slice(0, commentCount),
-    ])),
+    data.slice(0, commentCount),
     imgSize,
   )
 }

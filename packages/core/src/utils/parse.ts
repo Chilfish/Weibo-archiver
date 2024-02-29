@@ -52,14 +52,20 @@ export function parseText(text?: string) {
  * 提取原图链接
  */
 export function parseImg(
-  size: 'large' | 'largest',
+  size: string,
   pic_ids?: string[],
   img_infos?: Record<string, PicInfo>,
 ) {
   if (!pic_ids || !img_infos)
     return []
 
-  return pic_ids.map(id => img_infos[id][size].url)
+  try {
+    return pic_ids.map(id => img_infos[id][size].url)
+  }
+  catch (e) {
+    console.log(`提取图片链接失败 ${e}`)
+    return []
+  }
 }
 
 /**
@@ -92,7 +98,7 @@ function parseCard(url_struct?: any[], card?: any): CardInfo | undefined {
  */
 export function filterComments(
   comments?: any[],
-  imgSize: 'large' | 'largest' = 'large',
+  imgSize = 'large',
 ): Comment[] {
   if (!comments || !comments.length || !comments[0]?.id)
     return []
@@ -124,7 +130,7 @@ export function filterComments(
       return res
     }
     catch (e) {
-      console.log(e, `数据解析失败, id: ${comment.id}, ${comment.text}`)
+      console.log(`数据解析失败, id: ${comment.id}, ${e}`)
       return null
     }
   }).filter((e): e is Comment => !!e)
