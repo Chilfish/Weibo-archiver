@@ -17,6 +17,10 @@ import {
  */
 let since_id = ''
 
+/**
+ * 有没有可能，获取全部微博可以用 rangePosts 来实现？
+ * 不设 start 参数就行……实际上并不行，会有缺失的微博
+ */
 export async function fetchAllPosts(page = 1): FetchReturn {
   if (page === 0)
     return null
@@ -25,7 +29,14 @@ export async function fetchAllPosts(page = 1): FetchReturn {
 
   const { uid } = await getOptions()
 
-  const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/mymblog?uid=${uid}&feature=0&page=${page}&since_id=${since_id}`)
+  const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/mymblog`, {
+    params: {
+      uid,
+      page,
+      feature: 0,
+      since_id,
+    },
+  })
 
   if (data)
     since_id = data.since_id
@@ -39,10 +50,23 @@ export async function fetchAllPosts(page = 1): FetchReturn {
 }
 
 export async function fetchRangePosts(page = 1): FetchReturn {
-  const { uid, dateRange } = await getOptions()
+  const { uid, dateRange, repost } = await getOptions()
   const [start, end] = dateRange
 
-  const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/searchProfile?uid=${uid}&page=${page}&starttime=${start / 1000}&endtime=${end / 1000}&hasori=1&hasret=1&hastext=1&haspic=1&hasvideo=1&hasmusic=1`)
+  const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/searchProfile`, {
+    params: {
+      uid,
+      page,
+      starttime: start / 1000,
+      endtime: end / 1000,
+      hasori: 1, // 是否包含原创
+      hasret: repost ? 1 : 0, // 是否包含转发
+      hastext: 1, // 是否包含文字
+      haspic: 1, // 是否包含图片
+      hasvideo: 1, // 是否包含视频
+      hasmusic: 1, // 是否包含音乐
+    },
+  })
 
   return {
     ...data,
@@ -57,7 +81,11 @@ export async function fetchLongText(
 
   if (post.isLongText) {
     await delay()
-    const { data } = await weiFetch<{ data: { longTextContent: string } }>(`/statuses/longtext?id=${post.mblogid}`)
+    const { data } = await weiFetch<{ data: { longTextContent: string } }>(`/statuses/longtext`, {
+      params: {
+        id: post.id,
+      },
+    })
 
     text = data.longTextContent || post.text
   }
@@ -66,7 +94,7 @@ export async function fetchLongText(
 }
 
 /**
- * 获取前 3 条评论 并集于 博主的评论
+ * 获取前 n 条评论
  */
 export async function fetchComments(post: Post): Promise<Comment[]> {
   const { commentCount, comment, picLarge } = await getOptions()
