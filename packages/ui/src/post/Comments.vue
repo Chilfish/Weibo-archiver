@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col pl-5">
+  <div class="comments flex flex-col pl-5">
     <article
       v-for="comment in comments"
       :key="comment.id"
@@ -25,6 +25,18 @@ defineProps<{
       </div>
 
       <post-text :text="comment.text" />
+
+      <main-image
+        v-if="comment.img"
+        :src="comment.img"
+        class="max-h-10rem"
+      />
     </article>
   </div>
 </template>
+
+<style>
+.comments .n-image img {
+  width: auto;
+}
+</style>

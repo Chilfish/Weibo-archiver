@@ -90,17 +90,27 @@ function parseCard(url_struct?: any[], card?: any): CardInfo | undefined {
 /**
  * 过滤评论区数据
  */
-export function filterComments(comments?: any[]): Comment[] {
+export function filterComments(
+  comments?: any[],
+  imgSize: 'large' | 'largest' = 'large',
+): Comment[] {
   if (!comments || !comments.length || !comments[0]?.id)
     return []
+
   return comments.map((comment) => {
     try {
       const { text } = parseText(comment.text) // 评论区就没见过折叠长文本
 
+      let img = ''
+      if (comment.url_struct) {
+        const { pic_ids, pic_infos } = comment.url_struct[0]
+        img = parseImg(imgSize, pic_ids, pic_infos)[0]
+      }
+
       const res: Comment = {
         id: comment.idstr,
         text,
-        img: comment.url_struct?.[0]?.long_url,
+        img,
         created_at: comment.created_at,
         user: {
           id: comment.user?.idstr,
