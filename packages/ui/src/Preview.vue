@@ -1,6 +1,12 @@
 <script setup lang="ts">
 const postStore = usePostStore()
 
+const { id, screen_name } = postStore.posts[0].user
+localStorage.setItem('user', JSON.stringify({
+  uid: id,
+  name: screen_name,
+}))
+
 const posts = computed(() => postStore.get())
 const loaded = ref(false)
 
