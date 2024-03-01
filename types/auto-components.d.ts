@@ -14,7 +14,6 @@ declare module 'vue' {
     MainImage: typeof import('./../packages/ui/src/MainImage.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NButton: typeof import('naive-ui')['NButton']
-    NDialog: typeof import('naive-ui')['NDialog']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
     NImage: typeof import('naive-ui')['NImage']
