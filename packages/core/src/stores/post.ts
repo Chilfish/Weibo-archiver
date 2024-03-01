@@ -38,6 +38,12 @@ export const usePostStore = defineStore('post', () => {
     postsPerPage.value = 20
   }
 
+  function set(data: Post[]) {
+    posts.value = data
+    total.value = data.length
+    curPage.value = 1
+  }
+
   function get(page?: number): Post[] {
     let p = page
     if (!p)
@@ -76,6 +82,7 @@ export const usePostStore = defineStore('post', () => {
     curPage,
 
     get,
+    set,
     getById,
     reset,
 
