@@ -24,19 +24,20 @@ const avatar = computed(() => {
 
 <template>
   <a
-    class="mr-auto flex items-center gap-2"
+    class="mr-auto flex items-center gap-3"
     :href="`https://weibo.com/u/${user.id}`"
     target="_blank"
   >
     <n-avatar
-
       lazy round
       fallback-src="/placeholder.webp"
       :size="30"
       :src="avatar"
     />
 
-    <span class="text-3! font-bold! hover:text-teal-700!">
+    <span
+      class="text-3.5! font-bold! hover:text-teal-700!"
+    >
       {{ user.screen_name }}
     </span>
   </a>

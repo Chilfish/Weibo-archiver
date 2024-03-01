@@ -62,23 +62,24 @@ onUnmounted(() => {
     />
 
     <form
-      class="relative mr-auto h-12 w-3/5 sm:w-2/5"
+      class="relative mr-auto h-12 min-w-2/5"
       @submit.prevent="search"
     >
-      <span
+      <i
         class="i-tabler-search absolute left-3 top-50% icon translate-y-[-50%]"
         @click="search"
       />
       <input
         v-model="searchInput"
         class="w-full rounded-2 bg-gray-100 p-3 pl-9 text-4 dark:bg-dark-700"
-        placeholder="搜索我的微博"
+        placeholder="搜索微博"
       >
     </form>
 
     <button
       class="rounded-2 p-1.6"
       hover:bg="light-200 dark:dark-200"
+      title="打开设置"
       @click="openSettings"
     >
       <i class="i-tabler:settings icon h-6 w-6" />

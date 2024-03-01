@@ -4,23 +4,26 @@ export function usePagination() {
   const postStore = usePostStore()
   const router = useRouter()
   const route = useRoute()
-  const path = ref(route.path.replace(/\/\d+$/, '') || '/p')
+  const path = ref(route.path.replace(/\/\d+$/, '') || '/p/1')
   const query = ref(route.query)
 
   const pageSize = ref(postStore.postsPerPage)
   const curPage = ref(postStore.curPage)
 
-  watch([pageSize, curPage], ([newPageSize, newCurPage]) => {
+  function pushPage(page: number) {
     router.push({
-      path: `${path.value}/${newCurPage}`,
+      path: `${path.value}/${page}`,
       query: {
         ...query.value,
-        pageSize: newPageSize,
+        pageSize: pageSize.value,
       },
     })
+    postStore.curPage = page
+  }
 
+  watch([pageSize, curPage], ([newPageSize, newCurPage]) => {
+    pushPage(newCurPage)
     postStore.postsPerPage = newPageSize
-    postStore.curPage = newCurPage
   })
 
   watchEffect(() => {
@@ -35,7 +38,7 @@ export function usePagination() {
     const routePage = Number.parseInt(params.page as string) || postStore.curPage
     const page = routePage > postStore.pages ? postStore.pages : routePage
 
-    postStore.curPage = page
+    pushPage(page)
     curPage.value = page
   })
 

@@ -7,7 +7,7 @@ const props = defineProps<{
   isBody?: boolean
 }>()
 
-const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm dddd')
+const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm')
 
 const route = useRoute()
 const { origin } = document.location
@@ -48,10 +48,10 @@ const { copy } = useClipboard({
 
     <span>{{ date }}</span>
 
-    <span> {{ meta.region_name }} </span>
+    <span> {{ meta.region_name?.replace(' ', '') }} </span>
 
     <span v-if="meta.source" class="hidden sm:inline">
-      来自 <span v-html="meta.source" />
+      来自<span v-html="meta.source" />
     </span>
   </div>
 </template>
