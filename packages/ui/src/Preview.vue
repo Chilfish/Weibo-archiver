@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+import type { Post } from '@types'
+
 const postStore = usePostStore()
+const posts = ref([] as Post[])
+const route = useRoute()
 
-const posts = computed(() => postStore.get())
-const loaded = ref(false)
+watchImmediate(() => route.params, async () => {
+  posts.value = await postStore.get()
 
-watch(posts, async () => {
-  if (posts.value.length === 0 || !loaded.value)
-    return
-  await delay(4000)
-})
-
-onMounted(() => {
-  loaded.value = true
+  await delay(3000)
 })
 </script>
 

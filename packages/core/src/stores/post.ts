@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import type { Post } from '@types'
+import { getMany, set as setDB, setMany } from 'idb-keyval'
 
 export const usePostStore = defineStore('post', () => {
-  const posts = ref([] as Post[])
+  const ids = ref([] as string[])
+
   const resultPosts = ref([] as Post[])
 
   const url = document.location
@@ -15,12 +17,12 @@ export const usePostStore = defineStore('post', () => {
   const pageSize = ref(_pageSize || 20) // 每页显示的帖子数量 ppp
 
   // 总帖子数
-  const total = ref(posts.value.length)
+  const total = ref(ids.value.length)
 
   // 监听搜索结果, 更新总帖子数
   watch(resultPosts, () => {
     total.value = resultPosts.value.length === 0
-      ? posts.value.length
+      ? ids.value.length
       : resultPosts.value.length
   })
 
@@ -29,7 +31,6 @@ export const usePostStore = defineStore('post', () => {
   })
 
   function reset() {
-    posts.value = []
     resultPosts.value = []
     viewImg.value = imgViewSrc
     curPage.value = 1
@@ -41,41 +42,40 @@ export const usePostStore = defineStore('post', () => {
    * @param data
    * @param replace
    */
-  function set(
+  async function set(
     data: Post[],
     replace = false,
   ) {
     if (!data[0]?.user)
-      throw new Error('数据格式错误')
+      throw new Error('数据格式错误，可能要重新导入')
 
-    if (replace) {
-      posts.value = data
-    }
-    else {
-      posts.value = posts.value.concat(data)
-      posts.value = Array.from(new Set(posts.value))
-    }
+    let posts = data
+    if (!replace)
+      posts = Array.from(new Set(posts.concat(data)))
+
+    const _ids = posts.map(post => `post-${post.mblogid}`)
+    ids.value = _ids
+
+    await setDB('ids', _ids)
+    await setMany(posts.map(post => [`post-${post.mblogid}`, post]))
 
     total.value = data.length
   }
 
-  function get(page?: number): Post[] {
+  async function get(page?: number) {
     let p = page
     if (!p)
       p = curPage.value
     const sliceDis = [(p - 1) * pageSize.value, p * pageSize.value]
 
-    return resultPosts.value.length === 0
-      ? posts.value.slice(...sliceDis)
-      : resultPosts.value.slice(...sliceDis)
+    return await getMany<Post>(ids.value.slice(...sliceDis))
   }
 
-  function getById(id: number): Post[] {
-    return posts.value.filter(post => post.id === id)
-  }
-
+  // TODO: 优化
   async function searchText(p: string): Promise<Post[]> {
-    const res = posts.value.filter((post) => {
+    const posts = await getMany<Post>(ids.value)
+
+    const res = posts.filter((post) => {
       const word = p.toLowerCase().trim().replace(/ /g, '')
       const regex = new RegExp(word, 'igm')
       return regex.test(post.text)
@@ -88,7 +88,7 @@ export const usePostStore = defineStore('post', () => {
   }
 
   return {
-    posts,
+    ids,
     resultPosts,
     viewImg,
     total,
@@ -98,7 +98,6 @@ export const usePostStore = defineStore('post', () => {
 
     get,
     set,
-    getById,
     reset,
 
     searchText,

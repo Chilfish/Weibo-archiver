@@ -36,6 +36,8 @@
 
 .n-dialog.n-modal {
   width: auto !important;
+  max-height: 90dvh;
+  overflow-y: auto;
   /* min-width: 446px; */
 }
 

@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import type { Post } from '@types'
-
 const postStore = usePostStore()
-onBeforeMount(async () => {
-  const data = await indexDB.getItem<Post[]>('posts')
-  postStore.set(data ?? [])
-
-  const user = postStore.posts[0]?.user
-  localStorage.setItem('user', JSON.stringify({
-    uid: user?.id,
-    name: user?.screen_name,
-  }))
+onMounted(async () => {
+  const ids = await indexDB.getItem<string[]>('ids')
+  postStore.ids = ids ?? []
+  postStore.total = ids?.length ?? 0
 })
 </script>
 
@@ -26,7 +19,7 @@ onBeforeMount(async () => {
     </n-dialog> -->
 
     <Preview
-      v-if="$route.params.page"
+      v-if="postStore.ids.length > 0"
     />
   </main>
 </template>

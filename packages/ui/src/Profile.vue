@@ -5,9 +5,9 @@ const props = defineProps<{
   user: User
 }>()
 
+const me = useStorage('meta', { uid: '' })
 const isMe = computed(() => {
-  const user = JSON.parse(localStorage.getItem('user')!)
-  return user.uid === props.user.id
+  return me.value.uid === props.user.id
 })
 
 const avatar = computed(() => {

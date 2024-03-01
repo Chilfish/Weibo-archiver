@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { UploadCustomRequestOptions } from 'naive-ui'
+import type { Post } from '@types'
+import { clear as clearDB, getMany } from 'idb-keyval'
 import { destr } from 'destr'
 
 import { saveAs } from 'file-saver'
@@ -20,10 +22,15 @@ function onImportData({ file }: UploadCustomRequestOptions) {
     const data = content.replace('export const _ = ', '')
 
     try {
-      postStore.set(destr(data, { strict: true }), coverMode.value)
-      await indexDB.setItem('posts', postStore.posts)
+      const posts = destr<Post[]>(data, { strict: true })
+      await postStore.set(posts, coverMode.value)
 
-      message.success('导入成功')
+      useStorage('meta', {
+        uid: posts[0]?.user?.id,
+        name: posts[0]?.user?.screen_name,
+      })
+
+      message.success(`导入成功，共导入 ${posts.length} 条数据`)
     }
     catch (e) {
       message.error('导入失败，请检查文件内容是否正确')
@@ -32,21 +39,26 @@ function onImportData({ file }: UploadCustomRequestOptions) {
   }
 }
 
-function exportData() {
-  const data = postStore.posts
+async function exportData() {
+  const data = await getMany(postStore.ids).then(res => res)
+  if (!data[0]) {
+    message.warning('没有数据可以导出')
+    return
+  }
+
   const blob = new Blob(
-    [`export const _ = ${JSON.stringify(data)}`],
+    [JSON.stringify(data)],
     { type: 'text/plain' },
   )
 
-  saveAs(blob, 'data.mjs')
+  saveAs(blob, 'weibo-data.json')
   message.success('导出成功')
 }
 </script>
 
 <template>
   <main
-    class="flex flex-col items-start gap-4 overflow-auto"
+    class="flex flex-col items-start gap-4"
   >
     <n-form>
       <n-form-item
@@ -87,48 +99,61 @@ function exportData() {
       </n-form-item>
     </n-form>
 
-    <div class="flex flex-col">
+    <div class="w-full flex flex-col">
       <p class="settings-title">
-        导入数据
-      </p>
-      <p class="text-3.5 text-gray">
-        导入从脚本导出的 <code>data.mjs</code> 数据文件
+        导入/导出 数据
       </p>
 
-      <div class="my-4">
-        <span>
-          {{ coverMode ? '覆盖模式（将覆盖本地所有数据）' : '合并模式（只追加合并新数据）' }}
+      <div class="my-4 min-w-fit">
+        <span class="mr-4">
+          导入方式：{{ coverMode ? '覆盖模式（将覆盖本地所有数据）' : '合并模式（只追加合并新数据）' }}
         </span>
         <n-switch
           v-model:value="coverMode"
         />
       </div>
-      <n-upload
-        :custom-request="onImportData"
-        :max="1"
-        accept=".mjs,.json"
-        directory-dnd
-      >
-        <n-button>
-          点击导入
+
+      <div class="flex flex-wrap items-center gap-6">
+        <n-upload
+          :custom-request="onImportData"
+          :show-file-list="false"
+          accept=".mjs,.json"
+          directory-dnd
+          class="w-fit"
+        >
+          <n-button>
+            点击导入
+          </n-button>
+        </n-upload>
+
+        <n-button
+          class="w-fit"
+          @click="exportData"
+        >
+          点击导出
         </n-button>
-      </n-upload>
-    </div>
 
-    <div class="flex flex-col">
-      <p class="settings-title">
-        导出数据
-      </p>
-      <p class="text-3.5 text-gray">
-        导出当前数据到 <code>data.mjs</code> 数据文件
-      </p>
-
-      <n-button
-        class="mt-4 w-fit"
-        @click="exportData"
-      >
-        点击导出
-      </n-button>
+        <n-popconfirm
+          @positive-click="async () => {
+            clearDB().then(() => {
+              message.success('清空成功')
+            }).catch((e) => {
+              console.error(`清空失败: ${e}`)
+              message.error('清空失败')
+            })
+          }"
+        >
+          <template #trigger>
+            <n-button
+              class="w-fit bg-red"
+              type="error"
+            >
+              清空本地数据
+            </n-button>
+          </template>
+          确认清空本地数据？你仍可以通过导入功能恢复数据。
+        </n-popconfirm>
+      </div>
     </div>
 
     <slot />
