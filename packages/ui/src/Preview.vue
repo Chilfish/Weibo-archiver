@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Post } from '@types'
-
 const postStore = usePostStore()
 
 const posts = computed(() => postStore.get())
@@ -15,17 +13,6 @@ watch(posts, async () => {
 onMounted(() => {
   loaded.value = true
 })
-
-onBeforeMount(async () => {
-  const data = await indexDB.getItem<Post[]>('posts')
-  postStore.set(data ?? [])
-
-  const user = postStore.posts[0]?.user
-  localStorage.setItem('user', JSON.stringify({
-    uid: user?.id,
-    name: user?.screen_name,
-  }))
-})
 </script>
 
 <template>
@@ -34,6 +21,8 @@ onBeforeMount(async () => {
   >
     <post-list :posts="posts" />
 
-    <post-pagination />
+    <post-pagination
+      v-if="posts.length > 0"
+    />
   </div>
 </template>

@@ -5,10 +5,14 @@ export const usePostStore = defineStore('post', () => {
   const posts = ref([] as Post[])
   const resultPosts = ref([] as Post[])
 
+  const url = document.location
+  const _pageSize = Number(new URLSearchParams(url.search).get('pageSize')) || 20
+  const _curPage = Number(url.pathname.split('/').pop())
+
   const viewImg = ref(imgViewSrc)
 
-  const curPage = ref(1)
-  const postsPerPage = ref(20) // 每页显示的帖子数量 ppp
+  const curPage = ref(_curPage || 1)
+  const pageSize = ref(_pageSize || 20) // 每页显示的帖子数量 ppp
 
   // 总帖子数
   const total = ref(posts.value.length)
@@ -21,7 +25,7 @@ export const usePostStore = defineStore('post', () => {
   })
 
   const pages = computed(() => {
-    return Math.ceil(total.value / postsPerPage.value)
+    return Math.ceil(total.value / pageSize.value)
   })
 
   function reset() {
@@ -29,7 +33,7 @@ export const usePostStore = defineStore('post', () => {
     resultPosts.value = []
     viewImg.value = imgViewSrc
     curPage.value = 1
-    postsPerPage.value = 20
+    pageSize.value = 20
   }
 
   /**
@@ -53,14 +57,13 @@ export const usePostStore = defineStore('post', () => {
     }
 
     total.value = data.length
-    curPage.value = 1
   }
 
   function get(page?: number): Post[] {
     let p = page
     if (!p)
       p = curPage.value
-    const sliceDis = [(p - 1) * postsPerPage.value, p * postsPerPage.value]
+    const sliceDis = [(p - 1) * pageSize.value, p * pageSize.value]
 
     return resultPosts.value.length === 0
       ? posts.value.slice(...sliceDis)
@@ -90,7 +93,7 @@ export const usePostStore = defineStore('post', () => {
     viewImg,
     total,
     pages,
-    postsPerPage,
+    pageSize,
     curPage,
 
     get,

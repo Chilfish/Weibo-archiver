@@ -1,45 +1,44 @@
 import { useRoute, useRouter } from 'vue-router'
 
-export function usePagination() {
-  const postStore = usePostStore()
+export function usePagination(
+  maxPage: () => number,
+) {
   const router = useRouter()
   const route = useRoute()
-  const path = ref(route.path.replace(/\/\d+$/, '') || '/p/1')
+  const path = ref(route.path.replace(/\/\d+$/, ''))
   const query = ref(route.query)
 
-  const pageSize = ref(postStore.postsPerPage)
-  const curPage = ref(postStore.curPage)
+  const curPage = ref(Number(route.params.page) || 1)
+  const pageSize = ref(Number(route.query.pageSize) || 20)
 
   function pushPage(page: number) {
     router.push({
-      path: `${path.value}/${page}`,
+      path: `${path.value}/${page || 1}`,
       query: {
         ...query.value,
         pageSize: pageSize.value,
       },
+      hash: route.hash,
     })
-    postStore.curPage = page
   }
 
-  watch([pageSize, curPage], ([newPageSize, newCurPage]) => {
+  watchImmediate([pageSize, curPage], ([_, newCurPage]) => {
+    if (newCurPage < 1)
+      newCurPage = 1
+    else if (newCurPage > maxPage())
+      newCurPage = maxPage()
+
     pushPage(newCurPage)
-    postStore.postsPerPage = newPageSize
   })
 
-  watchEffect(() => {
-    const query = route.query
-    const routePageSize = Number.parseInt(query.pageSize as string) || postStore.postsPerPage
-    postStore.postsPerPage = routePageSize
+  watch(() => (route.query.pageSize as string), (newVal) => {
+    const routePageSize = Number.parseInt(newVal) || 20
     pageSize.value = routePageSize
   })
 
-  watchEffect(() => {
-    const params = route.params
-    const routePage = Number.parseInt(params.page as string) || postStore.curPage
-    const page = routePage > postStore.pages ? postStore.pages : routePage
-
-    pushPage(page)
-    curPage.value = page
+  watch(() => (route.params.page as string), (newVal) => {
+    const routePage = Number.parseInt(newVal) || 1
+    curPage.value = routePage
   })
 
   return {

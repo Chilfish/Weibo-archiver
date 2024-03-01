@@ -1,7 +1,14 @@
 <script setup lang="ts">
 const postStore = usePostStore()
 
-const { curPage, pageSize } = toRefs(usePagination())
+const { curPage, pageSize } = toRefs(usePagination(
+  () => postStore.pages,
+))
+
+watchImmediate([curPage, pageSize], ([page, size]) => {
+  postStore.curPage = page
+  postStore.pageSize = size
+})
 
 // 切换分页大小后可能会有大片的空白区域，再次点击就能清掉
 const pagePanel = ref<HTMLElement | null>(null)
@@ -24,7 +31,7 @@ onMounted(async () => {
       v-model:page-size="pageSize"
       show-quick-jumper
       show-size-picker
-      :page-sizes="[20, 30, 50, 100]"
+      :page-sizes="[10, 20, 30]"
       :item-count="postStore.total"
 
       class="center flex-wrap"
