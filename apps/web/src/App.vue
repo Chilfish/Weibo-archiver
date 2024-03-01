@@ -6,12 +6,7 @@
   <app-main>
     <n-modal-provider>
       <main-header />
-
-      <router-view>
-        <!-- <transition name="fade">
-          <component :is="Component" />
-        </transition> -->
-      </router-view>
+      <router-view class="mt-20" />
 
       <img-viewer />
     </n-modal-provider>

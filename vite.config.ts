@@ -1,6 +1,7 @@
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 
 import type { Options as autoImportOptions } from 'unplugin-auto-import/types'
@@ -46,6 +47,7 @@ export default defineConfig({
   plugins: [
     Vue(),
     UnoCSS(),
+    vueJsx(),
   ],
   build: {
     outDir: path.resolve(root, 'dist'),

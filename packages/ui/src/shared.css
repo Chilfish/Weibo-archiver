@@ -27,6 +27,7 @@
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   flex-direction: column;
+  --uno: bg-light-700 dark:bg-dark-700
 }
 
 .n-message-container.n-message-container--top {
@@ -35,7 +36,7 @@
 
 .n-dialog.n-modal {
   width: auto !important;
-  min-width: 446px;
+  /* min-width: 446px; */
 }
 
 p {

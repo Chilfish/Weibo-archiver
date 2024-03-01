@@ -17,7 +17,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="min-h-100vh flex flex-col items-center justify-between bg-light-700 pb-4 dark:bg-dark-700"
+    class="min-h-90dvh center-col justify-between pb-4"
   >
     <post-list :posts="posts" />
 
