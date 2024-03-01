@@ -5,7 +5,7 @@ const customimgHost = useStorage('customimgHost', '')
 
 <template>
   <main
-    class="flex flex-col items-start gap-4 md:w-60vw"
+    class="flex flex-col items-start gap-4"
   >
     <n-form>
       <n-form-item

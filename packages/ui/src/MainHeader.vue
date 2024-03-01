@@ -37,7 +37,6 @@ const modal = useModal()
 
 function openSettings() {
   modal.create({
-    title: '设置',
     content: () => import.meta.env.VITE_IS_ELECTRON
       ? h(SettingsDesktop)
       : h(SettingsWeb),

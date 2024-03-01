@@ -6,7 +6,7 @@
     <!-- TODO: for debug -->
     <!-- <n-dialog
       :show-icon="false"
-      title="设置"
+      title=" "
       class="m-16"
     >
       <SettingsWeb />

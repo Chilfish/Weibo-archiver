@@ -8,16 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppMain: typeof import('./../packages/ui/src/AppMain.vue')['default']
-    Dark: typeof import('./../packages/ui/src/Dark.vue')['default']
-    File: typeof import('./../apps/desktop/renderer/src/components/File.vue')['default']
     Gallery: typeof import('./../packages/ui/src/Gallery.vue')['default']
     ImgViewer: typeof import('./../packages/ui/src/ImgViewer.vue')['default']
     MainHeader: typeof import('./../packages/ui/src/MainHeader.vue')['default']
     MainImage: typeof import('./../packages/ui/src/MainImage.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
-    ND: typeof import('naive-ui')['ND']
     NDialog: typeof import('naive-ui')['NDialog']
-    NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
     NImage: typeof import('naive-ui')['NImage']
@@ -27,7 +23,8 @@ declare module 'vue' {
     NPagination: typeof import('naive-ui')['NPagination']
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
-    NSwitch: typeof import('naive-ui')['NSwitch']
+    NTabPane: typeof import('naive-ui')['NTabPane']
+    NTabs: typeof import('naive-ui')['NTabs']
     PostAction: typeof import('./../packages/ui/src/post/Action.vue')['default']
     PostCard: typeof import('./../packages/ui/src/post/Card.vue')['default']
     PostComments: typeof import('./../packages/ui/src/post/Comments.vue')['default']
@@ -41,10 +38,10 @@ declare module 'vue' {
     Profile: typeof import('./../packages/ui/src/Profile.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SettingsAbout: typeof import('./../packages/ui/src/settings/about.vue')['default']
     SettingsBase: typeof import('./../packages/ui/src/settings/base.vue')['default']
     SettingsDesktop: typeof import('./../packages/ui/src/settings/desktop.vue')['default']
     SettingsWeb: typeof import('./../packages/ui/src/settings/web.vue')['default']
-    Sqlite: typeof import('./../apps/desktop/renderer/src/components/Sqlite.vue')['default']
     Theme: typeof import('./../packages/ui/src/Theme.vue')['default']
   }
 }
