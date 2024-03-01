@@ -74,7 +74,7 @@ importers:
         version: 2.7.10(@vueuse/core@10.8.0)(typescript@5.3.3)(vite@5.1.4)(vue@3.4.19)
       vite:
         specifier: ^5.1.4
-        version: 5.1.4(@types/node@20.11.20)
+        version: 5.1.4(@types/node@20.11.20)(sass@1.71.1)
       vite-plugin-inspect:
         specifier: ^0.8.3
         version: 0.8.3(vite@5.1.4)
@@ -166,9 +166,6 @@ importers:
       '@weibo-archiver/ui':
         specifier: workspace:^
         version: link:../../packages/ui
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
       jszip:
         specifier: 3.9.1
         version: 3.9.1
@@ -228,6 +225,9 @@ importers:
       '@weibo-archiver/core':
         specifier: workspace:^
         version: link:../core
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
       sass:
         specifier: ^1.71.1
         version: 1.71.1
@@ -2370,7 +2370,7 @@ packages:
       vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.1.4(@types/node@20.11.20)
+      vite: 5.1.4(@types/node@20.11.19)
       vue: 3.4.19(typescript@5.3.3)
     dev: true
 
@@ -8527,7 +8527,7 @@ packages:
     peerDependencies:
       vite: ^2.6.0 || ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      vite: 5.1.4(@types/node@20.11.20)
+      vite: 5.1.4(@types/node@20.11.19)
     dev: true
 
   /vite-plugin-inspect@0.7.42(vite@5.1.4):
@@ -8669,7 +8669,7 @@ packages:
       '@vue/compiler-dom': 3.4.19
       kolorist: 1.8.0
       magic-string: 0.30.7
-      vite: 5.1.4(@types/node@20.11.20)
+      vite: 5.1.4(@types/node@20.11.19)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -8776,7 +8776,7 @@ packages:
       '@types/node': 20.11.20
       esbuild: 0.19.12
       postcss: 8.4.35
-      rollup: 4.9.6
+      rollup: 4.12.0
       sass: 1.71.1
     optionalDependencies:
       fsevents: 2.3.3

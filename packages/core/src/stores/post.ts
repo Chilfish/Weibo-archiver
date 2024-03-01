@@ -38,8 +38,23 @@ export const usePostStore = defineStore('post', () => {
     postsPerPage.value = 20
   }
 
-  function set(data: Post[]) {
-    posts.value = data
+  /**
+   * 设置帖子数据，可选择是否替换或是追加合并
+   * @param data
+   * @param replace
+   */
+  function set(
+    data: Post[],
+    replace = false,
+  ) {
+    if (replace) {
+      posts.value = data
+    }
+    else {
+      posts.value = posts.value.concat(data)
+      posts.value = Array.from(new Set(posts.value))
+    }
+
     total.value = data.length
     curPage.value = 1
   }

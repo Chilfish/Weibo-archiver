@@ -24,6 +24,7 @@ declare module 'vue' {
     NPagination: typeof import('naive-ui')['NPagination']
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
+    NSwitch: typeof import('naive-ui')['NSwitch']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     NUpload: typeof import('naive-ui')['NUpload']
