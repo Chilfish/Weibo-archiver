@@ -56,6 +56,8 @@ declare global {
   const imgCdn: typeof import('../packages/core/src/constants/index')['imgCdn']
   const imgViewSrc: typeof import('../packages/core/src/constants/index')['imgViewSrc']
   const imgsParser: typeof import('../packages/core/src/utils/parse')['imgsParser']
+  const indexDB: typeof import('../packages/core/src/utils/storage')['indexDB']
+  const indexedDB: typeof import('../packages/core/src/utils/storage')['indexedDB']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
   const isDark: typeof import('../packages/core/src/composables/index')['isDark']
@@ -394,6 +396,7 @@ declare module 'vue' {
     readonly imgCdn: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgCdn']>
     readonly imgViewSrc: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgViewSrc']>
     readonly imgsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['imgsParser']>
+    readonly indexDB: UnwrapRef<typeof import('../packages/core/src/utils/storage')['indexDB']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDark: UnwrapRef<typeof import('../packages/core/src/composables/index')['isDark']>
@@ -714,6 +717,7 @@ declare module '@vue/runtime-core' {
     readonly imgCdn: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgCdn']>
     readonly imgViewSrc: UnwrapRef<typeof import('../packages/core/src/constants/index')['imgViewSrc']>
     readonly imgsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['imgsParser']>
+    readonly indexDB: UnwrapRef<typeof import('../packages/core/src/utils/storage')['indexDB']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
     readonly isDark: UnwrapRef<typeof import('../packages/core/src/composables/index')['isDark']>

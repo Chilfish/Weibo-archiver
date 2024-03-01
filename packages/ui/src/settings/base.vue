@@ -15,12 +15,14 @@ function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
   const reader = new FileReader()
   reader.readAsText(data)
-  reader.onload = () => {
+  reader.onload = async () => {
     const content = reader.result as string
     const data = content.replace('export const _ = ', '')
 
     try {
       postStore.set(destr(data, { strict: true }), coverMode.value)
+      await indexDB.setItem('posts', postStore.posts)
+
       message.success('导入成功')
     }
     catch (e) {
