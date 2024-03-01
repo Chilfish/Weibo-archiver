@@ -31,8 +31,8 @@ export function exportData(posts: Post[]) {
   // https://github.com/Stuk/jszip/issues/864
   const zip = new JSZip()
 
-  const data = `export const _ = ${JSON.stringify(posts)}`
-  zip.file('data.mjs', data)
+  const data = JSON.stringify(posts)
+  zip.file('weibo-data.json', data)
 
   const imgsData = Array
     .from(imgsParser(posts))
@@ -42,7 +42,6 @@ export function exportData(posts: Post[]) {
   zip
     .generateAsync({ type: 'blob' })
     .then((zipFile) => {
-      // @ts-expect-error is defined
       window.$message.success('导出成功，正在下载数据...')
       saveAs(zipFile, 'weibo-archiver.zip')
     })

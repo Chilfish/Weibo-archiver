@@ -41,6 +41,9 @@ export const usePostStore = defineStore('post', () => {
     data: Post[],
     replace = false,
   ) {
+    if (!data[0]?.user)
+      throw new Error('数据格式错误')
+
     if (replace) {
       posts.value = data
     }

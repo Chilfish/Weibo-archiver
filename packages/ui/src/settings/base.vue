@@ -106,8 +106,8 @@ function exportData() {
       <n-upload
         :custom-request="onImportData"
         :max="1"
+        accept=".mjs,.json"
         directory-dnd
-        accept=".mjs"
       >
         <n-button>
           点击导入
