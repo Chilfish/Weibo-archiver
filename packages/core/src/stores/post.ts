@@ -1,14 +1,8 @@
 import { defineStore } from 'pinia'
 import type { Post } from '@types'
-import { _ as _posts } from '../constants/data.mjs'
 
 export const usePostStore = defineStore('post', () => {
-  // 必须是外部导入优先, 这样才能在 build 中直接引用
-  const posts = ref((
-    _posts as unknown as Post[])
-    .sort((a, b) => Number(b.id) - Number(a.id)), // 按 id 也就是发布时间降序排列
-  )
-
+  const posts = ref([] as Post[])
   const resultPosts = ref([] as Post[])
 
   const viewImg = ref(imgViewSrc)
@@ -36,6 +30,27 @@ export const usePostStore = defineStore('post', () => {
     viewImg.value = imgViewSrc
     curPage.value = 1
     postsPerPage.value = 20
+  }
+
+  /**
+   * 设置帖子数据，可选择是否替换或是追加合并
+   * @param data
+   * @param replace
+   */
+  function set(
+    data: Post[],
+    replace = false,
+  ) {
+    if (replace) {
+      posts.value = data
+    }
+    else {
+      posts.value = posts.value.concat(data)
+      posts.value = Array.from(new Set(posts.value))
+    }
+
+    total.value = data.length
+    curPage.value = 1
   }
 
   function get(page?: number): Post[] {
@@ -76,6 +91,7 @@ export const usePostStore = defineStore('post', () => {
     curPage,
 
     get,
+    set,
     getById,
     reset,
 

@@ -6,27 +6,11 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 
-import config, { autoComponentConfig, autoImportConfig, core, root } from '../../vite.config'
-
-const dataJs = path.resolve(core, 'constants/data.mjs')
-const index = path.resolve('./index.html')
+import config, { autoComponentConfig, autoImportConfig, root } from '../../vite.config'
 
 export default defineConfig({
   ...config,
   build: {
-    rollupOptions: {
-      ...config.build?.rollupOptions,
-      input: {
-        index,
-        data: dataJs,
-      },
-      output: {
-        entryFileNames: 'assets/[name].mjs',
-        globals: {
-          [dataJs]: 'data',
-        },
-      },
-    },
     outDir: path.resolve(root, 'dist/preview'),
   },
   plugins: [

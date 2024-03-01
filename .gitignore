@@ -11,3 +11,5 @@ node_modules
 
 apps/web/public/assets/img/
 packages/core/src/constants/data.mjs
+
+.vercel

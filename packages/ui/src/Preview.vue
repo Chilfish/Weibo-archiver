@@ -1,11 +1,7 @@
 <script setup lang="ts">
-const postStore = usePostStore()
+import type { Post } from '@types'
 
-const user = postStore.posts[0]?.user
-localStorage.setItem('user', JSON.stringify({
-  uid: user?.id,
-  name: user?.screen_name,
-}))
+const postStore = usePostStore()
 
 const posts = computed(() => postStore.get())
 const loaded = ref(false)
@@ -18,6 +14,17 @@ watch(posts, async () => {
 
 onMounted(() => {
   loaded.value = true
+})
+
+onBeforeMount(async () => {
+  const data = await indexDB.getItem<Post[]>('posts')
+  postStore.set(data ?? [])
+
+  const user = postStore.posts[0]?.user
+  localStorage.setItem('user', JSON.stringify({
+    uid: user?.id,
+    name: user?.screen_name,
+  }))
 })
 </script>
 
