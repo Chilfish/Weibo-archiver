@@ -14,8 +14,14 @@ declare module 'vue' {
     ImgViewer: typeof import('./../packages/ui/src/ImgViewer.vue')['default']
     MainHeader: typeof import('./../packages/ui/src/MainHeader.vue')['default']
     MainImage: typeof import('./../packages/ui/src/MainImage.vue')['default']
+    NAvatar: typeof import('naive-ui')['NAvatar']
+    NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NImage: typeof import('naive-ui')['NImage']
+    NImageGroup: typeof import('naive-ui')['NImageGroup']
     NInput: typeof import('naive-ui')['NInput']
+    NModalProvider: typeof import('naive-ui')['NModalProvider']
+    NPagination: typeof import('naive-ui')['NPagination']
+    NSwitch: typeof import('naive-ui')['NSwitch']
     PostAction: typeof import('./../packages/ui/src/post/Action.vue')['default']
     PostCard: typeof import('./../packages/ui/src/post/Card.vue')['default']
     PostComments: typeof import('./../packages/ui/src/post/Comments.vue')['default']
@@ -29,6 +35,8 @@ declare module 'vue' {
     Profile: typeof import('./../packages/ui/src/Profile.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SettingsDesktop: typeof import('./../packages/ui/src/settings/desktop.vue')['default']
+    SettingsWeb: typeof import('./../packages/ui/src/settings/web.vue')['default']
     Sqlite: typeof import('./../apps/desktop/renderer/src/components/Sqlite.vue')['default']
   }
 }

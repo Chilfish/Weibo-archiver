@@ -20,6 +20,7 @@ const imgUrl = computed(() => {
 </script>
 
 <template>
+  <MainHeader />
   <main class="p-4">
     <pre>
       {{ user1 }}
