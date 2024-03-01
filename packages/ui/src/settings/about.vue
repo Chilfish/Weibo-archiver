@@ -1,0 +1,56 @@
+<script setup lang="ts">
+const version = import.meta.env.VITE_APP_VERSION
+</script>
+
+<template>
+  <main class="h-full center-col gap-4">
+    <n-image
+      class="h-24 w-24"
+      alt="logo"
+      src="/icon.png"
+    />
+
+    <div class="mb-4 center flex-wrap gap-2">
+      <a
+        href="https://github.com/Chilfish/Weibo-archiver"
+        target="_blank"
+        title="GitHub Repo"
+      >
+        <img
+          alt="GitHub Repo stars"
+          src="https://img.shields.io/github/stars/chilfish/weibo-archiver"
+        >
+      </a>
+
+      <a
+        href="https://github.com/Chilfish/Weibo-archiver/releases"
+        target="_blank"
+        title="下载页面"
+      >
+        <img
+          alt="GitHub Downloads"
+          src="https://img.shields.io/github/downloads/chilfish/weibo-archiver/total"
+        >
+      </a>
+    </div>
+
+    <h2 class="text-6 font-bold">
+      Weibo Archiver v{{ version }}
+    </h2>
+
+    <p>
+      一个简单的微博备份工具 app，为被完全夹没前未雨绸缪😭
+    </p>
+    <p class="mt-2">
+      如果觉得这个项目对你有帮助，可以考虑赞助我😇这将给我更多的动力来维护这个项目：
+      <a
+        href="https://chilfish.top/sponsors"
+        target="_blank"
+        title="赞助地址"
+        class="font-bold underline"
+      >
+        赞助地址
+      </a>
+    </p>
+  </main>
+</template>

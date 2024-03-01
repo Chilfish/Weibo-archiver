@@ -6,9 +6,12 @@ watchImmediate(isDark, (value) => {
 
 <template>
   <AppMain>
-    <main class="flex flex-col gap-2">
-      <RouterView />
-    </main>
+    <n-modal-provider>
+      <main class="flex flex-col gap-2">
+        <RouterView />
+      </main>
+      <img-viewer />
+    </n-modal-provider>
   </AppMain>
 </template>
 

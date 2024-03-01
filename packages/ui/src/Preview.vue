@@ -1,6 +1,12 @@
 <script setup lang="ts">
 const postStore = usePostStore()
 
+const user = postStore.posts[0]?.user
+localStorage.setItem('user', JSON.stringify({
+  uid: user?.id,
+  name: user?.screen_name,
+}))
+
 const posts = computed(() => postStore.get())
 const loaded = ref(false)
 
@@ -17,7 +23,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="min-h-100vh flex flex-col items-center justify-between bg-light-700 pb-4 dark:bg-dark-700"
+    class="min-h-90dvh center-col justify-between pb-4"
   >
     <post-list :posts="posts" />
 

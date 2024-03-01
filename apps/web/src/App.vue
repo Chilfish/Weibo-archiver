@@ -4,14 +4,11 @@
 
 <template>
   <app-main>
-    <main-header />
+    <n-modal-provider>
+      <main-header />
+      <router-view class="mt-20" />
 
-    <router-view v-slot="{ Component }">
-      <transition name="fade">
-        <component :is="Component" />
-      </transition>
-    </router-view>
-
-    <img-viewer />
+      <img-viewer />
+    </n-modal-provider>
   </app-main>
 </template>

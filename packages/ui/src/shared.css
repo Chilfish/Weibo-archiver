@@ -27,10 +27,16 @@
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   flex-direction: column;
+  --uno: bg-light-700 dark:bg-dark-700
 }
 
 .n-message-container.n-message-container--top {
   top: 36px !important;
+}
+
+.n-dialog.n-modal {
+  width: auto !important;
+  /* min-width: 446px; */
 }
 
 p {
@@ -46,8 +52,10 @@ html.dark {
   color: #fff;
 }
 
+span.icon,
 i.icon {
-  --uno: inline-flex items-center max-w-4 max-h-4 select-none cursor-pointer;
+  vertical-align: middle;
+  --uno: inline-flex items-center select-none cursor-pointer;
 }
 
 #plugin-app {
@@ -64,10 +72,6 @@ i.icon {
 
 .icons .icon {
   --uno: mx-2;
-}
-
-span.icon {
-  --uno: inline-flex items-center max-w-4 max-h-4 select-none cursor-pointer;
 }
 
 a,

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useModal } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
+import SettingsWeb from './settings/web.vue'
+import SettingsDesktop from './settings/desktop.vue'
 
 const { y } = useWindowScroll()
 const isScrollingDown = ref(false)
@@ -19,7 +22,6 @@ const headerStyle = computed(() => {
 const router = useRouter()
 const route = useRoute()
 const searchInput = ref(route.query?.q?.toString() || '')
-const useLocalImage = useStorage('useCdn', false)
 
 async function search() {
   const res = await usePostStore().searchText(searchInput.value)
@@ -30,20 +32,37 @@ async function search() {
 onMounted(() => {
   searchInput.value = route.query?.q?.toString() || ''
 })
+
+const modal = useModal()
+
+function openSettings() {
+  modal.create({
+    content: () => import.meta.env.VITE_IS_ELECTRON
+      ? h(SettingsDesktop)
+      : h(SettingsWeb),
+    preset: 'dialog',
+    showIcon: false,
+  })
+}
+
+onUnmounted(() => {
+  modal.destroyAll()
+})
 </script>
 
 <template>
   <header
     :style="headerStyle"
-    class="fixed top-0 z-999 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-6 backdrop-blur-8 transition-all"
+    class="fixed z-99 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-4 backdrop-blur-8 transition-all"
   >
-    <span
-      class="i-tabler-brand-weibo icon"
-      @click="$router.push('/p/1')"
+    <router-link
+      class="i-tabler-brand-weibo icon h-6 w-6"
+      to="/p/1"
+      title="返回首页"
     />
 
     <form
-      class="relative ml-4 mr-auto h-12 w-3/5 sm:w-2/5"
+      class="relative mr-auto h-12 w-3/5 sm:w-2/5"
       @submit.prevent="search"
     >
       <span
@@ -57,15 +76,12 @@ onMounted(() => {
       >
     </form>
 
-    <!-- TODO: 设成 settings 的弹窗，来手动设置图床链接 -->
-    <div class="center gap-2 text-3">
-      使用远程图片
-      <n-switch
-        v-model:value="useLocalImage"
-        size="small"
-      />
-    </div>
-
-    <Dark />
+    <button
+      class="rounded-2 p-1.6"
+      hover:bg="light-200 dark:dark-200"
+      @click="openSettings"
+    >
+      <i class="i-tabler:settings icon h-6 w-6" />
+    </button>
   </header>
 </template>

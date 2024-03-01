@@ -12,11 +12,11 @@ export function replaceImg(img: string) {
   if (img.includes('data:image') || img.startsWith(imgCdn))
     return img
 
-  const useCdn = storage<boolean>('useCdn', false)
+  const imgHost = storage<string>('imgHost', '/')
 
-  if (useCdn) {
+  if (imgHost === imgCdn) {
     const { pathname } = new URL(img)
-    return `https://cdn.ipfsscan.io/weibo${pathname}`
+    return `${imgCdn}${pathname}`
   }
 
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
@@ -24,5 +24,11 @@ export function replaceImg(img: string) {
 
   if (!prefix || !name)
     return img
-  return `/assets/img/${prefix}-${name}`
+  const fileName = `${prefix}-${name}`
+
+  if (imgHost === '/')
+    return `/assets/img/${fileName}`
+
+  const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
+  return `${fixedBase}${fileName}`
 }
