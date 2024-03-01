@@ -2,7 +2,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import type { Post } from '@types'
 
-const version = '0.2.7'
+const version = '0.3.0'
 
 function imgsParser(posts: Post[]): Set<string> {
   const imgs = posts

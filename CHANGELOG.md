@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.3.0
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.7...vv0.3.0)
+
+### 🚀 Enhancements
+
+- **ui:** Add settings modal ([#25](https://github.com/Chilfish/Weibo-archiver/pull/25))
+- ⚠️  Import data from user, storing in indexedDB ([#27](https://github.com/Chilfish/Weibo-archiver/pull/27))
+
+### 🩹 Fixes
+
+- **script:** Cookie is not required ([2c81398](https://github.com/Chilfish/Weibo-archiver/commit/2c81398))
+- **fetch:** Fetch params ([b55a83e](https://github.com/Chilfish/Weibo-archiver/commit/b55a83e))
+- **ui:** Fixs in mobile ([7a3ce1c](https://github.com/Chilfish/Weibo-archiver/commit/7a3ce1c))
+- Rename exported data to 'weibo-data.json' ([8034e40](https://github.com/Chilfish/Weibo-archiver/commit/8034e40))
+
+### 🏡 Chore
+
+- **docs:** Update readme.md ([dae94f6](https://github.com/Chilfish/Weibo-archiver/commit/dae94f6))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Import data from user, storing in indexedDB ([#27](https://github.com/Chilfish/Weibo-archiver/pull/27))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.2.7
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.6...v0.2.7)
