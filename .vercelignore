@@ -1,0 +1,12 @@
+.github
+.husky
+.vscode
+dist
+node_modules
+apps/desktop
+apps/monkey
+packages/database
+scripts
+CHANGELOG.md
+README.md
+
