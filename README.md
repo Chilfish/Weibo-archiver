@@ -48,6 +48,9 @@ scripts 文件夹中包含了交互式一键运行的 `run.bat` 脚本（感谢 
 
 > 其中，运行下载图片脚本之前需要安装 Node.js，可以在 [Node.js 官网] 下载最新版本，然后找教程配置系统环境
 
+> v0.3.1 之后改变了图片查看的方式，如果是从旧版迁移过来的，需要重新下载 [scripts.zip]，然后将原本的 `imgs` 文件夹复制过去并重命名为 `images` <br/>
+> 这样再次运行 run.bat 脚本就能再次启动本地的图片服务器了
+
 #### 查看结果
 
 访问我们提供的在线预览平台：https://weibo.chilfish.top 。点击右上角的设置按钮，按提示导入刚才导出的 `weibo-data.json` 即可查看（也支持旧版导出的 `data.mjs`）
@@ -107,6 +110,7 @@ scripts 文件夹中包含了交互式一键运行的 `run.bat` 脚本（感谢 
 如果你觉得这个项目对你有帮助，可以考虑赞助v我😇这将给我更多的动力来维护这个项目：[赞助地址]
 
 [releases]: https://raw.githubusercontent.com/Chilfish/Weibo-archiver/monkey/weibo-archiver.user.js
+[scripts.zip]: https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip
 [speechless]: https://github.com/meterscao/Speechless
 [naive-ui]: https://www.naiveui.com/zh-CN/os-theme
 [#1]: https://github.com/Chilfish/Weibo-archiver/issues/1
