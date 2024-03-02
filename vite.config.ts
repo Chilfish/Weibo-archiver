@@ -50,7 +50,6 @@ export default defineConfig({
     vueJsx(),
   ],
   build: {
-    outDir: path.resolve(root, 'dist'),
     minify: true,
   },
 })

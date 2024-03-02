@@ -5,7 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import config, { autoImportConfig } from '../../vite.config'
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
-const downloadURL = 'https://raw.githubusercontent.com/Chilfish/Weibo-archiver/monkey/weibo-archiver.user.js'
+const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
 
 export default defineConfig({
   ...config,

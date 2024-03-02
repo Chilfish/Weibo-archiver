@@ -19,7 +19,7 @@ function imgsParser(posts: Post[]): Set<string> {
   return new Set(imgs)
 }
 
-const scripts = 'https://raw.githubusercontent.com/Chilfish/Weibo-archiver/monkey/script.zip'
+const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
 
 export function exportData(posts: Post[]) {
   // 只能固定版本在 3.9.1，因为油猴的升级
