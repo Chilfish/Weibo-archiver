@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createHead } from '@unhead/vue'
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 
@@ -8,6 +9,7 @@ import 'uno.css'
 import '@ui/shared.css'
 
 const app = createApp(App)
+const head = createHead()
 
 const routes: RouteRecordRaw[] = [
   {
@@ -32,4 +34,5 @@ const router = createRouter({
 app
   .use(router)
   .use(createPinia())
+  .use(head)
   .mount('#app')

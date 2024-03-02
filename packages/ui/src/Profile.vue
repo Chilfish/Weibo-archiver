@@ -12,6 +12,8 @@ const isMe = computed(() => {
 
 const avatar = computed(() => {
   const url = props.user.profile_image_url
+  if (!url)
+    return '/placeholder.webp'
 
   if (isMe.value)
     return replaceImg(url)
