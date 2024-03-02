@@ -15,7 +15,6 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@weibo-archiver/ui": "workspace:^",
-    "vite-plugin-static-copy": "^1.0.1"
+    "@weibo-archiver/ui": "workspace:^"
   }
 }

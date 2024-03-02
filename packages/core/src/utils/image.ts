@@ -27,7 +27,7 @@ export function replaceImg(img: string) {
   const fileName = `${prefix}-${name}`
 
   if (imgHost === '/')
-    return `/assets/img/${fileName}`
+    return `http://localhost:3000/${fileName}`
 
   const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
   return `${fixedBase}${fileName}`

@@ -1,6 +1,5 @@
 import path from 'node:path'
-import { defineConfig, normalizePath } from 'vite'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { defineConfig } from 'vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 import Components from 'unplugin-vue-components/vite'
@@ -33,14 +32,6 @@ export default defineConfig({
       ...autoComponentConfig,
       resolvers: [
         NaiveUiResolver(),
-      ],
-    }),
-    viteStaticCopy({
-      targets: [
-        {
-          src: normalizePath(path.resolve(root, 'scripts/*')),
-          dest: normalizePath(path.resolve(root, 'dist/preview')),
-        },
       ],
     }),
   ],

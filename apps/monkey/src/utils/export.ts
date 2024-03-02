@@ -2,8 +2,6 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import type { Post } from '@types'
 
-const version = '0.3.0'
-
 function imgsParser(posts: Post[]): Set<string> {
   const imgs = posts
     .map((post) => {
@@ -21,10 +19,7 @@ function imgsParser(posts: Post[]): Set<string> {
   return new Set(imgs)
 }
 
-/**
- * 预览压缩包下载地址
- */
-const previewZip = `https://github.com/Chilfish/Weibo-archiver/releases/download/v${version}/preview.zip`
+const scripts = 'https://raw.githubusercontent.com/Chilfish/Weibo-archiver/monkey/script.zip'
 
 export function exportData(posts: Post[]) {
   // 只能固定版本在 3.9.1，因为油猴的升级
@@ -45,5 +40,6 @@ export function exportData(posts: Post[]) {
       window.$message.success('导出成功，正在下载数据...')
       saveAs(zipFile, 'weibo-archiver.zip')
     })
-  saveAs(previewZip, 'preview.zip')
+
+  saveAs(scripts, 'scripts.zip')
 }
