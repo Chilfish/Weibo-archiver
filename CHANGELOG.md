@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.3.1
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.0...v0.3.1)
+
+### 🩹 Fixes
+
+- Vercel SPA 404 ([b69465e](https://github.com/Chilfish/Weibo-archiver/commit/b69465e))
+- **web:** Pagination error ([#28](https://github.com/Chilfish/Weibo-archiver/pull/28))
+- **web:** Import from indexedDB on demand instead of full loading ([3a7c18a](https://github.com/Chilfish/Weibo-archiver/commit/3a7c18a))
+- **script:** Only serve the images ([b609b32](https://github.com/Chilfish/Weibo-archiver/commit/b609b32))
+- Local image server ([46a05b3](https://github.com/Chilfish/Weibo-archiver/commit/46a05b3))
+
+### 🏡 Chore
+
+- **docs:** Update README.md ([7e08203](https://github.com/Chilfish/Weibo-archiver/commit/7e08203))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.0
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.2.7...vv0.3.0)

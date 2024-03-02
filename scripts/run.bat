@@ -6,7 +6,7 @@ title 微博备份工具
 :begin
 cd %~dp0
 
-echo Weibo-archiver v0.3.0
+echo Weibo-archiver v0.3.1
 echo 请选择要执行的操作：
 echo 1. 下载微博配图
 echo 2. 启动本地的图片服务器
