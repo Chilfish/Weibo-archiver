@@ -2,13 +2,8 @@ import { existsSync, mkdirSync } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { Buffer } from 'node:buffer'
-import { ArgumentParser, RawDescriptionHelpFormatter } from 'argparse'
 
-const parser = new ArgumentParser({ formatter_class: RawDescriptionHelpFormatter })
-parser.add_argument('-d', '--dir', { type: String, default: '.', help: '图片列表路径' })
-const args = parser.parse_args()
-
-const imgs_path = join(args.dir, 'imgs.csv')
+const imgs_path = join('imgs.csv')
 
 let cookie = ''
 
@@ -22,7 +17,7 @@ const url_list = await readFile(imgs_path, 'utf-8')
     process.exit(1)
   })
 
-const download_folder = join(args.dir, './assets/img')
+const download_folder = join('images')
 if (!existsSync(download_folder))
   mkdirSync(download_folder, { recursive: true })
 
