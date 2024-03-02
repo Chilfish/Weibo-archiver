@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
-import { exportData } from './utils'
+import { saveAs } from 'file-saver'
+
+import { exportData } from '@core/utils'
 import { useConfigStore, usePostStore } from './stores'
 import Config from './Config.vue'
 
@@ -18,6 +20,14 @@ const progressText = computed(() => () => `${postStore.posts.length}/${postStore
 
 const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
+
+function exportDatas() {
+  const res = exportData(postStore.posts)
+  if (!res)
+    return
+  const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
+  saveAs(scripts, 'scripts.zip')
+}
 
 async function start() {
   message.info('开始爬取中，请稍等~', {
@@ -40,7 +50,7 @@ async function start() {
       if (finished) {
         isStart.value = false
         isFinish.value = true
-        exportData(postStore.posts)
+        exportDatas()
       }
       return finished
     },
@@ -60,7 +70,6 @@ watch(isStop, (val, oldVal) => {
     resumeFn.value?.()
 })
 
-// @ts-expect-error TODO: fix this
 window.$message = useMessage()
 
 onMounted(async () => {
@@ -123,7 +132,7 @@ onMounted(async () => {
 
       <button
         v-show="isFinish || isStop"
-        @click="exportData(postStore.posts)"
+        @click="exportDatas"
       >
         导出
       </button>

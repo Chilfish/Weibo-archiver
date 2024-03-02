@@ -10,8 +10,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@weibo-archiver/ui": "workspace:^",
-    "jszip": "3.9.1"
+    "@weibo-archiver/ui": "workspace:^"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",

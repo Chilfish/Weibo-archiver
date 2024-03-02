@@ -27,11 +27,13 @@
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   flex-direction: column;
+  min-height: 100dvh;
   --uno: bg-light-700 dark:bg-dark-700
 }
 
 .n-message-container.n-message-container--top {
   top: 36px !important;
+  z-index: 9999 !important;
 }
 
 .n-dialog.n-modal {

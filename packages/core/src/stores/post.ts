@@ -54,11 +54,10 @@ export const usePostStore = defineStore('post', () => {
       posts = Array.from(new Set(posts.concat(data)))
 
     const _ids = posts.map(post => `post-${post.mblogid}`)
-    ids.value = _ids
 
     await setDB('ids', _ids)
     await setMany(posts.map(post => [`post-${post.mblogid}`, post]))
-
+    ids.value = _ids
     total.value = data.length
   }
 

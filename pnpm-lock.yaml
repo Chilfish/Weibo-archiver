@@ -166,9 +166,6 @@ importers:
       '@weibo-archiver/ui':
         specifier: workspace:^
         version: link:../../packages/ui
-      jszip:
-        specifier: 3.9.1
-        version: 3.9.1
     devDependencies:
       '@types/file-saver':
         specifier: ^2.0.7
@@ -231,6 +228,9 @@ importers:
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
+      jszip:
+        specifier: 3.9.1
+        version: 3.9.1
       sass:
         specifier: ^1.71.1
         version: 1.71.1

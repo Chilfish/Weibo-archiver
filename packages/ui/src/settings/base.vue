@@ -4,8 +4,6 @@ import type { Post } from '@types'
 import { clear as clearDB, getMany } from 'idb-keyval'
 import { destr } from 'destr'
 
-import { saveAs } from 'file-saver'
-
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
 
@@ -39,20 +37,10 @@ function onImportData({ file }: UploadCustomRequestOptions) {
   }
 }
 
-async function exportData() {
+async function exportDatas() {
   const data = await getMany(postStore.ids).then(res => res)
-  if (!data[0]) {
-    message.warning('没有数据可以导出')
-    return
-  }
 
-  const blob = new Blob(
-    [JSON.stringify(data)],
-    { type: 'text/plain' },
-  )
-
-  saveAs(blob, 'weibo-data.json')
-  message.success('导出成功')
+  exportData(data)
 }
 </script>
 
@@ -128,7 +116,7 @@ async function exportData() {
 
         <n-button
           class="w-fit"
-          @click="exportData"
+          @click="exportDatas"
         >
           点击导出
         </n-button>

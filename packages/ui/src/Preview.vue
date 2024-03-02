@@ -8,8 +8,6 @@ const route = useRoute()
 
 watchImmediate(() => route.params, async () => {
   posts.value = await postStore.get()
-
-  await delay(3000)
 })
 </script>
 

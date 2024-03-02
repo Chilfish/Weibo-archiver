@@ -34,10 +34,6 @@ export const usePostStore = defineStore('post', () => {
     fetchedPage.value++
   }
 
-  function getById(id: number): Post[] {
-    return posts.value.filter(post => post.id === id)
-  }
-
   return {
     posts,
     total,
@@ -46,7 +42,6 @@ export const usePostStore = defineStore('post', () => {
     fetchedPage,
 
     add,
-    getById,
     reset,
   }
 })

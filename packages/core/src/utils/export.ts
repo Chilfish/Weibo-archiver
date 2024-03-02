@@ -1,33 +1,22 @@
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import type { Post } from '@types'
-
-function imgsParser(posts: Post[]): Set<string> {
-  const imgs = posts
-    .map((post) => {
-      return [
-        post.imgs,
-        post.retweeted_status?.imgs,
-        post.comments.map(e => e.img),
-        post.user?.profile_image_url,
-        post.card?.img,
-      ].flat()
-    })
-    .flat()
-    .filter((e): e is string => !!e)
-
-  return new Set(imgs)
-}
-
-const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
+import { imgsParser } from './parse'
 
 export function exportData(posts: Post[]) {
+  if (!posts[0]) {
+    window.$message.warning('没有数据可以导出')
+    return false
+  }
+
   // 只能固定版本在 3.9.1，因为油猴的升级
   // https://github.com/Stuk/jszip/issues/864
   const zip = new JSZip()
 
+  const name = posts[0].user.screen_name || ''
+
   const data = JSON.stringify(posts)
-  zip.file('weibo-data.json', data)
+  zip.file(`weibo-data-${name}.json`, data)
 
   const imgsData = Array
     .from(imgsParser(posts))
@@ -38,8 +27,12 @@ export function exportData(posts: Post[]) {
     .generateAsync({ type: 'blob' })
     .then((zipFile) => {
       window.$message.success('导出成功，正在下载数据...')
-      saveAs(zipFile, 'weibo-archiver.zip')
+      saveAs(zipFile, `weibo-archiver-${name}.zip`)
+    })
+    .catch((err) => {
+      window.$message.error('导出失败')
+      console.error('导出失败', err)
     })
 
-  saveAs(scripts, 'scripts.zip')
+  return true
 }
