@@ -24,9 +24,7 @@ const route = useRoute()
 const searchInput = ref(route.query?.q?.toString() || '')
 
 async function search() {
-  const res = await usePostStore().searchText(searchInput.value)
-  if (res.length)
-    router.push(`/s/1?q=${searchInput.value}`)
+  router.push(`/search?q=${searchInput.value}&page=1&pageSize=10`)
 }
 
 onMounted(() => {
@@ -53,11 +51,11 @@ onUnmounted(() => {
 <template>
   <header
     :style="headerStyle"
-    class="fixed z-99 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-4 backdrop-blur-8 transition-all"
+    class="fixed z-99 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-4 backdrop-blur-8 transition-all sm:px-8"
   >
     <router-link
       class="i-tabler-brand-weibo icon h-6 w-6"
-      to="/p/1"
+      :to="`/post?page=1&pageSize=${route.query.pageSize || 10}`"
       title="返回首页"
     />
 

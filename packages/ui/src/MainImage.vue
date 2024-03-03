@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useStorage } from '@vueuse/core'
+
 const props = withDefaults(defineProps<{
   src: string
   alt?: string

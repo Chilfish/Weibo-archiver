@@ -1,7 +1,7 @@
 :root {
   font-size: 14px;
-  background: #f1f2f5;
-  color: #000;
+  /* background: #f1f2f5;
+  color: #000; */
 }
 
 * {
@@ -21,7 +21,8 @@
   height: 5px !important;
 }
 
-#app {
+#app,
+#__nuxt {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -5,44 +5,41 @@ export function usePagination(
 ) {
   const router = useRouter()
   const route = useRoute()
-  const path = ref(route.path.replace(/\/\d+$/, ''))
-  const query = ref(route.query)
 
-  const curPage = ref(Number(route.params.page) || 1)
+  const curPage = ref(Number(route.query.page) || 1)
   const pageSize = ref(Number(route.query.pageSize) || 20)
 
   function pushPage(page: number) {
     router.push({
-      path: `${path.value}/${page || 1}`,
       query: {
-        ...query.value,
+        ...route.query,
+        page: page || 1,
         pageSize: pageSize.value,
       },
       hash: route.hash,
     })
   }
 
-  watchImmediate([pageSize, curPage], ([_, newCurPage]) => {
-    if (newCurPage < 1)
-      newCurPage = 1
-    else if (newCurPage > maxPage())
-      newCurPage = maxPage()
+  watchEffect(() => {
+    if (curPage.value < 1)
+      curPage.value = 1
+    else if (curPage.value > maxPage())
+      curPage.value = maxPage()
 
-    pushPage(newCurPage)
+    pushPage(curPage.value)
   })
 
-  watch(() => (route.query.pageSize as string), (newVal) => {
-    const routePageSize = Number.parseInt(newVal) || 20
+  watchImmediate(() => route.query, (newVal) => {
+    const routePageSize = Number(newVal.pageSize) || 20
     pageSize.value = routePageSize
-  })
 
-  watch(() => (route.params.page as string), (newVal) => {
-    const routePage = Number.parseInt(newVal) || 1
+    const routePage = Number(newVal.page) || 1
     curPage.value = routePage
   })
 
   return {
     curPage,
     pageSize,
+    pushPage,
   }
 }

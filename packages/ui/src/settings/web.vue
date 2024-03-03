@@ -1,11 +1,12 @@
 <script setup lang="ts">
+window.$message = useMessage()
 </script>
 
 <template>
   <n-tabs
     type="card"
     animated
-    class="min-h-50vh md:w-60vw"
+    class="min-h-50vh md:w-50vw"
   >
     <n-tab-pane name="settings" tab="设置">
       <settings-base />

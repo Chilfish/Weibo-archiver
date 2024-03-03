@@ -1,18 +1,8 @@
 <script setup lang="ts">
-const user = useStorage('meta', { name: '' })
-
 const appName = 'Weibo-Archiver'
-const title = computed(() => {
-  const { name } = user.value
-  return name ? `@${name} - ${appName}` : `${appName} - 备份你的微博`
-})
-
+const title = `${appName} - 备份你的微博`
 const description = `${appName} 一个微博备份工具，在账号被完全夹没前未雨绸缪 😭。`
 const ogImage = 'https://p.chilfish.top/weibo/cover.webp'
-
-useHead({
-  title,
-})
 
 useSeoMeta({
   title,
@@ -33,12 +23,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <app-main>
-    <n-modal-provider>
-      <main-header />
-      <router-view class="mt-16" />
-
-      <img-viewer />
-    </n-modal-provider>
-  </app-main>
+  <nuxt-layout>
+    <nuxt-page />
+  </nuxt-layout>
 </template>

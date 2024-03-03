@@ -6,8 +6,19 @@ const postStore = usePostStore()
 const posts = ref([] as Post[])
 const route = useRoute()
 
-watchImmediate(() => route.params, async () => {
-  posts.value = await postStore.get()
+const loaded = ref(false)
+onMounted(async () => {
+  const ids = await indexDB.getItem<string[]>('ids')
+  postStore.ids = ids ?? []
+  postStore.total = ids?.length ?? 0
+  loaded.value = true
+})
+
+watchEffect(async () => {
+  if (!loaded.value)
+    return
+  const page = route.query.page
+  posts.value = await postStore.get(Number(page))
 })
 </script>
 
@@ -15,10 +26,37 @@ watchImmediate(() => route.params, async () => {
   <div
     class="min-h-90dvh center-col justify-between pb-4"
   >
-    <post-list :posts="posts" />
-
-    <post-pagination
-      v-if="posts.length > 0"
+    <n-spin
+      v-if="!loaded"
+      class="center"
+      size="large"
     />
+
+    <template v-else>
+      <div
+        v-if="postStore.ids.length === 0"
+        class="pt-12"
+      >
+        <settings-about />
+        <p
+          class="pt-6 font-bold"
+          text="center xl"
+        >
+          暂没微博数据，点击右上角设置来导入吧👋
+        </p>
+      </div>
+
+      <post-list
+        v-else-if="posts.length > 0"
+        :posts="posts"
+      />
+
+      <h3
+        v-else-if="posts.length === 0"
+        class="mt-20 text-center text-2xl font-bold"
+      >
+        没有相关结果
+      </h3>
+    </template>
   </div>
 </template>

@@ -7,7 +7,7 @@ const config = {
   productName: 'Weibo Archiver',
   asar: true,
   directories: {
-    output: 'dist',
+    output: '../../dist/desktop',
     buildResources: 'buildResources',
   },
   files: ['./**/dist/**'],

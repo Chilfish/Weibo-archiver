@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useStorage } from '@vueuse/core'
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
 import { clear as clearDB, getMany } from 'idb-keyval'
@@ -28,7 +29,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
         name: posts[0]?.user?.screen_name,
       })
 
-      message.success(`导入成功，共导入 ${posts.length} 条数据`)
+      message.success(`导入成功，导入后共有 ${postStore.ids.length} 条数据`)
     }
     catch (e) {
       message.error('导入失败，请检查文件内容是否正确')

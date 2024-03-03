@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const postStore = usePostStore()
+const viewImg = ref('')
 
 async function onClose() {
   const btn = await waitForElement('.n-image-preview-toolbar')
@@ -8,14 +8,12 @@ async function onClose() {
   const arr = [btn, mask]
 
   arr.forEach(e => e?.addEventListener('click', () => {
-    postStore.viewImg = imgViewSrc
+    viewImg.value = imgViewSrc
   }, { once: true }))
 }
 
-const src = computed(() => postStore.viewImg)
-
-watch(() => postStore.viewImg, async () => {
-  if (postStore.viewImg === imgViewSrc)
+watch(viewImg, async () => {
+  if (viewImg.value === imgViewSrc)
     return
   const img = await waitForElement<HTMLImageElement>('#img-viewer img')
 
@@ -32,7 +30,7 @@ watch(() => postStore.viewImg, async () => {
     <main-image
       class="h-0 w-0"
       :lazy="false"
-      :src="src"
+      :src="viewImg"
     />
   </div>
 </template>
