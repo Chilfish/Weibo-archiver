@@ -54,6 +54,9 @@ export const usePostStore = defineStore('post', () => {
   }
 
   async function get(page?: number) {
+    if (ids.value.length === 0)
+      return []
+
     let p = page
     if (!p)
       p = curPage.value
@@ -63,7 +66,7 @@ export const usePostStore = defineStore('post', () => {
     const query = route.query.q as string
 
     if (posts.value.length === 0)
-      posts.value = await getMany<Post>(ids.value)
+      posts.value = (await getMany<Post>(ids.value)) || []
 
     if (path === '/post') {
       total.value = ids.value.length

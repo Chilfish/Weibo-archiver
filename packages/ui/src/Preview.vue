@@ -9,7 +9,8 @@ const route = useRoute()
 const loaded = ref(false)
 onMounted(async () => {
   const ids = await indexDB.getItem<string[]>('ids')
-  postStore.ids = ids ?? []
+
+  postStore.ids = ids || []
   postStore.total = ids?.length ?? 0
   loaded.value = true
 })
