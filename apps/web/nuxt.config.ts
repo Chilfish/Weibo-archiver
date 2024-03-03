@@ -5,7 +5,7 @@ const root = fileURLToPath(new URL('../../', import.meta.url))
 
 export default defineNuxtConfig({
   srcDir: 'src/',
-  serverDir: './server',
+  serverDir: 'server',
   dir: {
     public: '../public',
   },
