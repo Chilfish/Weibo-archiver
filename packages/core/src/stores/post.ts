@@ -50,14 +50,10 @@ export const usePostStore = defineStore('post', () => {
       })
     }
 
-    const _ids = after.map(post => `post-${post.mblogid}`)
+    const _ids = after.map(post => `post-${post.id}`)
 
     await setDB('ids', _ids)
-    await setMany(
-      after
-        .sort((a, b) => b.id - a.id)
-        .map(post => [`post-${post.mblogid}`, post]),
-    )
+    await setMany(after.map(post => [`post-${post.id}`, post]))
     ids.value = _ids
     total.value = after.length
     posts.value = after
@@ -75,12 +71,18 @@ export const usePostStore = defineStore('post', () => {
     const path = route.path
     const query = route.query.q as string
 
+    if (posts.value.length === 0) {
+      posts.value = (
+        await getMany<Post>(ids.value)
+          .then(res =>
+            res.filter(Boolean).sort((a, b) => b.id - a.id),
+          )
+      )
+    }
+
     if (path === '/post') {
       total.value = ids.value.length
-      if (posts.value.length === 0)
-        return await getMany<Post>(ids.value.slice(...sliceDis))
-      else
-        return posts.value.slice(...sliceDis)
+      return posts.value.slice(...sliceDis)
     }
     else {
       const data = await searchText(query)
@@ -91,9 +93,6 @@ export const usePostStore = defineStore('post', () => {
 
   // TODO: 优化
   async function searchText(p: string): Promise<Post[]> {
-    if (posts.value.length === 0)
-      posts.value = (await getMany<Post>(ids.value)) || []
-
     const res = posts.value.filter((post) => {
       const word = p.toLowerCase().trim().replace(/ /g, '')
       const regex = new RegExp(word, 'igm')
