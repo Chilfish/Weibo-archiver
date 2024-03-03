@@ -21,5 +21,7 @@ defineProps<{
         :card="item.card"
       />
     </post-item>
+
+    <post-pagination />
   </div>
 </template>

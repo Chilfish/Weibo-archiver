@@ -56,11 +56,11 @@ export default defineNuxtConfig({
       },
     },
     routeRules: {
-      '/': { redirect: '/p/1' },
+      '/': { redirect: '/post' },
     },
     prerender: {
       crawlLinks: false,
-      // routes: ['/'],
+      routes: ['/post'],
     },
   },
 

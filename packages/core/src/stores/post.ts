@@ -1,37 +1,28 @@
 import { defineStore } from 'pinia'
+import { useRoute } from 'vue-router'
 import type { Post } from '@types'
 import { getMany, set as setDB, setMany } from 'idb-keyval'
 
 export const usePostStore = defineStore('post', () => {
+  console.log('post pinia store created')
+
   const ids = ref([] as string[])
 
-  const resultPosts = ref([] as Post[])
-
-  const url = document.location
-  const _pageSize = Number(new URLSearchParams(url.search).get('pageSize')) || 20
-  const _curPage = Number(url.pathname.split('/').pop())
+  const route = useRoute()
 
   const viewImg = ref(imgViewSrc)
 
-  const curPage = ref(_curPage || 1)
-  const pageSize = ref(_pageSize || 20) // 每页显示的帖子数量 ppp
+  const curPage = ref(Number(route.query.page) || 1)
+  const pageSize = ref(Number(route.query.pageSize) || 10) // 每页显示的帖子数量 ppp
 
   // 总帖子数
   const total = ref(ids.value.length)
-
-  // 监听搜索结果, 更新总帖子数
-  watch(resultPosts, () => {
-    total.value = resultPosts.value.length === 0
-      ? ids.value.length
-      : resultPosts.value.length
-  })
 
   const pages = computed(() => {
     return Math.ceil(total.value / pageSize.value)
   })
 
   function reset() {
-    resultPosts.value = []
     viewImg.value = imgViewSrc
     curPage.value = 1
     pageSize.value = 20
@@ -67,7 +58,18 @@ export const usePostStore = defineStore('post', () => {
       p = curPage.value
     const sliceDis = [(p - 1) * pageSize.value, p * pageSize.value]
 
-    return await getMany<Post>(ids.value.slice(...sliceDis))
+    const path = route.path
+    const query = route.query.q as string
+
+    if (path === '/post') {
+      total.value = ids.value.length
+      return await getMany<Post>(ids.value.slice(...sliceDis))
+    }
+    else {
+      const data = await searchText(query)
+      total.value = data.length
+      return data.slice(...sliceDis)
+    }
   }
 
   // TODO: 优化
@@ -82,13 +84,11 @@ export const usePostStore = defineStore('post', () => {
         || (post.retweeted_status && regex.test(post.retweeted_status?.text))
     })
 
-    resultPosts.value = res
     return res
   }
 
   return {
     ids,
-    resultPosts,
     viewImg,
     total,
     pages,

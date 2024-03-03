@@ -5,11 +5,10 @@
 <template>
   <app-main>
     <n-modal-provider>
-      <client-only>
-        <main-header />
-      </client-only>
+      <nuxt-loading-indicator />
+      <main-header />
       <img-viewer />
-      <main class="mt-12 h-full">
+      <main class="mt-16 h-full">
         <slot />
       </main>
     </n-modal-provider>

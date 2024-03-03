@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const postStore = usePostStore()
 
-const { curPage, pageSize } = toRefs(usePagination(
+const { curPage, pageSize } = usePagination(
   () => postStore.pages,
-))
+)
 
 watchImmediate([curPage, pageSize], ([page, size]) => {
   postStore.curPage = page
