@@ -3,9 +3,10 @@ const props = defineProps<{
   text: string
 }>()
 
+const publicStore = usePublicStore()
+
 const parsedText = parseProtocol(props.text)
   .replace(/\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
-const postStore = usePostStore()
 const textRef = ref<HTMLParagraphElement | null>(null)
 
 onMounted(() => {
@@ -18,7 +19,7 @@ onMounted(() => {
       return
 
     const src = target.dataset.src
-    postStore.viewImg = src
+    publicStore.globalImg = src
   })
 })
 </script>

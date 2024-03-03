@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const viewImg = ref('')
+import { storeToRefs } from 'pinia'
+
+const { globalImg } = storeToRefs(usePublicStore())
 
 async function onClose() {
   const btn = await waitForElement('.n-image-preview-toolbar')
@@ -8,12 +10,12 @@ async function onClose() {
   const arr = [btn, mask]
 
   arr.forEach(e => e?.addEventListener('click', () => {
-    viewImg.value = imgViewSrc
+    globalImg.value = imgViewSrc
   }, { once: true }))
 }
 
-watch(viewImg, async () => {
-  if (viewImg.value === imgViewSrc)
+watch(globalImg, async () => {
+  if (globalImg.value === imgViewSrc)
     return
   const img = await waitForElement<HTMLImageElement>('#img-viewer img')
 
@@ -30,7 +32,7 @@ watch(viewImg, async () => {
     <main-image
       class="h-0 w-0"
       :lazy="false"
-      :src="viewImg"
+      :src="globalImg"
     />
   </div>
 </template>
