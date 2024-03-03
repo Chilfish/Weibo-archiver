@@ -7,6 +7,7 @@ export const usePostStore = defineStore('post', () => {
   console.log('post pinia store created')
 
   const ids = ref([] as string[])
+  const posts = ref([] as Post[])
 
   const route = useRoute()
 
@@ -61,9 +62,12 @@ export const usePostStore = defineStore('post', () => {
     const path = route.path
     const query = route.query.q as string
 
+    if (posts.value.length === 0)
+      posts.value = await getMany<Post>(ids.value)
+
     if (path === '/post') {
       total.value = ids.value.length
-      return await getMany<Post>(ids.value.slice(...sliceDis))
+      return posts.value.slice(...sliceDis)
     }
     else {
       const data = await searchText(query)
@@ -74,9 +78,7 @@ export const usePostStore = defineStore('post', () => {
 
   // TODO: 优化
   async function searchText(p: string): Promise<Post[]> {
-    const posts = await getMany<Post>(ids.value)
-
-    const res = posts.filter((post) => {
+    const res = posts.value.filter((post) => {
       const word = p.toLowerCase().trim().replace(/ /g, '')
       const regex = new RegExp(word, 'igm')
       return regex.test(post.text)
