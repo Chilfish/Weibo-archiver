@@ -1,5 +1,5 @@
 import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
+import fileSaver from 'file-saver'
 import type { Post } from '@types'
 import { imgsParser } from './parse'
 
@@ -27,7 +27,7 @@ export function exportData(posts: Post[]) {
     .generateAsync({ type: 'blob' })
     .then((zipFile) => {
       window.$message.success('导出成功，正在下载数据...')
-      saveAs(zipFile, `weibo-archiver-${name}.zip`)
+      fileSaver.saveAs(zipFile, `weibo-archiver-${name}.zip`)
     })
     .catch((err) => {
       window.$message.error('导出失败')

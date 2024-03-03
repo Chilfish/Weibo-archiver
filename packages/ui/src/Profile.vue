@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { User } from '@types'
+import { useStorage } from '@vueuse/core'
 
 const props = defineProps<{
   user: User

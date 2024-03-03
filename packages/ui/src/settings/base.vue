@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useStorage } from '@vueuse/core'
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
 import { clear as clearDB, getMany } from 'idb-keyval'

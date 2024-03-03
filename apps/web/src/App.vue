@@ -1,9 +1,7 @@
 <script setup lang="ts">
-const user = useStorage('meta', { name: '' })
-
 const appName = 'Weibo-Archiver'
 const title = computed(() => {
-  const { name } = user.value
+  const name = ''
   return name ? `@${name} - ${appName}` : `${appName} - 备份你的微博`
 })
 
@@ -33,12 +31,10 @@ useSeoMeta({
 </script>
 
 <template>
-  <app-main>
-    <n-modal-provider>
-      <main-header />
-      <router-view class="mt-16" />
-
-      <img-viewer />
-    </n-modal-provider>
-  </app-main>
+  <nuxt-layout>
+    <nuxt-loading-indicator />
+    <client-only>
+      <nuxt-page />
+    </client-only>
+  </nuxt-layout>
 </template>
