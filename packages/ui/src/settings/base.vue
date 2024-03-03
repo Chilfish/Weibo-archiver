@@ -11,9 +11,11 @@ const customimgHost = useStorage('customimgHost', '')
 const postStore = usePostStore()
 const message = useMessage()
 const coverMode = ref(false)
+const fileList = ref<any>([])
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
+
   const reader = new FileReader()
   reader.readAsText(data)
   reader.onload = async () => {
@@ -35,12 +37,15 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       message.error('导入失败，请检查文件内容是否正确')
       console.error(`导入失败: ${e}`)
     }
+    finally {
+      // 确保只有一个文件
+      fileList.value = []
+    }
   }
 }
 
 async function exportDatas() {
   const data = await getMany(postStore.ids).then(res => res)
-
   exportData(data)
 }
 </script>
@@ -104,6 +109,7 @@ async function exportDatas() {
 
       <div class="flex flex-wrap items-center gap-6">
         <n-upload
+          v-model:file-list="fileList"
           :custom-request="onImportData"
           :show-file-list="false"
           accept=".mjs,.json"

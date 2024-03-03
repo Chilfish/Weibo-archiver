@@ -7,7 +7,7 @@ export const usePostStore = defineStore('post', () => {
   console.log('post pinia store created')
 
   const ids = ref([] as string[])
-  const posts = ref([] as Post[])
+  const posts = shallowRef([] as Post[])
 
   const route = useRoute()
 
@@ -41,16 +41,26 @@ export const usePostStore = defineStore('post', () => {
     if (!data[0]?.user)
       throw new Error('数据格式错误，可能要重新导入')
 
-    let posts = data
-    if (!replace)
-      posts = Array.from(new Set(posts.concat(data)))
+    let after = data
+    const _posts = toValue(posts)
 
-    const _ids = posts.map(post => `post-${post.mblogid}`)
+    if (!replace) {
+      after = [..._posts, ...data].filter((post, index, self) => {
+        return index === self.findIndex(t => t.id === post.id)
+      })
+    }
+
+    const _ids = after.map(post => `post-${post.mblogid}`)
 
     await setDB('ids', _ids)
-    await setMany(posts.map(post => [`post-${post.mblogid}`, post]))
+    await setMany(
+      after
+        .sort((a, b) => b.id - a.id)
+        .map(post => [`post-${post.mblogid}`, post]),
+    )
     ids.value = _ids
-    total.value = data.length
+    total.value = after.length
+    posts.value = after
   }
 
   async function get(page?: number) {
@@ -65,12 +75,12 @@ export const usePostStore = defineStore('post', () => {
     const path = route.path
     const query = route.query.q as string
 
-    if (posts.value.length === 0)
-      posts.value = (await getMany<Post>(ids.value)) || []
-
     if (path === '/post') {
       total.value = ids.value.length
-      return posts.value.slice(...sliceDis)
+      if (posts.value.length === 0)
+        return await getMany<Post>(ids.value.slice(...sliceDis))
+      else
+        return posts.value.slice(...sliceDis)
     }
     else {
       const data = await searchText(query)
@@ -81,6 +91,9 @@ export const usePostStore = defineStore('post', () => {
 
   // TODO: 优化
   async function searchText(p: string): Promise<Post[]> {
+    if (posts.value.length === 0)
+      posts.value = (await getMany<Post>(ids.value)) || []
+
     const res = posts.value.filter((post) => {
       const word = p.toLowerCase().trim().replace(/ /g, '')
       const regex = new RegExp(word, 'igm')
