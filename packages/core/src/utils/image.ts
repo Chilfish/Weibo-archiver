@@ -14,9 +14,14 @@ export function replaceImg(img: string) {
 
   const imgHost = storage<string>('imgHost', '/')
 
+  // 使用 ipfs cdn
   if (imgHost === imgCdn) {
-    const { pathname } = new URL(img)
-    return `${imgCdn}${pathname}`
+    if (img.includes('sinaimg.cn')) {
+      const { pathname } = new URL(img)
+      return `${imgCdn}${pathname}`
+    }
+    // 像是 b 站、网易云这种外链的图片，就保持原样
+    return img
   }
 
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
@@ -26,9 +31,11 @@ export function replaceImg(img: string) {
     return img
   const fileName = `${prefix}-${name}`
 
+  // 本地图片
   if (imgHost === '/')
     return `http://localhost:3000/${fileName}`
 
+  // 自建图床
   const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
   return `${fixedBase}${fileName}`
 }
