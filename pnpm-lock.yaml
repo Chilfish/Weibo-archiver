@@ -23,7 +23,7 @@ importers:
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^2.7.0
-        version: 2.7.0(@vue/compiler-sfc@3.4.19)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)
+        version: 2.7.0(@vue/compiler-sfc@3.4.21)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)
       eslint:
         specifier: npm:eslint-ts-patch@8.55.0-1
         version: /eslint-ts-patch@8.55.0-1
@@ -151,7 +151,7 @@ importers:
         version: 2.7.10(@vueuse/core@10.9.0)(typescript@5.3.3)(vite@5.1.4)(vue@3.4.21)
       vite:
         specifier: ^5.1.4
-        version: 5.1.4(@types/node@20.11.24)
+        version: 5.1.4(sass@1.71.1)
       vite-plugin-monkey:
         specifier: ^3.5.1
         version: 3.5.1(vite@5.1.4)
@@ -197,6 +197,9 @@ importers:
       conf:
         specifier: ^12.0.0
         version: 12.0.0
+      idb:
+        specifier: ^8.0.0
+        version: 8.0.0
       idb-keyval:
         specifier: ^6.2.1
         version: 6.2.1
@@ -276,7 +279,7 @@ packages:
       '@jridgewell/trace-mapping': 0.3.22
     dev: true
 
-  /@antfu/eslint-config@2.7.0(@vue/compiler-sfc@3.4.19)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3):
+  /@antfu/eslint-config@2.7.0(@vue/compiler-sfc@3.4.21)(eslint-plugin-format@0.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3):
     resolution: {integrity: sha512-CMILR+ZeiahWk8LhDlsHij/LPygX6QvQxl5AknTXm2QcFpMR6CZ14JHxTgkQJnRLM78D/CYZXwV38rU3us3PlQ==}
     hasBin: true
     peerDependencies:
@@ -340,7 +343,7 @@ packages:
       eslint-plugin-vitest: 0.3.22(@typescript-eslint/eslint-plugin@7.1.0)(eslint-ts-patch@8.55.0-1)(typescript@5.3.3)
       eslint-plugin-vue: 9.22.0(eslint-ts-patch@8.55.0-1)
       eslint-plugin-yml: 1.12.2(eslint-ts-patch@8.55.0-1)
-      eslint-processor-vue-blocks: 0.1.1(@vue/compiler-sfc@3.4.19)(eslint-ts-patch@8.55.0-1)
+      eslint-processor-vue-blocks: 0.1.1(@vue/compiler-sfc@3.4.21)(eslint-ts-patch@8.55.0-1)
       globals: 14.0.0
       jsonc-eslint-parser: 2.4.0
       local-pkg: 0.5.0
@@ -3769,7 +3772,7 @@ packages:
       chokidar: 3.6.0
       fast-glob: 3.3.2
       magic-string: 0.30.7
-      vite: 5.1.4(sass@1.71.1)
+      vite: 5.1.4(@types/node@20.11.24)
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -4037,7 +4040,7 @@ packages:
         optional: true
     dependencies:
       sirv: 2.0.4
-      vite: 5.1.4(@types/node@20.11.24)
+      vite: 5.1.4(sass@1.71.1)
       vue: 3.4.21(typescript@5.3.3)
     transitivePeerDependencies:
       - typescript
@@ -7005,13 +7008,13 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-processor-vue-blocks@0.1.1(@vue/compiler-sfc@3.4.19)(eslint-ts-patch@8.55.0-1):
+  /eslint-processor-vue-blocks@0.1.1(@vue/compiler-sfc@3.4.21)(eslint-ts-patch@8.55.0-1):
     resolution: {integrity: sha512-9+dU5lU881log570oBwpelaJmOfOzSniben7IWEDRYQPPWwlvaV7NhOtsTuUWDqpYT+dtKKWPsgz4OkOi+aZnA==}
     peerDependencies:
       '@vue/compiler-sfc': ^3.3.0
       eslint: ^8.50.0
     dependencies:
-      '@vue/compiler-sfc': 3.4.19
+      '@vue/compiler-sfc': 3.4.21
       eslint: /eslint-ts-patch@8.55.0-1
     dev: true
 
@@ -7997,6 +8000,10 @@ packages:
 
   /idb-keyval@6.2.1:
     resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}
+
+  /idb@8.0.0:
+    resolution: {integrity: sha512-l//qvlAKGmQO31Qn7xdzagVPPaHTxXx199MhrAFuVBTPqydcPYBWjkrbv4Y0ktB+GmWOiwHl237UUOrLmQxLvw==}
+    dev: false
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -12042,7 +12049,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.7
       unplugin: 1.7.1
-      vite: 5.1.4(@types/node@20.11.24)
+      vite: 5.1.4(sass@1.71.1)
     dev: true
 
   /unplugin-vue-components@0.26.0(vue@3.4.21):
@@ -12499,7 +12506,7 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       systemjs: 6.14.3
-      vite: 5.1.4(@types/node@20.11.24)
+      vite: 5.1.4(sass@1.71.1)
     dev: true
 
   /vite-plugin-vue-devtools@7.0.16(vite@5.1.4)(vue@3.4.21):

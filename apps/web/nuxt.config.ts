@@ -18,6 +18,10 @@ export default defineNuxtConfig({
     '@bg-dev/nuxt-naiveui',
   ],
 
+  alias: {
+    '@core': join(root, 'packages/core/src'),
+  },
+
   imports: {
     dirs: [
       'stores',

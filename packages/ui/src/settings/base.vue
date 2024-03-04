@@ -24,7 +24,8 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 
     try {
       const posts = destr<Post[]>(data, { strict: true })
-      await postStore.set(posts, coverMode.value)
+
+      // await postStore.set(posts, coverMode.value)
 
       useStorage('meta', {
         uid: posts[0]?.user?.id,

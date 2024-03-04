@@ -7,7 +7,6 @@ export * from './protocol'
 export * from './fetch'
 export * from './image'
 export * from './export'
-export * from './storage'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 

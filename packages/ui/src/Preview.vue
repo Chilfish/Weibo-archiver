@@ -10,10 +10,10 @@ const idLoaded = ref(false)
 const postsLoaded = ref(false)
 
 onMounted(async () => {
-  const ids = await indexDB.getItem<string[]>('ids')
+  // const ids = await indexDB.getItem<string[]>('ids')
 
-  postStore.ids = ids || []
-  postStore.total = ids?.length ?? 0
+  // postStore.ids = ids || []
+  // postStore.total = ids?.length ?? 0
   idLoaded.value = true
 })
 

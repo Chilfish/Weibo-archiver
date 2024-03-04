@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useModal } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
 import SettingsWeb from './settings/web.vue'
-import SettingsDesktop from './settings/desktop.vue'
 
 const { y } = useWindowScroll()
 const isScrollingDown = ref(false)
@@ -31,24 +29,18 @@ onMounted(() => {
   searchInput.value = route.query?.q?.toString() || ''
 })
 
-const modal = useModal()
-
-function openSettings() {
-  modal.create({
-    content: () => import.meta.env.VITE_IS_ELECTRON
-      ? h(SettingsDesktop)
-      : h(SettingsWeb),
-    preset: 'dialog',
-    showIcon: false,
-  })
-}
-
-onUnmounted(() => {
-  modal.destroyAll()
-})
+const showSettings = ref(false)
 </script>
 
 <template>
+  <n-modal
+    v-model:show="showSettings"
+    preset="dialog"
+    :show-icon="false"
+  >
+    <SettingsWeb />
+  </n-modal>
+
   <header
     :style="headerStyle"
     class="fixed z-99 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-4 backdrop-blur-8 transition-all sm:px-8"
@@ -78,7 +70,7 @@ onUnmounted(() => {
       class="rounded-2 p-1.6"
       hover:bg="light-200 dark:dark-200"
       title="打开设置"
-      @click="openSettings"
+      @click="() => showSettings = true"
     >
       <i class="i-tabler:settings icon h-6 w-6" />
     </button>
