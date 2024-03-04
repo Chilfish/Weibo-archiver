@@ -1,7 +1,7 @@
 {
   "name": "weibo-archiver",
   "type": "module",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "the desktop app for weibo-archiver",
   "author": {
     "name": "Chilfish",

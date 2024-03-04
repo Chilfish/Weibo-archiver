@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.3.2
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.1...v0.3.2)
+
+### 🩹 Fixes
+
+- **ui:** Fix bugs ([ef8c91e](https://github.com/Chilfish/Weibo-archiver/commit/ef8c91e))
+- SEO ([b59ef39](https://github.com/Chilfish/Weibo-archiver/commit/b59ef39))
+- **web:** Page dead when no data ([5d9f71e](https://github.com/Chilfish/Weibo-archiver/commit/5d9f71e))
+- **web:** View the inline image ([2e29fd7](https://github.com/Chilfish/Weibo-archiver/commit/2e29fd7))
+- **web:** Upload and merge data ([e3cc14c](https://github.com/Chilfish/Weibo-archiver/commit/e3cc14c))
+- Sort the posts ([195c236](https://github.com/Chilfish/Weibo-archiver/commit/195c236))
+- **ui:** Image & add back to top ([7aca8c2](https://github.com/Chilfish/Weibo-archiver/commit/7aca8c2))
+- **core:** Parse links & comment images ([#31](https://github.com/Chilfish/Weibo-archiver/pull/31))
+- **monkey:** Add promt message ([d510024](https://github.com/Chilfish/Weibo-archiver/commit/d510024))
+- **ui:** Padding style ([0e331fd](https://github.com/Chilfish/Weibo-archiver/commit/0e331fd))
+- **web:** The missing .env ([6c25f16](https://github.com/Chilfish/Weibo-archiver/commit/6c25f16))
+
+### 💅 Refactors
+
+- **web:** Migrate to nuxt3 ([#30](https://github.com/Chilfish/Weibo-archiver/pull/30))
+
+### 🏡 Chore
+
+- **docs:** Update readme.md ([432b2f2](https://github.com/Chilfish/Weibo-archiver/commit/432b2f2))
+- Update deps ([b5fd038](https://github.com/Chilfish/Weibo-archiver/commit/b5fd038))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.1
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.0...v0.3.1)
