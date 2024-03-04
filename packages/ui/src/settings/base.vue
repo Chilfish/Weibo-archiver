@@ -2,7 +2,6 @@
 import { useStorage } from '@vueuse/core'
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
-import { clear as clearDB, getMany } from 'idb-keyval'
 import { destr } from 'destr'
 
 const useLocalImage = useStorage('imgHost', '/')
@@ -24,15 +23,14 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 
     try {
       const posts = destr<Post[]>(data, { strict: true })
-
-      // await postStore.set(posts, coverMode.value)
+      await postStore.set(posts, coverMode.value)
 
       useStorage('meta', {
         uid: posts[0]?.user?.id,
         name: posts[0]?.user?.screen_name,
       })
 
-      message.success(`导入成功，导入后共有 ${postStore.ids.length} 条数据`)
+      message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
     catch (e) {
       message.error('导入失败，请检查文件内容是否正确')
@@ -46,7 +44,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 }
 
 async function exportDatas() {
-  const data = await getMany(postStore.ids).then(res => res)
+  const data = await postStore.getAll()
   exportData(data)
 }
 </script>
@@ -131,7 +129,7 @@ async function exportDatas() {
 
         <n-popconfirm
           @positive-click="async () => {
-            clearDB().then(() => {
+            postStore.clearDB().then(() => {
               message.success('清空成功')
             }).catch((e) => {
               console.error(`清空失败: ${e}`)

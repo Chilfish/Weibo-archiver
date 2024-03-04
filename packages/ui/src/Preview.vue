@@ -10,10 +10,7 @@ const idLoaded = ref(false)
 const postsLoaded = ref(false)
 
 onMounted(async () => {
-  // const ids = await indexDB.getItem<string[]>('ids')
-
-  // postStore.ids = ids || []
-  // postStore.total = ids?.length ?? 0
+  await postStore.updateTotal()
   idLoaded.value = true
 })
 
@@ -38,7 +35,7 @@ watchEffect(async () => {
 
     <template v-if="idLoaded">
       <div
-        v-if="postStore.ids.length === 0"
+        v-if="postStore.totalDB === 0"
         class="px-6 py-12"
       >
         <settings-about />

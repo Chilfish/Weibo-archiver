@@ -10,7 +10,8 @@ interface AppDB extends DBSchema {
     key: number
     value: Post
     indexes: {
-      textIdx: string
+      text: string
+      time: number
     }
   }
 }
@@ -22,7 +23,8 @@ export const idb = openDB<AppDB>(DB_NAME, DB_VERSION, {
 
     const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' })
 
-    store.createIndex('textIdx', 'text', { unique: false, multiEntry: true })
+    store.createIndex('text', 'text', { unique: false, multiEntry: true })
+    store.createIndex('time', 'created_at', { unique: true })
   },
 
   blocked() {
@@ -37,18 +39,17 @@ export async function getDBPosts(
   const db = await idb
   const posts: Post[] = []
 
+  const lastRange = IDBKeyRange.upperBound(Date.now())
   const ts = db.transaction(STORE_NAME)
-  let cursor = await ts.store.openCursor()
+
+  let cursor = await ts.store.index('time').openCursor(lastRange, 'prev')
 
   if (!cursor)
-    return []
+    return posts
 
   try {
-    let count = 0
-    while (cursor && count < (page - 1) * limit) {
-      cursor = await cursor.continue()
-      count++
-    }
+    const target = (page - 1) * limit
+    target && await cursor.advance(target)
 
     while (cursor && posts.length < limit) {
       posts.push(cursor.value)
@@ -60,8 +61,51 @@ export async function getDBPosts(
     ts.abort()
     throw new Error(`Error getting posts: ${e.message}`)
   }
-
   return posts
+}
+
+export async function searchPost(
+  query: string,
+  page = 1,
+  limit = 10,
+) {
+  const db = await idb
+  const posts: Post[] = []
+
+  const range = IDBKeyRange.bound(query, `${query}\uFFFF`)
+  const count = await db.countFromIndex(STORE_NAME, 'text', range)
+
+  const ts = db.transaction(STORE_NAME)
+  const index = ts.store.index('text')
+  let cursor = await index.openCursor(range)
+
+  if (!cursor)
+    return { posts, count }
+
+  try {
+    const target = (page - 1) * limit
+    target && await cursor.advance(target)
+
+    while (cursor && posts.length < limit) {
+      posts.push(cursor.value)
+      cursor = await cursor.continue()
+    }
+    ts.commit()
+  }
+  catch (e: any) {
+    ts.abort()
+    throw new Error(`Error searching posts: ${e.message}`)
+  }
+
+  return {
+    posts,
+    count,
+  }
+}
+
+export async function getAllDBPosts() {
+  const db = await idb
+  return await db.getAll(STORE_NAME)
 }
 
 export async function getPostCount() {
@@ -74,7 +118,7 @@ export async function getPostCount() {
  * @param posts
  * @param isReplace 默认为 true 覆盖添加
  */
-export async function addPosts(
+export async function addDBPosts(
   posts: Post[],
   isReplace = true,
 ) {
@@ -86,11 +130,29 @@ export async function addPosts(
   const ts = db.transaction(STORE_NAME, 'readwrite')
   const store = ts.store
 
-  for (const post of posts)
-    await store.put(post)
+  posts.forEach((post) => {
+    post.created_at = new Date(post.created_at).getTime()
+    store.put(post)
+  })
 
   const count = await store.count()
 
   await ts.done
   return count
+}
+
+export async function clearDB() {
+  const db = await idb
+  await db.clear(STORE_NAME)
+}
+
+/**
+ * 获取 IndexedDB 存储空间大小
+ * @returns 返回已使用的 IndexedDB 存储空间大小，单位 MB
+ */
+export async function getSize() {
+  const estimate = await navigator.storage.estimate()
+  const used = estimate.usage || 0
+
+  return (used / 1024 / 1024).toFixed(2)
 }
