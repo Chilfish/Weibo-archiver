@@ -93,10 +93,25 @@ onMounted(async () => {
     </h2>
 
     <n-alert
-      title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而不得不重头来过"
+      title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而重头来过"
       type="warning"
       closable
     />
+
+    <n-alert
+      type="info"
+    >
+      <p>
+        导出完毕后，可在
+        <a
+          href="https://weibo.chilfish.top"
+          target="_blank"
+        >
+          预览页
+        </a>
+        中导入数据查看
+      </p>
+    </n-alert>
 
     <Config />
 
