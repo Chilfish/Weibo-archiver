@@ -6,20 +6,23 @@ const postStore = usePostStore()
 const posts = ref([] as Post[])
 const route = useRoute()
 
-const loaded = ref(false)
+const idLoaded = ref(false)
+const postsLoaded = ref(false)
+
 onMounted(async () => {
   const ids = await indexDB.getItem<string[]>('ids')
 
   postStore.ids = ids || []
   postStore.total = ids?.length ?? 0
-  loaded.value = true
+  idLoaded.value = true
 })
 
 watchEffect(async () => {
-  if (!loaded.value)
+  if (!idLoaded.value)
     return
   const page = route.query.page
   posts.value = await postStore.get(Number(page))
+  postsLoaded.value = true
 })
 </script>
 
@@ -28,12 +31,12 @@ watchEffect(async () => {
     class="min-h-90dvh center-col justify-between pb-4"
   >
     <n-spin
-      v-if="!loaded"
-      class="center"
+      v-if="!idLoaded || !postsLoaded"
+      class="center pt-16"
       size="large"
     />
 
-    <template v-else>
+    <template v-if="idLoaded">
       <div
         v-if="postStore.ids.length === 0"
         class="pt-12"
@@ -53,7 +56,7 @@ watchEffect(async () => {
       />
 
       <h3
-        v-else-if="posts.length === 0"
+        v-else-if="posts.length === 0 && route.path === '/search'"
         class="mt-20 text-center text-2xl font-bold"
       >
         没有相关结果

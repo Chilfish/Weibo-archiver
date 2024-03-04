@@ -59,8 +59,8 @@ onUnmounted(() => {
   <n-image
     ref="imgRef"
     lazy
-    fallback-src="/placeholder.webp"
-    :src="lazy ? '/placeholder.webp' : realSrc"
+    :fallback-src="ImgPlaceholder"
+    :src="lazy ? ImgPlaceholder : realSrc"
     :object-fit="fit"
     :alt="alt"
     :preview-src="realSrc"
@@ -72,29 +72,30 @@ onUnmounted(() => {
       class: 'transition-all',
       referrerpolicy: referrerPolicy,
     }"
-  >
-    <template #placeholder>
-      <img
-        src="/placeholder.webp"
-        class="h-full w-full"
-      >
-    </template>
-  </n-image>
+  />
 </template>
 
 <style lang="scss">
-$error-height: 7rem;
+$width: 7rem;
 
-.n-image img {
-  width: 100%;
-  border-radius: 4px;
-}
-
-.n-image.img-error {
-  width: $error-height !important;
+.n-image {
   img {
-    min-width: $error-height !important;
-    min-height: $error-height !important;
+    min-width: $width !important;
+    width: $width !important;
+    border-radius: 4px;
+  }
+
+  &:not(.img-error) {
+    img {
+      width: auto !important;
+    }
+  }
+
+  &.img-error {
+    width: $width !important;
+    img {
+      min-height: $width !important;
+    }
   }
 }
 </style>

@@ -1,3 +1,5 @@
+import { ImgPlaceholder } from '../constants'
+
 /**
  * Wait for an element to be added to the DOM.
  */
@@ -31,10 +33,13 @@ export function lazyLoadImage(
       if (entry.isIntersecting) {
         const img = entry.target as HTMLImageElement
         const src = img.getAttribute('data-preview-src')
-        img.src = src || '/placeholder.webp'
+        img.src = src || ImgPlaceholder
         img.onerror = () => {
-          img.src = '/placeholder.webp'
+          img.src = ImgPlaceholder
           img.parentElement?.classList.add('img-error')
+        }
+        img.onload = () => {
+          img.parentElement?.classList.add('loaded')
         }
         observer.unobserve(img)
       }
@@ -43,7 +48,7 @@ export function lazyLoadImage(
 
   if (imgs) {
     imgs.forEach((img) => {
-      if (img.src.endsWith('/placeholder.webp'))
+      if (img.src.endsWith(ImgPlaceholder))
         observer.observe(img)
     })
   }

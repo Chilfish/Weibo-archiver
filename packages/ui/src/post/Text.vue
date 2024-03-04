@@ -6,6 +6,7 @@ const props = defineProps<{
 const publicStore = usePublicStore()
 
 const parsedText = parseProtocol(props.text)
+  .replace('https:https:', 'https:') // a patch ...
   .replace(/\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
 const textRef = ref<HTMLParagraphElement | null>(null)
 

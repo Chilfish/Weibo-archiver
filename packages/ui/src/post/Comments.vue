@@ -34,7 +34,7 @@ defineProps<{
       <post-text :text="comment.text" />
 
       <main-image
-        v-if="comment.img"
+        v-if="comment.img && !comment.img.includes('sinaurl')"
         :src="comment.img"
         class="max-h-10rem"
       />
