@@ -39,7 +39,7 @@ watchEffect(async () => {
     <template v-if="idLoaded">
       <div
         v-if="postStore.ids.length === 0"
-        class="pt-12"
+        class="px-6 py-12"
       >
         <settings-about />
         <p
