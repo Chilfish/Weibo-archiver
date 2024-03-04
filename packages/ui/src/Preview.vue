@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import type { Post } from '@types'
+import { deleteOld } from '@core/utils/storage'
 
 const postStore = usePostStore()
 const posts = ref([] as Post[])
@@ -10,6 +11,8 @@ const idLoaded = ref(false)
 const postsLoaded = ref(false)
 
 onMounted(async () => {
+  // 删除旧版数据
+  await deleteOld()
   await postStore.updateTotal()
   idLoaded.value = true
 })

@@ -11,6 +11,7 @@ const postStore = usePostStore()
 const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
+const isExporting = ref(false)
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
@@ -44,8 +45,10 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 }
 
 async function exportDatas() {
+  isExporting.value = true
   const data = await postStore.getAll()
-  exportData(data)
+  await exportData(data)
+  isExporting.value = false
 }
 </script>
 
@@ -92,12 +95,12 @@ async function exportDatas() {
       </n-form-item>
     </n-form>
 
-    <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col gap-3">
       <p class="settings-title">
         导入/导出 数据
       </p>
 
-      <div class="my-4 min-w-fit">
+      <div class="min-w-fit">
         <span class="mr-4">
           导入方式：{{ coverMode ? '覆盖模式（将覆盖本地所有数据）' : '合并模式（只追加合并新数据）' }}
         </span>
@@ -122,6 +125,7 @@ async function exportDatas() {
 
         <n-button
           class="w-fit"
+          :loading="isExporting"
           @click="exportDatas"
         >
           点击导出

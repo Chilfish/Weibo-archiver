@@ -21,8 +21,8 @@ const progressText = computed(() => () => `${postStore.posts.length}/${postStore
 const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
 
-function exportDatas() {
-  const res = exportData(postStore.posts)
+async function exportDatas() {
+  const res = await exportData(postStore.posts)
   if (!res)
     return
   const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'

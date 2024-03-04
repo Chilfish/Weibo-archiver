@@ -1,4 +1,4 @@
-import { type DBSchema, openDB } from 'idb'
+import { type DBSchema, deleteDB, openDB } from 'idb'
 import type { Post } from '@types'
 
 const DB_NAME = 'app'
@@ -14,6 +14,11 @@ interface AppDB extends DBSchema {
       time: number
     }
   }
+}
+
+export async function deleteOld() {
+  const name = 'keyval-store'
+  await deleteDB(name)
 }
 
 export const idb = openDB<AppDB>(DB_NAME, DB_VERSION, {

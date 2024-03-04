@@ -7,6 +7,7 @@ import {
   getAllDBPosts,
   getDBPosts,
   getPostCount,
+  getSize,
   searchPost,
 } from '../utils/storage'
 
@@ -85,5 +86,6 @@ export const usePostStore = defineStore('post', () => {
     clearDB,
     getAll: getAllDBPosts,
     updateTotal,
+    getSize,
   }
 })
