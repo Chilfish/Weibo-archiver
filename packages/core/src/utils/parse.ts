@@ -31,7 +31,7 @@ export function parseText(text?: string) {
     )
     .replace(/<img[^>]+alt="([^"]*)"[^>]*>/gm, (_, alt) => alt) // 表情图片
     .replace(/<img[^>]*>/gm, '') // 图标
-    .replace(/\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
+    .replace(/(https:)?\/\/weibo.cn\/sinaurl\?u=(.+)/, (_, __, href) => decodeURIComponent(href)) // 去掉微博的链接跳转
 
   const retweetImg = /<a[^>]*href="([^"]*)"[^>]*>查看图片<\/a>/gm.exec(parsed)
   let textImg = null
@@ -109,8 +109,12 @@ export function filterComments(
 
       let img = ''
       if (comment.url_struct) {
-        const { pic_ids, pic_infos } = comment.url_struct[0]
-        img = parseImg(imgSize, pic_ids, pic_infos)[0]
+        comment.url_struct.forEach((item: any) => {
+          if (item.pic_ids) {
+            const { pic_ids, pic_infos } = item
+            img = parseImg(imgSize, pic_ids, pic_infos)[0]
+          }
+        })
       }
 
       const res: Comment = {
@@ -133,7 +137,8 @@ export function filterComments(
       console.log(`数据解析失败, id: ${comment.id}, ${e}`)
       return null
     }
-  }).filter((e): e is Comment => !!e)
+  })
+    .filter(Boolean) as Comment[]
 }
 
 export async function postFilter(
@@ -208,7 +213,7 @@ export function imgsParser(posts: Post[]): Set<string> {
       ].flat()
     })
     .flat()
-    .filter((e): e is string => !!e)
+    .filter(Boolean) as string[]
 
   return new Set(imgs)
 }
