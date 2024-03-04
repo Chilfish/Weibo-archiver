@@ -3,5 +3,5 @@ node_modules
 dist
 .output
 .nuxt
-.env
+!.env
 .idea/
