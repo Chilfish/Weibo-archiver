@@ -4,6 +4,8 @@ import type { Post } from '@types'
 import { deleteOld } from '@core/utils/storage'
 
 const postStore = usePostStore()
+const publicStore = usePublicStore()
+
 const posts = ref([] as Post[])
 const route = useRoute()
 
@@ -15,11 +17,24 @@ onMounted(async () => {
   await deleteOld()
   await postStore.updateTotal()
   loaded.value = true
+
+  posts.value = await postStore.get(Number(route.query.page))
+
+  if (publicStore.users.length === 0) {
+    const user = posts.value[0].user
+    publicStore.users.push({
+      uid: user.id,
+      name: user.screen_name,
+    })
+  }
+  postsLoaded.value = true
 })
 
-watchImmediate(() => [route.query, loaded.value, postStore.totalDB], async () => {
+watch(() => [route.query, postStore.totalDB], async () => {
   if (!loaded.value)
     return
+  postsLoaded.value = false
+
   const page = route.query.page
   posts.value = await postStore.get(Number(page))
   postsLoaded.value = true

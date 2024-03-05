@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core'
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
 import { destr } from 'destr'
@@ -8,6 +7,8 @@ const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
 
 const postStore = usePostStore()
+const publicStore = usePublicStore()
+
 const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
@@ -26,9 +27,9 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       const posts = destr<Post[]>(data, { strict: true })
       await postStore.set(posts, coverMode.value)
 
-      useStorage('meta', {
-        uid: posts[0]?.user?.id,
-        name: posts[0]?.user?.screen_name,
+      publicStore.users.push({
+        uid: posts[0]?.user.id,
+        name: posts[0]?.user.screen_name,
       })
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)

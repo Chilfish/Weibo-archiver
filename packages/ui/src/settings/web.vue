@@ -12,6 +12,10 @@ window.$message = useMessage()
       <settings-base />
     </n-tab-pane>
 
+    <n-tab-pane name="multi-user" tab="账号">
+      <settings-multi-user />
+    </n-tab-pane>
+
     <n-tab-pane name="about" tab="关于">
       <settings-about />
     </n-tab-pane>
