@@ -2,7 +2,6 @@
 import { useStorage } from '@vueuse/core'
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
-import { clear as clearDB, getMany } from 'idb-keyval'
 import { destr } from 'destr'
 
 const useLocalImage = useStorage('imgHost', '/')
@@ -12,6 +11,7 @@ const postStore = usePostStore()
 const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
+const isExporting = ref(false)
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
@@ -31,7 +31,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
         name: posts[0]?.user?.screen_name,
       })
 
-      message.success(`导入成功，导入后共有 ${postStore.ids.length} 条数据`)
+      message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
     catch (e) {
       message.error('导入失败，请检查文件内容是否正确')
@@ -45,8 +45,10 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 }
 
 async function exportDatas() {
-  const data = await getMany(postStore.ids).then(res => res)
-  exportData(data)
+  isExporting.value = true
+  const data = await postStore.getAll()
+  await exportData(data)
+  isExporting.value = false
 }
 </script>
 
@@ -93,12 +95,12 @@ async function exportDatas() {
       </n-form-item>
     </n-form>
 
-    <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col gap-3">
       <p class="settings-title">
         导入/导出 数据
       </p>
 
-      <div class="my-4 min-w-fit">
+      <div class="min-w-fit">
         <span class="mr-4">
           导入方式：{{ coverMode ? '覆盖模式（将覆盖本地所有数据）' : '合并模式（只追加合并新数据）' }}
         </span>
@@ -123,6 +125,7 @@ async function exportDatas() {
 
         <n-button
           class="w-fit"
+          :loading="isExporting"
           @click="exportDatas"
         >
           点击导出
@@ -130,7 +133,7 @@ async function exportDatas() {
 
         <n-popconfirm
           @positive-click="async () => {
-            clearDB().then(() => {
+            postStore.clearDB().then(() => {
               message.success('清空成功')
             }).catch((e) => {
               console.error(`清空失败: ${e}`)

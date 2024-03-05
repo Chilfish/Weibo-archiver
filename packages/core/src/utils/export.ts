@@ -3,7 +3,7 @@ import fileSaver from 'file-saver'
 import type { Post } from '@types'
 import { imgsParser } from './parse'
 
-export function exportData(posts: Post[]) {
+export async function exportData(posts: Post[]) {
   if (!posts[0]) {
     window.$message.warning('没有数据可以导出')
     return false
@@ -23,16 +23,16 @@ export function exportData(posts: Post[]) {
     .join(',\n') // csv 格式
   zip.file('imgs.csv', imgsData)
 
-  zip
-    .generateAsync({ type: 'blob' })
-    .then((zipFile) => {
-      window.$message.success('导出成功，正在下载数据...')
-      fileSaver.saveAs(zipFile, `weibo-archiver-${name}.zip`)
-    })
-    .catch((err) => {
-      window.$message.error('导出失败')
-      console.error('导出失败', err)
-    })
+  try {
+    const zipFile = await zip.generateAsync({ type: 'blob' })
+    window.$message.success('导出成功，正在下载数据...')
+    fileSaver.saveAs(zipFile, `weibo-archiver-${name}.zip`)
+  }
+  catch (err) {
+    window.$message.error('导出失败')
+    console.error('导出失败', err)
+    return false
+  }
 
   return true
 }
