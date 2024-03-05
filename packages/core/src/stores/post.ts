@@ -53,6 +53,7 @@ export const usePostStore = defineStore('post', () => {
 
     const { count, search } = await addDBPosts(data, isReplace)
     totalDB.value = count
+    total.value = count
     seachFn.value = search
   }
 

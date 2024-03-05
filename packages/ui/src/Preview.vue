@@ -17,7 +17,7 @@ onMounted(async () => {
   loaded.value = true
 })
 
-watchImmediate(() => [route.query, loaded.value], async () => {
+watchImmediate(() => [route.query, loaded.value, postStore.totalDB], async () => {
   if (!loaded.value)
     return
   const page = route.query.page
