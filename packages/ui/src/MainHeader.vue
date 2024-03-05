@@ -22,7 +22,7 @@ const route = useRoute()
 const searchInput = ref(route.query?.q?.toString() || '')
 
 async function search() {
-  router.push(`/search?q=${searchInput.value}&page=1&pageSize=10`)
+  router.push(`/search?q=${encodeURIComponent(searchInput.value)}&page=1&pageSize=10`)
 }
 
 onMounted(() => {

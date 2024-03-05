@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
 import { useRoute } from 'vue-router'
 import type { Post } from '@types'
+import type { FuseResult } from 'fuse.js'
 import {
   addDBPosts,
+  buildSearch,
   clearDB,
   getAllDBPosts,
+  getDBPost,
   getDBPosts,
   getPostCount,
   getSize,
-  searchPost,
 } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {
@@ -16,6 +18,11 @@ export const usePostStore = defineStore('post', () => {
 
   const curPage = ref(Number(route.query.page) || 1)
   const pageSize = ref(Number(route.query.pageSize) || 10)
+
+  const seachFn = ref<(text: string) => FuseResult<{
+    time: number
+    text: string
+  }>[]>()
 
   // 该结果的总帖子数
   const total = ref(0)
@@ -44,7 +51,32 @@ export const usePostStore = defineStore('post', () => {
     if (!data[0]?.user)
       throw new Error('数据格式错误，可能要重新导入')
 
-    total.value = await addDBPosts(data, isReplace)
+    const { count, search } = await addDBPosts(data, isReplace)
+    totalDB.value = count
+    seachFn.value = search
+  }
+
+  async function searchPost(
+    query: string,
+    page: number,
+    pageSize: number,
+  ) {
+    if (!seachFn.value) {
+      const posts = await getAllDBPosts()
+      const { search } = buildSearch(posts)
+      seachFn.value = search
+    }
+
+    const result = seachFn.value(query)
+      .map(r => r.item)
+      .sort((a, b) => b.time - a.time)
+
+    const count = result.length
+    const start = (page - 1) * pageSize
+    const end = start + pageSize
+    const posts = result.slice(start, end)
+
+    return { posts, count }
   }
 
   async function get(page?: number) {
@@ -60,7 +92,8 @@ export const usePostStore = defineStore('post', () => {
     }
     else {
       const { posts, count } = await searchPost(query, p, pageSize.value)
-      result = posts
+
+      result = await getDBPost(posts.map(p => p.time))
       total.value = count
     }
 

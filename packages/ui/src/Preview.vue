@@ -7,18 +7,18 @@ const postStore = usePostStore()
 const posts = ref([] as Post[])
 const route = useRoute()
 
-const idLoaded = ref(false)
+const loaded = ref(false)
 const postsLoaded = ref(false)
 
 onMounted(async () => {
   // 删除旧版数据
   await deleteOld()
   await postStore.updateTotal()
-  idLoaded.value = true
+  loaded.value = true
 })
 
-watchEffect(async () => {
-  if (!idLoaded.value)
+watchImmediate(() => [route.query, loaded.value], async () => {
+  if (!loaded.value)
     return
   const page = route.query.page
   posts.value = await postStore.get(Number(page))
@@ -31,12 +31,12 @@ watchEffect(async () => {
     class="min-h-90dvh center-col justify-between pb-4"
   >
     <n-spin
-      v-if="!idLoaded || !postsLoaded"
+      v-if="!loaded || !postsLoaded"
       class="center pt-16"
       size="large"
     />
 
-    <template v-if="idLoaded">
+    <template v-if="loaded">
       <div
         v-if="postStore.totalDB === 0"
         class="px-6 py-12"
