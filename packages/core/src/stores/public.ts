@@ -6,10 +6,15 @@ export const usePublicStore = defineStore('public', () => {
   const users = useStorage<{
     uid: string
     name: string
+    avatar: string
+    importedAt: number
   }[]>('users', [])
+
+  const curUid = useStorage('curUid', '')
 
   return {
     globalImg,
     users,
+    curUid,
   }
 })

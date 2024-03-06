@@ -20,10 +20,20 @@ useSeoMeta({
   twitterDescription: description,
   twitterCreator: 'chilllish',
 })
+
+const route = useRoute()
+
+const { client } = route.meta as {
+  client: boolean
+}
 </script>
 
 <template>
   <nuxt-layout>
-    <nuxt-page />
+    <ClientOnly v-if="client">
+      <NuxtPage />
+    </ClientOnly>
+
+    <NuxtPage v-else />
   </nuxt-layout>
 </template>

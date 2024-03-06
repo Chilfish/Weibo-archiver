@@ -25,7 +25,10 @@ onMounted(async () => {
     publicStore.users.push({
       uid: user.id,
       name: user.screen_name,
+      avatar: user.profile_image_url,
+      importedAt: Date.now(),
     })
+    publicStore.curUid = user.id
   }
   postsLoaded.value = true
 })

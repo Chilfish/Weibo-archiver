@@ -2,6 +2,7 @@
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
 import { destr } from 'destr'
+import { useStorage } from '@vueuse/core'
 
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
@@ -27,10 +28,15 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       const posts = destr<Post[]>(data, { strict: true })
       await postStore.set(posts, coverMode.value)
 
+      const user = posts[0]?.user || {}
+
       publicStore.users.push({
-        uid: posts[0]?.user.id,
-        name: posts[0]?.user.screen_name,
+        uid: user?.id,
+        name: user?.screen_name,
+        avatar: user?.profile_image_url,
+        importedAt: Date.now(),
       })
+      publicStore.curUid = user?.id
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
