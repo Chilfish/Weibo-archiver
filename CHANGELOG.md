@@ -1,5 +1,29 @@
 # Changelog
 
+## v0.3.3
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.2...v0.3.3)
+
+### 🚀 Enhancements
+
+- **web:** ⚠️  Multi user support ([#36](https://github.com/Chilfish/Weibo-archiver/pull/36))
+
+### 🩹 Fixes
+
+- **ui:** Update state after importing ([435d4e2](https://github.com/Chilfish/Weibo-archiver/commit/435d4e2))
+
+### 💅 Refactors
+
+- **core:** Optimize the usage of indexedDB ([#33](https://github.com/Chilfish/Weibo-archiver/pull/33))
+
+#### ⚠️ Breaking Changes
+
+- **web:** ⚠️  Multi user support ([#36](https://github.com/Chilfish/Weibo-archiver/pull/36))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.2
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.1...v0.3.2)
