@@ -15,12 +15,8 @@ export const usePublicStore = defineStore('public', () => {
   })
 
   function addUser(user: UserInfo | null | undefined) {
-    console.log('addUser', users.value.length, user)
-    if (!user || users.value.find(u => u.uid === user.uid) !== undefined)
-      return
-
-    users.value.push(user)
-    curUid.value = user.uid
+    if (!user || !users.value.find(u => u.uid === user.uid))
+      users.value.push(user)
   }
 
   return {

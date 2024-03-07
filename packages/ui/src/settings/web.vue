@@ -6,7 +6,7 @@ window.$message = useMessage()
   <n-tabs
     type="card"
     animated
-    class="min-h-50vh md:w-50vw"
+    class="min-h-40vh min-w-80vw md:min-w-50vw"
   >
     <n-tab-pane name="settings" tab="设置">
       <settings-base />

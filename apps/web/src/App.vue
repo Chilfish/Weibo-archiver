@@ -25,8 +25,9 @@ const loaded = ref(false)
 onNuxtReady(() => {
   const publicStore = usePublicStore()
   const users = localStorage.getItem('users')
-  if (users)
-    publicStore.users = JSON.parse(users)
+  const curUid = localStorage.getItem('curUid')
+  publicStore.users = JSON.parse(users || '[]')
+  publicStore.curUid = curUid || ''
 
   loaded.value = true
 })
@@ -34,6 +35,6 @@ onNuxtReady(() => {
 
 <template>
   <nuxt-layout>
-    <NuxtPage v-if="loaded" />
+    <NuxtPage />
   </nuxt-layout>
 </template>

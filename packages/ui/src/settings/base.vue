@@ -36,6 +36,8 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       else
         message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
 
+      publicStore.curUid = owner
+
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
     catch (e) {

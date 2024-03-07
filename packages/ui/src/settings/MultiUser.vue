@@ -11,24 +11,47 @@ const curUser = computed(() => users.value.find(user => user.uid === curUid.valu
   <div v-if="!curUser">
     暂无用户数据，先去导入吧
   </div>
-  <div
-    v-else
-    class=""
-  >
+  <tmeplate v-else>
+    <div class="title">
+      当前用户
+    </div>
+
     <UserProfile
       class="w-full"
       :user="curUser"
     />
 
-    <NDivider v-if="otherUsers.length">
+    <div
+      v-if="otherUsers.length"
+      class="title mt-4"
+    >
       其他用户
-    </NDivider>
+    </div>
 
-    <UserProfile
+    <div
       v-for="user in otherUsers"
       :key="user.uid"
-      :user="user"
-      :show-more="false"
-    />
-  </div>
+      class="group flex items-center justify-between"
+    >
+      <UserProfile
+        :user="user"
+        :show-more="false"
+      />
+
+      <button
+        class="transition-opacity btn"
+        op="0 group-hover:100"
+      >
+        切换到该用户
+      </button>
+    </div>
+  </tmeplate>
 </template>
+
+<style scoped>
+.title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+</style>
