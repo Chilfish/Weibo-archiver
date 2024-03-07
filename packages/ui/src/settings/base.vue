@@ -28,15 +28,15 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       const posts = destr<Post[]>(data, { strict: true })
       await postStore.set(posts, coverMode.value)
 
-      const user = posts[0]?.user || {}
+      const uid = posts[0]?.user.id || ''
+
+      const user = await userDetail(uid)
 
       publicStore.users.push({
-        uid: user?.id,
-        name: user?.screen_name,
-        avatar: user?.profile_image_url,
+        ...user,
         importedAt: Date.now(),
       })
-      publicStore.curUid = user?.id
+      publicStore.curUid = user.uid
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }

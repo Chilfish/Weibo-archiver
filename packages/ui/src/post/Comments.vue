@@ -14,7 +14,7 @@ defineProps<{
       class="flex flex-col gap-2 rounded-2 bg-white p-3 pl-10 dark:bg-dark"
     >
       <div class="flex">
-        <profile
+        <post-profile
           :user="comment.user"
           class="ml-[-2.5rem] mr-4!"
         />

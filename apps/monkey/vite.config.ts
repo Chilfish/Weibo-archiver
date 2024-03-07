@@ -33,6 +33,7 @@ export default defineConfig({
       imports: [
         'vue',
         '@vueuse/core',
+        util.unimportPreset,
       ],
       dts: path.resolve(root, 'types/auto-imports.d.ts'),
       dirs: [
@@ -59,7 +60,16 @@ export default defineConfig({
         match: [
           'https://weibo.com/u/*',
           'https://weibo.com/n/*',
+          'https://weibo.chilfish.top/*',
+          'http://localhost:3334/*',
         ],
+        grant: [
+          'GM_setValue',
+          'GM_getValue',
+        ],
+      },
+      server: {
+        mountGmApi: true,
       },
       build: {
         externalGlobals: {

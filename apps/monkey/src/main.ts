@@ -1,20 +1,26 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+async function initApp() {
+  const App = (await import('./App.vue')).default
+  const { createPinia } = await import('pinia')
+  const { naive } = await import('./utils/naiveui')
+  const { createApp } = await import('vue')
 
-import { naive } from './utils/naiveui'
-import App from './App.vue'
+  const app = createApp(App)
 
-import '@unocss/reset/tailwind.css'
-import 'uno.css'
-import '@ui/shared.css'
+  const div = document.createElement('div')
+  div.id = 'plugin-app'
+  document.body.append(div)
 
-const app = createApp(App)
+  app
+    .use(createPinia())
+    .use(naive)
+    .mount(div)
+}
 
-const div = document.createElement('div')
-div.id = 'plugin-app'
-document.body.append(div)
+if (document.location.hostname === 'weibo.com') {
+  initApp()
+}
+else {
+  const user = GM_getValue('user') || {}
 
-app
-  .use(createPinia())
-  .use(naive)
-  .mount(div)
+  localStorage.setItem('user', JSON.stringify(user))
+}

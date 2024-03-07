@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import type { Post } from '@types'
+import { StorageSerializers, useStorage } from '@vueuse/core'
+import type { Post, UserInfo } from '@types'
 import { deleteOld } from '@core/utils/storage'
 
 const postStore = usePostStore()
-const publicStore = usePublicStore()
 
 const posts = ref([] as Post[])
 const route = useRoute()
+const user = useStorage<UserInfo | null>('user', null, localStorage, { serializer: StorageSerializers.object })
 
 const loaded = ref(false)
 const postsLoaded = ref(false)
@@ -16,20 +17,10 @@ onMounted(async () => {
   // 删除旧版数据
   await deleteOld()
   await postStore.updateTotal()
-  loaded.value = true
 
+  loaded.value = true
   posts.value = await postStore.get(Number(route.query.page))
 
-  if (publicStore.users.length === 0) {
-    const user = posts.value[0].user
-    publicStore.users.push({
-      uid: user.id,
-      name: user.screen_name,
-      avatar: user.profile_image_url,
-      importedAt: Date.now(),
-    })
-    publicStore.curUid = user.id
-  }
   postsLoaded.value = true
 })
 
@@ -66,6 +57,8 @@ watch(() => [route.query, postStore.totalDB], async () => {
         >
           暂没微博数据，点击右上角设置来导入吧👋
         </p>
+
+        <User-profile :user="user" />
       </div>
 
       <post-list

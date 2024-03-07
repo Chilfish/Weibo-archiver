@@ -1,6 +1,5 @@
-import {
-  weiFetch,
-} from '../utils'
+import type { UserInfo } from '@types'
+import { weiFetch } from '../utils/fetch'
 
 export async function userInfo(
   { id, name }: { id?: string, name?: string },
@@ -11,7 +10,7 @@ export async function userInfo(
   else if (id)
     params = { uid: id }
 
-  const { data } = await weiFetch('/profile/info', { params })
+  const { data } = await weiFetch(`/profile/info`, { params })
   const { user } = data
 
   return {
@@ -31,8 +30,10 @@ export async function userInfo(
   }
 }
 
-export async function userDetail(uid?: string) {
-  const { data } = await weiFetch('/profile/detail', {
+export async function userDetail(
+  uid?: string,
+): Promise<UserInfo> {
+  const { data } = await weiFetch(`/profile/detail`, {
     params: {
       uid: uid ?? '',
     },

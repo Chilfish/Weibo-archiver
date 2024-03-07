@@ -21,12 +21,22 @@ const progressText = computed(() => () => `${postStore.posts.length}/${postStore
 const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
 
+async function saveUserInfo() {
+  const user = await userDetail(configStore.state.uid)
+
+  GM_setValue('user', user)
+
+  message.success('用户信息同步成功')
+}
+
 async function exportDatas() {
   const res = await exportData(postStore.posts)
   if (!res)
     return
   const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
   saveAs(scripts, 'scripts.zip')
+
+  await saveUserInfo()
 }
 
 async function start() {
@@ -150,6 +160,12 @@ onMounted(async () => {
         @click="exportDatas"
       >
         导出
+      </button>
+
+      <button
+        @click="saveUserInfo"
+      >
+        同步信息
       </button>
     </div>
   </div>
