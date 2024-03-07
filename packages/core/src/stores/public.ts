@@ -7,16 +7,18 @@ export const usePublicStore = defineStore('public', () => {
   const curUid = ref('')
 
   watchEffect(() => {
-    if (typeof localStorage === 'undefined' || !users.value.length || !curUid.value)
+    if (typeof localStorage === 'undefined')
       return
 
-    localStorage.setItem('users', JSON.stringify(users.value))
-    localStorage.setItem('curUid', curUid.value)
+    users.value.length && localStorage.setItem('users', JSON.stringify(users.value))
+    curUid.value && localStorage.setItem('curUid', curUid.value)
   })
 
   function addUser(user: UserInfo | null | undefined) {
-    if (!user || !users.value.find(u => u.uid === user.uid))
-      users.value.push(user)
+    if (!user || users.value.find(u => u.uid === user.uid))
+      return
+
+    users.value.push(user)
   }
 
   return {

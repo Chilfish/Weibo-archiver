@@ -15,9 +15,11 @@ const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
 const isExporting = ref(false)
+const isImporting = ref(false)
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
+  isImporting.value = true
 
   const reader = new FileReader()
   reader.readAsText(data)
@@ -27,17 +29,21 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 
     try {
       const posts = destr<Post[]>(data, { strict: true })
-      await postStore.set(posts, coverMode.value)
-
       const owner = posts[0]?.user.id
-      user.value.postCount = postStore.total
-
-      if (owner === user.value.uid)
-        publicStore.addUser(user.value)
-      else
-        message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
 
       publicStore.curUid = owner
+      await postStore.set(posts, coverMode.value)
+
+      if (owner === user.value.uid) {
+        user.value.postCount = postStore.total
+        publicStore.addUser(user.value)
+      }
+      else {
+        message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
+      }
+
+      publicStore.curUid = owner
+      isImporting.value = false
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
@@ -126,7 +132,9 @@ async function exportDatas() {
           directory-dnd
           class="w-fit"
         >
-          <n-button>
+          <n-button
+            :loading="isImporting"
+          >
             点击导入
           </n-button>
         </n-upload>

@@ -20,7 +20,7 @@ const avatar = computed(() => {
 
 <template>
   <div
-    class="max-w-fit flex flex-col gap-1 rounded-2 p-3"
+    class="min-w-40vw flex flex-col gap-1 rounded-2 p-3"
   >
     <div class="flex items-center gap-4">
       <n-avatar

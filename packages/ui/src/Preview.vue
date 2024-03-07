@@ -5,6 +5,7 @@ import type { Post, UserInfo } from '@types'
 import { deleteOld } from '@core/utils/storage'
 
 const postStore = usePostStore()
+const publicStore = usePublicStore()
 
 const posts = ref([] as Post[])
 const route = useRoute()
@@ -17,6 +18,13 @@ const postsLoaded = ref(false)
 onMounted(async () => {
   // 删除旧版数据
   await deleteOld()
+
+  if (!publicStore.curUid) {
+    loaded.value = true
+    postsLoaded.value = true
+    return
+  }
+
   await postStore.updateTotal()
 
   loaded.value = true
@@ -25,7 +33,7 @@ onMounted(async () => {
   postsLoaded.value = true
 })
 
-watch(() => [route.query, postStore.totalDB], async () => {
+watch(() => [route.query, postStore.totalDB, publicStore.curUid], async () => {
   if (!loaded.value)
     return
   postsLoaded.value = false
@@ -59,7 +67,7 @@ watch(() => [route.query, postStore.totalDB], async () => {
           暂没微博数据，点击右上角设置来导入吧👋
         </p>
 
-        <div v-if="user">
+        <div v-if="user?.uid">
           <p class="mb-3 text-4.5">
             检测到可导入的用户
           </p>

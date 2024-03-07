@@ -1,3 +1,5 @@
+export type UID = `uid-${number}`
+
 export interface User {
   id: string
   screen_name: string

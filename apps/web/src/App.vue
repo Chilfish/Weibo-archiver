@@ -35,6 +35,6 @@ onNuxtReady(() => {
 
 <template>
   <nuxt-layout>
-    <NuxtPage />
+    <NuxtPage v-if="loaded" />
   </nuxt-layout>
 </template>
