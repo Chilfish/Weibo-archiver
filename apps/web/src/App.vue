@@ -21,19 +21,19 @@ useSeoMeta({
   twitterCreator: 'chilllish',
 })
 
-const route = useRoute()
+const loaded = ref(false)
+onNuxtReady(() => {
+  const publicStore = usePublicStore()
+  const users = localStorage.getItem('users')
+  if (users)
+    publicStore.users = JSON.parse(users)
 
-const { client } = route.meta as {
-  client: boolean
-}
+  loaded.value = true
+})
 </script>
 
 <template>
   <nuxt-layout>
-    <ClientOnly v-if="client">
-      <NuxtPage />
-    </ClientOnly>
-
-    <NuxtPage v-else />
+    <NuxtPage v-if="loaded" />
   </nuxt-layout>
 </template>

@@ -23,6 +23,7 @@ const resumeFn = ref<() => void>()
 
 async function saveUserInfo() {
   const user = await userDetail(configStore.state.uid)
+  user.exportedAt = Date.now().toLocaleString()
 
   GM_setValue('user', user)
 

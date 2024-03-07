@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { UploadCustomRequestOptions } from 'naive-ui'
-import type { Post } from '@types'
+import type { Post, UserInfo } from '@types'
 import { destr } from 'destr'
-import { useStorage } from '@vueuse/core'
+import { StorageSerializers, useStorage } from '@vueuse/core'
 
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
+const user = useStorage<UserInfo>('user', null, localStorage, { serializer: StorageSerializers.object })
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
@@ -28,15 +29,12 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       const posts = destr<Post[]>(data, { strict: true })
       await postStore.set(posts, coverMode.value)
 
-      const uid = posts[0]?.user.id || ''
+      const owner = posts[0]?.user.id
 
-      const user = await userDetail(uid)
-
-      publicStore.users.push({
-        ...user,
-        importedAt: Date.now(),
-      })
-      publicStore.curUid = user.uid
+      if (owner === user.value.uid)
+        publicStore.addUser(user.value)
+      else
+        message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }

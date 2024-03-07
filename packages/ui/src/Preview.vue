@@ -8,6 +8,7 @@ const postStore = usePostStore()
 
 const posts = ref([] as Post[])
 const route = useRoute()
+
 const user = useStorage<UserInfo | null>('user', null, localStorage, { serializer: StorageSerializers.object })
 
 const loaded = ref(false)
@@ -52,13 +53,21 @@ watch(() => [route.query, postStore.totalDB], async () => {
       >
         <settings-about />
         <p
-          class="pt-6 font-bold"
+          class="py-6 font-bold"
           text="center xl"
         >
           暂没微博数据，点击右上角设置来导入吧👋
         </p>
 
-        <User-profile :user="user" />
+        <div v-if="user">
+          <p class="mb-3 text-4.5">
+            检测到可导入的用户
+          </p>
+          <User-profile
+            bg="light-4 dark:dark-2"
+            :user="user"
+          />
+        </div>
       </div>
 
       <post-list

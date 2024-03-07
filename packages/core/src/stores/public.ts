@@ -1,23 +1,26 @@
 import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
 import type { UserInfo } from '@types'
-
-type User = UserInfo & {
-  importedAt: number
-}
 
 export const usePublicStore = defineStore('public', () => {
   const globalImg = ref('')
-  const users = useStorage<User[]>('users', [])
+  const users = ref<UserInfo[]>([])
+  const curUid = ref('')
 
-  const curUid = useStorage('curUid', '')
+  watchEffect(() => {
+    if (typeof localStorage === 'undefined' || !users.value.length || !curUid.value)
+      return
+
+    localStorage.setItem('users', JSON.stringify(users.value))
+    localStorage.setItem('curUid', curUid.value)
+  })
 
   function addUser(user: UserInfo | null | undefined) {
+    console.log('addUser', users.value.length, user)
     if (!user || users.value.find(u => u.uid === user.uid) !== undefined)
       return
 
-    const importedAt = Date.now()
-    users.value.push({ ...user, importedAt })
+    users.value.push(user)
+    curUid.value = user.uid
   }
 
   return {
