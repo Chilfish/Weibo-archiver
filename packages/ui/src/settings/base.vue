@@ -30,6 +30,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       await postStore.set(posts, coverMode.value)
 
       const owner = posts[0]?.user.id
+      user.value.postCount = postStore.total
 
       if (owner === user.value.uid)
         publicStore.addUser(user.value)

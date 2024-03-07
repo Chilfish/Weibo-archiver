@@ -5,6 +5,10 @@ const { users, curUid } = storeToRefs(usePublicStore())
 
 const otherUsers = computed(() => users.value.filter(user => user.uid !== curUid.value))
 const curUser = computed(() => users.value.find(user => user.uid === curUid.value))
+
+function switchUser(uid: string) {
+  curUid.value = uid
+}
 </script>
 
 <template>
@@ -41,6 +45,7 @@ const curUser = computed(() => users.value.find(user => user.uid === curUid.valu
       <button
         class="transition-opacity btn"
         op="0 group-hover:100"
+        @click="switchUser(user.uid)"
       >
         切换到该用户
       </button>

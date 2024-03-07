@@ -26,7 +26,7 @@ const avatar = computed(() => {
       <n-avatar
         lazy round
         fallback-src="/placeholder.webp"
-        :size="52"
+        :size="56"
         :src="avatar"
         class="ring-2 ring-white"
       />
@@ -39,6 +39,12 @@ const avatar = computed(() => {
         <div class="text-3.5">
           {{ user.followers }} 粉丝
           {{ user.followings }} 关注
+        </div>
+        <div
+          v-if="user.postCount"
+          class="text-3.5"
+        >
+          共导入了 {{ user.postCount }} 条微博
         </div>
       </div>
     </div>

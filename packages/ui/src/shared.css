@@ -87,9 +87,3 @@ p button {
 p {
   --uno: text-black dark:text-light;
 }
-
-/* 微博的样式 */
-.woo-box-flex img {
-  display: initial !important;
-  max-width: initial !important;
-}

@@ -6,13 +6,13 @@ window.$message = useMessage()
   <n-tabs
     type="card"
     animated
-    class="min-h-40vh min-w-80vw md:min-w-50vw"
+    class="min-h-40vh min-w-80vw md:min-w-36vw"
   >
     <n-tab-pane name="settings" tab="设置">
       <settings-base />
     </n-tab-pane>
 
-    <n-tab-pane name="multi-user" tab="账号">
+    <n-tab-pane name="multi-user" tab="用户管理">
       <settings-multi-user />
     </n-tab-pane>
 

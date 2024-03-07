@@ -13,6 +13,7 @@ export interface UserInfo {
   bio: string
   createdAt: string
   birthday: string
+  postCount?: number
   exportedAt?: string
 }
 
