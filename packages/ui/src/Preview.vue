@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { StorageSerializers, useStorage } from '@vueuse/core'
-import type { Post, UserInfo } from '@types'
+import type { Post } from '@types'
 import { deleteOld } from '@core/utils/storage'
 
 const postStore = usePostStore()
@@ -10,14 +9,13 @@ const publicStore = usePublicStore()
 const posts = ref([] as Post[])
 const route = useRoute()
 
-const user = useStorage<UserInfo | null>('user', null, localStorage, { serializer: StorageSerializers.object })
-
 const loaded = ref(false)
 const postsLoaded = ref(false)
 
 onMounted(async () => {
   // 删除旧版数据
   await deleteOld()
+  console.log(publicStore.curUid)
 
   if (!publicStore.curUid) {
     loaded.value = true
@@ -67,14 +65,19 @@ watch(() => [route.query, postStore.totalDB, publicStore.curUid], async () => {
           暂没微博数据，点击右上角设置来导入吧👋
         </p>
 
-        <div v-if="user?.uid">
+        <div v-if="publicStore.users.length">
           <p class="mb-3 text-4.5">
-            检测到可导入的用户
+            不过检测到了可导入的用户
           </p>
-          <User-profile
-            bg="light-4 dark:dark-2"
-            :user="user"
-          />
+
+          <div class="center-col gap-4">
+            <User-profile
+              v-for="user in publicStore.users"
+              :key="user.uid"
+              :user="user"
+              bg="light-4 dark:dark-2"
+            />
+          </div>
         </div>
       </div>
 

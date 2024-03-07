@@ -345,6 +345,7 @@ declare global {
   const userRelations: typeof import('../packages/database/src/schema/index')['userRelations']
   const userTable: typeof import('../packages/database/src/schema/user')['userTable']
   const waitForElement: typeof import('../packages/core/src/utils/dom')['waitForElement']
+  const waitNotNull: typeof import('../packages/core/src/utils/index')['waitNotNull']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -698,6 +699,7 @@ declare module 'vue' {
     readonly userDetail: UnwrapRef<typeof import('../packages/core/src/services/userService')['userDetail']>
     readonly userInfo: UnwrapRef<typeof import('../packages/core/src/services/userService')['userInfo']>
     readonly waitForElement: UnwrapRef<typeof import('../packages/core/src/utils/dom')['waitForElement']>
+    readonly waitNotNull: UnwrapRef<typeof import('../packages/core/src/utils/index')['waitNotNull']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>
@@ -1044,6 +1046,7 @@ declare module '@vue/runtime-core' {
     readonly userDetail: UnwrapRef<typeof import('../packages/core/src/services/userService')['userDetail']>
     readonly userInfo: UnwrapRef<typeof import('../packages/core/src/services/userService')['userInfo']>
     readonly waitForElement: UnwrapRef<typeof import('../packages/core/src/utils/dom')['waitForElement']>
+    readonly waitNotNull: UnwrapRef<typeof import('../packages/core/src/utils/index')['waitNotNull']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>

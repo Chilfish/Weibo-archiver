@@ -4,7 +4,7 @@ const version = import.meta.env.VITE_APP_VERSION
 
 <template>
   <main class="h-full center-col gap-4">
-    <n-image
+    <n-avatar
       class="h-24 w-24"
       alt="logo"
       src="/icon.png"

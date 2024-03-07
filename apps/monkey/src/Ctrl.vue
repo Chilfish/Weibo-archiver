@@ -25,7 +25,14 @@ async function saveUserInfo() {
   const user = await userDetail(configStore.state.uid)
   user.exportedAt = Date.now().toLocaleString()
 
-  GM_setValue('user', user)
+  const users = GM_getValue<any[]>('users') ?? []
+  const index = users.findIndex((u: any) => u.uid === user.uid)
+  if (index !== -1)
+    users[index] = user
+  else
+    users.push(user)
+
+  GM_setValue('users', users)
 
   message.success('用户信息同步成功')
 }

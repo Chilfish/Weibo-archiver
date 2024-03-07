@@ -4,11 +4,11 @@ import Fuse from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
 import type { Post, UID } from '@types'
 
-const DB_NAME = 'app'
+const STORE_NAME = 'posts'
 const DB_VERSION = Number(localStorage.getItem('db_version')) || 2
 
 type AppDB = DBSchema & {
-  [Key in UID]: {
+  [STORE_NAME]: {
     key: number
     value: Post
     indexes: {
@@ -31,23 +31,20 @@ export class IDB {
     version = DB_VERSION,
   ) {
     this.name = name
-    this.idb = openDB<AppDB>(DB_NAME, version, {
-      upgrade(db, oldVer, newVer) {
-        console.log('upgrade', oldVer, newVer)
-
-        if (db.objectStoreNames.contains(name))
+    this.idb = openDB<AppDB>(name, version, {
+      upgrade(db, _oldVer, newVer) {
+        if (db.objectStoreNames.contains(STORE_NAME))
           return
 
-        const store = db.createObjectStore(name, { keyPath: 'id' })
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' })
         store.createIndex('time', 'created_at', { unique: true })
         localStorage.setItem('db_version', String(newVer))
       },
     })
   }
 
-  async exists(name: UID) {
-    const db = await this.idb
-    return db.objectStoreNames.contains(name)
+  exists(name: UID) {
+    return this.name === name
   }
 
   lastRange = IDBKeyRange.upperBound(Date.now())
@@ -58,7 +55,7 @@ export class IDB {
     const db = await this.idb
     const posts: Post[] = []
 
-    const ts = db.transaction(this.name)
+    const ts = db.transaction(STORE_NAME)
 
     let cursor = await ts.store.index('time').openCursor(this.lastRange, 'prev')
 
@@ -85,7 +82,7 @@ export class IDB {
   async getDBPost(times: number[]) {
     const db = await this.idb
     const posts: Post[] = []
-    const ts = db.transaction(this.name)
+    const ts = db.transaction(STORE_NAME)
     const index = ts.store.index('time')
 
     for (const time of times) {
@@ -98,12 +95,12 @@ export class IDB {
 
   async getAllDBPosts() {
     const db = await this.idb
-    return await db.getAll(this.name)
+    return await db.getAll(STORE_NAME)
   }
 
   async getPostCount() {
     const db = await this.idb
-    return await db.count(this.name)
+    return await db.count(STORE_NAME)
   }
 
   /**
@@ -118,9 +115,9 @@ export class IDB {
     const db = await this.idb
 
     if (isReplace)
-      await db.clear(this.name)
+      await db.clear(STORE_NAME)
 
-    const ts = db.transaction(this.name, 'readwrite')
+    const ts = db.transaction(STORE_NAME, 'readwrite')
     const store = ts.store
 
     posts.forEach((post) => {
@@ -142,7 +139,7 @@ export class IDB {
 
   async clearDB() {
     const db = await this.idb
-    await db.clear(this.name)
+    await db.clear(STORE_NAME)
   }
 
   /**

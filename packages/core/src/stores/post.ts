@@ -11,15 +11,11 @@ export const usePostStore = defineStore('post', () => {
     if (!uid)
       return
 
-    let version = (await idb.value.idb).version
     const wrappedUid = `uid-${uid}` as UID
+    console.log('Change db', wrappedUid)
 
-    const isEsixt = await idb.value.exists(wrappedUid)
-    if (!isEsixt)
-      version += 1
-    console.log('init db', wrappedUid, version)
-
-    idb.value = new IDB(wrappedUid, version)
+    idb.value = new IDB(wrappedUid)
+    await updateTotal()
   })
 
   const route = useRoute()

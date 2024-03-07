@@ -20,7 +20,7 @@ const avatar = computed(() => {
 
 <template>
   <div
-    class="min-w-40vw flex flex-col gap-1 rounded-2 p-3"
+    class="max-w-64vw w-50vw flex flex-col gap-1 rounded-2 p-3"
   >
     <div class="flex items-center gap-4">
       <n-avatar
@@ -34,10 +34,11 @@ const avatar = computed(() => {
         <span
           class="inline-block text-4.5 font-bold"
         >
-          {{ user.name }}
+          @{{ user.name }}
         </span>
         <div class="text-3.5">
           {{ user.followers }} 粉丝
+          <span class="mx-1">·</span>
           {{ user.followings }} 关注
         </div>
         <div
@@ -53,9 +54,9 @@ const avatar = computed(() => {
       v-if="showMore"
       class="mt-3"
     >
-      <div>简介：{{ user.bio }}</div>
-      <div>生日：{{ user.birthday }}</div>
-      <div>注册于：{{ user.createdAt }}</div>
+      <div><strong>简介：</strong>{{ user.bio }}</div>
+      <div><strong>生日：</strong>{{ user.birthday }}</div>
+      <div><strong>注册于：</strong>{{ user.createdAt }}</div>
     </div>
   </div>
 </template>

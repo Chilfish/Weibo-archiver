@@ -26,6 +26,7 @@ onNuxtReady(() => {
   const publicStore = usePublicStore()
   const users = localStorage.getItem('users')
   const curUid = localStorage.getItem('curUid')
+
   publicStore.users = JSON.parse(users || '[]')
   publicStore.curUid = curUid || ''
 
@@ -36,5 +37,10 @@ onNuxtReady(() => {
 <template>
   <nuxt-layout>
     <NuxtPage v-if="loaded" />
+    <n-spin
+      v-else
+      class="center pt-16"
+      size="large"
+    />
   </nuxt-layout>
 </template>

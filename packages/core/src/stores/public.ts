@@ -6,6 +6,9 @@ export const usePublicStore = defineStore('public', () => {
   const users = ref<UserInfo[]>([])
   const curUid = ref('')
 
+  const curUser = computed(() => users.value.find(u => u.uid === curUid.value))
+  const otherUsers = computed(() => users.value.filter(user => user.uid !== curUid.value))
+
   watchEffect(() => {
     if (typeof localStorage === 'undefined')
       return
@@ -21,10 +24,18 @@ export const usePublicStore = defineStore('public', () => {
     users.value.push(user)
   }
 
+  function rmUser() {
+    users.value = users.value.filter(u => u.uid !== curUid.value)
+    curUid.value = users.value[0]?.uid || ''
+  }
+
   return {
     globalImg,
     users,
     curUid,
+    curUser,
+    otherUsers,
     addUser,
+    rmUser,
   }
 })
