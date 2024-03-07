@@ -62,7 +62,7 @@ watch(() => [route.query, postStore.totalDB, publicStore.curUid], async () => {
           class="py-6 font-bold"
           text="center xl"
         >
-          暂没微博数据，点击右上角设置来导入吧👋
+          暂无微博数据，点击右上角设置来导入吧👋
         </p>
 
         <div v-if="publicStore.users.length">
