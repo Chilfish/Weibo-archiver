@@ -12,7 +12,7 @@ defineProps<{
     class="post flex flex-col gap-2 rounded-2 bg-white p-4 shadow-xl dark:bg-dark"
   >
     <div class="flex justify-between">
-      <profile :user="post.user" />
+      <post-profile :user="post.user" />
       <post-meta
         :is-body="true"
         :meta="post"

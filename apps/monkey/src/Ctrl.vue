@@ -21,12 +21,30 @@ const progressText = computed(() => () => `${postStore.posts.length}/${postStore
 const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
 
+async function saveUserInfo() {
+  const user = await userDetail(configStore.state.uid)
+  user.exportedAt = Date.now().toLocaleString()
+
+  const users = GM_getValue<any[]>('users') ?? []
+  const index = users.findIndex((u: any) => u.uid === user.uid)
+  if (index !== -1)
+    users[index] = user
+  else
+    users.push(user)
+
+  GM_setValue('users', users)
+
+  message.success('用户信息同步成功')
+}
+
 async function exportDatas() {
   const res = await exportData(postStore.posts)
   if (!res)
     return
   const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
   saveAs(scripts, 'scripts.zip')
+
+  await saveUserInfo()
 }
 
 async function start() {
@@ -150,6 +168,12 @@ onMounted(async () => {
         @click="exportDatas"
       >
         导出
+      </button>
+
+      <button
+        @click="saveUserInfo"
+      >
+        同步信息
       </button>
     </div>
   </div>

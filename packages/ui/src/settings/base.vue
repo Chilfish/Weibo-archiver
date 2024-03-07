@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core'
 import type { UploadCustomRequestOptions } from 'naive-ui'
 import type { Post } from '@types'
 import { destr } from 'destr'
+import { useStorage } from '@vueuse/core'
 
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
 
 const postStore = usePostStore()
+const publicStore = usePublicStore()
+
 const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
 const isExporting = ref(false)
+const isImporting = ref(false)
+
+const username = computed(() => `@${publicStore.curUser?.name || '该用户'}`)
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
+  isImporting.value = true
 
   const reader = new FileReader()
   reader.readAsText(data)
@@ -24,12 +30,16 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 
     try {
       const posts = destr<Post[]>(data, { strict: true })
+      const owner = posts[0]?.user.id
+
+      publicStore.curUid = owner
       await postStore.set(posts, coverMode.value)
 
-      useStorage('meta', {
-        uid: posts[0]?.user?.id,
-        name: posts[0]?.user?.screen_name,
-      })
+      if (publicStore.users.find(u => u.uid === owner) === undefined)
+        message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
+
+      publicStore.curUid = owner
+      isImporting.value = false
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
@@ -49,6 +59,19 @@ async function exportDatas() {
   const data = await postStore.getAll()
   await exportData(data)
   isExporting.value = false
+}
+
+async function clearData() {
+  try {
+    postStore.clearDB()
+    publicStore.rmUser()
+
+    message.success('清空成功')
+  }
+  catch (e) {
+    console.error(`清空失败: ${e}`)
+    message.error('清空失败')
+  }
 }
 </script>
 
@@ -118,7 +141,9 @@ async function exportDatas() {
           directory-dnd
           class="w-fit"
         >
-          <n-button>
+          <n-button
+            :loading="isImporting"
+          >
             点击导入
           </n-button>
         </n-upload>
@@ -132,14 +157,7 @@ async function exportDatas() {
         </n-button>
 
         <n-popconfirm
-          @positive-click="async () => {
-            postStore.clearDB().then(() => {
-              message.success('清空成功')
-            }).catch((e) => {
-              console.error(`清空失败: ${e}`)
-              message.error('清空失败')
-            })
-          }"
+          @positive-click="clearData"
         >
           <template #trigger>
             <n-button
@@ -149,7 +167,11 @@ async function exportDatas() {
               清空本地数据
             </n-button>
           </template>
-          确认清空本地数据？你仍可以通过导入功能恢复数据。
+          <p>
+            确认将
+            <strong> {{ username }} </strong>
+            的本地数据清空？你仍可以通过导入功能恢复数据。
+          </p>
         </n-popconfirm>
       </div>
     </div>

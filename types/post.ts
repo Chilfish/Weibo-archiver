@@ -1,3 +1,5 @@
+export type UID = `uid-${number}`
+
 export interface User {
   id: string
   screen_name: string
@@ -13,6 +15,8 @@ export interface UserInfo {
   bio: string
   createdAt: string
   birthday: string
+  postCount?: number
+  exportedAt?: string
 }
 
 export type PicInfo = Record<string, {

@@ -81,3 +81,16 @@ export function usePausableLoop(
     isPaused,
   }
 }
+
+/**
+ * 等待值不为空
+ */
+export async function waitNotNull<T>(
+  value: T | null | undefined,
+) {
+  // eslint-disable-next-line no-unmodified-loop-condition
+  while (value === null || value === undefined)
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+  return value
+}
