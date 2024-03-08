@@ -21,12 +21,6 @@ const imgWidth = computed(() => {
     return '30rem'
   return '13rem'
 })
-
-const maxHeight = computed(() => {
-  if (len.value === 1)
-    return '30rem'
-  return windowWidth.value < 480 ? '7rem' : '13rem'
-})
 </script>
 
 <template>
@@ -38,12 +32,10 @@ const maxHeight = computed(() => {
         v-for="img in imgs"
         :key="img"
         :src="img"
-        :width="imgWidth"
-        :min-height="windowWidth < 480 ? '10rem' : '13rem'"
-        :height="len > 1 ? imgWidth : undefined"
         :style="{
-          maxHeight,
           width: imgWidth,
+          height: len > 1 && imgWidth,
+          maxHeight: '20rem',
         }"
         fit="cover"
         class="block overflow-hidden transition-all"

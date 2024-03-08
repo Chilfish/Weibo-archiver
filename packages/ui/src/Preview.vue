@@ -15,7 +15,6 @@ const postsLoaded = ref(false)
 onMounted(async () => {
   // 删除旧版数据
   await deleteOld()
-  console.log(publicStore.curUid)
 
   if (!publicStore.curUid) {
     loaded.value = true
@@ -75,6 +74,7 @@ watch(() => [route.query, postStore.totalDB, publicStore.curUid], async () => {
               v-for="user in publicStore.users"
               :key="user.uid"
               :user="user"
+              class="w-full"
               bg="light-4 dark:dark-2"
             />
           </div>

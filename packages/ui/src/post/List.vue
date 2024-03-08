@@ -11,7 +11,8 @@ defineProps<{
     class="flex flex-col gap-4 rounded px-2 py-8 md:w-60rem"
   >
     <n-back-top
-      :bottom="60"
+      :bottom="36"
+      :right="16"
       :visibility-height="600"
       title="返回顶部"
     >
@@ -22,13 +23,7 @@ defineProps<{
       v-for="item in posts"
       :key="item.id"
       :post="item"
-    >
-      <post-retweeted
-        v-if="item.retweeted_status"
-        :post="item.retweeted_status"
-        :card="item.card"
-      />
-    </post-item>
+    />
 
     <post-pagination />
   </div>

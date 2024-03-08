@@ -26,9 +26,10 @@ watch(imgHost, () => {
   imgRef.value.imageRef.parentElement.classList.remove('img-error')
 })
 
-function setImgSrc() {
+async function setImgSrc() {
   if (!imgRef.value)
     return
+  await new Promise(resolve => setTimeout(resolve, 1000))
 
   const img = imgRef.value.imageRef as HTMLImageElement
   const { disconnect } = lazyLoadImage([img])
@@ -65,11 +66,7 @@ onUnmounted(() => {
     :alt="alt"
     :preview-src="realSrc"
     :img-props="{
-      style: {
-        minHeight,
-        minWidth: width,
-      },
-      class: 'transition-all',
+      class: 'transition-width',
       referrerpolicy: referrerPolicy,
     }"
   />
@@ -81,18 +78,19 @@ $width: 7rem;
 .n-image {
   img {
     min-width: $width !important;
-    width: $width !important;
     border-radius: 4px;
+    height: 100%;
+    width: 100%;
   }
 
-  &:not(.img-error) {
-    img {
-      width: auto !important;
-    }
-  }
+  // &:not(.img-error) {
+  //   img {
+  //     width: auto !important;
+  //   }
+  // }
 
   &.img-error {
-    width: $width !important;
+    // width: $width !important;
     img {
       min-height: $width !important;
     }

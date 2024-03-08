@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <article
     :id="post.mblogid"
-    class="post flex flex-col gap-2 rounded-2 bg-white p-4 shadow-xl dark:bg-dark"
+    class="post"
   >
     <div class="flex justify-between">
       <post-profile :user="post.user" />
@@ -26,7 +26,12 @@ defineProps<{
         v-if="post.card && !post.retweeted_status"
         :card="post.card"
       />
-      <slot />
+
+      <post-retweeted
+        v-if="post.retweeted_status"
+        :post="post.retweeted_status"
+        :card="post.card"
+      />
     </main>
 
     <post-action
@@ -42,6 +47,10 @@ defineProps<{
 </template>
 
 <style>
+article.post {
+  --uno: flex flex-col gap-2 rounded-2 bg-white p-4 shadow dark:bg-dark;
+}
+
 .post:hover .copy-id {
  opacity: 1 !important;
 }

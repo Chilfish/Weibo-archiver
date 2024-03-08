@@ -87,3 +87,12 @@ p button {
 p {
   --uno: text-black dark:text-light;
 }
+
+.text-wrap {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}

@@ -20,7 +20,7 @@ if (document.location.hostname === 'weibo.com') {
   initApp()
 }
 else {
-  const users = GM_getValue('users') || '[]'
+  const users = GM_getValue('users') || []
 
   localStorage.setItem('users', JSON.stringify(users))
 }

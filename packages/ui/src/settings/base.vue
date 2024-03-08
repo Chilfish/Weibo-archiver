@@ -35,8 +35,11 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       publicStore.curUid = owner
       await postStore.set(posts, coverMode.value)
 
-      if (publicStore.users.find(u => u.uid === owner) === undefined)
+      const user = publicStore.users.find(u => u.uid === owner)
+      if (user === undefined)
         message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
+      else
+        user.postCount = postStore.total
 
       publicStore.curUid = owner
       isImporting.value = false
@@ -161,7 +164,8 @@ async function clearData() {
         >
           <template #trigger>
             <n-button
-              class="w-fit bg-red"
+              :bordered="false"
+              class="w-fit text-white bg-red! hover:bg-red-500!"
               type="error"
             >
               清空本地数据

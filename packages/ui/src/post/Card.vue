@@ -10,17 +10,22 @@ defineProps<{
   <a
     :href="card.link"
     target="_blank"
-    rel="noopener noreferrer"
-    class="mt-4 h-30 flex items-center rounded-2 bg-gray-200 dark:bg-dark-700 hover:bg-gray-300 hover:dark:bg-dark-5"
+    class="mt-4 h-30 flex items-center rounded-2"
+    bg="gray-200 dark:dark-700 hover:gray-300 hover-dark:dark-800"
   >
     <main-image
-      class="mr-2 h-30 min-w-28 w-28 rounded-2"
+      class="h-28 w-28 rounded-2"
       fit="cover"
+      preview-disabled
       :src="card.img"
     />
-    <div class="w-full p-2">
-      <h4>{{ card.title }}</h4>
-      <p class="mt-4 break-all text-3 text-gray-500!">{{ card.desc }}</p>
+    <div class="flex flex-col p-4">
+      <h4 class="text-wrap">
+        {{ card.title }}
+      </h4>
+      <p class="mt-4 text-wrap text-3 text-gray-4!">
+        {{ card.desc }}
+      </p>
     </div>
   </a>
 </template>

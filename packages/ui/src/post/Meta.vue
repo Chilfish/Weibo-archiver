@@ -48,7 +48,9 @@ const { copy } = useClipboard({
 
     <span>{{ date }}</span>
 
-    <span> {{ meta.region_name?.replace(' ', '') }} </span>
+    <span v-if="meta.region_name">
+      {{ meta.region_name.replace(' ', '') }}
+    </span>
 
     <span v-if="meta.source" class="hidden sm:inline">
       来自<span v-html="meta.source" />

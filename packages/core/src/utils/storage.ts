@@ -198,8 +198,6 @@ export class IDB {
           .map(t => searchToken.some(s => t.startsWith(s)) ? t : `'${t}`)
           .join(' ')
 
-        console.log(query)
-
         return fuse.search(query)
       },
     }
