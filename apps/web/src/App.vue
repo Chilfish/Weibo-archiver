@@ -21,6 +21,18 @@ useSeoMeta({
   twitterCreator: 'chilllish',
 })
 
+useHead({
+  htmlAttrs: {
+    lang: 'zh-CN',
+  },
+  meta: [
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0',
+    },
+  ],
+})
+
 const loaded = ref(false)
 onNuxtReady(() => {
   const publicStore = usePublicStore()

@@ -28,6 +28,10 @@ const avatar = computed(() => {
         fallback-src="/placeholder.webp"
         :size="56"
         :src="avatar"
+        :img-props="{
+          alt: `${user.name} avatar`,
+          title: `${user.name} avatar`,
+        }"
         class="ring-2 ring-white"
       />
       <div>

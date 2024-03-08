@@ -74,4 +74,8 @@ article.post {
 .post:hover .copy-id {
  opacity: 1 !important;
 }
+
+.post .n-collapse-item__content-inner {
+  padding: 0 !important;
+}
 </style>

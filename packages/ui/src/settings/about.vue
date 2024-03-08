@@ -7,6 +7,7 @@ const version = import.meta.env.VITE_APP_VERSION
     <n-image
       :width="82"
       :height="82"
+      class="w-24"
       preview-disabled
       alt="logo"
       src="/icon.png"
