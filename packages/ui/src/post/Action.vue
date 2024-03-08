@@ -4,6 +4,10 @@ import type { Post } from '@types'
 defineProps<{
   post: Post
 }>()
+
+defineEmits<{
+  toggleComment: []
+}>()
 </script>
 
 <template>
@@ -13,15 +17,14 @@ defineProps<{
       <span>{{ post.reposts_count }}</span>
     </span>
 
-    <a
-      :href="`${post.detail_url}#comment`"
-      target="_blank"
-      title="打开原微博评论"
+    <span
+      title="展开微博评论"
       class="text-gray"
+      @click="() => $emit('toggleComment')"
     >
       <span class="i-tabler-message icon" />
       <span>{{ post.comments_count }}</span>
-    </a>
+    </span>
 
     <span>
       <span class="i-tabler-heart icon" />

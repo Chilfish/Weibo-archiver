@@ -4,11 +4,23 @@ import type { Post } from '@types'
 defineProps<{
   post: Post
 }>()
+
+const openComment = ref(false)
+const articleRef = ref<HTMLElement | null>(null)
+
+watchEffect(() => {
+  if (!articleRef.value)
+    return
+  const comments = articleRef.value.querySelector<HTMLDivElement>('.n-collapse-item__content-wrapper')
+
+  comments?.style.setProperty('display', openComment.value ? 'block' : 'none')
+})
 </script>
 
 <template>
   <article
     :id="post.mblogid"
+    ref="articleRef"
     class="post"
   >
     <div class="flex justify-between">
@@ -37,12 +49,20 @@ defineProps<{
     <post-action
       class="justify-start!"
       :post="post"
+      @toggle-comment="openComment = !openComment"
     />
 
-    <post-comments
-      v-if="post.comments_count > 0"
-      :comments="post.comments"
-    />
+    <n-collapse
+      :default-expanded-names="['comments']"
+      display-directive="show"
+    >
+      <template #arrow>
+        <span />
+      </template>
+      <n-collapse-item name="comments">
+        <post-comments :comments="post.comments" />
+      </n-collapse-item>
+    </n-collapse>
   </article>
 </template>
 
