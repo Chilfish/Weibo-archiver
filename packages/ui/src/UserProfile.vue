@@ -1,20 +1,11 @@
 <script setup lang="ts">
 import type { UserInfo } from '@types'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   user: UserInfo
   showMore?: boolean
 }>(), {
   showMore: true,
-})
-
-const avatar = computed(() => {
-  const url = props.user.avatar
-  if (!url)
-    return '/placeholder.webp'
-
-  const { pathname } = new URL(url)
-  return `${imgCdn}${pathname}`
 })
 </script>
 
@@ -24,13 +15,15 @@ const avatar = computed(() => {
   >
     <div class="flex items-center gap-4">
       <n-avatar
-        lazy round
-        fallback-src="/placeholder.webp"
+        lazy
+        round
+        bordered
+        color="#9ca3af"
+        text="3 center"
         :size="56"
-        :src="avatar"
+        :src="`/api/img?url=${encodeURIComponent(user.avatar)}`"
         :img-props="{
-          alt: `${user.name} avatar`,
-          title: `${user.name} avatar`,
+          alt: `${user.name}'s avatar`,
         }"
         class="ring-2 ring-white"
       />

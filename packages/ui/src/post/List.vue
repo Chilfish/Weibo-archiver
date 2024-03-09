@@ -24,7 +24,6 @@ defineProps<{
       :key="item.id"
       :post="item"
     />
-
-    <post-pagination />
   </div>
+  <post-pagination />
 </template>

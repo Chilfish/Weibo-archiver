@@ -25,17 +25,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <n-pagination
-      v-model:page="curPage"
-      v-model:page-size="pageSize"
-      show-quick-jumper
-      show-size-picker
-      :page-sizes="[10, 20, 30]"
-      :item-count="postStore.total"
+  <n-pagination
+    v-model:page="curPage"
+    v-model:page-size="pageSize"
+    show-quick-jumper
+    show-size-picker
+    :page-sizes="[10, 20, 30]"
+    :item-count="postStore.total"
 
-      class="center flex-wrap"
-      @update:page-size="fixPagePanel"
-    />
-  </div>
+    class="center flex-wrap"
+    @update:page-size="fixPagePanel"
+  />
 </template>

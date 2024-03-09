@@ -6,7 +6,9 @@
   <app-main>
     <nuxt-loading-indicator />
     <main-header />
-    <img-viewer />
+    <client-only>
+      <img-viewer />
+    </client-only>
     <main class="mt-16 h-full">
       <slot />
     </main>

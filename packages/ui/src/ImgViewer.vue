@@ -3,6 +3,8 @@ import { storeToRefs } from 'pinia'
 
 const { globalImg } = storeToRefs(usePublicStore())
 
+const imgRef = ref<HTMLImageElement | null>(null)
+
 async function onClose() {
   const btn = await waitForElement('.n-image-preview-toolbar')
   const mask = await waitForElement('.n-image-preview-overlay')
@@ -11,28 +13,33 @@ async function onClose() {
 
   arr.forEach(e => e?.addEventListener('click', () => {
     globalImg.value = imgViewSrc
-  }, { once: true }))
+  }))
 }
 
 watch(globalImg, async () => {
   if (globalImg.value === imgViewSrc)
     return
-  const img = await waitForElement<HTMLImageElement>('#img-viewer img')
 
-  img?.click()
+  imgRef.value?.click()
+
+  const img = await waitForElement<HTMLImageElement>('img.n-image-preview')
+
+  if (!img)
+    return
+  img.src = replaceImg(globalImg.value)
   await onClose()
+})
+
+onMounted(() => {
+  imgRef.value = document.querySelector<HTMLImageElement>('#img-viewer img')
 })
 </script>
 
 <template>
-  <div
+  <main-image
     id="img-viewer"
-    class="absolute right-0 top-0 hidden"
-  >
-    <main-image
-      class="h-0 w-0"
-      :lazy="false"
-      :src="globalImg"
-    />
-  </div>
+    class="absolute right-0 top-0 hidden h-0 w-0"
+    :lazy="false"
+    :src="imgViewSrc"
+  />
 </template>
