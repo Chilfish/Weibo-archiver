@@ -1,3 +1,0 @@
-已经在 https://github.com/Chilfish/Weibo-archiver/pull/23 中修复了旧版中获取错误的评论图片链接，下载此版之前的评论图片需要 cookie。
-
-新版已经完全不需要这些配置了
