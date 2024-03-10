@@ -204,16 +204,19 @@ export async function postsParser(posts: any[]): Promise<Post[]> {
 export function imgsParser(posts: Post[]): Set<string> {
   const imgs = posts
     .map((post) => {
+      const { textImg } = parseText(post.text)
       return [
         post.imgs,
         post.retweeted_status?.imgs,
         post.comments.map(e => e.img),
         post.user?.profile_image_url,
         post.card?.img,
-      ].flat()
+        textImg,
+      ].filter(Boolean) as string[]
     })
     .flat()
-    .filter(Boolean) as string[]
+    .flat()
+    .sort()
 
   return new Set(imgs)
 }
