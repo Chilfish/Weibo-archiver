@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import type { Post } from '@types'
 import { deleteOld } from '@core/utils/storage'
-import { useRouteQuery } from '@vueuse/router'
-
-import DatePick from './DatePick.vue'
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
 
-const page = useRouteQuery('page', 1, { transform: Number })
-const pageSize = useRouteQuery('pageSize', 10, { transform: Number })
-const start = useRouteQuery('start')
+const route = useRoute()
 
 const posts = ref([] as Post[])
 
@@ -33,17 +28,16 @@ onMounted(async () => {
 })
 
 watchImmediate(
-  [loaded, page, pageSize, start, postStore.totalDB, publicStore.curUid],
+  [() => route.query, loaded, postStore.totalDB, publicStore.curUid],
+
   async () => {
     postsLoaded.value = false
-    postStore.pageSize = pageSize.value
-    postStore.curPage = page.value
 
     if (!loaded.value)
       return
 
-    if (!start.value)
-      posts.value = await postStore.get(page.value)
+    if (!route.query.start)
+      posts.value = await postStore.get()
     postsLoaded.value = true
   },
 )
@@ -87,7 +81,7 @@ watchImmediate(
 
   <div
     v-else
-    class="min-h-90dvh center-col justify-between p-4 pb-8"
+    class="min-h-90dvh center-col justify-start p-4 pb-8"
   >
     <DatePick
       @picked="(data: Post[]) => posts = data"

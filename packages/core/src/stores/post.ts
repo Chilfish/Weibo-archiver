@@ -19,9 +19,27 @@ export const usePostStore = defineStore('post', () => {
   })
 
   const route = useRoute()
+  const router = useRouter()
 
-  const curPage = ref(1)
-  const pageSize = ref(10)
+  const curPage = computed({
+    get: () => Number(route.query.page) || 1,
+    set: (val: number) => router.push({
+      query: {
+        ...route.query,
+        page: val,
+      },
+    }),
+  })
+
+  const pageSize = computed({
+    get: () => Number(route.query.pageSize) || 10,
+    set: (val: number) => router.push({
+      query: {
+        ...route.query,
+        pageSize: val,
+      },
+    }),
+  })
 
   const seachFn = ref<(text: string) => SaerchResult>()
 
@@ -70,10 +88,8 @@ export const usePostStore = defineStore('post', () => {
     seachFn.value = search
   }
 
-  async function searchPost(
+  async function _searchPost(
     query: string,
-    page: number,
-    pageSize: number,
   ) {
     await waitIDB()
 
@@ -88,11 +104,21 @@ export const usePostStore = defineStore('post', () => {
       .sort((a, b) => b.time - a.time)
 
     const count = result.length
-    const start = (page - 1) * pageSize
-    const end = start + pageSize
-    const posts = result.slice(start, end)
+    total.value = count
+    return result
+  }
 
-    return { posts, count }
+  async function searchPost(
+    query: string,
+    page: number,
+  ) {
+    const p = page || curPage.value
+
+    const result = await _searchPost(query)
+
+    const start = (p - 1) * pageSize.value
+    const end = start + pageSize.value
+    return result.slice(start, end)
   }
 
   async function get(page?: number) {
@@ -110,16 +136,15 @@ export const usePostStore = defineStore('post', () => {
       total.value = totalDB.value
     }
     else {
-      const { posts, count } = await searchPost(query, p, pageSize.value)
+      const _result = await searchPost(query, p)
 
-      result = await idb.value.getDBPost(posts.map(p => p.time))
-      total.value = count
+      result = await idb.value.getDBPost(_result.map(p => p.time))
     }
 
     return result
   }
 
-  async function getByTime(
+  async function _getByTime(
     start: number,
     end: number,
     page?: number,
@@ -133,11 +158,48 @@ export const usePostStore = defineStore('post', () => {
     return posts
   }
 
+  async function searchAndTime(
+    query: string,
+    start: number,
+    end: number,
+    page?: number,
+  ) {
+    await waitIDB()
+
+    const p = page || curPage.value
+
+    const result = await _searchPost(query)
+      .then(posts => posts.filter(p => p.time >= start && p.time <= end))
+
+    total.value = result.length
+
+    const startIdx = (p - 1) * pageSize.value
+    const endIdx = startIdx + pageSize.value
+    const sliced = result.slice(startIdx, endIdx)
+
+    const posts = await idb.value.getDBPost(sliced.map(p => p.time))
+    return posts
+  }
+
   async function updateTotal() {
     await waitIDB()
 
     total.value = await idb.value.getPostCount()
     totalDB.value = total.value
+  }
+
+  async function getByTime(_page: number, start: number, end: number) {
+    const p = _page || curPage.value
+    const query = route.query.q as string
+
+    let posts: Post[] = []
+    if (route.path === '/post')
+      posts = await _getByTime(start, end, _page)
+
+    else
+      posts = await searchAndTime(query, start, end, p)
+
+    return posts
   }
 
   return {
@@ -165,5 +227,7 @@ export const usePostStore = defineStore('post', () => {
     },
     updateTotal,
     getByTime,
+    searchPost,
+    searchAndTime,
   }
 })

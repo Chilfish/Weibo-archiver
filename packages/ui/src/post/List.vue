@@ -26,5 +26,5 @@ defineProps<{
     />
   </div>
 
-  <post-pagination v-if="posts.length" />
+  <post-pagination v-show="posts.length" />
 </template>

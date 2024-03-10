@@ -223,7 +223,7 @@ export class IDB {
     const count = await index.count(range)
 
     if (!cursor)
-      return posts
+      return { posts, count }
 
     try {
       const target = (page - 1) * limit
