@@ -23,7 +23,7 @@ const imgHost = useStorage('imgHost', '/')
 watch(imgHost, () => {
   realSrc.value = replaceImg(props.src)
 
-  if (!imageRef.value)
+  if (!imgRef.value)
     return
   imgRef.value.imageRef.src = realSrc.value
   imgRef.value.imageRef.parentElement.classList.remove('img-error')
