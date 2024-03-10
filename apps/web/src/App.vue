@@ -19,6 +19,10 @@ useSeoMeta({
   twitterTitle: title,
   twitterDescription: description,
   twitterCreator: 'chilllish',
+  twitterImage: ogImage,
+  twitterImageAlt: appName,
+  twitterSite: '@chilllish',
+  keywords: '微博,备份,工具,微博备份,微博备份工具,备份微博,存档,油猴脚本,backup',
 })
 
 useHead({

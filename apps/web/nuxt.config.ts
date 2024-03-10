@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@bg-dev/nuxt-naiveui',
+    '@nuxtjs/seo',
     'dayjs-nuxt',
   ],
 
@@ -95,6 +96,12 @@ export default defineNuxtConfig({
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
       ],
     },
+  },
+
+  site: {
+    url: 'https://weibo.chilfish.top',
+    name: 'Weibo Archiver',
+    defaultLocale: 'zh-cn',
   },
 
   typescript: {
