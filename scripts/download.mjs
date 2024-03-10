@@ -6,7 +6,7 @@ import path from 'node:path'
 const imgs_path = path.resolve(process.argv[2] || 'imgs.csv')
 
 const url_list = await readFile(imgs_path, 'utf-8')
-  .then(text => text.split(',\n'))
+  .then(text => text.replace(/\r\n/gm, '\n').split(',\n'))
   .catch((e) => {
     console.error(`未找到 imgs.csv 文件, ${e}`)
     process.exit(1)
@@ -22,7 +22,7 @@ console.log(`共有 ${url_list.length} 张图片需要下载，将会跳过已�
 for (let url of url_list) {
   try {
     url = url.trim()
-    if (url)
+    if (!url)
       continue
 
     const file_name = url.split('/').pop().split('?')[0]
