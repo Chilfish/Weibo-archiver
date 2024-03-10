@@ -25,6 +25,7 @@
     "@unocss/nuxt": "^0.58.5",
     "@vueuse/nuxt": "^10.9.0",
     "@weibo-archiver/ui": "workspace:^",
+    "dayjs-nuxt": "^2.1.9",
     "nuxt": "^3.10.3"
   }
 }

@@ -11,7 +11,11 @@ function returnError(statusCode: number, message: string) {
 }
 
 export default defineEventHandler(async (event) => {
-  const { url } = getQuery<{ url: string }>(event)
+  const query = getQuery<{ url?: string }>(event)
+  const url = query.url?.trim()
+
+  if (!url)
+    return returnError(400, 'url is required.')
 
   if (!url.includes('crop'))
     return returnError(400, 'url should be an avatar url.')

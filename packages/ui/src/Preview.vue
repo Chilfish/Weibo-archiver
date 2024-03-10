@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import type { Post } from '@types'
 import { deleteOld } from '@core/utils/storage'
+import { useRouteQuery } from '@vueuse/router'
+
+import DatePick from './DatePick.vue'
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
 
+const page = useRouteQuery('page', 1, { transform: Number })
+const pageSize = useRouteQuery('pageSize', 10, { transform: Number })
+const start = useRouteQuery('start')
+
 const posts = ref([] as Post[])
-const route = useRoute()
 
 const loaded = ref(false)
 const postsLoaded = ref(false)
@@ -25,73 +30,82 @@ onMounted(async () => {
   await postStore.updateTotal()
 
   loaded.value = true
-  posts.value = await postStore.get(Number(route.query.page))
-
-  postsLoaded.value = true
 })
 
-watch(() => [route.query, postStore.totalDB, publicStore.curUid], async () => {
-  if (!loaded.value)
-    return
-  postsLoaded.value = false
+watchImmediate(
+  [loaded, page, pageSize, start, postStore.totalDB, publicStore.curUid],
+  async () => {
+    postsLoaded.value = false
+    postStore.pageSize = pageSize.value
+    postStore.curPage = page.value
 
-  const page = route.query.page
-  posts.value = await postStore.get(Number(page))
-  postsLoaded.value = true
-})
+    if (!loaded.value)
+      return
+
+    if (!start.value)
+      posts.value = await postStore.get(page.value)
+    postsLoaded.value = true
+  },
+)
 </script>
 
 <template>
+  <n-spin
+    v-if="!loaded"
+    class="center p-16"
+    size="large"
+  />
+
   <div
-    class="min-h-90dvh center-col justify-between pb-4"
+    v-else-if="postStore.totalDB === 0"
+    class="px-6 py-12"
   >
+    <settings-about />
+    <p
+      class="py-6 font-bold"
+      text="center xl"
+    >
+      暂无微博数据，点击右上角设置来导入吧👋
+    </p>
+
+    <div v-if="publicStore.users.length">
+      <p class="mb-3 text-4.5">
+        不过检测到了可导入的用户
+      </p>
+
+      <div class="center-col gap-4">
+        <User-profile
+          v-for="user in publicStore.users"
+          :key="user.uid"
+          :user="user"
+          class="w-full"
+          bg="light-4 dark:dark-2"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div
+    v-else
+    class="min-h-90dvh center-col justify-between p-4 pb-8"
+  >
+    <DatePick
+      @picked="(data: Post[]) => posts = data"
+    />
+
     <n-spin
-      v-if="!loaded || !postsLoaded"
-      class="center pt-16"
+      v-if="!postsLoaded"
+      class="center p-16"
       size="large"
     />
 
-    <template v-if="loaded">
-      <div
-        v-if="postStore.totalDB === 0"
-        class="px-6 py-12"
-      >
-        <settings-about />
-        <p
-          class="py-6 font-bold"
-          text="center xl"
-        >
-          暂无微博数据，点击右上角设置来导入吧👋
-        </p>
+    <h3
+      v-else-if="posts.length === 0"
+      class="mb-auto mt-20 text-center text-2xl font-bold"
+    >
+      没有相关结果
+    </h3>
 
-        <div v-if="publicStore.users.length">
-          <p class="mb-3 text-4.5">
-            不过检测到了可导入的用户
-          </p>
-
-          <div class="center-col gap-4">
-            <User-profile
-              v-for="user in publicStore.users"
-              :key="user.uid"
-              :user="user"
-              class="w-full"
-              bg="light-4 dark:dark-2"
-            />
-          </div>
-        </div>
-      </div>
-
-      <post-list
-        v-else-if="posts.length > 0"
-        :posts="posts"
-      />
-
-      <h3
-        v-else-if="posts.length === 0 && route.path === '/search'"
-        class="mt-20 text-center text-2xl font-bold"
-      >
-        没有相关结果
-      </h3>
-    </template>
+    <post-list :posts="posts" />
   </div>
 </template>

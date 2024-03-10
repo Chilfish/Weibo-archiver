@@ -20,8 +20,8 @@ export const usePostStore = defineStore('post', () => {
 
   const route = useRoute()
 
-  const curPage = ref(Number(route.query.page) || 1)
-  const pageSize = ref(Number(route.query.pageSize) || 10)
+  const curPage = ref(1)
+  const pageSize = ref(10)
 
   const seachFn = ref<(text: string) => SaerchResult>()
 
@@ -107,6 +107,7 @@ export const usePostStore = defineStore('post', () => {
 
     if (path === '/post') {
       result = await idb.value.getDBPosts(p, pageSize.value)
+      total.value = totalDB.value
     }
     else {
       const { posts, count } = await searchPost(query, p, pageSize.value)
@@ -116,6 +117,20 @@ export const usePostStore = defineStore('post', () => {
     }
 
     return result
+  }
+
+  async function getByTime(
+    start: number,
+    end: number,
+    page?: number,
+  ) {
+    await waitIDB()
+
+    const p = page || curPage.value
+
+    const { posts, count } = await idb.value.filterByTime(start, end, p, pageSize.value)
+    total.value = count
+    return posts
   }
 
   async function updateTotal() {
@@ -149,5 +164,6 @@ export const usePostStore = defineStore('post', () => {
       return idb.value.getPostCount()
     },
     updateTotal,
+    getByTime,
   }
 })

@@ -16,7 +16,15 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@bg-dev/nuxt-naiveui',
+    'dayjs-nuxt',
   ],
+
+  dayjs: {
+    locales: ['zh-cn'],
+    plugins: ['timezone'],
+    defaultTimezone: 'Asia/Shanghai',
+
+  },
 
   alias: {
     '@core': join(root, 'packages/core/src'),

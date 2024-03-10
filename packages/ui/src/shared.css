@@ -43,6 +43,9 @@
   overflow-y: auto;
   /* min-width: 446px; */
 }
+.n-date-panel.n-date-panel--daterange.n-date-panel--shadow {
+  --uno: flex-col flex sm:grid;
+}
 
 p {
   text-wrap: pretty;

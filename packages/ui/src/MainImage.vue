@@ -22,14 +22,17 @@ const imgHost = useStorage('imgHost', '/')
 
 watch(imgHost, () => {
   realSrc.value = replaceImg(props.src)
+
+  if (!imageRef.value)
+    return
   imgRef.value.imageRef.src = realSrc.value
   imgRef.value.imageRef.parentElement.classList.remove('img-error')
 })
 
 async function setImgSrc() {
+  await new Promise(resolve => setTimeout(resolve, 1000))
   if (!imgRef.value)
     return
-  await new Promise(resolve => setTimeout(resolve, 1000))
 
   const img = imgRef.value.imageRef as HTMLImageElement
   const { disconnect } = lazyLoadImage([img])

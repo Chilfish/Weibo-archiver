@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-    class="flex flex-col gap-4 rounded px-2 py-8 md:w-60rem"
+    class="flex flex-col gap-4 rounded px-2 py-4 md:w-60rem"
   >
     <n-back-top
       :bottom="36"
@@ -25,5 +25,6 @@ defineProps<{
       :post="item"
     />
   </div>
-  <post-pagination />
+
+  <post-pagination v-if="posts.length" />
 </template>

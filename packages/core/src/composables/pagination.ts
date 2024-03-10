@@ -16,7 +16,6 @@ export function usePagination(
         page: page || 1,
         pageSize: pageSize.value,
       },
-      hash: route.hash,
     })
   }
 

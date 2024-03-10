@@ -1,6 +1,7 @@
 import { deleteDB, openDB } from 'idb'
-import type { FuseResult } from 'fuse.js'
 import Fuse from 'fuse.js'
+import dayjs from 'dayjs'
+import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
 import type { Post, UID } from '@types'
 
@@ -121,7 +122,7 @@ export class IDB {
     const store = ts.store
 
     posts.forEach((post) => {
-      post.created_at = new Date(post.created_at).getTime()
+      post.created_at = dayjs(post.created_at).valueOf()
       store.put(post)
     })
 
@@ -200,6 +201,48 @@ export class IDB {
 
         return fuse.search(query)
       },
+    }
+  }
+
+  async filterByTime(
+    start: number,
+    end: number,
+    page: number,
+    limit: number,
+  ) {
+    const db = await this.idb
+    const posts: Post[] = []
+
+    const ts = db.transaction(STORE_NAME)
+
+    // 闭区间
+    const range = IDBKeyRange.bound(start, end)
+    const index = ts.store.index('time')
+    let cursor = await index.openCursor(range)
+
+    const count = await index.count(range)
+
+    if (!cursor)
+      return posts
+
+    try {
+      const target = (page - 1) * limit
+      target && await cursor.advance(target)
+
+      while (cursor && posts.length < limit) {
+        posts.push(cursor.value)
+        cursor = await cursor.continue()
+      }
+      ts.commit()
+    }
+    catch (e: any) {
+      ts.abort()
+      throw new Error(`Error getting posts: ${e.message}`)
+    }
+
+    return {
+      posts,
+      count,
     }
   }
 }

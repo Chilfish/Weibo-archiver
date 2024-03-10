@@ -5,10 +5,7 @@ const { curPage, pageSize } = usePagination(
   () => postStore.pages,
 )
 
-watchImmediate([curPage, pageSize], ([page, size]) => {
-  postStore.curPage = page
-  postStore.pageSize = size
-})
+// watchImmediate([curPage, pageSize])
 
 // 切换分页大小后可能会有大片的空白区域，再次点击就能清掉
 const pagePanel = ref<HTMLElement | null>(null)
@@ -25,15 +22,20 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-pagination
-    v-model:page="curPage"
-    v-model:page-size="pageSize"
-    show-quick-jumper
-    show-size-picker
-    :page-sizes="[10, 20, 30]"
-    :item-count="postStore.total"
+  <div class="center flex-wrap gap-4">
+    <n-pagination
+      v-model:page="curPage"
+      v-model:page-size="pageSize"
+      class="center flex-wrap"
+      show-quick-jumper
+      show-size-picker
+      :page-sizes="[10, 20, 30]"
+      :item-count="postStore.total"
+      @update:page-size="fixPagePanel"
+    />
 
-    class="center flex-wrap"
-    @update:page-size="fixPagePanel"
-  />
+    <div>
+      共 {{ postStore.total }} 条
+    </div>
+  </div>
 </template>
