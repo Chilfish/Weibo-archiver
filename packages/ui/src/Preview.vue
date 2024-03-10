@@ -62,7 +62,10 @@ watchImmediate(
       暂无微博数据，点击右上角设置来导入吧👋
     </p>
 
-    <div v-if="publicStore.users.length">
+    <div
+      v-if="publicStore.users.length"
+      class="mx-auto w-fit"
+    >
       <p class="mb-3 text-4.5">
         不过检测到了可导入的用户
       </p>
