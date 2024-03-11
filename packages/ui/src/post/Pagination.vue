@@ -7,10 +7,14 @@ async function fixPageBug(targetSize: number) {
   if (targetSize > pageSize.value)
     return
 
-  const tmp = document.querySelector<{ HTMLDivElement }>('.n-base-selection.n-base-selection--selected')
+  const tmp = document.querySelector<HTMLDivElement>('.n-base-selection.n-base-selection--selected')
 
-  await new Promise(resolve => setTimeout(resolve, 500))
+  await new Promise(resolve => setTimeout(resolve, 600))
   tmp?.click()
+}
+
+function scrollToTop() {
+  window.scrollTo(0, 0)
 }
 </script>
 
@@ -25,6 +29,7 @@ async function fixPageBug(targetSize: number) {
       :page-sizes="[10, 20, 30]"
       :item-count="total"
       @update-page-size="fixPageBug"
+      @update-page="scrollToTop"
     />
 
     <div>
