@@ -29,14 +29,6 @@ configStore.setConfig({ now: Date.now() })
     />
 
     <div class="center flex-wrap justify-start gap-2">
-      <button
-        class="bg-#18a058 py-1 btn hover:bg-green-7"
-        @click="() => {
-          configStore.state.isFetchAll = true
-        }"
-      >
-        重置为所有微博
-      </button>
       <n-checkbox
         v-model:checked="configStore.state.picLarge"
         label="导出原图"
@@ -52,8 +44,16 @@ configStore.setConfig({ now: Date.now() })
       <n-checkbox
         v-show="configStore.state.repost"
         v-model:checked="configStore.state.repostPic"
-        label="同时也导出转发微博的图片"
+        label="导出转发的图片"
       />
+      <button
+        class="bg-#18a058 py-1 btn hover:bg-green-7"
+        @click="() => {
+          configStore.state.isFetchAll = true
+        }"
+      >
+        重置为所有微博
+      </button>
     </div>
 
     <div

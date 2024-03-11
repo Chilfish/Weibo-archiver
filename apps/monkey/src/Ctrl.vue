@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
 import { saveAs } from 'file-saver'
+import { storeToRefs } from 'pinia'
 
 import { exportData } from '@core/utils'
 import { useConfigStore, usePostStore } from './stores'
@@ -15,6 +16,8 @@ const isStart = ref(false)
 const isStop = ref(false)
 const isFinish = ref(false)
 
+const { state: config } = storeToRefs(configStore)
+
 const percentage = computed(() => postStore.posts.length / postStore.total * 100)
 const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
 
@@ -22,7 +25,7 @@ const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
 
 async function saveUserInfo() {
-  const user = await userDetail(configStore.state.uid)
+  const user = await userDetail(config.value.uid)
   user.exportedAt = Date.now().toLocaleString()
 
   const users = GM_getValue<any[]>('users') ?? []
@@ -59,7 +62,7 @@ async function start() {
 
   const { pause, resume } = await fetchPosts({
     startPage: () => postStore.fetchedPage + 1,
-    isFetchAll: configStore.state.isFetchAll,
+    isFetchAll: config.value.isFetchAll,
     setTotal: total => postStore.total = total,
     addPosts: postStore.add,
     stopCondition: () => {
@@ -95,6 +98,7 @@ onMounted(async () => {
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
   const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
 
+  configStore.initConfig()
   configStore.setConfig({
     uid,
     name,
@@ -104,12 +108,21 @@ onMounted(async () => {
 
 <template>
   <div
-    class="fixed right-4 top-20 z-999 w-36rem flex flex-col select-none justify-center gap-4 rounded-2 p-4 shadow-xl bg-white! text-black!"
+    v-show="!config.isMinimize"
+    class="card w-34rem"
   >
-    <h2 class="text-5 text-black font-bold">
-      Weibo archiver, user: {{ configStore.state.name }}
-    </h2>
+    <div class="flex items-center justify-between">
+      <h2 class="text-5 text-black font-bold">
+        Weibo archiver, user: {{ config.name }}
+      </h2>
 
+      <button
+        title="最小化"
+        @click="config.isMinimize = !config.isMinimize"
+      >
+        <i class="i-tabler:arrows-minimize icon" />
+      </button>
+    </div>
     <n-alert
       title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而重头来过"
       type="warning"
@@ -146,7 +159,7 @@ onMounted(async () => {
         @click="start"
       >
         {{ isStart ? '重新开始' : '开始' }}
-        (获取 <strong>{{ configStore.state.isFetchAll ? '全部' : '部分' }}</strong> 微博)
+        (获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博)
       </button>
 
       <div
@@ -177,4 +190,39 @@ onMounted(async () => {
       </button>
     </div>
   </div>
+
+  <div
+    v-show="config.isMinimize"
+    class="card minimize"
+    @click="config.isMinimize = !config.isMinimize"
+  >
+    <img
+      src="https://p.chilfish.top/weibo/icon.webp"
+      alt="Weibo archiver logo"
+      class="h-16 w-16"
+    >
+  </div>
 </template>
+
+<style scoped>
+.card {
+  position: fixed;
+  right: 1rem; /* 16px */
+  top: 5rem; /* 80px */
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem; /* 16px */
+  border-radius: 0.5rem; /* 8px */
+  padding: 1rem; /* 16px */
+  background-color: white;
+  color: black;
+  transition: all 0.3s ease-in-out;
+}
+
+.minimize {
+  width: 5rem;
+  padding: 6px;
+}
+</style>
