@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Post } from '@types'
 import { deleteOld } from '@core/utils/storage'
+import { storeToRefs } from 'pinia'
 
 const postStore = usePostStore()
-const publicStore = usePublicStore()
+const { curUid, users } = storeToRefs(usePublicStore())
+const { totalDB } = storeToRefs(postStore)
 
 const route = useRoute()
 
@@ -16,7 +18,7 @@ onMounted(async () => {
   // 删除旧版数据
   await deleteOld()
 
-  if (!publicStore.curUid) {
+  if (!curUid.value) {
     loaded.value = true
     postsLoaded.value = true
     return
@@ -28,7 +30,7 @@ onMounted(async () => {
 })
 
 watchImmediate(
-  [() => route.query, loaded, postStore.totalDB, publicStore.curUid],
+  [() => route.query, loaded, totalDB, curUid],
 
   async () => {
     postsLoaded.value = false
@@ -51,7 +53,7 @@ watchImmediate(
   />
 
   <div
-    v-else-if="postStore.totalDB === 0"
+    v-else-if="totalDB === 0"
     class="px-6 py-12"
   >
     <settings-about />
@@ -63,7 +65,7 @@ watchImmediate(
     </p>
 
     <div
-      v-if="publicStore.users.length"
+      v-if="users.length"
       class="mx-auto w-fit"
     >
       <p class="mb-3 text-4.5">
@@ -72,7 +74,7 @@ watchImmediate(
 
       <div class="center-col gap-4">
         <User-profile
-          v-for="user in publicStore.users"
+          v-for="user in users"
           :key="user.uid"
           :user="user"
           class="w-full"
