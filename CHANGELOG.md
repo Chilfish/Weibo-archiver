@@ -1,5 +1,34 @@
 # Changelog
 
+## v0.3.4
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.3...v0.3.4)
+
+### 🚀 Enhancements
+
+- **web:** Filter posts by date range ([cfda7f9](https://github.com/Chilfish/Weibo-archiver/commit/cfda7f9))
+- **web:** Enable vercel analytics ([626016e](https://github.com/Chilfish/Weibo-archiver/commit/626016e))
+- **monkey:** Now can minimize the panel ([39e6f63](https://github.com/Chilfish/Weibo-archiver/commit/39e6f63))
+
+### 🩹 Fixes
+
+- Ui bugs ([#34](https://github.com/Chilfish/Weibo-archiver/pull/34))
+- Toggle collapse the comments ([be98c76](https://github.com/Chilfish/Weibo-archiver/commit/be98c76))
+- Ui bugs ([ccd3a15](https://github.com/Chilfish/Weibo-archiver/commit/ccd3a15))
+- **script:** Better to download images ([1382565](https://github.com/Chilfish/Weibo-archiver/commit/1382565))
+- **ui:** Image bugs ([e22fce8](https://github.com/Chilfish/Weibo-archiver/commit/e22fce8))
+- **web:** Routing & pagination ([3d9d430](https://github.com/Chilfish/Weibo-archiver/commit/3d9d430))
+- **ui:** Styles ([420bd3d](https://github.com/Chilfish/Weibo-archiver/commit/420bd3d))
+- **core:** Parse and export data ([8b94997](https://github.com/Chilfish/Weibo-archiver/commit/8b94997))
+- **scripts:** Download images ([72afcaf](https://github.com/Chilfish/Weibo-archiver/commit/72afcaf))
+- **ui:** Undefined var ([2dbe21b](https://github.com/Chilfish/Weibo-archiver/commit/2dbe21b))
+- **web:** Seo ([ac1018a](https://github.com/Chilfish/Weibo-archiver/commit/ac1018a))
+- **monkey:** Styles ([d0a2854](https://github.com/Chilfish/Weibo-archiver/commit/d0a2854))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.3
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.2...v0.3.3)
