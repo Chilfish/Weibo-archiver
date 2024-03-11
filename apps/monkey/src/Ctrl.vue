@@ -199,12 +199,16 @@ onMounted(async () => {
     <img
       src="https://p.chilfish.top/weibo/icon.webp"
       alt="Weibo archiver logo"
-      class="h-16 w-16"
+      class="h-14 w-14"
     >
   </div>
 </template>
 
 <style scoped>
+p {
+  color: black !important;
+}
+
 .card {
   position: fixed;
   right: 1rem; /* 16px */
@@ -222,7 +226,7 @@ onMounted(async () => {
 }
 
 .minimize {
-  width: 5rem;
+  width: 4rem;
   padding: 6px;
 }
 </style>
