@@ -2,7 +2,6 @@
 import AppMain from '@ui/AppMain.vue'
 import Ctrl from './Ctrl.vue'
 
-import '@unocss/reset/tailwind.css'
 import 'uno.css'
 import '@ui/shared.css'
 </script>
@@ -12,3 +11,9 @@ import '@ui/shared.css'
     <Ctrl />
   </AppMain>
 </template>
+
+<style>
+.n-base-clear {
+  display: none !important;
+}
+</style>

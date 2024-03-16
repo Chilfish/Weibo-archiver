@@ -130,9 +130,7 @@ onMounted(async () => {
       closable
     />
 
-    <n-alert
-      type="info"
-    >
+    <n-alert type="info">
       <p>
         导出完毕后，可在
         <a
@@ -206,6 +204,8 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+@import url('./reset.css');
+
 p {
   color: black !important;
 }

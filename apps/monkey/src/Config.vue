@@ -46,7 +46,7 @@ const dateRange = computed({
         label="导出转发的图片"
       />
       <button
-        class="bg-#18a058 py-1 btn hover:bg-green-7"
+        class="py-1 btn bg-#18a058! hover:bg-green-7!"
         @click="() => {
           config.isFetchAll = true
         }"
@@ -70,8 +70,6 @@ const dateRange = computed({
   </div>
 </template>
 
-<style>
-.n-base-clear {
-  display: none !important;
-}
+<style scoped>
+@import url('./reset.css');
 </style>
