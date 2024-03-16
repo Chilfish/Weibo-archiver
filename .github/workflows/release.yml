@@ -1,12 +1,12 @@
-name: Release
+name: Release Desktop Workflow
 
 on:
-  push:
-    tags:
-      - 'v*'
+  pull_request:
+    types: [opened]
 
 jobs:
   draft_release:
+    if: contains(github.event.pull_request.title, 'release-desktop')
     permissions:
       contents: write
 
