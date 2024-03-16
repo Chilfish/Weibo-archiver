@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.3.5
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.4...v0.3.5)
+
+### 🩹 Fixes
+
+- **web:** Update posts after changing user ([02f2eed](https://github.com/Chilfish/Weibo-archiver/commit/02f2eed))
+- **ui:** Scroll to up after changing page ([5d609dc](https://github.com/Chilfish/Weibo-archiver/commit/5d609dc))
+
+### 💅 Refactors
+
+- **core:** Move options for parse and fetch logic out ([a1bfd47](https://github.com/Chilfish/Weibo-archiver/commit/a1bfd47))
+
+### 🏡 Chore
+
+- Update License to Apache 2.0 ([154b1e7](https://github.com/Chilfish/Weibo-archiver/commit/154b1e7))
+- Update license ([b5a7213](https://github.com/Chilfish/Weibo-archiver/commit/b5a7213))
+- **docs:** Update  readme ([bed963f](https://github.com/Chilfish/Weibo-archiver/commit/bed963f))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.4
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.3...v0.3.4)
