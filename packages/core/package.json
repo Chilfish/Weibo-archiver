@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
-    "conf": "^12.0.0",
     "dayjs": "^1.11.10",
     "fuse.js": "^7.0.0",
     "idb": "^8.0.0",

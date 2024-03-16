@@ -63,6 +63,9 @@ importers:
       '@weibo-archiver/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      conf:
+        specifier: ^12.0.0
+        version: 12.0.0
       custom-electron-titlebar:
         specifier: ^4.2.8
         version: 4.2.8(electron@28.2.4)
@@ -151,7 +154,7 @@ importers:
         version: 2.7.10(@vueuse/core@10.9.0)(typescript@5.3.3)(vite@5.1.4)(vue@3.4.21)
       vite:
         specifier: ^5.1.4
-        version: 5.1.4(sass@1.71.1)
+        version: 5.1.4(@types/node@20.11.24)
       vite-plugin-monkey:
         specifier: ^3.5.1
         version: 3.5.1(vite@5.1.4)
@@ -203,9 +206,6 @@ importers:
       '@vueuse/core':
         specifier: ^10.9.0
         version: 10.9.0(vue@3.4.21)
-      conf:
-        specifier: ^12.0.0
-        version: 12.0.0
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
@@ -4398,7 +4398,7 @@ packages:
       chokidar: 3.6.0
       fast-glob: 3.3.2
       magic-string: 0.30.7
-      vite: 5.1.4(@types/node@20.11.24)
+      vite: 5.1.4(sass@1.71.1)
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -4680,7 +4680,7 @@ packages:
         optional: true
     dependencies:
       sirv: 2.0.4
-      vite: 5.1.4(sass@1.71.1)
+      vite: 5.1.4(@types/node@20.11.24)
       vue: 3.4.21(typescript@5.3.3)
     transitivePeerDependencies:
       - typescript
@@ -13696,7 +13696,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.7
       unplugin: 1.7.1
-      vite: 5.1.4(sass@1.71.1)
+      vite: 5.1.4(@types/node@20.11.24)
     dev: true
 
   /unplugin-vue-components@0.26.0(vue@3.4.21):
@@ -14245,7 +14245,7 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       systemjs: 6.14.3
-      vite: 5.1.4(sass@1.71.1)
+      vite: 5.1.4(@types/node@20.11.24)
     dev: true
 
   /vite-plugin-vue-devtools@7.0.16(vite@5.1.4)(vue@3.4.21):

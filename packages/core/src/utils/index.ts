@@ -1,5 +1,4 @@
 import { destr } from 'destr'
-import type { FetchOptions } from '@types'
 
 export * from './parse'
 export * from './dom'
@@ -26,17 +25,6 @@ export function storage<T>(key: string, defaultVal: T) {
 export function delay(ms = 2000) {
   const randomMs = Math.random() * ms + 1000
   return new Promise(resolve => setTimeout(resolve, randomMs))
-}
-
-export async function getOptions() {
-  if (!isElectron) {
-    return JSON.parse(localStorage.getItem('fetchOptions') || '{}') as FetchOptions
-  }
-  // TODO: 在构建 monkey 时，注释下面几行
-  else {
-    const { config } = await import('./config')
-    return config.store.fetchOptions
-  }
 }
 
 /**

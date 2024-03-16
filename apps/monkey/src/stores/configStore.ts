@@ -13,17 +13,16 @@ export const useConfigStore = defineStore('config', () => {
     uid: '',
     name: '',
     isFetchAll: true,
-    picLarge: true,
+    largePic: true,
     repostPic: true,
-    repost: true,
-    comment: true,
-    commentCount: 10,
+    hasRepost: true,
+    hasComment: true,
+    commentCount: 6,
     dateRange: [now, now],
-    isMinimize: false,
-    now,
+    isMinimize: true,
   })
 
-  // 判断 key 是否都相等
+  // 判断 key 是否都相等，如果相等则初始化配置
   function initConfig() {
     const keys = Object.keys(state)
     const localKeys = Object.keys(localData)

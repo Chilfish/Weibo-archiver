@@ -61,7 +61,6 @@ export default defineConfig({
           'https://weibo.com/u/*',
           'https://weibo.com/n/*',
           'https://weibo.chilfish.top/*',
-          'http://localhost:3334/*',
         ],
         grant: [
           'GM_setValue',

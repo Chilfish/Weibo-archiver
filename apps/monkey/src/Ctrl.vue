@@ -61,6 +61,7 @@ async function start() {
   isStop.value = false
 
   const { pause, resume } = await fetchPosts({
+    fetchOptions: config.value,
     startPage: () => postStore.fetchedPage + 1,
     isFetchAll: config.value.isFetchAll,
     setTotal: total => postStore.total = total,

@@ -39,6 +39,7 @@
     "@weibo-archiver/core": "workspace:*",
     "@weibo-archiver/database": "workspace:*",
     "@weibo-archiver/ui": "workspace:*",
+    "conf": "^12.0.0",
     "custom-electron-titlebar": "^4.2.8",
     "electron-context-menu": "^3.6.1",
     "electron-log": "^5.1.1",

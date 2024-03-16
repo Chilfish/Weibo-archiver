@@ -12,23 +12,14 @@ export interface FetchOptions {
    * 用户名
    */
   name: string
-
-  /**
-   * 用户的 cookie
-   */
-  cookie: string
-
-  now: number
-
   /**
    * 是否获取全部微博
    */
   isFetchAll: boolean
-
   /**
    * 下载图片的尺寸
    */
-  picLarge: boolean
+  largePic: boolean
   /**
    * 是否包含转发的微博的图片
    */
@@ -36,16 +27,15 @@ export interface FetchOptions {
   /**
    * 是否包含转发的微博
    */
-  repost: boolean
+  hasRepost: boolean
   /**
    * 是否包含评论
    */
-  comment: boolean
+  hasComment: boolean
   /**
    * 评论的数量
    */
   commentCount: number
-
   /**
    * 日期范围
    */
@@ -62,7 +52,13 @@ export interface AppConfig {
   osSep: '\\' | '/'
 
   useCdn: boolean
-  fetchOptions: FetchOptions
+  fetchOptions: FetchOptions & {
+
+    /**
+     * 用户的 cookie
+     */
+    cookie: string
+  }
 }
 
 type OnChange = (callback: (newValue: AppConfig, oldValue: AppConfig) => void) => Function

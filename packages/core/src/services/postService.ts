@@ -1,12 +1,11 @@
 import type {
   Comment,
+  FetchOptions,
   FetchReturn,
-  LoopFetchParams,
   Post,
   PostMeta,
 } from '@types'
 import {
-  getOptions,
   postsParser,
   weiFetch,
 } from '../utils'
@@ -18,16 +17,17 @@ import {
 let since_id = ''
 
 /**
- * 有没有可能，获取全部微博可以用 rangePosts 来实现？
- * 不设 start 参数就行……实际上并不行，会有缺失的微博
+ * 有没有可能，获取全部微博可以用 rangePosts 来实现？不设 start 参数……
+ * 实际上并不行，会有缺失的微博
  */
-export async function fetchAllPosts(page = 1): FetchReturn {
+export async function fetchAllPosts(
+  uid: string,
+  page = 1,
+): FetchReturn {
   if (page === 0)
     return null
   else if (page === 1)
     since_id = ''
-
-  const { uid } = await getOptions()
 
   const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/mymblog`, {
     params: {
@@ -43,16 +43,16 @@ export async function fetchAllPosts(page = 1): FetchReturn {
   else
     return null
 
-  return {
-    ...data,
-    list: await postsParser(data.list),
-  }
+  return data
 }
 
-export async function fetchRangePosts(page = 1): FetchReturn {
-  const { uid, dateRange, repost } = await getOptions()
-  const [start, end] = dateRange
-
+export async function fetchRangePosts(
+  uid: string,
+  start: number,
+  end: number,
+  page = 1,
+  hasRepost = true,
+): FetchReturn {
   const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/searchProfile`, {
     params: {
       uid,
@@ -60,7 +60,7 @@ export async function fetchRangePosts(page = 1): FetchReturn {
       starttime: start / 1000,
       endtime: end / 1000,
       hasori: 1, // 是否包含原创
-      hasret: repost ? 1 : 0, // 是否包含转发
+      hasret: hasRepost ? 1 : 0, // 是否包含转发
       hastext: 1, // 是否包含文字
       haspic: 1, // 是否包含图片
       hasvideo: 1, // 是否包含视频
@@ -68,10 +68,7 @@ export async function fetchRangePosts(page = 1): FetchReturn {
     },
   })
 
-  return {
-    ...data,
-    list: await postsParser(data.list || []),
-  }
+  return data
 }
 
 export async function fetchLongText(
@@ -81,7 +78,9 @@ export async function fetchLongText(
 
   if (post.isLongText) {
     await delay()
-    const { data } = await weiFetch<{ data: { longTextContent: string } }>(`/statuses/longtext`, {
+    const { data } = await weiFetch<{
+      data: { longTextContent: string }
+    }>(`/statuses/longtext`, {
       params: {
         id: post.id,
       },
@@ -94,40 +93,41 @@ export async function fetchLongText(
 }
 
 /**
- * 获取前 n 条评论
+ * 获取评论
+ * @param postId 微博 id
+ * @param uid 用户 id
+ * @param isShowBulletin 必填字段，区分旧微博和新微博
+ * @param count 获取数量
  */
-export async function fetchComments(post: Post): Promise<Comment[]> {
-  const { commentCount, comment, picLarge } = await getOptions()
-  const imgSize = picLarge ? 'woriginal' : 'large'
-
-  if (!post.user || post.comments_count === 0 || !comment)
-    return []
-
+export async function fetchComments(
+  postId: string,
+  uid: string,
+  isShowBulletin: number,
+  count: number,
+): Promise<Comment[]> {
   await delay(3000)
   const { data } = await weiFetch<{ data: Comment[] }>(`/statuses/buildComments`, {
     params: {
-      id: post.id,
-      is_show_bulletin: post.is_show_bulletin, // 必填字段，区分旧微博和新微博
+      id: postId,
+      is_show_bulletin: isShowBulletin,
       flow: 0, // 热评
       is_reload: 1, // 获取详情页的评论
       is_mix: 0,
       count: 10,
       fetch_level: 0,
       locale: 'zh_CN',
-      uid: post.user.id,
+      uid,
     },
   })
 
   if (!data)
     return []
 
-  return filterComments(
-    data.slice(0, commentCount),
-    imgSize,
-  )
+  return filterComments(data.slice(0, count))
 }
 
 interface FetchPosts {
+  fetchOptions: FetchOptions
   startPage: () => number
   isFetchAll: boolean
   setTotal: (total: number) => void
@@ -139,14 +139,19 @@ interface FetchPosts {
  * 爬取微博
  */
 export async function fetchPosts(
-  { startPage, isFetchAll, setTotal, addPosts, stopCondition }: FetchPosts,
+  { fetchOptions, startPage, isFetchAll, setTotal, addPosts, stopCondition }: FetchPosts,
 ) {
+  const { uid, dateRange, hasRepost } = fetchOptions
+  const [start, end] = dateRange
+
   async function fetching() {
     const page = startPage()
     const res = isFetchAll
-      ? await fetchAllPosts(page)
-      : await fetchRangePosts(page)
-    addPosts(res?.list || [])
+      ? await fetchAllPosts(uid, page)
+      : await fetchRangePosts(uid, start, end, page, hasRepost)
+    const list = await postsParser(res?.list || [], fetchOptions)
+
+    addPosts(list)
     console.log(`已获取第 ${page} 页`)
     return res
   }
@@ -172,30 +177,4 @@ export async function fetchPosts(
     pause,
     resume,
   }
-}
-
-/**
- * @deprecated use {@link usePausableLoop} instead
- */
-export async function loopFetcher(
-  { start, stopFn, fetchFn, onResult, onEnd, isAbort }: LoopFetchParams,
-) {
-  let page = start + 1
-  while (!stopFn()) {
-    await delay()
-    if (isAbort)
-      return
-
-    const data = await fetchFn?.(page)
-    onResult(data!.list)
-
-    // 无数据时，直接退出
-    if (data!.list.length === 0) {
-      await onEnd?.()
-      return
-    }
-    page++
-  }
-
-  await onEnd?.()
 }

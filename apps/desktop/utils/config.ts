@@ -21,15 +21,14 @@ const config = new Config<AppConfig>({
     theme: 'light',
     useCdn: false,
     fetchOptions: {
-      now,
       uid: '',
       name: '',
       cookie: '',
       isFetchAll: true,
-      picLarge: true,
+      largePic: true,
       repostPic: true,
-      repost: true,
-      comment: true,
+      hasComment: true,
+      hasRepost: true,
       commentCount: 10,
       dateRange: [now, now],
     },
@@ -40,7 +39,6 @@ const path = config.path.replace(/config\.json$/, '')
 
 config.set('configPath', path)
 config.set('version', version)
-config.set('fetchOptions.now', now)
 config.set('fetchOptions.dateRange', [now, now])
 
 export default config

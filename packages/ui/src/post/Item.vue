@@ -33,7 +33,10 @@ watchEffect(() => {
 
     <main>
       <post-text :text="post.text" />
-      <gallery :imgs="post.imgs" />
+      <gallery
+        v-if="!post.retweeted_status"
+        :imgs="post.imgs"
+      />
       <post-card
         v-if="post.card && !post.retweeted_status"
         :card="post.card"

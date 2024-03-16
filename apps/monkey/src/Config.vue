@@ -1,19 +1,18 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useConfigStore } from './stores'
 
-const configStore = useConfigStore()
+const { state: config } = storeToRefs(useConfigStore())
 
 const dateRange = computed({
   get() {
-    return configStore.state.dateRange
+    return config.value.dateRange
   },
   set(val: [number, number]) {
-    configStore.state.dateRange = val ?? [Date.now(), Date.now()]
-    configStore.state.isFetchAll = false
+    config.value.dateRange = val ?? [Date.now(), Date.now()]
+    config.value.isFetchAll = false
   },
 })
-
-configStore.setConfig({ now: Date.now() })
 </script>
 
 <template>
@@ -30,26 +29,26 @@ configStore.setConfig({ now: Date.now() })
 
     <div class="center flex-wrap justify-start gap-2">
       <n-checkbox
-        v-model:checked="configStore.state.picLarge"
+        v-model:checked="config.largePic"
         label="导出原图"
       />
       <n-checkbox
-        v-model:checked="configStore.state.comment"
+        v-model:checked="config.hasComment"
         label="包含评论"
       />
       <n-checkbox
-        v-model:checked="configStore.state.repost"
+        v-model:checked="config.hasRepost"
         label="包含转发的微博"
       />
       <n-checkbox
-        v-show="configStore.state.repost"
-        v-model:checked="configStore.state.repostPic"
+        v-show="config.hasRepost"
+        v-model:checked="config.repostPic"
         label="导出转发的图片"
       />
       <button
         class="bg-#18a058 py-1 btn hover:bg-green-7"
         @click="() => {
-          configStore.state.isFetchAll = true
+          config.isFetchAll = true
         }"
       >
         重置为所有微博
@@ -57,15 +56,15 @@ configStore.setConfig({ now: Date.now() })
     </div>
 
     <div
-      v-show="configStore.state.comment"
+      v-show="config.hasComment"
       class="flex items-center gap-4"
     >
-      <span>要获取的评论数（最多15条）</span>
+      <span>要获取的评论数（最多20条）</span>
       <n-input-number
-        v-model="configStore.state.commentCount"
-        :default-value="10"
+        v-model="config.commentCount"
+        :default-value="6"
         :min="0"
-        :max="15"
+        :max="20"
       />
     </div>
   </div>

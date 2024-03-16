@@ -7,7 +7,6 @@ import type {
   Post,
 } from '@types'
 import { fetchComments, fetchLongText } from '../services'
-import { getOptions } from '.'
 
 export const weibo = 'https://weibo.com'
 
@@ -98,7 +97,6 @@ function parseCard(url_struct?: any[], card?: any): CardInfo | undefined {
  */
 export function filterComments(
   comments?: any[],
-  imgSize = 'large',
 ): Comment[] {
   if (!comments || !comments.length || !comments[0]?.id)
     return []
@@ -110,9 +108,9 @@ export function filterComments(
       let img = ''
       if (comment.url_struct) {
         comment.url_struct.forEach((item: any) => {
-          if (item.pic_ids) {
+          if (item.pic_ids && item.url_title === '查看图片') {
             const { pic_ids, pic_infos } = item
-            img = parseImg(imgSize, pic_ids, pic_infos)[0]
+            img = parseImg('large', pic_ids, pic_infos)[0]
           }
         })
       }
@@ -138,7 +136,12 @@ export function filterComments(
       return null
     }
   })
-    .filter(Boolean) as Comment[]
+    .filter((e): e is Comment => !!e)
+    .sort((a, b) => {
+      const aCount = a.comments_count + a.like_count
+      const bCount = b.comments_count + b.like_count
+      return bCount - aCount
+    })
 }
 
 export async function postFilter(
@@ -146,20 +149,23 @@ export async function postFilter(
   options: FetchOptions,
   isRepost = false,
 ): Promise<Post | undefined> {
-  if (!post || !post.id || (!options.repost && !!post.retweeted_status?.id))
+  if (!post || !post.id || (!options.hasRepost && !!post.retweeted_status?.id))
     return undefined
 
   const includeImgs = !isRepost || (isRepost && options.repostPic)
-  const imgSize = options.picLarge ? 'largest' : 'large'
+  const imgSize = options.largePic ? 'largest' : 'large'
 
   // 转发的微博不需要评论
-  const includeComments = !isRepost && options.comment
+  const includeComments = !isRepost && options.hasComment && post.comments_count > 0 && post
 
   try {
     const { text, textImg } = await fetchLongText(post)
     const imgs = includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : []
 
     textImg && imgs.push(textImg)
+
+    const postId = post.id
+    const uid = post.user?.idstr || options.uid
 
     const res: Post = {
       id: post.id,
@@ -170,7 +176,7 @@ export async function postFilter(
       like_count: post.attitudes_count,
       created_at: post.created_at,
       user: {
-        id: post.user?.idstr,
+        id: uid,
         screen_name: post.user?.screen_name,
         profile_image_url: post.user?.profile_image_url,
       },
@@ -180,7 +186,9 @@ export async function postFilter(
       detail_url: `${weibo}/${post.user?.id}/${post.mblogid}`,
       retweeted_status: await postFilter(post.retweeted_status, options, true),
       card: parseCard(post.url_struct, post.page_info),
-      comments: includeComments ? await fetchComments(post) : [],
+      comments: includeComments
+        ? await fetchComments(postId, uid, post.is_show_bulletin, options.commentCount)
+        : [],
     }
 
     return res
@@ -191,9 +199,10 @@ export async function postFilter(
   }
 }
 
-export async function postsParser(posts: any[]): Promise<Post[]> {
-  const options = await getOptions()
-
+export async function postsParser(
+  posts: any[],
+  options: FetchOptions,
+): Promise<Post[]> {
   const res = await Promise.all(
     posts.map(async post => await postFilter(post, options)),
   )
@@ -212,7 +221,8 @@ export function imgsParser(posts: Post[]): Set<string> {
         post.user?.profile_image_url,
         post.card?.img,
         textImg,
-      ].filter(Boolean) as string[]
+      ]
+        .filter((e): e is string => !!e)
     })
     .flat()
     .flat()
@@ -221,8 +231,11 @@ export function imgsParser(posts: Post[]): Set<string> {
   return new Set(imgs)
 }
 
-export async function parsedData(posts: Post[]): Promise<ParseResult> {
-  const parsedPosts = await postsParser(posts)
+export async function parsedData(
+  posts: Post[],
+  options: FetchOptions,
+): Promise<ParseResult> {
+  const parsedPosts = await postsParser(posts, options)
   const imgs = imgsParser(parsedPosts)
 
   return {
