@@ -21,7 +21,7 @@ withDefaults(defineProps<{
         color="#9ca3af"
         text="3 center"
         :size="56"
-        :src="`/api/img?url=${encodeURIComponent(user.avatar)}`"
+        :src="replaceImg(user.avatar, true)"
         :img-props="{
           alt: `${user.name}'s avatar`,
         }"

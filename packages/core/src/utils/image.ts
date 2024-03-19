@@ -5,7 +5,7 @@ import { storage } from './index'
  * 将图片的远程 url 替换为本地图片
  * 格式：域名-文件名
  */
-export function replaceImg(img: string) {
+export function replaceImg(img: string, forceCdn = false) {
   if (!img)
     return imgViewSrc
 
@@ -15,7 +15,7 @@ export function replaceImg(img: string) {
   const imgHost = storage<string>('imgHost', '/')
 
   // 使用 ipfs cdn
-  if (imgHost === imgCdn) {
+  if (imgHost === imgCdn || forceCdn) {
     if (img.includes('sinaimg.cn')) {
       const { pathname } = new URL(img)
       return `${imgCdn}${pathname}`

@@ -34,7 +34,6 @@ export default defineNuxtConfig({
   imports: {
     dirs: [
       'stores',
-      'server/utils',
       join(root, 'packages/core/src'),
     ],
   },
