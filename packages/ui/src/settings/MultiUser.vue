@@ -47,7 +47,7 @@ function switchUser(uid: string) {
     />
 
     <button
-      class="transition-opacity btn"
+      class="ml-36 transition-opacity btn"
       op="0 group-hover:100"
       @click="switchUser(user.uid)"
     >

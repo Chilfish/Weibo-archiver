@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useMessage } from 'naive-ui'
+
 window.$message = useMessage()
 </script>
 
@@ -6,7 +8,7 @@ window.$message = useMessage()
   <n-tabs
     type="card"
     animated
-    class="min-h-40vh min-w-80vw md:min-w-36vw"
+    class="min-h-40vh"
   >
     <n-tab-pane name="settings" tab="设置">
       <settings-base />

@@ -77,7 +77,7 @@ watchImmediate(
           v-for="user in users"
           :key="user.uid"
           :user="user"
-          class="w-full"
+          class="w-full sm:w-50vw"
           bg="light-4 dark:dark-2"
         />
       </div>
