@@ -24,7 +24,7 @@ onMounted(async () => {
     return
   }
 
-  await postStore.updateTotal()
+  await postStore.init()
 
   loaded.value = true
 })

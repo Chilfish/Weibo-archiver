@@ -6,7 +6,7 @@ import type { DBSchema, IDBPDatabase } from 'idb'
 import type { Post, UID } from '@types'
 
 const STORE_NAME = 'posts'
-const DB_VERSION = Number(localStorage.getItem('db_version')) || 2
+const DB_VERSION = 2
 
 type AppDB = DBSchema & {
   [STORE_NAME]: {
@@ -49,6 +49,10 @@ export class IDB {
   }
 
   lastRange = IDBKeyRange.upperBound(Date.now())
+
+  /**
+   * 分页地获取帖子
+   */
   async getDBPosts(
     page = 1,
     limit = 10,
@@ -80,7 +84,10 @@ export class IDB {
     return posts
   }
 
-  async getDBPost(times: number[]) {
+  /**
+   * 从时间戳数组中获取帖子
+   */
+  async getDBPostByTime(times: number[]) {
     const db = await this.idb
     const posts: Post[] = []
     const ts = db.transaction(STORE_NAME)
@@ -94,11 +101,17 @@ export class IDB {
     return posts
   }
 
+  /**
+   * 获取所有帖子
+   */
   async getAllDBPosts() {
     const db = await this.idb
     return await db.getAll(STORE_NAME)
   }
 
+  /**
+   * 获取帖子总数
+   */
   async getPostCount() {
     const db = await this.idb
     return await db.count(STORE_NAME)
@@ -138,6 +151,9 @@ export class IDB {
     }
   }
 
+  /**
+   * 清空数据库
+   */
   async clearDB() {
     const db = await this.idb
     await db.clear(STORE_NAME)
@@ -192,6 +208,7 @@ export class IDB {
      * TODO: 更多的搜索选项
      * 全文匹配搜索
      * @param text
+     * @returns 返回匹配的时间戳数组
      */
       search: (text: string) => {
         const query = decodeURIComponent(text)
@@ -199,11 +216,14 @@ export class IDB {
           .map(t => searchToken.some(s => t.startsWith(s)) ? t : `'${t}`)
           .join(' ')
 
-        return fuse.search(query)
+        return fuse.search(query).map(r => r.item.time).sort()
       },
     }
   }
 
+  /**
+   * 根据时间戳范围筛选帖子
+   */
   async filterByTime(
     start: number,
     end: number,
@@ -258,7 +278,7 @@ export class EmptyIDB extends IDB {
   }
 
   async getDBPosts(_page = 1, _limit = 10) { return [] as Post[] }
-  async getDBPost(_times: number[]) { return [] as Post[] }
+  async getDBPostByTime(_times: number[]) { return [] as Post[] }
   async getAllDBPosts() { return [] as Post[] }
   async getPostCount() { return 0 }
   async clearDB() { }
@@ -267,13 +287,13 @@ export class EmptyIDB extends IDB {
   ) {
     return {
       count: 0,
-      search: (_text: string) => [] as SaerchResult,
+      search: (_text: string) => [] as number[],
     }
   }
 
   buildSearch(_posts: Post[]) {
     return {
-      search: (_text: string) => [] as SaerchResult,
+      search: (_text: string) => [] as number[],
     }
   }
 }

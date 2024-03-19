@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { Post, UID } from '@types'
-import { EmptyIDB, IDB, type SaerchResult } from '../utils/storage'
+import { EmptyIDB, IDB } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
@@ -41,22 +41,18 @@ export const usePostStore = defineStore('post', () => {
     }),
   })
 
-  const seachFn = ref<(text: string) => SaerchResult>()
+  const seachFn = ref<(text: string) => number[]>()
 
-  // 该结果的总帖子数
+  /* 该结果的总帖子数 */
   const total = ref(0)
 
-  // DB 中的帖子总数
+  /* DB 中的帖子总数 */
   const totalDB = ref(0)
 
+  /** 当前筛出来微博的总页数 */
   const pages = computed(() => {
     return Math.ceil(total.value / pageSize.value)
   })
-
-  function reset() {
-    curPage.value = 1
-    pageSize.value = 20
-  }
 
   /**
    * 等待 IDB 初始化完成
@@ -100,8 +96,6 @@ export const usePostStore = defineStore('post', () => {
     }
 
     const result = seachFn.value(query)
-      .map(r => r.item)
-      .sort((a, b) => b.time - a.time)
 
     const count = result.length
     total.value = count
@@ -138,7 +132,7 @@ export const usePostStore = defineStore('post', () => {
     else {
       const _result = await searchPost(query, p)
 
-      result = await idb.value.getDBPost(_result.map(p => p.time))
+      result = await idb.value.getDBPostByTime(_result)
     }
 
     return result
@@ -169,7 +163,7 @@ export const usePostStore = defineStore('post', () => {
     const p = page || curPage.value
 
     const result = await _searchPost(query)
-      .then(posts => posts.filter(p => p.time >= start && p.time <= end))
+      .then(posts => posts.filter(time => time >= start && time <= end))
 
     total.value = result.length
 
@@ -177,7 +171,7 @@ export const usePostStore = defineStore('post', () => {
     const endIdx = startIdx + pageSize.value
     const sliced = result.slice(startIdx, endIdx)
 
-    const posts = await idb.value.getDBPost(sliced.map(p => p.time))
+    const posts = await idb.value.getDBPostByTime(sliced)
     return posts
   }
 
@@ -211,7 +205,6 @@ export const usePostStore = defineStore('post', () => {
 
     get,
     set,
-    reset,
 
     clearDB: async () => {
       await waitIDB()
@@ -225,6 +218,10 @@ export const usePostStore = defineStore('post', () => {
       await waitIDB()
       return idb.value.getPostCount()
     },
+
+    init: () => Promise.all([
+      updateTotal(),
+    ]),
     updateTotal,
     getByTime,
     searchPost,

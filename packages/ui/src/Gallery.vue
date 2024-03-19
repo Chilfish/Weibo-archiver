@@ -6,9 +6,12 @@ const props = defineProps<{
 const len = computed(() => props.imgs.length)
 
 const imgWidth = computed(() => {
-  if (len.value >= 3)
-    return '32%'
-  return '14rem'
+  if (len.value === 1)
+    return '14rem'
+  if (len.value === 2)
+    return '10rem'
+
+  return '32%'
 })
 </script>
 
