@@ -32,8 +32,11 @@ export function lazyLoadImage(
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const img = entry.target as HTMLImageElement
-        const src = img.getAttribute('data-preview-src')
-        img.src = src || ImgPlaceholder
+        const src = img.getAttribute('data-preview-src') || ImgPlaceholder
+
+        // 使用缩略图
+        img.src = src.startsWith(imgCdn) ? src.replace('large', 'orj360') : src
+
         img.onerror = () => {
           img.src = ImgPlaceholder
           img.parentElement?.classList.add('img-error')
