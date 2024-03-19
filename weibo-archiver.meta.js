@@ -10,7 +10,7 @@
 // @source       https://github.com/Chilfish/Weibo-archiver/tree/main/packages/monkey
 // @supportURL   https://github.com/Chilfish/Weibo-archiver/issues
 // @downloadURL  https://github.com/Chilfish/Weibo-archiver/raw/monkey/weibo-archiver.user.js
-// @updateURL    https://github.com/Chilfish/Weibo-archiver/raw/monkey/weibo-archiver.user.js
+// @updateURL    https://github.com/Chilfish/Weibo-archiver/raw/monkey/weibo-archiver.meta.js
 // @match        https://weibo.com/u/*
 // @match        https://weibo.com/n/*
 // @match        https://weibo.chilfish.top/*
