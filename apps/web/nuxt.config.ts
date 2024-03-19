@@ -89,7 +89,7 @@ export default defineNuxtConfig({
     head: {
       viewport: 'width=device-width,initial-scale=1',
       link: [
-        { rel: 'icon', href: '/icon.png', sizes: 'any' },
+        { rel: 'icon', href: '/icon.webp', sizes: 'any' },
       ],
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

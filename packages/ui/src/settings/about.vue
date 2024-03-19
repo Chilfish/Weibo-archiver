@@ -10,7 +10,7 @@ const version = import.meta.env.VITE_APP_VERSION
       class="w-24"
       preview-disabled
       alt="logo"
-      src="/icon.png"
+      src="/icon.webp"
     />
 
     <div class="mb-4 center flex-wrap gap-2">
