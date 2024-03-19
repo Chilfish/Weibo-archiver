@@ -8,14 +8,11 @@
   "main": "index.ts",
   "dependencies": {
     "@weibo-archiver/core": "workspace:^",
-    "file-saver": "^2.0.5",
-    "jszip": "3.9.1",
-    "sass": "^1.71.1"
+    "sass": "^1.72.0"
   },
   "devDependencies": {
-    "@iconify-json/tabler": "^1.1.106",
-    "@unocss/eslint-config": "^0.58.5",
-    "@unocss/eslint-plugin": "^0.58.5",
-    "unocss": "^0.58.5"
+    "@iconify-json/tabler": "^1.1.109",
+    "naive-ui": "^2.38.1",
+    "unocss": "^0.58.6"
   }
 }

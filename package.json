@@ -2,7 +2,7 @@
   "name": "weibo-archiver",
   "type": "module",
   "version": "0.3.5",
-  "packageManager": "pnpm@8.15.4",
+  "packageManager": "pnpm@8.15.5",
   "description": "Archive your Weibo posts before being banned completely.",
   "author": {
     "name": "Chilfish",
@@ -19,7 +19,7 @@
     "dev:web": "pnpm -F web dev",
     "dev:monkey": "pnpm -F monkey dev",
     "dev:desktop": "pnpm -C apps/desktop dev",
-    "build:web": "pnpm -F web build",
+    "build:web": "pnpm -F web generate",
     "build:monkey": "pnpm -F monkey build",
     "build:desktop": "pnpm -C apps/desktop compile",
     "rebuild:db": "pnpm -F database rebuild",
@@ -27,26 +27,26 @@
     "preview:web": "pnpm -F web preview",
     "typecheck:web": "pnpm -F web typecheck",
     "typecheck:desktop": "pnpm -C apps/desktop typecheck",
+    "install:web": "pnpm -F web... install",
+    "install:monkey": "pnpm -F monkey... install",
     "lint": "eslint .",
     "prepare": "husky || true"
   },
   "dependencies": {
-    "@vueuse/core": "^10.9.0",
-    "destr": "^2.0.3",
-    "pinia": "^2.1.7",
     "vue": "^3.4.21"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.7.0",
+    "@antfu/eslint-config": "^2.8.3",
+    "@unocss/eslint-config": "^0.58.6",
+    "@unocss/eslint-plugin": "^0.58.6",
     "eslint": "npm:eslint-ts-patch@8.55.0-1",
     "eslint-plugin-format": "^0.1.0",
     "eslint-ts-patch": "8.55.0-1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "naive-ui": "^2.38.1",
-    "pnpm": "^8.15.4",
-    "typescript": "^5.3.3",
-    "vue-tsc": "^2.0.3"
+    "pnpm": "^8.15.5",
+    "typescript": "^5.4.2",
+    "vue-tsc": "^2.0.6"
   },
   "lint-staged": {
     "*": "eslint --fix"

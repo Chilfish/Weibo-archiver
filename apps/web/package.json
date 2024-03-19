@@ -6,6 +6,7 @@
   "description": "",
   "author": "",
   "scripts": {
+    "ins": "pnpm -F web... install",
     "build": "nuxi build",
     "dev": "nuxi dev",
     "generate": "nuxi generate",
@@ -16,18 +17,17 @@
     "typecheck": "nuxi typecheck"
   },
   "devDependencies": {
-    "@bg-dev/nuxt-naiveui": "^1.10.2",
-    "@nuxt/image": "^1.3.0",
+    "@bg-dev/nuxt-naiveui": "^1.10.4",
+    "@nuxt/image": "^1.4.0",
     "@nuxtjs/color-mode": "^3.3.2",
     "@nuxtjs/seo": "2.0.0-rc.8",
     "@pinia/nuxt": "^0.5.1",
-    "@types/jsdom": "^21.1.6",
-    "@types/node": "^20.11.24",
-    "@unocss/nuxt": "^0.58.5",
+    "@unocss/nuxt": "^0.58.6",
     "@vercel/analytics": "^1.2.2",
     "@vueuse/nuxt": "^10.9.0",
+    "@weibo-archiver/core": "workspace:^",
     "@weibo-archiver/ui": "workspace:^",
     "dayjs-nuxt": "^2.1.9",
-    "nuxt": "^3.10.3"
+    "nuxt": "3.10.3"
   }
 }

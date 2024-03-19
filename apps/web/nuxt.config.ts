@@ -67,6 +67,7 @@ export default defineNuxtConfig({
         target: 'esnext',
       },
     },
+    static: true,
     routeRules: {
       '/': { redirect: '/post' },
     },

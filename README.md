@@ -75,7 +75,7 @@ scripts 文件夹中包含了交互式一键运行的 `run.bat` 脚本（感谢 
 
 ### 对开发者
 
-项目采用 monorepo 的结构，使用 pnpm 管理。Web 页面托管在 [vercel] 上
+项目采用 monorepo 的结构，使用 pnpm 管理，因此需要先安装 pnpm：`npm i -g pnpm`
 
 在 packages 目录下：
 
@@ -85,11 +85,13 @@ scripts 文件夹中包含了交互式一键运行的 `run.bat` 脚本（感谢 
 
 在 apps 目录下，为最终的应用
 
-- [/web](apps/web/) 是用于最终查看微博数据的网页
+- [/web](apps/web/) 是用于最终查看微博数据的网页，目前托管在 [vercel] 上
 - [/monkey](apps/monkey/) 用于打包成油猴脚本
 - [/desktop](apps/desktop/) 桌面端版本
 
 只需要在根目录中 `pnpm i` 即为所有子项目安转依赖，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
+
+而如果只需要开发或打包 web 端，可以运行 `pnpm install:web`，这将只安装 web 端的依赖，届时再运行 `pnpm dev:web` 即可。至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpm dlx serve .\.output\public\` 来查看
 
 目前我还在学习着 electron 开发，桌面端部分还得再等等🥺原型什么的还在设计
 
