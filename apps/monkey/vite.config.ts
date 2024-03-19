@@ -13,6 +13,7 @@ const ui = path.resolve(packages, 'ui/src')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
 const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
+const updateURL = `${repo}/raw/monkey/weibo-archiver.meta.js`
 
 export default defineConfig({
   resolve: {
@@ -24,6 +25,7 @@ export default defineConfig({
   build: {
     minify: true,
     outDir: path.join(root, 'dist/monkey'),
+    emptyOutDir: true,
   },
   plugins: [
     Vue(),
@@ -52,7 +54,7 @@ export default defineConfig({
         source: `${repo}/tree/main/packages/monkey`,
         icon: 'https://p.chilfish.top/weibo/icon.webp',
         downloadURL,
-        updateURL: downloadURL,
+        updateURL,
         supportURL: `${repo}/issues`,
         author: 'Chilfish',
         license: 'MIT',
@@ -69,8 +71,10 @@ export default defineConfig({
       },
       server: {
         mountGmApi: true,
+        open: false,
       },
       build: {
+        metaFileName: true,
         externalGlobals: {
           'vue': cdn.unpkg('Vue', 'dist/vue.global.prod.js')
             .concat(util.dataUrl(';window.Vue=Vue;')),
