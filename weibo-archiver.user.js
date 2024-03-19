@@ -1,7 +1,13 @@
+function __vite__mapDeps(indexes) {
+  if (!__vite__mapDeps.viteFileDeps) {
+    __vite__mapDeps.viteFileDeps = []
+  }
+  return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
+}
 // ==UserScript==
 // @name         Weibo Archiver
 // @namespace    chilfish/monkey
-// @version      0.3.5
+// @version      0.3.6
 // @author       Chilfish
 // @description  将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭
 // @license      MIT
@@ -34,7 +40,7 @@ System.set("user:pinia", (()=>{const _=Pinia;('default' in _)||(_.default=_);ret
 System.set("user:vue", (()=>{const _=Vue;('default' in _)||(_.default=_);return _})());
 System.set("user:file-saver", (()=>{const _=saveAs;('default' in _)||(_.default=_);return _})());
 
-System.register("./__entry.js", ['./__monkey.entry-BMzHKASz.js'], (function (exports, module) {
+System.register("./__entry.js", ['./__monkey.entry-8er0tant.js'], (function (exports, module) {
 	'use strict';
 	return {
 		setters: [null],
@@ -46,18 +52,18 @@ System.register("./__entry.js", ['./__monkey.entry-BMzHKASz.js'], (function (exp
 	};
 }));
 
-System.register("./__monkey.entry-BMzHKASz.js", [], (function (exports, module) {
+System.register("./__monkey.entry-8er0tant.js", [], (function (exports, module) {
 	'use strict';
 	return {
 		execute: (function () {
 
-			const m=function(){const o=typeof document<"u"&&document.createElement("link").relList;return o&&o.supports&&o.supports("modulepreload")?"modulepreload":"preload"}(),f=function(n){return "/"+n},_={},u=function(o,s,d){let l=Promise.resolve();if(s&&s.length>0){const t=document.getElementsByTagName("link");l=Promise.all(s.map(e=>{if(e=f(e),e in _)return;_[e]=!0;const i=e.endsWith(".css"),p=i?'[rel="stylesheet"]':"";if(!!d)for(let a=t.length-1;a>=0;a--){const c=t[a];if(c.href===e&&(!i||c.rel==="stylesheet"))return}else if(document.querySelector(`link[href="${e}"]${p}`))return;const r=document.createElement("link");if(r.rel=i?"stylesheet":m,i||(r.as="script",r.crossOrigin=""),r.href=e,document.head.appendChild(r),i)return new Promise((a,c)=>{r.addEventListener("load",a),r.addEventListener("error",()=>c(new Error(`Unable to preload CSS for ${e}`)));})}));}return l.then(()=>o()).catch(t=>{const e=new Event("vite:preloadError",{cancelable:!0});if(e.payload=t,window.dispatchEvent(e),!e.defaultPrevented)throw t})};var v=typeof GM_getValue<"u"?GM_getValue:void 0,y=typeof GM_setValue<"u"?GM_setValue:void 0; exports({ v, y });async function E(){const n=(await u(()=>module.import('./App-DBd_eUBd-aWNSRHdf.js'),void 0)).default,{createPinia:o}=await u(()=>module.import('pinia'),void 0),{naive:s}=await u(()=>module.import('./naiveui-4uIYfeDn-dLV3HBPH.js'),void 0),{createApp:d}=await u(()=>module.import('vue'),void 0),l=d(n),t=document.createElement("div");t.id="plugin-app",document.body.append(t),l.use(o()).use(s).mount(t);}if(document.location.hostname==="weibo.com")E();else {const n=v("users")||[];localStorage.setItem("users",JSON.stringify(n));}
+			const m=function(){const o=typeof document<"u"&&document.createElement("link").relList;return o&&o.supports&&o.supports("modulepreload")?"modulepreload":"preload"}(),f=function(n){return "/"+n},_={},u=function(o,s,d){let l=Promise.resolve();if(s&&s.length>0){const t=document.getElementsByTagName("link");l=Promise.all(s.map(e=>{if(e=f(e),e in _)return;_[e]=!0;const i=e.endsWith(".css"),p=i?'[rel="stylesheet"]':"";if(!!d)for(let a=t.length-1;a>=0;a--){const c=t[a];if(c.href===e&&(!i||c.rel==="stylesheet"))return}else if(document.querySelector(`link[href="${e}"]${p}`))return;const r=document.createElement("link");if(r.rel=i?"stylesheet":m,i||(r.as="script",r.crossOrigin=""),r.href=e,document.head.appendChild(r),i)return new Promise((a,c)=>{r.addEventListener("load",a),r.addEventListener("error",()=>c(new Error(`Unable to preload CSS for ${e}`)));})}));}return l.then(()=>o()).catch(t=>{const e=new Event("vite:preloadError",{cancelable:!0});if(e.payload=t,window.dispatchEvent(e),!e.defaultPrevented)throw t})};var v=typeof GM_getValue<"u"?GM_getValue:void 0,y=typeof GM_setValue<"u"?GM_setValue:void 0; exports({ v, y });async function E(){const n=(await u(()=>module.import('./App-DkZkf-4G-CTsrodll.js'),void 0)).default,{createPinia:o}=await u(()=>module.import('pinia'),void 0),{naive:s}=await u(()=>module.import('./naiveui-Ca92pYBw-CMeXYSey.js'),void 0),{createApp:d}=await u(()=>module.import('vue'),void 0),l=d(n),t=document.createElement("div");t.id="plugin-app",document.body.append(t),l.use(o()).use(s).mount(t);}if(document.location.hostname==="weibo.com")E();else {const n=v("users")||[];localStorage.setItem("users",JSON.stringify(n));}
 
 		})
 	};
 }));
 
-System.register("./App-DBd_eUBd-aWNSRHdf.js", ['vue', 'file-saver', './use-message-ZJMYZIPr-QCBUN_l9.js', 'pinia', './__monkey.entry-BMzHKASz.js'], (function (exports, module) {
+System.register("./App-DkZkf-4G-CTsrodll.js", ['vue', 'file-saver', './use-message-D3JTYI7p-DBvG3W7n.js', 'pinia', './__monkey.entry-8er0tant.js'], (function (exports, module) {
 	'use strict';
 	var defineComponent, computed, openBlock, createBlock, unref, withCtx, createVNode, renderSlot, reactive, watchEffect, ref, resolveComponent, createElementBlock, isRef, createElementVNode, withDirectives, vShow, watch, onMounted, Fragment, toDisplayString, createTextVNode, pushScopeId, popScopeId, toRef, readonly, customRef, nextTick, shallowRef, getCurrentScope, onScopeDispose, getCurrentInstance, saveAs, ko, Y, Ae, $e, Ws$1, Gs$1, Us$1, zo$1, Ja$1, ge$1, Fs$1, rs$1, is$1, ss$1, us$1, gs$1, vs$1, Cs$1, G$1, As$1, Ms$1, Ds$1, zs$1, fo$1, Es$1, defineStore, storeToRefs, v, y;
 	return {
@@ -138,7 +144,7 @@ System.register("./App-DBd_eUBd-aWNSRHdf.js", ['vue', 'file-saver', './use-messa
 	};
 }));
 
-System.register("./naiveui-4uIYfeDn-dLV3HBPH.js", ['vue', './use-message-ZJMYZIPr-QCBUN_l9.js'], (function (exports, module) {
+System.register("./naiveui-Ca92pYBw-CMeXYSey.js", ['vue', './use-message-D3JTYI7p-DBvG3W7n.js'], (function (exports, module) {
       'use strict';
       var defineComponent, provide, getCurrentInstance, inject, ref, onBeforeUnmount, withDirectives, toRef, computed, h, Teleport, onMounted, watch, nextTick, renderSlot, onActivated, onDeactivated, mergeProps, watchEffect, Fragment, Transition, readonly, reactive, onBeforeMount, isVNode, Comment, createTextVNode, dr$1, He, ut, ye, re, y, D, Z, or, uo$1, Aa$1, ja$1, tr, Ze$1, po$1, Ka$1, go$1, es, N, Ba$1, Na$1, dt, ge, Ls$1, Is, Fo$1, ko, Y, Da$1, Ma$1, Fa$1, za$1, nt$1, fo$1, _a$1, Oa$1, Es, Q$1, mo$1, Rs, vo$1, zo$1, bo, Bs, fs, ks, Ns, Us, Ws$1, Gs$1, Ha$1, qe$1, Ae$1, Hr$1, G, js$1, Fs, As, Ms, Ds, zs;
       return {
@@ -1336,7 +1342,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       };
 }));
 
-System.register("./use-message-ZJMYZIPr-QCBUN_l9.js", ['vue'], (function (exports, module) {
+System.register("./use-message-D3JTYI7p-DBvG3W7n.js", ['vue'], (function (exports, module) {
 	'use strict';
 	var h$1, defineComponent, Transition, toRef, inject, computed, markRaw, provide, ref, onMounted, Fragment, Teleport, createTextVNode, watch, readonly, onBeforeMount, shallowRef, watchEffect, TransitionGroup, reactive;
 	return {
@@ -1632,9 +1638,4 @@ ${r}
 	};
 }));
 
-System.import("./__entry.js", "./");function __vite__mapDeps(indexes) {
-  if (!__vite__mapDeps.viteFileDeps) {
-    __vite__mapDeps.viteFileDeps = []
-  }
-  return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
-}
+System.import("./__entry.js", "./");
