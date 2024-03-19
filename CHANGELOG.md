@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.3.6
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.5...v0.3.6)
+
+### 🩹 Fixes
+
+- **CI:** Only release the desktop on special pr ([e0dd3e7](https://github.com/Chilfish/Weibo-archiver/commit/e0dd3e7))
+- **monkey:** Scope the reset.css ([66b31ce](https://github.com/Chilfish/Weibo-archiver/commit/66b31ce))
+- **web:** Remove unused /api routes ([500ffb5](https://github.com/Chilfish/Weibo-archiver/commit/500ffb5))
+
+### 📦 Build
+
+- 优化依赖结构 ([dffbeb4](https://github.com/Chilfish/Weibo-archiver/commit/dffbeb4))
+
+### 🏡 Chore
+
+- **release:** V0.3.5 ([88ce87a](https://github.com/Chilfish/Weibo-archiver/commit/88ce87a))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.5
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.4...v0.3.5)
