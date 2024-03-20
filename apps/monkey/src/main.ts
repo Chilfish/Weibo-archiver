@@ -18,6 +18,7 @@ async function initApp() {
 
 if (document.location.hostname === 'weibo.com') {
   initApp()
+  console.log('weibo-archiver 加载成功')
 }
 else {
   const users = GM_getValue('users') || []

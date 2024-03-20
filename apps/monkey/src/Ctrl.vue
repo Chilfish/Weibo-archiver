@@ -26,20 +26,24 @@ const resumeFn = ref<() => void>()
 
 async function saveUserInfo() {
   const user = await userDetail(config.value.uid)
-  user.exportedAt = Date.now().toLocaleString()
+  user.exportedAt = new Date().toLocaleString()
 
   const users = GM_getValue<any[]>('users') ?? []
   const index = users.findIndex((u: any) => u.uid === user.uid)
   if (index !== -1)
-    users[index] = user
+    Object.assign(users[index], user)
   else
     users.push(user)
 
   GM_setValue('users', users)
 
+  console.log('已同步的用户信息', users)
   message.success('用户信息同步成功')
 }
 
+/**
+ * 导出数据
+ */
 async function exportDatas() {
   const res = await exportData(postStore.posts)
   if (!res)
@@ -94,23 +98,29 @@ watch(isStop, (val, oldVal) => {
 
 window.$message = useMessage()
 
-onMounted(async () => {
+/**
+ * 初始化用户信息
+ */
+async function init() {
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
   const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
 
-  configStore.initConfig()
   configStore.setConfig({
     uid,
     name,
   })
+}
+
+onMounted(async () => {
+  await init()
 })
 </script>
 
 <template>
   <div
-    v-show="!config.isMinimize"
-    class="card w-34rem"
+    v-show="!configStore.isMinimize"
+    class="card w-32rem shadow-xl"
   >
     <div class="flex items-center justify-between">
       <h2 class="text-5 text-black font-bold">
@@ -119,16 +129,20 @@ onMounted(async () => {
 
       <button
         title="最小化"
-        @click="config.isMinimize = !config.isMinimize"
+        @click="configStore.toggleMinimize"
       >
         <i class="i-tabler:arrows-minimize icon" />
       </button>
     </div>
+
     <n-alert
-      title="爬取过程中请勿刷新或关闭，否则导致已有的数据丢失而重头来过"
       type="warning"
       closable
-    />
+    >
+      <p>
+        请勿刷新或关闭页面，否则导致已有的数据丢失而重头来过
+      </p>
+    </n-alert>
 
     <n-alert type="info">
       <p>
@@ -191,9 +205,8 @@ onMounted(async () => {
   </div>
 
   <div
-    v-show="config.isMinimize"
-    class="card minimize"
-    @click="config.isMinimize = !config.isMinimize"
+    class="card minimize shadow-xl"
+    @click="configStore.toggleMinimize"
   >
     <img
       src="https://p.chilfish.top/weibo/icon.webp"
@@ -218,7 +231,7 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1rem; /* 16px */
+  gap: 0.5rem; /* 16px */
   border-radius: 0.5rem; /* 8px */
   padding: 1rem; /* 16px */
   background-color: white;
@@ -227,7 +240,7 @@ p {
 }
 
 .minimize {
-  width: 4rem;
+  z-index: 0;
   padding: 6px;
 }
 </style>

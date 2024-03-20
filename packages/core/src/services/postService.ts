@@ -162,10 +162,10 @@ export async function fetchPosts(
 
   const { startLoop, resume, pause } = usePausableLoop(
     async () => {
-      await fetching()
+      const res = await fetching()
 
       // 如果已经获取到所有帖子
-      if (stopCondition())
+      if (stopCondition() || !res?.list.length)
         return { isStop: true }
       return { isStop: false }
     },

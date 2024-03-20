@@ -1,15 +1,13 @@
 import { defineStore } from 'pinia'
 import type { FetchOptions } from '@types'
 
-type Config = Omit<FetchOptions, 'cookie'> & {
-  isMinimize: boolean
-}
-
 export const useConfigStore = defineStore('config', () => {
   const now = Date.now()
-  const localData = JSON.parse(localStorage.getItem('fetchOptions') || '{}') as Config
+  const KEY_MINIMIZE = 'archiver-isMinimize'
 
-  const state = reactive<Config>({
+  const isMinimize = ref(localStorage.getItem(KEY_MINIMIZE) === 'true')
+
+  const state = reactive<FetchOptions>({
     uid: '',
     name: '',
     isFetchAll: true,
@@ -17,32 +15,24 @@ export const useConfigStore = defineStore('config', () => {
     repostPic: true,
     hasRepost: true,
     hasComment: true,
+    hasFavorite: true,
     commentCount: 6,
     dateRange: [now, now],
-    isMinimize: true,
   })
 
-  // 判断 key 是否都相等，如果相等则初始化配置
-  function initConfig() {
-    const keys = Object.keys(state)
-    const localKeys = Object.keys(localData)
-    const isSame = keys.every(key => localKeys.includes(key))
-
-    if (isSame)
-      setConfig(localData)
-  }
-
-  function setConfig(config: Partial<Config>) {
+  function setConfig(config: Partial<FetchOptions>) {
     Object.assign(state, config)
   }
 
-  watchEffect(() => {
-    localStorage.setItem('fetchOptions', JSON.stringify(state))
-  })
+  function toggleMinimize() {
+    isMinimize.value = !isMinimize.value
+    localStorage.setItem(KEY_MINIMIZE, isMinimize.value.toString())
+  }
 
   return {
     state,
+    isMinimize,
     setConfig,
-    initConfig,
+    toggleMinimize,
   }
 })

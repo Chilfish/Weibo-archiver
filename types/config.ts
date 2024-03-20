@@ -33,6 +33,10 @@ export interface FetchOptions {
    */
   hasComment: boolean
   /**
+   * 包括收藏的微博
+   */
+  hasFavorite: boolean
+  /**
    * 评论的数量
    */
   commentCount: number

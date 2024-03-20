@@ -12,8 +12,15 @@ import '@ui/shared.css'
   </AppMain>
 </template>
 
-<style>
+<style lang="scss">
 .n-base-clear {
   display: none !important;
+}
+
+#plugin-app {
+ &,
+ & p {
+   font-size: 13px;
+  }
 }
 </style>

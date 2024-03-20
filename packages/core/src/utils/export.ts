@@ -19,7 +19,9 @@ export async function exportData(posts: Post[]) {
     const dataBlob = new Blob([data], { type: 'application/json' })
     const imgsDataBlob = new Blob([imgsData], { type: 'text/csv' })
 
-    window.$message.success('导出成功，正在下载数据...请允许浏览器批量下载文件')
+    window.$message.success('导出成功，正在下载数据...请允许浏览器批量下载文件', {
+      duration: 5000,
+    })
 
     fileSaver.saveAs(dataBlob, `weibo-data-${name}.json`)
     fileSaver.saveAs(imgsDataBlob, `imgs-${name}.csv`)

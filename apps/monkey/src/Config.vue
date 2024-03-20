@@ -31,22 +31,26 @@ const dateRange = computed({
       <n-checkbox
         v-model:checked="config.largePic"
         label="导出原图"
+        size="small"
       />
       <n-checkbox
         v-model:checked="config.hasComment"
         label="包含评论"
+        size="small"
       />
       <n-checkbox
         v-model:checked="config.hasRepost"
         label="包含转发的微博"
+        size="small"
       />
       <n-checkbox
         v-show="config.hasRepost"
         v-model:checked="config.repostPic"
         label="导出转发的图片"
+        size="small"
       />
       <button
-        class="py-1 btn bg-#18a058! hover:bg-green-7!"
+        class="py-1 text-3.5 btn bg-#18a058! hover:bg-green-7!"
         @click="() => {
           config.isFetchAll = true
         }"
@@ -62,6 +66,8 @@ const dateRange = computed({
       <span>要获取的评论数（最多20条）</span>
       <n-input-number
         v-model="config.commentCount"
+        size="small"
+        class="w-26"
         :default-value="6"
         :min="0"
         :max="20"
