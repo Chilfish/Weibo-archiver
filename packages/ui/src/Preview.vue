@@ -57,12 +57,18 @@ watchImmediate(
     class="px-6 py-12"
   >
     <settings-about />
-    <p
-      class="py-6 font-bold"
-      text="center xl"
+    <div
+      class="py-6 text-center"
     >
-      暂无微博数据，点击右上角设置来导入吧👋
-    </p>
+      <p class="mb-2 text-xl font-bold">
+        暂无微博数据，点击右上角设置来导入吧👋
+      </p>
+      <p>
+        或者点击 <RouterLink to="/example">
+          这里
+        </RouterLink> 查看示例数据
+      </p>
+    </div>
 
     <div
       v-if="users.length"
@@ -106,5 +112,6 @@ watchImmediate(
     </h3>
 
     <post-list :posts="posts" />
+    <post-pagination v-show="posts.length" />
   </div>
 </template>

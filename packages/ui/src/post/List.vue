@@ -25,6 +25,4 @@ defineProps<{
       :post="item"
     />
   </div>
-
-  <post-pagination v-show="posts.length" />
 </template>
