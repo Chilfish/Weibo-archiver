@@ -41,19 +41,31 @@ const version = import.meta.env.VITE_APP_VERSION
       Weibo Archiver v{{ version }}
     </h2>
 
+    <p class="text-5">
+      一个简单的微博备份工具，为账号被完全夹没前未雨绸缪😭
+    </p>
     <p>
-      一个简单的微博备份工具 app，为被完全夹没前未雨绸缪😭
+      第一次使用？点击查看
+      <a
+        href="https://docs.qq.com/doc/DTWttbXlMUGxZZnZq"
+        target="_blank"
+        title="使用文档"
+        class="font-bold underline"
+      >
+        使用文档
+      </a>
     </p>
     <p class="mt-2">
-      如果觉得这个项目对你有帮助，可以考虑赞助我😇这将给我更多的动力来维护这个项目：
+      如果觉得这个项目对你有帮助，可以考虑
       <a
         href="https://chilfish.top/sponsors"
         target="_blank"
         title="赞助地址"
         class="font-bold underline"
       >
-        赞助地址
+        赞助我
       </a>
+      😇，这将给我更多的动力来维护这个项目
     </p>
   </main>
 </template>

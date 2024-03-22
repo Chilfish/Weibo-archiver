@@ -30,35 +30,21 @@
 
 需要浏览器装有 [Tampermonkey](https://tampermonkey.net/) 或 [Violentmonkey](https://violentmonkey.github.io/) 插件。
 
-安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或切换页面，否则就要重新获取。当然也可以按时间范围来选择。
+安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或切换页面，否则就要重新获取
+
+更多操作细节可见 [使用教程]
 
 > [!IMPORTANT]
 > 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇暂时只接受改 bug 的 pr <br/>
 > 有关项目的进展路线等，可见 [项目的 Todo] 部分
-
-#### 处理导出后的数据
-
-完成后将导出包含微博数据的 `weibo-data.json` 和包含微博图片链接的 `imgs.csv`，这两个文件。以及自动下载 `scripts.zip`，解压后里面包含了用于下载图片和查看图片工具脚本。
-
-1. 首先将 imgs.csv 复制到 scripts 文件夹中（用于下载微博图片）
-
-2. 然后使用 `download.mjs` 来下载图片到本地（这一步也可以跳过，在预览页中的设置中启用“使用远程 CDN”即可，但为了永久保存图片不被突然被夹掉，还是建议下载图片）
-
-scripts 文件夹中包含了交互式脚本，按用途提示点击运行即可
-
-> 其中，运行下载图片脚本之前需要安装 Node.js，可以在 [Node.js 官网] 下载最新版本
-
-#### 查看结果
-
-访问我们提供的在线预览平台：https://weibo.chilfish.top 。点击右上角的设置按钮，按提示导入刚才导出的 `weibo-data.json` 即可查看（也支持旧版导出的 `data.mjs`）
-
-不过正在开发桌面版app，届时将不再需要这些复杂的操作，直接双击打开即可查看
 
 ### 注意事项 | 声明
 
 该工具仅能获取公开可见的微博，对于那些仅半年可见之外的、仅粉丝（自己）可见的等，若不是自己的微博，将无法获取。
 
 - **完全免费**，使用 **Apache 2.0** 协议开源，不会有任何收费行为。但如果要二次创作或者引用，需要注明出处和署名，不得修改协议或是去除版权声明，详见 [LICENSE](LICENSE)😇
+
+- 为了减轻微博服务器的压力，或是避免一些不必要的麻烦，请尽量在比较人少的时间段使用
 
 - 若微博账号被封，但访问自己的主页微博，也能获取备份。也就是 **只要能看得见，就能存档**
 
@@ -112,11 +98,10 @@ scripts 文件夹中包含了交互式脚本，按用途提示点击运行即可
 [naive-ui]: https://www.naiveui.com/zh-CN/os-theme
 [#1]: https://github.com/Chilfish/Weibo-archiver/issues/1
 [#5]: https://github.com/Chilfish/Weibo-archiver/issues/5
-[#20]: https://github.com/Chilfish/Weibo-archiver/discussions/20
-[@HayashiKaori]: https://github.com/HayashiKaori
 [Node.js 官网]: https://nodejs.org/en/download
 [vite-plugin-monkey]: https://github.com/lisonge/vite-plugin-monkey
 [镜像地址]: https://p.chilfish.top/weibo-archiver.user.js
 [项目的 Todo]: https://github.com/Chilfish/Weibo-archiver/issues/7
 [赞助地址]: https://chilfish.top/sponsors
 [vercel]: https://vercel.com
+[使用教程]: https://docs.qq.com/doc/DTWttbXlMUGxZZnZq
