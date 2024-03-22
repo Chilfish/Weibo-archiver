@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.3.7
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.6...v0.3.7)
+
+### 🚀 Enhancements
+
+- **web:** Add example data page ([922ca86](https://github.com/Chilfish/Weibo-archiver/commit/922ca86))
+
+### 🩹 Fixes
+
+- **web:** Use webp for icon ([315415c](https://github.com/Chilfish/Weibo-archiver/commit/315415c))
+- **ui:** The width of settings ([d8a7791](https://github.com/Chilfish/Weibo-archiver/commit/d8a7791))
+- **ui:** Use thumb image before open it ([ccc1a07](https://github.com/Chilfish/Weibo-archiver/commit/ccc1a07))
+- Style & add code comments ([3ad26ca](https://github.com/Chilfish/Weibo-archiver/commit/3ad26ca))
+- **monkey:** 样式与优化爬取逻辑 ([805e599](https://github.com/Chilfish/Weibo-archiver/commit/805e599))
+- **script:** 下载不了图片 ([4ffa60a](https://github.com/Chilfish/Weibo-archiver/commit/4ffa60a))
+
+### 📦 Build
+
+- **monkey:** Add meta.js for update ([19966da](https://github.com/Chilfish/Weibo-archiver/commit/19966da))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.6
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.5...v0.3.6)
