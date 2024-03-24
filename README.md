@@ -14,17 +14,11 @@
 
 ## Weibo-archiver
 
-将你的新浪微博归档，为号被完全夹没前绸缪 😭
+将你的新浪微博回忆归档，为号被完全夹没前未雨绸缪 😭
 
-![monkey](https://p.chilfish.top/weibo/cover.webp)
-
-![宫格图片](https://p.chilfish.top/weibo/gallery.png)
-
-![卡片预览](https://p.chilfish.top/weibo/repost.png)
-
+![封面](https://p.chilfish.top/weibo/cover.webp)
+![功能展示](https://p.chilfish.top/weibo/feature.webp)
 ![设置页](https://p.chilfish.top/weibo/settings.webp)
-
-![夜间模式](https://p.chilfish.top/weibo/darkmode.png)
 
 ### 使用方式
 
