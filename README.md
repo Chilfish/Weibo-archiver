@@ -30,7 +30,7 @@
 
 需要浏览器装有 [Tampermonkey](https://tampermonkey.net/) 或 [Violentmonkey](https://violentmonkey.github.io/) 插件。
 
-安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。期间请不要刷新或切换页面，否则就要重新获取
+安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。支持断点续传，可恢复到上次的进度。
 
 更多操作细节可见 [使用教程]
 

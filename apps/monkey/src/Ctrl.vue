@@ -16,10 +16,10 @@ const isStart = ref(false)
 const isStop = ref(false)
 const isFinish = ref(false)
 
-const { state: config } = storeToRefs(configStore)
+const { config } = storeToRefs(configStore)
 
-const percentage = computed(() => postStore.posts.length / postStore.total * 100)
-const progressText = computed(() => () => `${postStore.posts.length}/${postStore.total} 条`)
+const percentage = computed(() => postStore.fetchedCount / postStore.total * 100)
+const progressText = computed(() => () => `${postStore.fetchedCount}/${postStore.total} 条`)
 
 const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
@@ -45,7 +45,8 @@ async function saveUserInfo() {
  * 导出数据
  */
 async function exportDatas() {
-  const res = await exportData(postStore.posts)
+  const posts = await postStore.getAll()
+  const res = await exportData(posts)
   if (!res)
     return
   const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
@@ -59,17 +60,21 @@ async function start() {
     duration: 5000,
   })
 
-  postStore.reset()
   isStart.value = true
   isFinish.value = false
   isStop.value = false
 
+  // 如果是恢复暂停
+  if (resumeFn.value) {
+    resumeFn.value()
+    return
+  }
+
+  postStore.setDB()
   const { pause, resume } = await fetchPosts({
-    fetchOptions: config.value,
-    startPage: () => postStore.fetchedPage + 1,
-    isFetchAll: config.value.isFetchAll,
-    setTotal: total => postStore.total = total,
+    fetchOptions: () => config.value,
     addPosts: postStore.add,
+    setTotal: total => postStore.total = total,
     stopCondition: () => {
       const finished = postStore.fetchedPage >= postStore.pages
 
@@ -86,17 +91,22 @@ async function start() {
   resumeFn.value = resume
 }
 
-watch(isStop, (val, oldVal) => {
-  if (val === oldVal)
-    return
-
-  if (val)
-    pauseFn.value?.()
-  else
-    resumeFn.value?.()
-})
-
 window.$message = useMessage()
+
+async function reset() {
+  await postStore.reset()
+  configStore.reset()
+  isStart.value = false
+  isStop.value = false
+  isFinish.value = false
+
+  message.success('数据已重置')
+}
+
+function stop() {
+  isStop.value = true
+  pauseFn.value?.()
+}
 
 /**
  * 初始化用户信息
@@ -110,6 +120,7 @@ async function init() {
     uid,
     name,
   })
+  configStore.init(uid)
 }
 
 onMounted(async () => {
@@ -119,7 +130,7 @@ onMounted(async () => {
 
 <template>
   <div
-    v-show="!configStore.isMinimize"
+    v-show="!config.isMinimize"
     class="card w-32rem shadow-xl"
   >
     <div class="flex items-center justify-between">
@@ -134,15 +145,6 @@ onMounted(async () => {
         <i class="i-tabler:arrows-minimize icon" />
       </button>
     </div>
-
-    <n-alert
-      type="warning"
-      closable
-    >
-      <p>
-        请勿刷新或关闭页面，否则导致已有的数据丢失而重头来过
-      </p>
-    </n-alert>
 
     <n-alert type="info">
       <p>
@@ -166,13 +168,12 @@ onMounted(async () => {
       {{ progressText() }}
     </n-progress>
 
-    <div class="btns flex gap-4">
+    <div class="btns flex gap-2">
       <button
         v-show="!isStart || (!isFinish && isStop)"
         @click="start"
       >
-        {{ isStart ? '重新开始' : '开始' }}
-        (获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博)
+        {{ config.fetchedCount ? '继续' : '开始' }}获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博
       </button>
 
       <div
@@ -183,10 +184,10 @@ onMounted(async () => {
       </div>
 
       <button
-        v-show="isStart"
-        @click="isStop = !isStop"
+        v-show="isStart && !isStop"
+        @click="stop"
       >
-        {{ isStop ? '继续' : '暂停' }}
+        暂停
       </button>
 
       <button
@@ -200,6 +201,12 @@ onMounted(async () => {
         @click="saveUserInfo"
       >
         同步信息
+      </button>
+
+      <button
+        @click="reset"
+      >
+        重置数据
       </button>
     </div>
   </div>

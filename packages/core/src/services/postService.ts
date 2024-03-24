@@ -6,28 +6,25 @@ import type {
   PostMeta,
 } from '@types'
 import {
+  delay,
   postsParser,
   weiFetch,
 } from '../utils'
 
 /**
- * 鉴权字段，必须得登录才获取得了，不然匿名只能获取前两页 <br/>
- * 并且只能往前，同一个 id 对于即便不同 page 的结果也是一样的
- */
-let since_id = ''
-
-/**
  * 有没有可能，获取全部微博可以用 rangePosts 来实现？不设 start 参数……
  * 实际上并不行，会有缺失的微博
+ * @param uid 用户 id
+ * @param page 页数
+ * @param since_id 鉴权字段，必须得登录才获取，匿名只能获取前两页。并且只能往前翻页，同一个 id 对于即便不同 page 的结果也是一样的
  */
 export async function fetchAllPosts(
   uid: string,
+  since_id: string,
   page = 1,
 ): FetchReturn {
   if (page === 0)
     return null
-  else if (page === 1)
-    since_id = ''
 
   const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/mymblog`, {
     params: {
@@ -37,11 +34,6 @@ export async function fetchAllPosts(
       since_id,
     },
   })
-
-  if (data)
-    since_id = data.since_id
-  else
-    return null
 
   return data
 }
@@ -105,7 +97,6 @@ export async function fetchComments(
   isShowBulletin: number,
   count: number,
 ): Promise<Comment[]> {
-  await delay(3000)
   const { data } = await weiFetch<{ data: Comment[] }>(`/statuses/buildComments`, {
     params: {
       id: postId,
@@ -127,11 +118,9 @@ export async function fetchComments(
 }
 
 interface FetchPosts {
-  fetchOptions: FetchOptions
-  startPage: () => number
-  isFetchAll: boolean
+  fetchOptions: () => FetchOptions
   setTotal: (total: number) => void
-  addPosts: (posts: Post[]) => void
+  addPosts: (posts: Post[], since_id: string) => void
   stopCondition: () => boolean
 }
 
@@ -139,19 +128,19 @@ interface FetchPosts {
  * 爬取微博
  */
 export async function fetchPosts(
-  { fetchOptions, startPage, isFetchAll, setTotal, addPosts, stopCondition }: FetchPosts,
+  { fetchOptions, setTotal, addPosts, stopCondition }: FetchPosts,
 ) {
-  const { uid, dateRange, hasRepost } = fetchOptions
-  const [start, end] = dateRange
-
   async function fetching() {
-    const page = startPage()
+    await delay(3000)
+    const { uid, dateRange, hasRepost, since_id, curPage, isFetchAll } = fetchOptions()
+    const [start, end] = dateRange
+    const page = curPage + 1
     const res = isFetchAll
-      ? await fetchAllPosts(uid, page)
+      ? await fetchAllPosts(uid, since_id, page)
       : await fetchRangePosts(uid, start, end, page, hasRepost)
-    const list = await postsParser(res?.list || [], fetchOptions)
+    const list = await postsParser(res?.list || [], fetchOptions())
 
-    addPosts(list)
+    addPosts(list, res?.since_id || '')
     console.log(`已获取第 ${page} 页`)
     return res
   }

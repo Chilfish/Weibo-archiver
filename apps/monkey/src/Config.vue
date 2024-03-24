@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useConfigStore } from './stores'
 
-const { state: config } = storeToRefs(useConfigStore())
+const { config } = storeToRefs(useConfigStore())
 
 const dateRange = computed({
   get() {

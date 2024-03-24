@@ -1,15 +1,22 @@
 import { defineStore } from 'pinia'
 import type { FetchOptions } from '@types'
+import { useStorage } from '@vueuse/core'
+
+type Config = FetchOptions & {
+  isMinimize: boolean
+}
 
 export const useConfigStore = defineStore('config', () => {
   const now = Date.now()
-  const KEY_MINIMIZE = 'archiver-isMinimize'
+  const KEY = 'weibo-archiver'
 
-  const isMinimize = ref(localStorage.getItem(KEY_MINIMIZE) === 'true')
-
-  const state = reactive<FetchOptions>({
+  const initConfig: Config = {
+    isMinimize: true,
     uid: '',
     name: '',
+    since_id: '',
+    curPage: 0,
+    fetchedCount: 0,
     isFetchAll: true,
     largePic: true,
     repostPic: true,
@@ -18,21 +25,34 @@ export const useConfigStore = defineStore('config', () => {
     hasFavorite: true,
     commentCount: 6,
     dateRange: [now, now],
-  })
+  }
 
-  function setConfig(config: Partial<FetchOptions>) {
-    Object.assign(state, config)
+  const config = useStorage<Config>(KEY, initConfig, localStorage, { mergeDefaults: true })
+
+  function setConfig(_config: Partial<FetchOptions>) {
+    Object.assign(config.value, _config)
   }
 
   function toggleMinimize() {
-    isMinimize.value = !isMinimize.value
-    localStorage.setItem(KEY_MINIMIZE, isMinimize.value.toString())
+    config.value.isMinimize = !config.value.isMinimize
+  }
+
+  function init(curUid: string) {
+    if (config.value.uid !== curUid) {
+      config.value.since_id = ''
+      config.value.uid = curUid
+      config.value.curPage = 0
+    }
   }
 
   return {
-    state,
-    isMinimize,
+    config,
     setConfig,
     toggleMinimize,
+    init,
+    reset: () => {
+      const { uid, name, isMinimize } = config.value
+      config.value = { ...initConfig, uid, name, isMinimize }
+    },
   }
 })

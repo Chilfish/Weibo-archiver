@@ -13,6 +13,18 @@ export interface FetchOptions {
    */
   name: string
   /**
+   * 鉴权字段，必须得登录才获取，匿名只能获取前两页。并且只能往前翻页，同一个 id 对于即便不同 page 的结果也是一样的
+   */
+  since_id: string
+  /**
+   * 已获取的页数
+   */
+  curPage: number
+  /**
+   * 已获取到的数量
+   */
+  fetchedCount: number
+  /**
    * 是否获取全部微博
    */
   isFetchAll: boolean

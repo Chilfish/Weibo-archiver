@@ -144,6 +144,10 @@ export function filterComments(
     })
 }
 
+/**
+ * 从返回的 api 中提取信息
+ * @param isRepost 是否是转发，用在递归判断中
+ */
 export async function postFilter(
   post: any,
   options: FetchOptions,
@@ -159,6 +163,7 @@ export async function postFilter(
   const includeComments = !isRepost && options.hasComment && post.comments_count > 0 && post
 
   try {
+    await delay(1000)
     const { text, textImg } = await fetchLongText(post)
     const imgs = includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : []
 
@@ -199,6 +204,9 @@ export async function postFilter(
   }
 }
 
+/**
+ * 解析微博数据的入口
+ */
 export async function postsParser(
   posts: any[],
   options: FetchOptions,
@@ -210,6 +218,9 @@ export async function postsParser(
   return res.filter((e): e is Post => !!e && e.user?.id === options.uid)
 }
 
+/**
+ * 提取所有图片链接
+ */
 export function imgsParser(posts: Post[]): Set<string> {
   const imgs = posts
     .map((post) => {

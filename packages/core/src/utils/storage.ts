@@ -33,13 +33,12 @@ export class IDB {
   ) {
     this.name = name
     this.idb = openDB<AppDB>(name, version, {
-      upgrade(db, _oldVer, newVer) {
+      upgrade(db, _oldVer) {
         if (db.objectStoreNames.contains(STORE_NAME))
           return
 
         const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' })
         store.createIndex('time', 'created_at', { unique: true })
-        localStorage.setItem('db_version', String(newVer))
       },
     })
   }
@@ -121,10 +120,12 @@ export class IDB {
    * 批量覆盖添加或合并添加
    * @param posts
    * @param isReplace 默认为 true 覆盖添加
+   * @param buildSearch 默认为 true 构建搜索
    */
   async addDBPosts(
     posts: Post[],
     isReplace = true,
+    buildSearch = true,
   ) {
     const db = await this.idb
 
@@ -142,6 +143,13 @@ export class IDB {
     const count = await store.count()
 
     await ts.done
+
+    if (!buildSearch) {
+      return {
+        count,
+        search: (_text: string) => [] as number[],
+      }
+    }
 
     const { search } = this.buildSearch(posts)
 
@@ -283,8 +291,7 @@ export class EmptyIDB extends IDB {
   async getPostCount() { return 0 }
   async clearDB() { }
   async getSize() { return '0' }
-  async addDBPosts(_posts: Post[], _isReplace = true,
-  ) {
+  async addDBPosts(_posts: Post[], _isReplace = true, _buildSearch = true) {
     return {
       count: 0,
       search: (_text: string) => [] as number[],
