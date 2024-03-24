@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.3.8
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.7...v0.3.8)
+
+### 🩹 Fixes
+
+- **monkey:** 将数据暂存到 indexedDB 而不是内存里 ([#38](https://github.com/Chilfish/Weibo-archiver/pull/38))
+
+### 🏡 Chore
+
+- **docs:** Update raedme ([cab77b3](https://github.com/Chilfish/Weibo-archiver/commit/cab77b3))
+- **docs:** Add usage docs ([d0febd7](https://github.com/Chilfish/Weibo-archiver/commit/d0febd7))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.7
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.6...v0.3.7)
