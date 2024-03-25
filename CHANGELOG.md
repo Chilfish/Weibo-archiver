@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.3.9
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.8...v0.3.9)
+
+### 🩹 Fixes
+
+- **monkey:** 修复结束爬取时机的判断 ([#39](https://github.com/Chilfish/Weibo-archiver/pull/39))
+
+### 🏡 Chore
+
+- **docs:** Update README ([bea02d6](https://github.com/Chilfish/Weibo-archiver/commit/bea02d6))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.8
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.7...v0.3.8)
