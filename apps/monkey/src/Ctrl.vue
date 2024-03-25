@@ -18,12 +18,15 @@ const isFinish = ref(false)
 
 const { config } = storeToRefs(configStore)
 
-const percentage = computed(() => postStore.fetchedCount / postStore.total * 100)
-const progressText = computed(() => () => `${postStore.fetchedCount}/${postStore.total} 条`)
+const percentage = computed(() => config.value.fetchedCount / postStore.total * 100)
+const progressText = computed(() => () => `${config.value.fetchedCount}/${postStore.total} 条`)
 
 const pauseFn = ref<() => void>()
 const resumeFn = ref<() => void>()
 
+/**
+ * 保存用户信息，以在预览页中获取这些信息
+ */
 async function saveUserInfo() {
   const user = await userDetail(config.value.uid)
   user.exportedAt = new Date().toLocaleString()
@@ -46,6 +49,8 @@ async function saveUserInfo() {
  */
 async function exportDatas() {
   const posts = await postStore.getAll()
+  console.log('导出的数量：', posts.length)
+
   const res = await exportData(posts)
   if (!res)
     return
@@ -63,6 +68,11 @@ async function start() {
   isStart.value = true
   isFinish.value = false
   isStop.value = false
+  postStore.setDB()
+
+  // 如果是重新开始，不保留上次 fetch 的状态
+  if (!config.value.restore)
+    await postStore.reset()
 
   // 如果是恢复暂停
   if (resumeFn.value) {
@@ -70,20 +80,15 @@ async function start() {
     return
   }
 
-  postStore.setDB()
   const { pause, resume } = await fetchPosts({
-    fetchOptions: () => config.value,
     addPosts: postStore.add,
+    fetchOptions: () => config.value,
     setTotal: total => postStore.total = total,
-    stopCondition: () => {
-      const finished = postStore.fetchedPage >= postStore.pages
-
-      if (finished) {
-        isStart.value = false
-        isFinish.value = true
-        exportDatas()
-      }
-      return finished
+    onFinish: async () => {
+      isStart.value = false
+      isFinish.value = true
+      config.value.curPage--
+      exportDatas()
     },
   })
 
@@ -91,17 +96,7 @@ async function start() {
   resumeFn.value = resume
 }
 
-window.$message = useMessage()
-
-async function reset() {
-  await postStore.reset()
-  configStore.reset()
-  isStart.value = false
-  isStop.value = false
-  isFinish.value = false
-
-  message.success('数据已重置')
-}
+window.$message = message
 
 function stop() {
   isStop.value = true
@@ -115,16 +110,12 @@ async function init() {
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
   const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
-
-  configStore.setConfig({
-    uid,
-    name,
-  })
-  configStore.init(uid)
+  configStore.setConfig({ uid, name })
 }
 
 onMounted(async () => {
   await init()
+  await postStore.setCount()
 })
 </script>
 
@@ -173,7 +164,7 @@ onMounted(async () => {
         v-show="!isStart || (!isFinish && isStop)"
         @click="start"
       >
-        {{ config.fetchedCount ? '继续' : '开始' }}获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博
+        开始获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博
       </button>
 
       <div
@@ -201,12 +192,6 @@ onMounted(async () => {
         @click="saveUserInfo"
       >
         同步信息
-      </button>
-
-      <button
-        @click="reset"
-      >
-        重置数据
       </button>
     </div>
   </div>

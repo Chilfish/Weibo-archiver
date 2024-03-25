@@ -1,7 +1,7 @@
 async function initApp() {
   const App = (await import('./App.vue')).default
   const { createPinia } = await import('pinia')
-  const { naive } = await import('./utils/naiveui')
+  const { naive } = await import('./naiveui')
   const { createApp } = await import('vue')
 
   const app = createApp(App)

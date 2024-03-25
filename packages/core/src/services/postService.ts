@@ -120,44 +120,43 @@ export async function fetchComments(
 interface FetchPosts {
   fetchOptions: () => FetchOptions
   setTotal: (total: number) => void
-  addPosts: (posts: Post[], since_id: string) => void
-  stopCondition: () => boolean
+  addPosts: (posts: Post[], since_id: string) => Promise<void>
+  onFinish: () => Promise<void>
 }
 
 /**
  * 爬取微博
  */
 export async function fetchPosts(
-  { fetchOptions, setTotal, addPosts, stopCondition }: FetchPosts,
+  { fetchOptions, setTotal, addPosts, onFinish }: FetchPosts,
 ) {
   async function fetching() {
     await delay(3000)
     const { uid, dateRange, hasRepost, since_id, curPage, isFetchAll } = fetchOptions()
     const [start, end] = dateRange
     const page = curPage + 1
-    const res = isFetchAll
+
+    console.log(`正在获取第 ${page} 页`)
+
+    return isFetchAll
       ? await fetchAllPosts(uid, since_id, page)
       : await fetchRangePosts(uid, start, end, page, hasRepost)
-    const list = await postsParser(res?.list || [], fetchOptions())
-
-    addPosts(list, res?.since_id || '')
-    console.log(`已获取第 ${page} 页`)
-    return res
   }
 
-  const res = await fetching()
-  // 先获取总页数
-  setTotal(res?.total || 0)
+  const { startLoop, resume, pause } = usePausableLoop(async () => {
+    const res = await fetching()
+    setTotal(res?.total || 0)
 
-  const { startLoop, resume, pause } = usePausableLoop(
-    async () => {
-      const res = await fetching()
+    const list = await postsParser(res?.list || [], fetchOptions())
+    await addPosts(list, res?.since_id || '')
 
-      // 如果已经获取到所有帖子
-      if (stopCondition() || !res?.list.length)
-        return { isStop: true }
-      return { isStop: false }
-    },
+    // 如果已经获取到所有帖子
+    if (!res?.list.length) {
+      await onFinish()
+      return { isFinished: true }
+    }
+    return { isFinished: false }
+  },
   )
 
   startLoop()

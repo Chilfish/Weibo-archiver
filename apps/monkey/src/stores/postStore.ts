@@ -10,10 +10,6 @@ export const usePostStore = defineStore('post', () => {
   const configStore = useConfigStore()
   const { config } = storeToRefs(configStore)
 
-  /* 已获取的页数 */
-  const fetchedPage = toRef(config.value.curPage)
-  /* 已获取到的数量 */
-  const fetchedCount = ref(config.value.fetchedCount)
   /* 每页的帖子数量 */
   const pageSize = ref(20)
 
@@ -26,6 +22,8 @@ export const usePostStore = defineStore('post', () => {
 
   function setDB() {
     const wrappedUid = `uid-${config.value.uid}` as UID
+    if (idb.value.name === wrappedUid)
+      return
     idb.value = new IDB(wrappedUid)
   }
 
@@ -40,16 +38,18 @@ export const usePostStore = defineStore('post', () => {
   }
 
   /**
-   * 重置
+   * 重置 fetch 状态
    */
   async function reset() {
     total.value = 0
     pageSize.value = 20
-    fetchedPage.value = 0
-    fetchedCount.value = 0
+    configStore.setConfig({
+      since_id: '',
+      curPage: 0,
+      fetchedCount: 0,
+    })
 
     setDB()
-    await waitIDB()
     await idb.value.clearDB()
   }
 
@@ -60,14 +60,12 @@ export const usePostStore = defineStore('post', () => {
     await waitIDB()
 
     const { count } = await idb.value.addDBPosts(newPosts, false, false)
-    fetchedCount.value = count
-    fetchedPage.value++
     pageSize.value = (newPosts.length || 20)
 
     configStore.setConfig({
       since_id,
-      curPage: fetchedPage.value,
-      fetchedCount: fetchedCount.value,
+      curPage: config.value.curPage + 1,
+      fetchedCount: count,
     })
   }
 
@@ -77,16 +75,26 @@ export const usePostStore = defineStore('post', () => {
     return posts
   }
 
+  async function setCount() {
+    const count = 0
+
+    // const isExist = await checkDB(Number(config.value.uid))
+    // if (isExist) {
+    //   await waitIDB()
+    //   count = await idb.value.getPostCount()
+    // }
+    configStore.setConfig({ fetchedCount: count })
+  }
+
   return {
     total,
     pages,
     pageSize,
-    fetchedPage,
-    fetchedCount,
 
     setDB,
     add,
     reset,
     getAll,
+    setCount,
   }
 })

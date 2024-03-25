@@ -32,7 +32,7 @@ export function delay(ms = 2000) {
  * @param fn
  */
 export function usePausableLoop(
-  fn: () => Promise<{ isStop: boolean }>,
+  fn: () => Promise<{ isFinished: boolean }>,
 ) {
   let _isPaused = false
 
@@ -41,8 +41,8 @@ export function usePausableLoop(
       if (_isPaused)
         break
 
-      const { isStop } = await fn()
-      if (isStop)
+      const { isFinished } = await fn()
+      if (isFinished)
         break
     }
   }

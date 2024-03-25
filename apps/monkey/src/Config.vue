@@ -49,6 +49,17 @@ const dateRange = computed({
         label="导出转发的图片"
         size="small"
       />
+
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <n-checkbox
+            v-model:checked="config.restore"
+            label="继续上次的记录"
+            size="small"
+          />
+        </template>
+        每次开始前都会清空之前的状态，建议切换爬取设置时取消勾选
+      </n-tooltip>
       <button
         class="py-1 text-3.5 btn bg-#18a058! hover:bg-green-7!"
         @click="() => {

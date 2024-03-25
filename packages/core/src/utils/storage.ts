@@ -23,6 +23,22 @@ export async function deleteOld() {
   await deleteDB(name)
 }
 
+/**
+ * 检测该用户的数据库是否存在
+ */
+export async function checkDB(uid: number) {
+  const name = `uid-${uid}`
+
+  const db = await openDB<AppDB>(name, DB_VERSION)
+  const isExist = db.objectStoreNames.contains(STORE_NAME)
+
+  if (!isExist)
+    await deleteDB(name)
+  db.close()
+
+  return isExist
+}
+
 export class IDB {
   idb: Promise<IDBPDatabase<AppDB>>
   name: UID

@@ -4,6 +4,8 @@ import { useStorage } from '@vueuse/core'
 
 type Config = FetchOptions & {
   isMinimize: boolean
+  /** 恢复记录 */
+  restore: boolean
 }
 
 export const useConfigStore = defineStore('config', () => {
@@ -12,6 +14,7 @@ export const useConfigStore = defineStore('config', () => {
 
   const initConfig: Config = {
     isMinimize: true,
+    restore: false,
     uid: '',
     name: '',
     since_id: '',
@@ -37,19 +40,10 @@ export const useConfigStore = defineStore('config', () => {
     config.value.isMinimize = !config.value.isMinimize
   }
 
-  function init(curUid: string) {
-    if (config.value.uid !== curUid) {
-      config.value.since_id = ''
-      config.value.uid = curUid
-      config.value.curPage = 0
-    }
-  }
-
   return {
     config,
     setConfig,
     toggleMinimize,
-    init,
     reset: () => {
       const { uid, name, isMinimize } = config.value
       config.value = { ...initConfig, uid, name, isMinimize }

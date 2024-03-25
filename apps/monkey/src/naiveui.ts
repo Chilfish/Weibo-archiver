@@ -6,6 +6,7 @@ import {
   NInputNumber,
   NMessageProvider,
   NProgress,
+  NTooltip,
   create,
   useMessage,
 } from 'naive-ui'
@@ -22,6 +23,7 @@ export const naive = create({
     NDatePicker,
     NInputNumber,
     NMessageProvider,
+    NTooltip,
     NProgress,
   ],
 })

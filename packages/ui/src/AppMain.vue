@@ -9,7 +9,7 @@ import {
 } from 'naive-ui'
 
 // 如果在油猴脚本中，或者不是暗黑模式，不使用暗黑主题
-const theme = computed(() => isInMonkey || !isDark.value ? null : darkTheme)
+const theme = computed(() => isInMonkey || !isDark.value ? undefined : darkTheme)
 </script>
 
 <template>
