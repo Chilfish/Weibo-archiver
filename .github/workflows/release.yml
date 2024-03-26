@@ -1,19 +1,14 @@
-name: Build Monkey Script
+name: Release Monkey Script and webapp
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - '.github/**'
-      - '!.github/workflows/**'
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  install-and-build:
+  setup-and-build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,23 +39,57 @@ jobs:
 
       - name: Install monkey
         run: pnpm install:monkey
-      - name: Install Web
-        run: pnpm install:web
 
       - name: build monkey
         run: pnpm build:monkey
 
+      - name: Install Web
+        run: pnpm install:web
+
       - name: build web
         run: pnpm build:web
+
+      - name: zip and copy files
+        run: pnpm release
 
       - name: upload monkey
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver.user.js
-          path: dist/monkey/weibo-archiver.user.js
+          path: dist/weibo-archiver.user.js
 
       - name: upload web
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver-webapp
-          path: apps/web/.output
+          path: dist/weibo-archiver-webapp.zip
+
+      - name: upload scripts
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-scripts
+          path: dist/weibo-archiver-scripts.zip
+
+  darft-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: setup-and-build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: weibo-archiver-release
+          merge-multiple: true
+      - run: ls -R weibo-archiver-release
+
+      - uses: ncipollo/release-action@v1
+        with:
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifacts: weibo-archiver-release/*
+          draft: true
+          bodyFile: .github/release.md
+          token: ${{ secrets.GITHUB_TOKEN }}

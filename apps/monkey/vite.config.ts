@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import monkey, { cdn, util } from 'vite-plugin-monkey'
 import AutoImport from 'unplugin-auto-import/vite'
 import Vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import UnoCSS from 'unocss/vite'
 
 export const root = path.resolve(__dirname, '../../')
@@ -30,7 +29,6 @@ export default defineConfig({
   plugins: [
     Vue(),
     UnoCSS(),
-    vueJsx(),
     AutoImport({
       imports: [
         'vue',

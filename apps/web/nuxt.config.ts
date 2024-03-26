@@ -24,7 +24,6 @@ export default defineNuxtConfig({
     locales: ['zh-cn'],
     plugins: ['timezone'],
     defaultTimezone: 'Asia/Shanghai',
-
   },
 
   alias: {

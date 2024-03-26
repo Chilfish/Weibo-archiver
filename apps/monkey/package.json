@@ -1,7 +1,7 @@
 {
   "name": "@weibo-archiver/monkey",
   "type": "module",
-  "version": "0.3.9-patch.1",
+  "version": "0.3.10",
   "private": true,
   "author": "Chilfish",
   "license": "MIT",

@@ -29,10 +29,12 @@
     "typecheck:desktop": "pnpm -C apps/desktop typecheck",
     "install:web": "pnpm -F web... install",
     "install:monkey": "pnpm -F monkey... install",
+    "release": "tsx release.ts",
     "lint": "eslint .",
     "prepare": "husky || true"
   },
   "dependencies": {
+    "jszip": "3.9.1",
     "vue": "^3.4.21"
   },
   "devDependencies": {
@@ -45,6 +47,7 @@
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "pnpm": "^8.15.5",
+    "tsx": "^4.7.1",
     "typescript": "^5.4.2",
     "vue-tsc": "^2.0.6"
   },
