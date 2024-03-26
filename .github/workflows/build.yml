@@ -1,0 +1,66 @@
+name: Build Monkey Script
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+      - '!.github/workflows/**'
+
+jobs:
+  install-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install monkey
+        run: pnpm install:monkey
+      - name: Install Web
+        run: pnpm install:web
+
+      - name: build monkey
+        run: pnpm build:monkey
+
+      - name: build web
+        run: pnpm build:web
+
+      - name: upload monkey
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver.user.js
+          path: dist/monkey/weibo-archiver.user.js
+
+      - name: upload web
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-webapp
+          path: apps/web/.output
