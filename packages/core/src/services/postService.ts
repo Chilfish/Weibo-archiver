@@ -12,15 +12,28 @@ import {
 } from '../utils'
 
 /**
+ * 获取微博总数
+ */
+export async function getTotal(uid: string) {
+  const { data } = await weiFetch<{ data: PostMeta }>(`/statuses/mymblog`, {
+    params: {
+      uid,
+      page: 1,
+      feature: 0,
+    },
+  })
+
+  return data.total || 0
+}
+
+/**
  * 有没有可能，获取全部微博可以用 rangePosts 来实现？不设 start 参数……
  * 实际上并不行，会有缺失的微博
  * @param uid 用户 id
  * @param page 页数
- * @param since_id 鉴权字段，必须得登录才获取，匿名只能获取前两页。并且只能往前翻页，同一个 id 对于即便不同 page 的结果也是一样的
  */
 export async function fetchAllPosts(
   uid: string,
-  since_id: string,
   page = 1,
 ): FetchReturn {
   if (page === 0)
@@ -31,7 +44,6 @@ export async function fetchAllPosts(
       uid,
       page,
       feature: 0,
-      since_id,
     },
   })
 
@@ -64,14 +76,13 @@ export async function fetchRangePosts(
 }
 
 export async function fetchLongText(
-  post: Post & { isLongText: boolean },
+  post: Post & { isLongText?: boolean },
 ) {
   let text = post.text
 
   if (post.isLongText) {
-    await delay()
     const { data } = await weiFetch<{
-      data: { longTextContent: string }
+      data: { longTextContent?: string }
     }>(`/statuses/longtext`, {
       params: {
         id: post.id,
@@ -119,39 +130,39 @@ export async function fetchComments(
 
 interface FetchPosts {
   fetchOptions: () => FetchOptions
-  setTotal: (total: number) => void
-  addPosts: (posts: Post[], since_id: string) => Promise<void>
   onFinish: () => Promise<void>
+  setTotal: (total: number) => void
 }
 
 /**
  * 爬取微博
  */
-export async function fetchPosts(
-  { fetchOptions, setTotal, addPosts, onFinish }: FetchPosts,
+export function fetchPosts(
+  { fetchOptions, onFinish, setTotal }: FetchPosts,
 ) {
   async function fetching() {
     await delay(3000)
-    const { uid, dateRange, hasRepost, since_id, curPage, isFetchAll } = fetchOptions()
+    const { uid, dateRange, hasRepost, curPage, isFetchAll } = fetchOptions()
     const [start, end] = dateRange
     const page = curPage + 1
 
     console.log(`正在获取第 ${page} 页`)
 
     return isFetchAll
-      ? await fetchAllPosts(uid, since_id, page)
+      ? await fetchAllPosts(uid, page)
       : await fetchRangePosts(uid, start, end, page, hasRepost)
   }
 
-  const { startLoop, resume, pause } = usePausableLoop(async () => {
+  const { start, pause } = usePausableLoop(async () => {
     const res = await fetching()
-    setTotal(res?.total || 0)
+    if (res?.total && res.total > 0)
+      setTotal(res.total)
 
-    const list = await postsParser(res?.list || [], fetchOptions())
-    await addPosts(list, res?.since_id || '')
+    await postsParser(res?.list || [], fetchOptions())
+    const isEnd = !res?.list.length
 
     // 如果已经获取到所有帖子
-    if (!res?.list.length) {
+    if (isEnd) {
       await onFinish()
       return { isFinished: true }
     }
@@ -159,10 +170,8 @@ export async function fetchPosts(
   },
   )
 
-  startLoop()
-
   return {
+    start,
     pause,
-    resume,
   }
 }

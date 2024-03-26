@@ -175,6 +175,15 @@ export class IDB {
     }
   }
 
+  async addDBPost(post: Post) {
+    const db = await this.idb
+    const ts = db.transaction(STORE_NAME, 'readwrite')
+    const store = ts.store
+
+    post.created_at = dayjs(post.created_at).valueOf()
+    store.put(post)
+  }
+
   /**
    * 清空数据库
    */

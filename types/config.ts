@@ -1,4 +1,5 @@
 import type Conf from 'conf'
+import type { Post } from './post'
 
 /**
  * 解析、爬取时的配置
@@ -12,10 +13,6 @@ export interface FetchOptions {
    * 用户名
    */
   name: string
-  /**
-   * 鉴权字段，必须得登录才获取，匿名只能获取前两页。并且只能往前翻页，同一个 id 对于即便不同 page 的结果也是一样的
-   */
-  since_id: string
   /**
    * 已获取的页数
    */
@@ -56,6 +53,11 @@ export interface FetchOptions {
    * 日期范围
    */
   dateRange: [number, number]
+
+  /**
+   * 保存帖子
+   */
+  savePost?: (posts: Post) => Promise<void>
 }
 
 export interface AppConfig {

@@ -52,7 +52,7 @@ export function usePausableLoop(
     _isPaused = true
   }
 
-  async function resume() {
+  async function start() {
     console.log('已恢复')
     _isPaused = false
     await startLoop()
@@ -63,9 +63,8 @@ export function usePausableLoop(
   }
 
   return {
-    startLoop,
     pause,
-    resume,
+    start,
     isPaused,
   }
 }

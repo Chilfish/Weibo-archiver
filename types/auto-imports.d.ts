@@ -69,6 +69,7 @@ declare global {
   const filterComments: typeof import('../packages/core/src/utils/parse')['filterComments']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getTotal: typeof import('../packages/core/src/services/postService')['getTotal']
   const h: typeof import('vue')['h']
   const hasProtocol: typeof import('../packages/core/src/utils/protocol')['hasProtocol']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
@@ -420,6 +421,7 @@ declare module 'vue' {
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getTotal: UnwrapRef<typeof import('../packages/core/src/services/postService')['getTotal']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['hasProtocol']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -764,6 +766,7 @@ declare module '@vue/runtime-core' {
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getTotal: UnwrapRef<typeof import('../packages/core/src/services/postService')['getTotal']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['hasProtocol']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>

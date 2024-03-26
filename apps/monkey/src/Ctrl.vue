@@ -21,9 +21,6 @@ const { config } = storeToRefs(configStore)
 const percentage = computed(() => config.value.fetchedCount / postStore.total * 100)
 const progressText = computed(() => () => `${config.value.fetchedCount}/${postStore.total} 条`)
 
-const pauseFn = ref<() => void>()
-const resumeFn = ref<() => void>()
-
 /**
  * 保存用户信息，以在预览页中获取这些信息
  */
@@ -60,48 +57,39 @@ async function exportDatas() {
   await saveUserInfo()
 }
 
-async function start() {
+const { pause, start } = fetchPosts({
+  fetchOptions: () => ({
+    ...config.value,
+    savePost: post => postStore.add(post),
+  }),
+  setTotal: total => postStore.total = total,
+  onFinish: async () => {
+    isStart.value = false
+    isFinish.value = true
+    config.value.curPage--
+    exportDatas()
+  },
+})
+
+async function startFetch() {
   message.info('开始爬取中，请稍等~', {
     duration: 5000,
   })
 
+  postStore.setDB()
+  await postStore.setCount()
+
+  // 如果是重新开始，不保留上次 fetch 的状态
+  if (!config.value.restore || !config.value.isFetchAll)
+    await postStore.reset()
+
   isStart.value = true
   isFinish.value = false
   isStop.value = false
-  postStore.setDB()
-
-  // 如果是重新开始，不保留上次 fetch 的状态
-  if (!config.value.restore)
-    await postStore.reset()
-
-  // 如果是恢复暂停
-  if (resumeFn.value) {
-    resumeFn.value()
-    return
-  }
-
-  const { pause, resume } = await fetchPosts({
-    addPosts: postStore.add,
-    fetchOptions: () => config.value,
-    setTotal: total => postStore.total = total,
-    onFinish: async () => {
-      isStart.value = false
-      isFinish.value = true
-      config.value.curPage--
-      exportDatas()
-    },
-  })
-
-  pauseFn.value = pause
-  resumeFn.value = resume
+  start()
 }
 
 window.$message = message
-
-function stop() {
-  isStop.value = true
-  pauseFn.value?.()
-}
 
 /**
  * 初始化用户信息
@@ -115,8 +103,15 @@ async function init() {
 
 onMounted(async () => {
   await init()
-  await postStore.setCount()
 })
+
+function toggleStop() {
+  isStop.value = !isStop.value
+  if (isStop.value)
+    pause()
+  else
+    start()
+}
 </script>
 
 <template>
@@ -161,10 +156,10 @@ onMounted(async () => {
 
     <div class="btns flex gap-2">
       <button
-        v-show="!isStart || (!isFinish && isStop)"
-        @click="start"
+        v-show="!isStart || isStop"
+        @click="startFetch"
       >
-        开始获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博
+        {{ isStop ? '重新' : '' }}开始获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博
       </button>
 
       <div
@@ -175,10 +170,10 @@ onMounted(async () => {
       </div>
 
       <button
-        v-show="isStart && !isStop"
-        @click="stop"
+        v-show="isStart && !isFinish"
+        @click="toggleStop"
       >
-        暂停
+        {{ isStop ? '继续' : '暂停' }}
       </button>
 
       <button

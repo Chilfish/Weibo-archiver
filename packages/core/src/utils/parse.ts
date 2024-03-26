@@ -6,6 +6,7 @@ import type {
   PicInfo,
   Post,
 } from '@types'
+import PQueue from 'p-queue'
 import { fetchComments, fetchLongText } from '../services'
 
 export const weibo = 'https://weibo.com'
@@ -163,7 +164,6 @@ export async function postFilter(
   const includeComments = !isRepost && options.hasComment && post.comments_count > 0 && post
 
   try {
-    await delay(1000)
     const { text, textImg } = await fetchLongText(post)
     const imgs = includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : []
 
@@ -210,12 +210,23 @@ export async function postFilter(
 export async function postsParser(
   posts: any[],
   options: FetchOptions,
+  limitConcurrent = true,
 ): Promise<Post[]> {
-  const res = await Promise.all(
-    posts.map(async post => await postFilter(post, options)),
-  )
+  /** 如果包含评论，限制并发数 */
+  let concurrency = options.hasComment ? 5 : 10
+  if (!limitConcurrent)
+    concurrency = 20
+  const queue = new PQueue({ concurrency })
 
-  return res.filter((e): e is Post => !!e && e.user?.id === options.uid)
+  return await Promise.all(
+    posts.map(post => queue.add(async () => {
+      await delay(3000)
+      const res = await postFilter(post, options)
+      if (res && options.uid === res.user?.id && options.savePost)
+        await options.savePost(res)
+      return res
+    })),
+  ).then(res => res.filter((e): e is Post => !!e))
 }
 
 /**
@@ -246,7 +257,7 @@ export async function parsedData(
   posts: Post[],
   options: FetchOptions,
 ): Promise<ParseResult> {
-  const parsedPosts = await postsParser(posts, options)
+  const parsedPosts = await postsParser(posts, options, false)
   const imgs = imgsParser(parsedPosts)
 
   return {

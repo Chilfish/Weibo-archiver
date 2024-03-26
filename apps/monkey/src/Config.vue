@@ -33,11 +33,16 @@ const dateRange = computed({
         label="导出原图"
         size="small"
       />
-      <n-checkbox
-        v-model:checked="config.hasComment"
-        label="包含评论"
-        size="small"
-      />
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <n-checkbox
+            v-model:checked="config.hasComment"
+            label="包含评论"
+            size="small"
+          />
+        </template>
+        包含评论将会减慢速度
+      </n-tooltip>
       <n-checkbox
         v-model:checked="config.hasRepost"
         label="包含转发的微博"
@@ -58,7 +63,7 @@ const dateRange = computed({
             size="small"
           />
         </template>
-        每次开始前都会清空之前的状态，建议切换爬取设置时取消勾选
+        默认开始前都会清空之前的状态
       </n-tooltip>
       <button
         class="py-1 text-3.5 btn bg-#18a058! hover:bg-green-7!"

@@ -15,8 +15,6 @@ export const usePostStore = defineStore('post', () => {
 
   /* 总帖子数 */
   const total = ref(0)
-  /* 总页数 */
-  const pages = computed(() => Math.ceil(total.value / pageSize.value))
 
   const idb = ref<IDB>(new EmptyIDB())
 
@@ -44,7 +42,6 @@ export const usePostStore = defineStore('post', () => {
     total.value = 0
     pageSize.value = 20
     configStore.setConfig({
-      since_id: '',
       curPage: 0,
       fetchedCount: 0,
     })
@@ -56,17 +53,12 @@ export const usePostStore = defineStore('post', () => {
   /**
    * 添加帖子
    */
-  async function add(newPosts: Post[], since_id: string) {
+  async function add(newPost: Post) {
     await waitIDB()
+    await idb.value.addDBPost(newPost)
+    config.value.fetchedCount += 1
 
-    const { count } = await idb.value.addDBPosts(newPosts, false, false)
-    pageSize.value = (newPosts.length || 20)
-
-    configStore.setConfig({
-      since_id,
-      curPage: config.value.curPage + 1,
-      fetchedCount: count,
-    })
+    config.value.curPage = Math.floor(config.value.fetchedCount / pageSize.value)
   }
 
   async function getAll() {
@@ -76,19 +68,13 @@ export const usePostStore = defineStore('post', () => {
   }
 
   async function setCount() {
-    const count = 0
-
-    // const isExist = await checkDB(Number(config.value.uid))
-    // if (isExist) {
-    //   await waitIDB()
-    //   count = await idb.value.getPostCount()
-    // }
+    await waitIDB()
+    const count = await idb.value.getPostCount()
     configStore.setConfig({ fetchedCount: count })
   }
 
   return {
     total,
-    pages,
     pageSize,
 
     setDB,

@@ -17,7 +17,6 @@ export const useConfigStore = defineStore('config', () => {
     restore: false,
     uid: '',
     name: '',
-    since_id: '',
     curPage: 0,
     fetchedCount: 0,
     isFetchAll: true,
