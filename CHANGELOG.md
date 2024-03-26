@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.3.10
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.9...v0.3.10)
+
+### 🚀 Enhancements
+
+- **CI:** Add build actions ([a63767f](https://github.com/Chilfish/Weibo-archiver/commit/a63767f))
+
+### 🩹 Fixes
+
+- **core:** 限制爬取的并发数 ([#40](https://github.com/Chilfish/Weibo-archiver/pull/40))
+- **CI:** Release and build ([a749a3e](https://github.com/Chilfish/Weibo-archiver/commit/a749a3e))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.9
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.8...v0.3.9)
