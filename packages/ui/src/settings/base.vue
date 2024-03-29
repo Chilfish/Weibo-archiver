@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { UploadCustomRequestOptions } from 'naive-ui'
-import type { Post } from '@types'
+import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
+import type { Post, PostData, UserInfo } from '@types'
 import { destr } from 'destr'
 import { useStorage } from '@vueuse/core'
+import { parseOldPost } from '@weibo-archiver/core'
 
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
@@ -26,33 +27,54 @@ function onImportData({ file }: UploadCustomRequestOptions) {
   reader.readAsText(data)
   reader.onload = async () => {
     const content = reader.result as string
-    const data = content.replace('export const _ = ', '')
+    const _data = content.replace('export const _ = ', '')
 
     try {
-      const posts = destr<Post[]>(data, { strict: true })
-      const owner = posts[0]?.user.id
+      const data = destr<PostData | Post[]>(_data, { strict: true })
+      let user: UserInfo
+      let posts: Post[]
 
-      publicStore.curUid = owner
-      await postStore.set(posts, coverMode.value)
+      if (Array.isArray(data)) {
+        posts = data.map(post => parseOldPost(post))
 
-      const user = publicStore.users.find(u => u.uid === owner)
-      if (user === undefined)
-        message.warning('暂无该用户的更多信息，请先在脚本页中点击 同步信息 后刷新本页')
-      else
-        user.postCount = postStore.total
+        const _user = data[0].user as any
+        // @ts-expect-error bad
+        user = toRaw(publicStore.users.find(u => u.uid === _user?.id))
+        if (!user) {
+          user = {
+            uid: _user.id,
+            name: _user.screen_name,
+            avatar: _user.profile_image_url,
+            postCount: posts.length,
+            followers: 0,
+            followings: 0,
+            bio: '',
+            birthday: '',
+            createdAt: '',
+          }
+        }
+      }
+      else {
+        posts = data.weibo
+        user = data.user
+      }
 
-      publicStore.curUid = owner
-      isImporting.value = false
+      publicStore.curUid = user.uid
+      publicStore.users.push(user)
+
+      await postStore.set(posts, user, coverMode.value)
+      user.postCount = postStore.total
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
     }
     catch (e) {
       message.error('导入失败，请检查文件内容是否正确')
-      console.error(`导入失败: ${e}`)
+      console.error('导入失败', e)
     }
     finally {
       // 确保只有一个文件
       fileList.value = []
+      isImporting.value = false
     }
   }
 }

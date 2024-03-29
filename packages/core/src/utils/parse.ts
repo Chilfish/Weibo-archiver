@@ -2,7 +2,6 @@ import type {
   CardInfo,
   Comment,
   FetchOptions,
-  ParseResult,
   PicInfo,
   Post,
 } from '@types'
@@ -122,9 +121,9 @@ export function filterComments(
         img,
         created_at: comment.created_at,
         user: {
-          id: comment.user?.idstr,
-          screen_name: comment.user?.screen_name,
-          profile_image_url: comment.user?.profile_image_url,
+          uid: comment.user?.idstr || comment.user?.id,
+          name: comment.user?.screen_name,
+          avatar: comment.user?.profile_image_url,
         },
         region_name: comment.source,
         like_count: comment.like_counts,
@@ -143,6 +142,30 @@ export function filterComments(
       const bCount = b.comments_count + b.like_count
       return bCount - aCount
     })
+}
+
+/**
+ * 将数据转换为 Post 类型
+ */
+export function parseOldPost(
+  post: any,
+): Post {
+  const repost = post.retweeted_status
+
+  if (repost) {
+    repost.user = {
+      uid: repost.user.id,
+      name: repost.user.screen_name,
+      avatar: repost.user.profile_image_url,
+    }
+  }
+
+  return {
+    ...post,
+    user: undefined,
+    retweeted_status: repost,
+    comments: filterComments(post.comments),
+  }
 }
 
 /**
@@ -182,9 +205,9 @@ export async function postFilter(
       created_at: post.created_at,
       user: isRepost
         ? {
-            id: uid,
-            screen_name: post.user?.screen_name,
-            profile_image_url: post.user?.profile_image_url,
+            uid,
+            name: post.user?.screen_name,
+            avatar: post.user?.profile_image_url,
           }
         : undefined,
       source: post.source,
@@ -242,7 +265,6 @@ export function imgsParser(posts: Post[]): Set<string> {
         post.imgs,
         post.retweeted_status?.imgs,
         post.comments.map(e => e.img),
-        post.user?.profile_image_url,
         post.card?.img,
         textImg,
       ]
@@ -253,17 +275,4 @@ export function imgsParser(posts: Post[]): Set<string> {
     .sort()
 
   return new Set(imgs)
-}
-
-export async function parsedData(
-  posts: Post[],
-  options: FetchOptions,
-): Promise<ParseResult> {
-  const parsedPosts = await postsParser(posts, options, false)
-  const imgs = imgsParser(parsedPosts)
-
-  return {
-    posts: parsedPosts,
-    imgs,
-  }
 }

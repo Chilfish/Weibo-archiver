@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Post } from '@types'
+import { storeToRefs } from 'pinia'
 
 defineProps<{
   post: Post
@@ -7,6 +8,7 @@ defineProps<{
 
 const openComment = ref(false)
 const articleRef = ref<HTMLElement | null>(null)
+const { curUser } = storeToRefs(usePublicStore())
 
 watchEffect(() => {
   if (!articleRef.value)
@@ -24,7 +26,7 @@ watchEffect(() => {
     class="post"
   >
     <div class="flex justify-between">
-      <post-profile :user="post.user" />
+      <post-profile :user="curUser" />
       <post-meta
         :is-body="true"
         :meta="post"

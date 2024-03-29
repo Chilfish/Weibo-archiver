@@ -7,7 +7,7 @@ import type { Post, UID, UserInfo } from '@types'
 
 const POST_STORE = 'posts'
 const USER_STORE = 'user'
-const DB_VERSION = 3
+export const DB_VERSION = 3
 
 type AppDB = DBSchema & {
   [POST_STORE]: {
@@ -55,22 +55,22 @@ export class IDB {
     this.name = name
     this.idb = openDB<AppDB>(name, version, {
       upgrade(db, _oldVer) {
-        const hasStore = ([POST_STORE, USER_STORE] as const).some(
-          store => db.objectStoreNames.contains(store),
-        )
-        if (hasStore)
-          return
-
-        const store = db.createObjectStore(POST_STORE, { keyPath: 'id' })
-        store.createIndex('time', 'created_at', { unique: true })
-
-        db.createObjectStore(USER_STORE, { keyPath: 'uid' })
+        if (!db.objectStoreNames.contains(POST_STORE)) {
+          const store = db.createObjectStore(POST_STORE, { keyPath: 'id' })
+          store.createIndex('time', 'created_at', { unique: true })
+        }
+        if (!db.objectStoreNames.contains(USER_STORE))
+          db.createObjectStore(USER_STORE, { keyPath: 'uid' })
       },
     })
   }
 
   exists(name: UID) {
     return this.name === name
+  }
+
+  async close() {
+    return this.idb.then(db => db.close())
   }
 
   lastRange = IDBKeyRange.upperBound(Date.now())
