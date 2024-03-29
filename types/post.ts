@@ -6,6 +6,10 @@ export interface User {
   avatar: string
 }
 
+export type UserBio = User & {
+  bio: string
+}
+
 export interface UserInfo extends User {
   followers: number
   followings: number
@@ -77,4 +81,5 @@ export interface PostMeta {
 export interface PostData {
   weibo: Post[]
   user: UserInfo
+  followings: UserBio[]
 }

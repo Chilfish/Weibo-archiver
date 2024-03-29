@@ -4,6 +4,7 @@ import type {
   FetchOptions,
   PicInfo,
   Post,
+  UserBio,
 } from '@types'
 import PQueue from 'p-queue'
 import { fetchComments, fetchLongText } from '../services'
@@ -142,6 +143,18 @@ export function filterComments(
       const bCount = b.comments_count + b.like_count
       return bCount - aCount
     })
+}
+
+/**
+ * 解析关注列表
+ */
+export function parseFollowing(user: any) {
+  return {
+    uid: user.id,
+    name: user.screen_name,
+    avatar: user.profile_image_url,
+    bio: user.description,
+  } as UserBio
 }
 
 /**

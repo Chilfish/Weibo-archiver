@@ -3,11 +3,12 @@ import Fuse from 'fuse.js'
 import dayjs from 'dayjs'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
-import type { Post, UID, UserInfo } from '@types'
+import type { Post, UID, UserBio, UserInfo } from '@types'
 
 const POST_STORE = 'posts'
 const USER_STORE = 'user'
-export const DB_VERSION = 3
+const FOLLOWERINGS_STORE = 'followings'
+export const DB_VERSION = 4
 
 type AppDB = DBSchema & {
   [POST_STORE]: {
@@ -20,6 +21,10 @@ type AppDB = DBSchema & {
   [USER_STORE]: {
     key: string
     value: UserInfo
+  }
+  [FOLLOWERINGS_STORE]: {
+    key: string
+    value: UserBio
   }
 }
 
@@ -61,6 +66,9 @@ export class IDB {
         }
         if (!db.objectStoreNames.contains(USER_STORE))
           db.createObjectStore(USER_STORE, { keyPath: 'uid' })
+
+        if (!db.objectStoreNames.contains(FOLLOWERINGS_STORE))
+          db.createObjectStore(FOLLOWERINGS_STORE, { keyPath: 'uid' })
       },
     })
   }
@@ -324,6 +332,23 @@ export class IDB {
     const db = await this.idb
     await db.put(USER_STORE, user)
   }
+
+  async addFollowings(followings: UserBio[]) {
+    const db = await this.idb
+    const ts = db.transaction(FOLLOWERINGS_STORE, 'readwrite')
+    const store = ts.store
+
+    followings.forEach((following) => {
+      store.put(following)
+    })
+
+    await ts.done
+  }
+
+  async getFollowings() {
+    const db = await this.idb
+    return await db.getAll(FOLLOWERINGS_STORE)
+  }
 }
 
 export type SaerchResult = FuseResult<{
@@ -357,4 +382,6 @@ export class EmptyIDB extends IDB {
 
   async getUserInfo(): Promise<UserInfo> { return {} as any }
   async setUserInfo(_user: UserInfo): Promise<void> {}
+  async addFollowings(_followings: UserBio[]): Promise<void> {}
+  async getFollowings(): Promise<UserBio[]> { return [] }
 }

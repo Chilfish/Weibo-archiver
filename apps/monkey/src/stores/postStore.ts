@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
-import type { Post, UID, UserInfo } from '@types'
+import type { Post, UID, UserBio, UserInfo } from '@types'
 import { EmptyIDB, IDB } from '@core/utils/storage'
+import saveAs from 'file-saver'
 import { useConfigStore } from './configStore'
 
 export const usePostStore = defineStore('post', () => {
@@ -84,6 +85,33 @@ export const usePostStore = defineStore('post', () => {
     await idb.value.setUserInfo(user)
   }
 
+  async function addFollowings(followings: UserBio[]) {
+    await waitIDB()
+    await idb.value.addFollowings(followings)
+  }
+
+  async function exportFollowings() {
+    await waitIDB()
+    const data = await idb.value.getFollowings()
+    return await exportData([], userInfo.value, data)
+  }
+
+  /**
+   * 导出数据
+   */
+  async function exportDatas() {
+    const posts = await getAll()
+    console.log('导出的数量：', posts.length)
+
+    const followings = await idb.value.getFollowings()
+
+    const res = await exportData(posts, userInfo.value, followings)
+    if (!res)
+      return
+    const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
+    saveAs(scripts, 'scripts.zip')
+  }
+
   return {
     total,
     pageSize,
@@ -95,5 +123,8 @@ export const usePostStore = defineStore('post', () => {
     getAll,
     setCount,
     setUser,
+    exportDatas,
+    addFollowings,
+    exportFollowings,
   }
 })

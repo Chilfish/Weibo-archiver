@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useMessage } from 'naive-ui'
-import { saveAs } from 'file-saver'
 import { storeToRefs } from 'pinia'
 
-import { exportData } from '@core/utils'
+import { fetchFollowings } from '@core/services'
 import { useConfigStore, usePostStore } from './stores'
 import Config from './Config.vue'
 
@@ -15,25 +14,12 @@ const configStore = useConfigStore()
 const isStart = ref(false)
 const isStop = ref(false)
 const isFinish = ref(false)
+const isFetchingFollowings = ref(false)
 
 const { config } = storeToRefs(configStore)
 
 const percentage = computed(() => config.value.fetchedCount / postStore.total * 100)
 const progressText = computed(() => () => `${config.value.fetchedCount}/${postStore.total} 条`)
-
-/**
- * 导出数据
- */
-async function exportDatas() {
-  const posts = await postStore.getAll()
-  console.log('导出的数量：', posts.length)
-
-  const res = await exportData(posts, postStore.userInfo)
-  if (!res)
-    return
-  const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
-  saveAs(scripts, 'scripts.zip')
-}
 
 const { pause, start } = fetchPosts({
   fetchOptions: () => ({
@@ -42,10 +28,17 @@ const { pause, start } = fetchPosts({
   }),
   setTotal: total => postStore.total = total,
   onFinish: async () => {
+    message.success('获取完毕~，正在获取关注列表')
+    isFetchingFollowings.value = true
+    await fetchFollowings(
+      config.value.uid,
+      async data => postStore.addFollowings(data),
+    )
+    await postStore.exportDatas()
+
     isStart.value = false
     isFinish.value = true
     config.value.curPage--
-    exportDatas()
   },
 })
 
@@ -55,18 +48,31 @@ async function startFetch() {
   })
 
   postStore.setDB()
-  await postStore.setCount()
+
+  // 如果只获取关注列表
+  if (config.value.followingsOnly) {
+    await fetchFollowings(
+      config.value.uid,
+      async data => postStore.addFollowings(data),
+    )
+    await postStore.exportFollowings()
+    isStart.value = false
+    isFinish.value = true
+    return
+  }
 
   // 如果是重新开始，不保留上次 fetch 的状态
   if (!config.value.restore || !config.value.isFetchAll)
     await postStore.reset()
 
+  await postStore.setCount()
   await postStore.setUser()
 
   isStart.value = true
   isFinish.value = false
   isStop.value = false
-  start()
+  isFetchingFollowings.value = false
+  await start()
 }
 
 window.$message = message
@@ -94,6 +100,16 @@ function toggleStop() {
   else
     start()
 }
+
+const startButtonText = computed(() => {
+  if (config.value.followingsOnly)
+    return '获取关注列表'
+
+  if (isStop.value)
+    return `重新开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
+
+  return `开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
+})
 </script>
 
 <template>
@@ -141,14 +157,14 @@ function toggleStop() {
         v-show="!isStart || isStop"
         @click="startFetch"
       >
-        {{ isStop ? '重新' : '' }}开始获取 <strong>{{ config.isFetchAll ? '全部' : '部分' }}</strong> 微博
+        {{ startButtonText }}
       </button>
 
       <div
         v-show="isStart && !isFinish && !isStop"
         class="center"
       >
-        获取中~
+        正在获取{{ isFetchingFollowings ? '关注列表' : '微博' }} ~
       </div>
 
       <button
@@ -160,7 +176,7 @@ function toggleStop() {
 
       <button
         v-show="isFinish || isStop"
-        @click="exportDatas"
+        @click="postStore.exportDatas"
       >
         导出
       </button>

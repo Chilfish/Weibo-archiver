@@ -55,6 +55,11 @@ export interface FetchOptions {
   dateRange: [number, number]
 
   /**
+   * 只获取关注列表
+   */
+  followingsOnly: boolean
+
+  /**
    * 保存帖子
    */
   savePost?: (posts: Post) => Promise<void>

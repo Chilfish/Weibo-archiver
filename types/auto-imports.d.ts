@@ -110,6 +110,7 @@ declare global {
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
   const parseImg: typeof import('../packages/core/src/utils/parse')['parseImg']
+  const parseOldPost: typeof import('../packages/core/src/utils/parse')['parseOldPost']
   const parseProtocol: typeof import('../packages/core/src/utils/protocol')['parseProtocol']
   const parseText: typeof import('../packages/core/src/utils/parse')['parseText']
   const parsedData: typeof import('../packages/core/src/utils/parse')['parsedData']
@@ -462,9 +463,9 @@ declare module 'vue' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly parseImg: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseImg']>
+    readonly parseOldPost: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseOldPost']>
     readonly parseProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['parseProtocol']>
     readonly parseText: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseText']>
-    readonly parsedData: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parsedData']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postFilter']>
     readonly postsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postsParser']>
@@ -807,9 +808,9 @@ declare module '@vue/runtime-core' {
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly parseImg: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseImg']>
+    readonly parseOldPost: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseOldPost']>
     readonly parseProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['parseProtocol']>
     readonly parseText: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseText']>
-    readonly parsedData: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parsedData']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly postFilter: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postFilter']>
     readonly postsParser: UnwrapRef<typeof import('../packages/core/src/utils/parse')['postsParser']>
