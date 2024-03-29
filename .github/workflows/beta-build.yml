@@ -9,6 +9,7 @@ on:
       - '**.md'
       - '.github/**'
       - '!.github/workflows/**'
+  pull_request:
 
 jobs:
   install-and-build:

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import type { Post, UID } from '@types'
+import type { Post, UID, UserInfo } from '@types'
 import { EmptyIDB, IDB } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {
@@ -71,17 +71,17 @@ export const usePostStore = defineStore('post', () => {
    */
   async function set(
     data: Post[],
+    user: UserInfo,
     isReplace = false,
   ) {
-    if (!data[0]?.user)
-      throw new Error('数据格式错误，可能要重新导入')
-
     await waitIDB()
 
     const { count, search } = await idb.value.addDBPosts(data, isReplace)
     totalDB.value = count
     total.value = count
     seachFn.value = search
+
+    await idb.value.setUserInfo(user)
   }
 
   async function _searchPost(

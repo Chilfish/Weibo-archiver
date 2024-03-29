@@ -12,13 +12,13 @@ defineProps<{
     class="mt-4 flex flex-col gap-2 rounded-2 bg-light p-3 dark:bg-dark"
   >
     <post-profile
-      v-if="post.user?.id"
+      v-if="post.user?.uid"
       :user="post.user"
     />
     <main>
       <post-text
         :text="post.text"
-        :class="post.user?.id ? '' : 'text-red!'"
+        :class="post.user?.uid ? '' : 'text-red!'"
       />
 
       <gallery :imgs="post.imgs" />
@@ -29,7 +29,7 @@ defineProps<{
       />
     </main>
     <div
-      v-if="post.user?.id"
+      v-if="post.user?.uid"
       class="flex justify-between text-gray"
     >
       <post-meta :meta="post" />

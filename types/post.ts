@@ -1,15 +1,12 @@
 export type UID = `uid-${number}`
 
 export interface User {
-  id: string
-  screen_name: string
-  profile_image_url: string
-}
-
-export interface UserInfo {
   uid: string
   name: string
   avatar: string
+}
+
+export interface UserInfo extends User {
   followers: number
   followings: number
   bio: string
@@ -47,7 +44,7 @@ export interface Post extends Meta {
   comments_count: number
   like_count: number
 
-  user: User
+  user?: User
   /**
    * 转发的卡片（page_info, url_struct）
    */
@@ -75,4 +72,9 @@ export interface PostMeta {
   since_id: string
   page: number
   list: Post[]
+}
+
+export interface PostData {
+  weibo: Post[]
+  user: UserInfo
 }

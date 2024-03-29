@@ -1,22 +1,30 @@
 import fileSaver from 'file-saver'
-import type { Post } from '@types'
+import type { Post, UserInfo } from '@types'
 import { imgsParser } from './parse'
 
-export async function exportData(posts: Post[]) {
-  if (!posts[0]) {
+export async function exportData(
+  posts: Post[],
+  userInfo?: UserInfo | null,
+) {
+  if (!posts[0] || !userInfo?.name) {
     window.$message.warning('没有数据可以导出')
     return false
   }
 
-  const name = posts[0].user.screen_name || ''
+  const { name } = userInfo
 
   try {
-    const data = JSON.stringify(posts)
+    const data = {
+      user: userInfo,
+      weibo: posts,
+    }
+
+    const dataStr = JSON.stringify(data)
     const imgsData = Array
       .from(imgsParser(posts))
       .join(',\n') // csv 格式
 
-    const dataBlob = new Blob([data], { type: 'application/json' })
+    const dataBlob = new Blob([dataStr], { type: 'application/json' })
     const imgsDataBlob = new Blob([imgsData], { type: 'text/csv' })
 
     window.$message.success('导出成功，正在下载数据...请允许浏览器批量下载文件', {

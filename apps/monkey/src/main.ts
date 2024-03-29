@@ -20,8 +20,8 @@ if (document.location.hostname === 'weibo.com') {
   initApp()
   console.log('weibo-archiver 加载成功')
 }
-else {
-  const users = GM_getValue('users') || []
+// else {
+//   const users = GM_getValue('users') || []
 
-  localStorage.setItem('users', JSON.stringify(users))
-}
+//   localStorage.setItem('users', JSON.stringify(users))
+// }

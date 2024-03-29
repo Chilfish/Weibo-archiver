@@ -1,11 +1,13 @@
 import { defineStore, storeToRefs } from 'pinia'
-import type { Post, UID } from '@types'
+import type { Post, UID, UserInfo } from '@types'
 import { EmptyIDB, IDB } from '@core/utils/storage'
 import { useConfigStore } from './configStore'
 
 export const usePostStore = defineStore('post', () => {
   /* 获取到的所有帖子，但会卡内存 */
   // const posts = shallowRef([] as Post[])
+
+  const userInfo = ref<UserInfo | null>(null)
 
   const configStore = useConfigStore()
   const { config } = storeToRefs(configStore)
@@ -58,7 +60,7 @@ export const usePostStore = defineStore('post', () => {
     await idb.value.addDBPost(newPost)
     config.value.fetchedCount += 1
 
-    config.value.curPage = Math.floor(config.value.fetchedCount / pageSize.value)
+    config.value.curPage = Math.ceil(config.value.fetchedCount / 20)
   }
 
   async function getAll() {
@@ -73,14 +75,25 @@ export const usePostStore = defineStore('post', () => {
     configStore.setConfig({ fetchedCount: count })
   }
 
+  async function setUser() {
+    if (!userInfo.value)
+      return
+    await waitIDB()
+
+    const user = toRaw(userInfo.value)
+    await idb.value.setUserInfo(user)
+  }
+
   return {
     total,
     pageSize,
+    userInfo,
 
     setDB,
     add,
     reset,
     getAll,
     setCount,
+    setUser,
   }
 })

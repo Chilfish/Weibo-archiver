@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import type { User } from '@types'
+import type { UserInfo } from '@types'
 
 const props = defineProps<{
-  user: User
+  user: UserInfo
 }>()
 
 const publicStore = usePublicStore()
+const { user } = toRefs(props)
 
 const avatar = computed(() => {
-  const url = props.user.profile_image_url
+  const url = props.user.avatar
   if (!url)
     return '/placeholder.webp'
 
-  if (publicStore.curUid === props.user.id)
+  if (publicStore.curUid === props.user.uid)
     return replaceImg(url)
 
   // 对于其他人的头像，就使用 CDN
@@ -25,7 +26,7 @@ const avatar = computed(() => {
   <a
     class="mr-auto flex items-center gap-3"
     target="_blank"
-    :href="`https://weibo.com/u/${user.id}`"
+    :href="`https://weibo.com/u/${user.uid}`"
   >
     <n-avatar
       lazy
@@ -36,14 +37,14 @@ const avatar = computed(() => {
       :size="36"
       :src="avatar"
       :img-props="{
-        alt: `${user.screen_name}'s avatar`,
+        alt: `${user.name}'s avatar`,
       }"
     />
 
     <span
       class="font-bold hover:text-teal-700!"
     >
-      {{ user.screen_name }}
+      {{ user.name }}
     </span>
   </a>
 </template>

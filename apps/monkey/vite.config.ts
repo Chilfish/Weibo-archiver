@@ -60,7 +60,7 @@ export default defineConfig({
         match: [
           'https://weibo.com/u/*',
           'https://weibo.com/n/*',
-          'https://weibo.chilfish.top/*',
+          // 'https://weibo.chilfish.top/*',
         ],
         grant: [
           'GM_setValue',

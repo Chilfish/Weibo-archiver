@@ -22,39 +22,17 @@ const percentage = computed(() => config.value.fetchedCount / postStore.total * 
 const progressText = computed(() => () => `${config.value.fetchedCount}/${postStore.total} 条`)
 
 /**
- * 保存用户信息，以在预览页中获取这些信息
- */
-async function saveUserInfo() {
-  const user = await userDetail(config.value.uid)
-  user.exportedAt = new Date().toLocaleString()
-
-  const users = GM_getValue<any[]>('users') ?? []
-  const index = users.findIndex((u: any) => u.uid === user.uid)
-  if (index !== -1)
-    Object.assign(users[index], user)
-  else
-    users.push(user)
-
-  GM_setValue('users', users)
-
-  console.log('已同步的用户信息', users)
-  message.success('用户信息同步成功')
-}
-
-/**
  * 导出数据
  */
 async function exportDatas() {
   const posts = await postStore.getAll()
   console.log('导出的数量：', posts.length)
 
-  const res = await exportData(posts)
+  const res = await exportData(posts, postStore.userInfo)
   if (!res)
     return
   const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
   saveAs(scripts, 'scripts.zip')
-
-  await saveUserInfo()
 }
 
 const { pause, start } = fetchPosts({
@@ -83,6 +61,8 @@ async function startFetch() {
   if (!config.value.restore || !config.value.isFetchAll)
     await postStore.reset()
 
+  await postStore.setUser()
+
   isStart.value = true
   isFinish.value = false
   isStop.value = false
@@ -98,6 +78,8 @@ async function init() {
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
   const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
+
+  postStore.userInfo = await userDetail(uid)
   configStore.setConfig({ uid, name })
 }
 
@@ -181,12 +163,6 @@ function toggleStop() {
         @click="exportDatas"
       >
         导出
-      </button>
-
-      <button
-        @click="saveUserInfo"
-      >
-        同步信息
       </button>
     </div>
   </div>

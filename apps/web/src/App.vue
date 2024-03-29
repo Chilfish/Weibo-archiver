@@ -38,13 +38,15 @@ useHead({
 })
 
 const loaded = ref(false)
-onNuxtReady(() => {
+onNuxtReady(async () => {
   const publicStore = usePublicStore()
   const users = localStorage.getItem('users')
   const curUid = localStorage.getItem('curUid')
 
   publicStore.users = JSON.parse(users || '[]')
   publicStore.curUid = curUid || ''
+
+  await publicStore.migrateUser()
 
   loaded.value = true
 })
