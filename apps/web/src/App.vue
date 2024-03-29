@@ -46,7 +46,11 @@ onNuxtReady(async () => {
   publicStore.users = JSON.parse(users || '[]')
   publicStore.curUid = curUid || ''
 
-  await publicStore.migrateUser()
+  watchImmediate(() => publicStore.curUid, async () => {
+    loaded.value = false
+    await publicStore.migrateUser()
+    loaded.value = true
+  })
 
   loaded.value = true
 })
