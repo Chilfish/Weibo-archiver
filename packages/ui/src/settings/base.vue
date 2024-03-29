@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
-import type { Post, PostData, UserInfo } from '@types'
+import type { Post, PostData, UserBio, UserInfo } from '@types'
 import { destr } from 'destr'
 import { useStorage } from '@vueuse/core'
 import { parseOldPost } from '@weibo-archiver/core'
@@ -33,6 +33,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       const data = destr<PostData | Post[]>(_data, { strict: true })
       let user: UserInfo
       let posts: Post[]
+      let followings: UserBio[] = []
 
       if (Array.isArray(data)) {
         posts = data.map(post => parseOldPost(post))
@@ -57,11 +58,12 @@ function onImportData({ file }: UploadCustomRequestOptions) {
       else {
         posts = data.weibo
         user = data.user
+        followings = data.followings
       }
 
       publicStore.importUser(user)
 
-      await postStore.set(posts, user, coverMode.value)
+      await postStore.set(posts, user, followings, coverMode.value)
       user.postCount = postStore.total
 
       message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)

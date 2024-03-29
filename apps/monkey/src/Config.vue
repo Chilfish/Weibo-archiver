@@ -27,7 +27,10 @@ const dateRange = computed({
       clearable
     />
 
-    <div class="center flex-wrap justify-start gap-2">
+    <div
+      v-if="!config.followingsOnly"
+      class="center flex-wrap justify-start gap-2"
+    >
       <n-checkbox
         v-model:checked="config.largePic"
         label="导出原图"
@@ -65,6 +68,7 @@ const dateRange = computed({
         </template>
         默认开始前都会清空之前的状态
       </n-tooltip>
+
       <button
         class="py-1 text-3.5 btn bg-#18a058! hover:bg-green-7!"
         @click="() => {
@@ -74,7 +78,11 @@ const dateRange = computed({
         重置为所有微博
       </button>
     </div>
-
+    <n-checkbox
+      v-model:checked="config.followingsOnly"
+      label="只导出关注列表"
+      size="small"
+    />
     <div
       v-show="config.hasComment"
       class="flex items-center gap-4"

@@ -26,6 +26,7 @@ export const useConfigStore = defineStore('config', () => {
     hasComment: true,
     hasFavorite: true,
     commentCount: 6,
+    followingsOnly: false,
     dateRange: [now, now],
   }
 

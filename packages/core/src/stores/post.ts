@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import type { Post, UID, UserInfo } from '@types'
+import type { Post, UID, UserBio, UserInfo } from '@types'
 import { EmptyIDB, IDB } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
+  const followings = shallowRef<UserBio[]>([])
 
   const idb = ref(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
@@ -16,6 +17,8 @@ export const usePostStore = defineStore('post', () => {
 
     idb.value = new IDB(wrappedUid)
     await updateTotal()
+
+    followings.value = await getFollowings()
   })
 
   const route = useRoute()
@@ -72,9 +75,13 @@ export const usePostStore = defineStore('post', () => {
   async function set(
     data: Post[],
     user: UserInfo,
+    followings?: UserBio[],
     isReplace = false,
   ) {
     await waitIDB()
+
+    if (followings && followings.length)
+      await idb.value.addFollowings(followings)
 
     const { count, search } = await idb.value.addDBPosts(data, isReplace)
     totalDB.value = count
@@ -196,12 +203,20 @@ export const usePostStore = defineStore('post', () => {
     return posts
   }
 
+  async function getFollowings() {
+    await waitIDB()
+    return await idb.value
+      .getFollowings()
+      .then(data => data.sort((a, b) => a.name.localeCompare(b.name)))
+  }
+
   return {
     total,
     totalDB,
     pages,
     pageSize,
     curPage,
+    followings,
 
     get,
     set,
@@ -226,5 +241,6 @@ export const usePostStore = defineStore('post', () => {
     getByTime,
     searchPost,
     searchAndTime,
+    getFollowings,
   }
 })

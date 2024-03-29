@@ -3,7 +3,7 @@ import { ofetch } from 'ofetch'
 
 export const aborter = new AbortController()
 
-export async function weiFetch<T extends { data: any }>(
+export async function weiFetch<T = { data: any }>(
   path: string,
   options?: FetchOptions<'json'>,
 ) {
