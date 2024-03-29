@@ -314,7 +314,7 @@ export class IDB {
    */
   async getUserInfo() {
     const db = await this.idb
-    return await db.get(USER_STORE, 'user')
+    return await db.getAll(USER_STORE).then(users => users[0])
   }
 
   /**
@@ -355,6 +355,6 @@ export class EmptyIDB extends IDB {
     }
   }
 
-  async getUserInfo(): Promise<UserInfo | undefined> { return undefined }
+  async getUserInfo(): Promise<UserInfo> { return {} as any }
   async setUserInfo(_user: UserInfo): Promise<void> {}
 }

@@ -18,7 +18,6 @@ defineProps<{
     <main>
       <post-text
         :text="post.text"
-        :class="post.user?.uid ? '' : 'text-red!'"
       />
 
       <gallery :imgs="post.imgs" />
