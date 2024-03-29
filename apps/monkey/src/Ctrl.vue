@@ -48,9 +48,14 @@ async function startFetch() {
   })
 
   postStore.setDB()
+  isStart.value = true
+  isFinish.value = false
+  isStop.value = false
+  isFetchingFollowings.value = false
 
   // 如果只获取关注列表
   if (config.value.followingsOnly) {
+    isFetchingFollowings.value = true
     await fetchFollowings(
       config.value.uid,
       async data => postStore.addFollowings(data),
@@ -68,10 +73,6 @@ async function startFetch() {
   await postStore.setCount()
   await postStore.setUser()
 
-  isStart.value = true
-  isFinish.value = false
-  isStop.value = false
-  isFetchingFollowings.value = false
   await start()
 }
 
