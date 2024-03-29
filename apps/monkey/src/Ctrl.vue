@@ -48,7 +48,7 @@ async function exportDatas() {
   const posts = await postStore.getAll()
   console.log('导出的数量：', posts.length)
 
-  const res = await exportData(posts)
+  const res = await exportData(posts, postStore.userInfo)
   if (!res)
     return
   const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
@@ -83,6 +83,8 @@ async function startFetch() {
   if (!config.value.restore || !config.value.isFetchAll)
     await postStore.reset()
 
+  await postStore.setUser()
+
   isStart.value = true
   isFinish.value = false
   isStop.value = false
@@ -98,6 +100,8 @@ async function init() {
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
   const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
+
+  postStore.userInfo = await userDetail(uid)
   configStore.setConfig({ uid, name })
 }
 

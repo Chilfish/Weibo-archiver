@@ -3,18 +3,23 @@ import Fuse from 'fuse.js'
 import dayjs from 'dayjs'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
-import type { Post, UID } from '@types'
+import type { Post, UID, UserInfo } from '@types'
 
-const STORE_NAME = 'posts'
-const DB_VERSION = 2
+const POST_STORE = 'posts'
+const USER_STORE = 'user'
+const DB_VERSION = 3
 
 type AppDB = DBSchema & {
-  [STORE_NAME]: {
+  [POST_STORE]: {
     key: number
     value: Post
     indexes: {
       time: number
     }
+  }
+  [USER_STORE]: {
+    key: string
+    value: UserInfo
   }
 }
 
@@ -30,7 +35,7 @@ export async function checkDB(uid: number) {
   const name = `uid-${uid}`
 
   const db = await openDB<AppDB>(name, DB_VERSION)
-  const isExist = db.objectStoreNames.contains(STORE_NAME)
+  const isExist = db.objectStoreNames.contains(POST_STORE)
 
   if (!isExist)
     await deleteDB(name)
@@ -50,11 +55,16 @@ export class IDB {
     this.name = name
     this.idb = openDB<AppDB>(name, version, {
       upgrade(db, _oldVer) {
-        if (db.objectStoreNames.contains(STORE_NAME))
+        const hasStore = ([POST_STORE, USER_STORE] as const).some(
+          store => db.objectStoreNames.contains(store),
+        )
+        if (hasStore)
           return
 
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' })
+        const store = db.createObjectStore(POST_STORE, { keyPath: 'id' })
         store.createIndex('time', 'created_at', { unique: true })
+
+        db.createObjectStore(USER_STORE, { keyPath: 'uid' })
       },
     })
   }
@@ -75,7 +85,7 @@ export class IDB {
     const db = await this.idb
     const posts: Post[] = []
 
-    const ts = db.transaction(STORE_NAME)
+    const ts = db.transaction(POST_STORE)
 
     let cursor = await ts.store.index('time').openCursor(this.lastRange, 'prev')
 
@@ -105,7 +115,7 @@ export class IDB {
   async getDBPostByTime(times: number[]) {
     const db = await this.idb
     const posts: Post[] = []
-    const ts = db.transaction(STORE_NAME)
+    const ts = db.transaction(POST_STORE)
     const index = ts.store.index('time')
 
     for (const time of times) {
@@ -121,7 +131,7 @@ export class IDB {
    */
   async getAllDBPosts() {
     const db = await this.idb
-    return await db.getAll(STORE_NAME)
+    return await db.getAll(POST_STORE)
   }
 
   /**
@@ -129,7 +139,7 @@ export class IDB {
    */
   async getPostCount() {
     const db = await this.idb
-    return await db.count(STORE_NAME)
+    return await db.count(POST_STORE)
   }
 
   /**
@@ -146,9 +156,9 @@ export class IDB {
     const db = await this.idb
 
     if (isReplace)
-      await db.clear(STORE_NAME)
+      await db.clear(POST_STORE)
 
-    const ts = db.transaction(STORE_NAME, 'readwrite')
+    const ts = db.transaction(POST_STORE, 'readwrite')
     const store = ts.store
 
     posts.forEach((post) => {
@@ -177,11 +187,11 @@ export class IDB {
 
   async addDBPost(post: Post) {
     const db = await this.idb
-    const ts = db.transaction(STORE_NAME, 'readwrite')
+    const ts = db.transaction(POST_STORE, 'readwrite')
     const store = ts.store
 
     post.created_at = dayjs(post.created_at).valueOf()
-    store.put(post)
+    await store.put(post)
   }
 
   /**
@@ -189,7 +199,7 @@ export class IDB {
    */
   async clearDB() {
     const db = await this.idb
-    await db.clear(STORE_NAME)
+    await db.clear(POST_STORE)
   }
 
   /**
@@ -266,7 +276,7 @@ export class IDB {
     const db = await this.idb
     const posts: Post[] = []
 
-    const ts = db.transaction(STORE_NAME)
+    const ts = db.transaction(POST_STORE)
 
     // 闭区间
     const range = IDBKeyRange.bound(start, end)
@@ -298,6 +308,22 @@ export class IDB {
       count,
     }
   }
+
+  /**
+   * 获取用户信息
+   */
+  async getUserInfo() {
+    const db = await this.idb
+    return await db.get(USER_STORE, 'user')
+  }
+
+  /**
+   * 设置用户信息
+   */
+  async setUserInfo(user: UserInfo) {
+    const db = await this.idb
+    await db.put(USER_STORE, user)
+  }
 }
 
 export type SaerchResult = FuseResult<{
@@ -328,4 +354,7 @@ export class EmptyIDB extends IDB {
       search: (_text: string) => [] as number[],
     }
   }
+
+  async getUserInfo(): Promise<UserInfo | undefined> { return undefined }
+  async setUserInfo(_user: UserInfo): Promise<void> {}
 }

@@ -47,7 +47,7 @@ export interface Post extends Meta {
   comments_count: number
   like_count: number
 
-  user: User
+  user?: User
   /**
    * 转发的卡片（page_info, url_struct）
    */

@@ -180,11 +180,13 @@ export async function postFilter(
       comments_count: post.comments_count,
       like_count: post.attitudes_count,
       created_at: post.created_at,
-      user: {
-        id: uid,
-        screen_name: post.user?.screen_name,
-        profile_image_url: post.user?.profile_image_url,
-      },
+      user: isRepost
+        ? {
+            id: uid,
+            screen_name: post.user?.screen_name,
+            profile_image_url: post.user?.profile_image_url,
+          }
+        : undefined,
       source: post.source,
       region_name: post.region_name,
       mblogid: post.mblogid,
@@ -222,7 +224,7 @@ export async function postsParser(
     posts.map(post => queue.add(async () => {
       await delay(3000)
       const res = await postFilter(post, options)
-      if (res && options.uid === res.user?.id && options.savePost)
+      if (res && options.savePost)
         await options.savePost(res)
       return res
     })),
