@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.3.11
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.10...v0.3.11)
+
+### 🚀 Enhancements
+
+- Add fetching user followings ([#44](https://github.com/Chilfish/Weibo-archiver/pull/44))
+
+### 🩹 Fixes
+
+- **core:** Transform old data before import ([2cde106](https://github.com/Chilfish/Weibo-archiver/commit/2cde106))
+- **web:** 迁移旧版数据 ([5c7e2b7](https://github.com/Chilfish/Weibo-archiver/commit/5c7e2b7))
+
+### 💅 Refactors
+
+- 移出导出数据中的 post.user ([#43](https://github.com/Chilfish/Weibo-archiver/pull/43))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.10
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.9...v0.3.10)

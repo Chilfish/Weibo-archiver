@@ -207,7 +207,17 @@ export class IDB {
    */
   async clearDB() {
     const db = await this.idb
-    await db.clear(POST_STORE)
+
+    await Promise.all([
+      db.clear(POST_STORE),
+      db.clear(USER_STORE),
+      db.clear(FOLLOWERINGS_STORE),
+    ])
+  }
+
+  async clearFollowings() {
+    const db = await this.idb
+    await db.clear(FOLLOWERINGS_STORE)
   }
 
   /**

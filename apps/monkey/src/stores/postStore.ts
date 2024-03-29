@@ -21,11 +21,13 @@ export const usePostStore = defineStore('post', () => {
 
   const idb = ref<IDB>(new EmptyIDB())
 
-  function setDB() {
+  async function setDB() {
     const wrappedUid = `uid-${config.value.uid}` as UID
     if (idb.value.name === wrappedUid)
       return
     idb.value = new IDB(wrappedUid)
+
+    await idb.value.clearFollowings()
   }
 
   /**

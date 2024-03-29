@@ -47,7 +47,8 @@ async function startFetch() {
     duration: 5000,
   })
 
-  postStore.setDB()
+  await postStore.setDB()
+
   isStart.value = true
   isFinish.value = false
   isStop.value = false

@@ -75,13 +75,16 @@ export const usePostStore = defineStore('post', () => {
   async function set(
     data: Post[],
     user: UserInfo,
-    followings?: UserBio[],
+    _followings?: UserBio[],
     isReplace = false,
   ) {
     await waitIDB()
 
-    if (followings && followings.length)
-      await idb.value.addFollowings(followings)
+    if (_followings && _followings.length) {
+      await idb.value.clearFollowings()
+      followings.value = _followings
+      await idb.value.addFollowings(_followings)
+    }
 
     const { count, search } = await idb.value.addDBPosts(data, isReplace)
     totalDB.value = count
