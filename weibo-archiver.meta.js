@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weibo Archiver
 // @namespace    chilfish/monkey
-// @version      0.3.10
+// @version      0.3.11
 // @author       Chilfish
 // @description  将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭
 // @license      MIT
@@ -13,7 +13,6 @@
 // @updateURL    https://github.com/Chilfish/Weibo-archiver/raw/monkey/weibo-archiver.meta.js
 // @match        https://weibo.com/u/*
 // @match        https://weibo.com/n/*
-// @match        https://weibo.chilfish.top/*
 // @require      https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js
 // @require      data:application/javascript,%3Bwindow.Vue%3DVue%3B
 // @require      https://unpkg.com/vue-demi@latest/lib/index.iife.js
