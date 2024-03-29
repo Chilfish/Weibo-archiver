@@ -11,7 +11,7 @@ withDefaults(defineProps<{
 
 <template>
   <div
-    class="w-fit flex flex-col gap-1 rounded-2 p-4"
+    class="w-fit flex flex-col gap-1 rounded-2 px-1 py-4"
   >
     <div class="flex items-center gap-4">
       <n-avatar
@@ -25,7 +25,7 @@ withDefaults(defineProps<{
         :img-props="{
           alt: `${user.name}'s avatar`,
         }"
-        class="ring-2 ring-white"
+        class="min-w-16 ring-2 ring-white"
       />
       <div>
         <span
@@ -48,7 +48,7 @@ withDefaults(defineProps<{
     </div>
 
     <div
-      v-if="showMore"
+      v-if="showMore && user.createdAt"
       class="mt-3"
     >
       <div><strong>简介：</strong>{{ user.bio }}</div>

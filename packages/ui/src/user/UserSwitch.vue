@@ -14,7 +14,7 @@ function switchUser(uid: string) {
   </div>
 
   <tmeplate v-if="curUser">
-    <div class="title">
+    <div class="title sm:w-35vw">
       当前用户
     </div>
 
@@ -28,14 +28,6 @@ function switchUser(uid: string) {
     其他用户
   </div>
 
-  <NAlert
-    v-else
-    type="info"
-    class="mt-4"
-  >
-    没找到其他已导入的用户？尝试在该用户的脚本页中点击 同步信息 后刷新本页即可获取
-  </NAlert>
-
   <div
     v-for="user in otherUsers"
     :key="user.uid"
@@ -47,7 +39,7 @@ function switchUser(uid: string) {
     />
 
     <button
-      class="ml-36 transition-opacity btn"
+      class="text-3 transition-opacity btn sm:text-4"
       op="0 group-hover:100"
       @click="switchUser(user.uid)"
     >

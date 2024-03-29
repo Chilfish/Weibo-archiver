@@ -20,10 +20,15 @@ export const usePublicStore = defineStore('public', () => {
   })
 
   function addUser(user: UserInfo | null | undefined) {
-    if (!user || users.value.find(u => u.uid === user.uid))
+    if (!user)
       return
 
-    users.value.push(user)
+    const idx = users.value.findIndex(u => u.uid === user.uid)
+
+    if (idx < 0)
+      users.value.push(user)
+    else
+      users.value.splice(idx, 1, user)
   }
 
   function rmUser() {

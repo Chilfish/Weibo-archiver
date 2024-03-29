@@ -63,12 +63,15 @@ declare global {
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const fetchAllPosts: typeof import('../packages/core/src/services/postService')['fetchAllPosts']
   const fetchComments: typeof import('../packages/core/src/services/postService')['fetchComments']
+  const fetchFollowings: typeof import('../packages/core/src/services/userService')['fetchFollowings']
   const fetchLongText: typeof import('../packages/core/src/services/postService')['fetchLongText']
   const fetchPosts: typeof import('../packages/core/src/services/postService')['fetchPosts']
   const fetchRangePosts: typeof import('../packages/core/src/services/postService')['fetchRangePosts']
   const filterComments: typeof import('../packages/core/src/utils/parse')['filterComments']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getFollowings: typeof import('../packages/core/src/services/userService')['getFollowings']
+  const getMyFollowings: typeof import('../packages/core/src/services/userService')['getMyFollowings']
   const getTotal: typeof import('../packages/core/src/services/postService')['getTotal']
   const h: typeof import('vue')['h']
   const hasProtocol: typeof import('../packages/core/src/utils/protocol')['hasProtocol']
@@ -82,6 +85,7 @@ declare global {
   const isDefined: typeof import('@vueuse/core')['isDefined']
   const isElectron: typeof import('../packages/core/src/utils/index')['isElectron']
   const isInMonkey: typeof import('../packages/core/src/utils/index')['isInMonkey']
+  const isMe: typeof import('../packages/core/src/services/userService')['isMe']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
@@ -109,6 +113,7 @@ declare global {
   const onStartTyping: typeof import('@vueuse/core')['onStartTyping']
   const onUnmounted: typeof import('vue')['onUnmounted']
   const onUpdated: typeof import('vue')['onUpdated']
+  const parseFollowing: typeof import('../packages/core/src/utils/parse')['parseFollowing']
   const parseImg: typeof import('../packages/core/src/utils/parse')['parseImg']
   const parseOldPost: typeof import('../packages/core/src/utils/parse')['parseOldPost']
   const parseProtocol: typeof import('../packages/core/src/utils/protocol')['parseProtocol']
@@ -416,12 +421,15 @@ declare module 'vue' {
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly fetchAllPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchAllPosts']>
     readonly fetchComments: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchComments']>
+    readonly fetchFollowings: UnwrapRef<typeof import('../packages/core/src/services/userService')['fetchFollowings']>
     readonly fetchLongText: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchLongText']>
     readonly fetchPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchPosts']>
     readonly fetchRangePosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchRangePosts']>
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getFollowings: UnwrapRef<typeof import('../packages/core/src/services/userService')['getFollowings']>
+    readonly getMyFollowings: UnwrapRef<typeof import('../packages/core/src/services/userService')['getMyFollowings']>
     readonly getTotal: UnwrapRef<typeof import('../packages/core/src/services/postService')['getTotal']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['hasProtocol']>
@@ -435,6 +443,7 @@ declare module 'vue' {
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
     readonly isElectron: UnwrapRef<typeof import('../packages/core/src/utils/index')['isElectron']>
     readonly isInMonkey: UnwrapRef<typeof import('../packages/core/src/utils/index')['isInMonkey']>
+    readonly isMe: UnwrapRef<typeof import('../packages/core/src/services/userService')['isMe']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -462,6 +471,7 @@ declare module 'vue' {
     readonly onStartTyping: UnwrapRef<typeof import('@vueuse/core')['onStartTyping']>
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
+    readonly parseFollowing: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseFollowing']>
     readonly parseImg: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseImg']>
     readonly parseOldPost: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseOldPost']>
     readonly parseProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['parseProtocol']>
@@ -761,12 +771,15 @@ declare module '@vue/runtime-core' {
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly fetchAllPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchAllPosts']>
     readonly fetchComments: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchComments']>
+    readonly fetchFollowings: UnwrapRef<typeof import('../packages/core/src/services/userService')['fetchFollowings']>
     readonly fetchLongText: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchLongText']>
     readonly fetchPosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchPosts']>
     readonly fetchRangePosts: UnwrapRef<typeof import('../packages/core/src/services/postService')['fetchRangePosts']>
     readonly filterComments: UnwrapRef<typeof import('../packages/core/src/utils/parse')['filterComments']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getFollowings: UnwrapRef<typeof import('../packages/core/src/services/userService')['getFollowings']>
+    readonly getMyFollowings: UnwrapRef<typeof import('../packages/core/src/services/userService')['getMyFollowings']>
     readonly getTotal: UnwrapRef<typeof import('../packages/core/src/services/postService')['getTotal']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly hasProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['hasProtocol']>
@@ -780,6 +793,7 @@ declare module '@vue/runtime-core' {
     readonly isDefined: UnwrapRef<typeof import('@vueuse/core')['isDefined']>
     readonly isElectron: UnwrapRef<typeof import('../packages/core/src/utils/index')['isElectron']>
     readonly isInMonkey: UnwrapRef<typeof import('../packages/core/src/utils/index')['isInMonkey']>
+    readonly isMe: UnwrapRef<typeof import('../packages/core/src/services/userService')['isMe']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
@@ -807,6 +821,7 @@ declare module '@vue/runtime-core' {
     readonly onStartTyping: UnwrapRef<typeof import('@vueuse/core')['onStartTyping']>
     readonly onUnmounted: UnwrapRef<typeof import('vue')['onUnmounted']>
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
+    readonly parseFollowing: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseFollowing']>
     readonly parseImg: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseImg']>
     readonly parseOldPost: UnwrapRef<typeof import('../packages/core/src/utils/parse')['parseOldPost']>
     readonly parseProtocol: UnwrapRef<typeof import('../packages/core/src/utils/protocol')['parseProtocol']>
