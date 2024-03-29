@@ -30,6 +30,11 @@ export const usePublicStore = defineStore('public', () => {
     curUid.value = users.value[0]?.uid || ''
   }
 
+  function importUser(user: UserInfo) {
+    curUid.value = user.uid
+    addUser(user)
+  }
+
   /**
    * 从旧版中迁移 user 数据到 idb 中
    */
@@ -54,5 +59,6 @@ export const usePublicStore = defineStore('public', () => {
     addUser,
     rmUser,
     migrateUser,
+    importUser,
   }
 })

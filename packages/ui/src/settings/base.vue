@@ -59,8 +59,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
         user = data.user
       }
 
-      publicStore.curUid = user.uid
-      publicStore.users.push(user)
+      publicStore.importUser(user)
 
       await postStore.set(posts, user, coverMode.value)
       user.postCount = postStore.total
@@ -82,7 +81,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
 async function exportDatas() {
   isExporting.value = true
   const data = await postStore.getAll()
-  await exportData(data)
+  await exportData(data, publicStore.curUser)
   isExporting.value = false
 }
 
