@@ -17,6 +17,8 @@ export const usePostStore = defineStore('post', () => {
 
     idb.value = new IDB(wrappedUid)
     await updateTotal()
+
+    followings.value = await getFollowings()
   })
 
   const route = useRoute()

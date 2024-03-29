@@ -24,10 +24,10 @@ defineProps<{
         alt: `${user.name}'s avatar`,
       }"
       class="h-12 min-w-12 ring-2 ring-white"
-      sm="h-16 min-w-16"
+      sm="h-14 min-w-14"
     />
     <div>
-      <div class="text-4 font-bold sm:text-4.5">
+      <div class="text-3.5 font-bold sm:text-4">
         @{{ user.name }}
       </div>
       <div

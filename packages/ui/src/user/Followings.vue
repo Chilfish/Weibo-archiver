@@ -13,15 +13,16 @@ const searchResults = computed(() => {
     return postStore.followings
 
   return fuse.value
-    .search(`'${searchDebounced.value}`)
+    .search(`${searchDebounced.value}`)
     .map(result => result.item)
 })
 
-onBeforeMount(async () => {
-  if (!postStore.followings.length)
-    postStore.followings = await postStore.getFollowings()
+onMounted(() => {
   fuse.value = new Fuse(postStore.followings, {
     keys: ['name'],
+    ignoreLocation: true,
+    includeScore: true,
+    useExtendedSearch: true,
   })
 })
 </script>
@@ -29,8 +30,14 @@ onBeforeMount(async () => {
 <template>
   <div
     v-if="postStore.followings.length"
-    w="full md:40vw"
+    w="full md:45vw"
   >
+    <div
+      class="text-gray-500"
+    >
+      共有 {{ searchResults.length }} 条结果
+    </div>
+
     <n-input
       v-model:value="search"
       clearable
@@ -38,11 +45,19 @@ onBeforeMount(async () => {
       class="my-2 py-1"
     />
 
-    <UserFollowingItem
-      v-for="user in searchResults"
-      :key="user.uid"
-      :user="user"
-    />
+    <n-virtual-list
+      style="max-height: 60dvh"
+      item-resizable
+      :item-size="64"
+      :items="searchResults"
+    >
+      <template #default="{ item: user }">
+        <UserFollowingItem
+          :key="user.uid"
+          :user="user"
+        />
+      </template>
+    </n-virtual-list>
   </div>
 
   <div
