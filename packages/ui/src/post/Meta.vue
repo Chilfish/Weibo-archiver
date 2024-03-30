@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Comment, Post, Retweet } from '@types'
-import { useRoute } from 'vue-router'
+import { useMessage } from 'naive-ui'
 
 const props = defineProps<{
   meta: Post | Comment | Retweet
@@ -9,12 +9,7 @@ const props = defineProps<{
 
 const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm')
 
-const route = useRoute()
-const { origin } = document.location
-
-const url = computed(() =>
-  `${origin}${route.fullPath.replace(/#.+/, '')}#${(props.meta as any).mblogid}`,
-)
+const url = computed(() => `#${(props.meta as any).mblogid}`)
 const message = useMessage()
 
 const { copy } = useClipboard({

@@ -89,7 +89,7 @@ async function exportDatas() {
 
 async function clearData() {
   try {
-    postStore.clearDB()
+    await postStore.clearDB()
     publicStore.rmUser()
 
     message.success('清空成功')

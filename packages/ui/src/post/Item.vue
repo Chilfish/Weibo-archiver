@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Post } from '@types'
-import { storeToRefs } from 'pinia'
 
 defineProps<{
   post: Post
@@ -8,12 +7,11 @@ defineProps<{
 
 const openComment = ref(false)
 const articleRef = ref<HTMLElement | null>(null)
-const { curUser } = storeToRefs(usePublicStore())
 
 watchEffect(() => {
   if (!articleRef.value)
     return
-  const comments = articleRef.value.querySelector<HTMLDivElement>('.n-collapse-item__content-wrapper')
+  const comments = articleRef.value?.querySelector<HTMLDivElement>('.n-collapse-item__content-wrapper')
 
   comments?.style.setProperty('display', openComment.value ? 'block' : 'none')
 })
@@ -26,7 +24,7 @@ watchEffect(() => {
     class="post"
   >
     <div class="flex justify-between">
-      <post-profile :user="curUser" />
+      <post-profile />
       <post-meta
         :is-body="true"
         :meta="post"

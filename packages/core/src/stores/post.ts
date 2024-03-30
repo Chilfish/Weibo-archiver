@@ -44,7 +44,7 @@ export const usePostStore = defineStore('post', () => {
     }),
   })
 
-  const seachFn = ref<(text: string) => number[]>()
+  const searchFn = ref<(text: string) => number[]>()
 
   /* 该结果的总帖子数 */
   const total = ref(0)
@@ -70,7 +70,9 @@ export const usePostStore = defineStore('post', () => {
   /**
    * 设置帖子数据，可选择是否替换或是追加合并
    * @param data
-   * @param replace
+   * @param user
+   * @param _followings
+   * @param isReplace
    */
   async function set(
     data: Post[],
@@ -89,7 +91,7 @@ export const usePostStore = defineStore('post', () => {
     const { count, search } = await idb.value.addDBPosts(data, isReplace)
     totalDB.value = count
     total.value = count
-    seachFn.value = search
+    searchFn.value = search
 
     await idb.value.setUserInfo(user)
   }
@@ -99,16 +101,15 @@ export const usePostStore = defineStore('post', () => {
   ) {
     await waitIDB()
 
-    if (!seachFn.value) {
+    if (!searchFn.value) {
       const posts = await idb.value.getAllDBPosts()
       const { search } = idb.value.buildSearch(posts)
-      seachFn.value = search
+      searchFn.value = search
     }
 
-    const result = seachFn.value(query)
+    const result = searchFn.value(query)
 
-    const count = result.length
-    total.value = count
+    total.value = result.length
     return result
   }
 
@@ -131,7 +132,7 @@ export const usePostStore = defineStore('post', () => {
     const path = route.path
     const query = route.query.q as string
 
-    let result: Post[] = []
+    let result: Post[]
 
     await waitIDB()
 
@@ -181,8 +182,7 @@ export const usePostStore = defineStore('post', () => {
     const endIdx = startIdx + pageSize.value
     const sliced = result.slice(startIdx, endIdx)
 
-    const posts = await idb.value.getDBPostByTime(sliced)
-    return posts
+    return await idb.value.getDBPostByTime(sliced)
   }
 
   async function updateTotal() {
@@ -196,7 +196,7 @@ export const usePostStore = defineStore('post', () => {
     const p = _page || curPage.value
     const query = route.query.q as string
 
-    let posts: Post[] = []
+    let posts: Post[]
     if (route.path === '/post')
       posts = await _getByTime(start, end, _page)
 
@@ -226,7 +226,7 @@ export const usePostStore = defineStore('post', () => {
 
     clearDB: async () => {
       await waitIDB()
-      idb.value.clearDB()
+      await idb.value.clearDB()
     },
     getAll: async () => {
       await waitIDB()

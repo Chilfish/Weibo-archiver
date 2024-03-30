@@ -47,8 +47,7 @@ async function setImgSrc() {
     return
 
   const config = window.config.data
-  const src = `file://${config.publicPath}${props.src.slice(1)}`
-  realSrc.value = src
+  realSrc.value = `file://${config.publicPath}${props.src.slice(1)}`
 }
 
 watch(() => props.src, setImgSrc)

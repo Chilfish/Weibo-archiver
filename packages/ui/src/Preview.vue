@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { Post } from '@types'
+import type { Post, User } from '@types'
+import { KeyUser } from '@core/constants/vueProvide'
 import { deleteOld } from '@core/utils/storage'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
 
 const postStore = usePostStore()
-const { curUid, users } = storeToRefs(usePublicStore())
+const { curUid, users, curUser } = storeToRefs(usePublicStore())
 const { totalDB } = storeToRefs(postStore)
 
 const route = useRoute()
@@ -13,6 +15,8 @@ const posts = ref([] as Post[])
 
 const loaded = ref(false)
 const postsLoaded = ref(false)
+
+provide(KeyUser, curUser as unknown as User)
 
 onMounted(async () => {
   // 删除旧版数据

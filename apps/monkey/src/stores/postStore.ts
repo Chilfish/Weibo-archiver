@@ -51,7 +51,7 @@ export const usePostStore = defineStore('post', () => {
       fetchedCount: 0,
     })
 
-    setDB()
+    await setDB()
     await idb.value.clearDB()
   }
 
@@ -68,8 +68,7 @@ export const usePostStore = defineStore('post', () => {
 
   async function getAll() {
     await waitIDB()
-    const posts = await idb.value.getAllDBPosts()
-    return posts
+    return await idb.value.getAllDBPosts()
   }
 
   async function setCount() {

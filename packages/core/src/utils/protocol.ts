@@ -3,7 +3,7 @@ import type { ProtocolMap } from '@types'
 export const protocolMap: ProtocolMap = {
   img: {
     text: '查看图片',
-    reg: /\[img:\/\/(.+?)\]/gm,
+    reg: /\[img:\/\/(.+?)]/gm,
     /**
      * 解析包含查看图片协议的文本
      * 将返回包含 <ViewImgBtn /> 组件和原文本的 VNode

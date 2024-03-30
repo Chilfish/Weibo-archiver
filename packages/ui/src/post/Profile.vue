@@ -1,19 +1,22 @@
 <script setup lang="ts">
-import type { UserInfo } from '@types'
+import type { User } from '@types'
+
+import { KeyUser } from '@core/constants/vueProvide'
 
 const props = defineProps<{
-  user: UserInfo
+  user?: User
 }>()
 
 const publicStore = usePublicStore()
-const { user } = toRefs(props)
+
+const user = toRef(props.user || inject(KeyUser)!)
 
 const avatar = computed(() => {
-  const url = props.user.avatar
+  const url = user.value.avatar
   if (!url)
     return '/placeholder.webp'
 
-  if (publicStore.curUid === props.user.uid)
+  if (publicStore.curUid === user.value.uid)
     return replaceImg(url)
 
   // 对于其他人的头像，就使用 CDN

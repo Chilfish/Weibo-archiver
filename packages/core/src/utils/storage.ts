@@ -7,7 +7,7 @@ import type { Post, UID, UserBio, UserInfo } from '@types'
 
 const POST_STORE = 'posts'
 const USER_STORE = 'user'
-const FOLLOWERINGS_STORE = 'followings'
+const FLOWERINGS_STORE = 'followings'
 export const DB_VERSION = 4
 
 type AppDB = DBSchema & {
@@ -22,7 +22,7 @@ type AppDB = DBSchema & {
     key: string
     value: UserInfo
   }
-  [FOLLOWERINGS_STORE]: {
+  [FLOWERINGS_STORE]: {
     key: string
     value: UserBio
   }
@@ -67,8 +67,8 @@ export class IDB {
         if (!db.objectStoreNames.contains(USER_STORE))
           db.createObjectStore(USER_STORE, { keyPath: 'uid' })
 
-        if (!db.objectStoreNames.contains(FOLLOWERINGS_STORE))
-          db.createObjectStore(FOLLOWERINGS_STORE, { keyPath: 'uid' })
+        if (!db.objectStoreNames.contains(FLOWERINGS_STORE))
+          db.createObjectStore(FLOWERINGS_STORE, { keyPath: 'uid' })
       },
     })
   }
@@ -211,13 +211,13 @@ export class IDB {
     await Promise.all([
       db.clear(POST_STORE),
       db.clear(USER_STORE),
-      db.clear(FOLLOWERINGS_STORE),
+      db.clear(FLOWERINGS_STORE),
     ])
   }
 
   async clearFollowings() {
     const db = await this.idb
-    await db.clear(FOLLOWERINGS_STORE)
+    await db.clear(FLOWERINGS_STORE)
   }
 
   /**
@@ -345,7 +345,7 @@ export class IDB {
 
   async addFollowings(followings: UserBio[]) {
     const db = await this.idb
-    const ts = db.transaction(FOLLOWERINGS_STORE, 'readwrite')
+    const ts = db.transaction(FLOWERINGS_STORE, 'readwrite')
     const store = ts.store
 
     followings.forEach((following) => {
@@ -357,11 +357,11 @@ export class IDB {
 
   async getFollowings() {
     const db = await this.idb
-    return await db.getAll(FOLLOWERINGS_STORE)
+    return await db.getAll(FLOWERINGS_STORE)
   }
 }
 
-export type SaerchResult = FuseResult<{
+export type SeachResult = FuseResult<{
   time: number
   text: string
 }>[]

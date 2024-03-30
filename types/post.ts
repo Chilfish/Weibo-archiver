@@ -67,8 +67,9 @@ export type Retweet = Omit<Post, 'retweeted_status' | 'card' | 'user'> & {
   user?: User // 转发的微博可能被删除或是被夹
 }
 
-export type Comment = Pick<Post, 'user' | 'text' | 'like_count' | 'comments_count' > & {
+export type Comment = Pick<Post, 'text' | 'like_count' | 'comments_count' > & {
   img: string
+  user: User
 } & Meta
 
 export interface PostMeta {

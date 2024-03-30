@@ -37,7 +37,9 @@ useHead({
   ],
 })
 
-const loaded = ref(false)
+const route = useRoute()
+const loaded = ref(route.path === '/example')
+
 onNuxtReady(async () => {
   const publicStore = usePublicStore()
   const users = localStorage.getItem('users')
@@ -47,6 +49,8 @@ onNuxtReady(async () => {
   publicStore.curUid = curUid || ''
 
   watchImmediate(() => publicStore.curUid, async () => {
+    if (route.path === '/example')
+      return
     loaded.value = false
     await publicStore.migrateUser()
     loaded.value = true
