@@ -5,6 +5,7 @@ dist
 node_modules
 apps/desktop
 apps/monkey
+apps/cli
 packages/database
 scripts
 CHANGELOG.md

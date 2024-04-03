@@ -21,7 +21,7 @@
     "dev:desktop": "pnpm -C apps/desktop dev",
     "build:web": "pnpm -F web generate",
     "build:monkey": "pnpm -F monkey build",
-    "build:cli": "pnpm -F cli build",
+    "build:cli": "pnpm -F shared build && pnpm -F cli build",
     "build:desktop": "pnpm -C apps/desktop compile",
     "rebuild:db": "pnpm -F database rebuild",
     "rebuild:desktop": "pnpm -C apps/desktop rebuild:sqlite",
