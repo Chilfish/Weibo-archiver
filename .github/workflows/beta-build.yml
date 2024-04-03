@@ -12,7 +12,6 @@ on:
       # 暂时忽略 desktop 端的改动
       - 'apps/desktop/**'
       - packages/database
-  pull_request:
 
 jobs:
   install-and-build:
