@@ -1,27 +1,18 @@
-async function initApp() {
-  const App = (await import('./App.vue')).default
-  const { createPinia } = await import('pinia')
-  const { naive } = await import('./naiveui')
-  const { createApp } = await import('vue')
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
-  const app = createApp(App)
+import App from './App.vue'
+import { naive } from './naiveui'
 
-  const div = document.createElement('div')
-  div.id = 'plugin-app'
-  document.body.append(div)
+const app = createApp(App)
 
-  app
-    .use(createPinia())
-    .use(naive)
-    .mount(div)
-}
+const div = document.createElement('div')
+div.id = 'plugin-app'
+document.body.append(div)
 
-if (document.location.hostname === 'weibo.com') {
-  initApp()
-  console.log('weibo-archiver 加载成功')
-}
-// else {
-//   const users = GM_getValue('users') || []
+app
+  .use(createPinia())
+  .use(naive)
+  .mount(div)
 
-//   localStorage.setItem('users', JSON.stringify(users))
-// }
+console.log('weibo-archiver 加载成功')

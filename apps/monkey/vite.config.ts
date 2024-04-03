@@ -12,7 +12,7 @@ const ui = path.resolve(packages, 'ui/src')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
 const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
-const updateURL = `${repo}/raw/monkey/weibo-archiver.meta.js`
+const updateURL = downloadURL.replace('user', 'meta')
 
 export default defineConfig({
   resolve: {
@@ -40,7 +40,6 @@ export default defineConfig({
         core,
         ui,
       ],
-      vueTemplate: true,
     }),
 
     monkey({
@@ -60,15 +59,9 @@ export default defineConfig({
         match: [
           'https://weibo.com/u/*',
           'https://weibo.com/n/*',
-          // 'https://weibo.chilfish.top/*',
-        ],
-        grant: [
-          'GM_setValue',
-          'GM_getValue',
         ],
       },
       server: {
-        mountGmApi: true,
         open: false,
       },
       build: {
