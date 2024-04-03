@@ -21,6 +21,7 @@
     "dev:desktop": "pnpm -C apps/desktop dev",
     "build:web": "pnpm -F web generate",
     "build:monkey": "pnpm -F monkey build",
+    "build:cli": "pnpm -F cli build",
     "build:desktop": "pnpm -C apps/desktop compile",
     "rebuild:db": "pnpm -F database rebuild",
     "rebuild:desktop": "pnpm -C apps/desktop rebuild:sqlite",
@@ -29,6 +30,7 @@
     "typecheck:desktop": "pnpm -C apps/desktop typecheck",
     "install:web": "pnpm -F web... install",
     "install:monkey": "pnpm -F monkey... install",
+    "install:cli": "pnpm -F cli... install",
     "release": "tsx release.ts",
     "lint": "eslint .",
     "prepare": "husky || true"
