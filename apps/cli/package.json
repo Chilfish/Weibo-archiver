@@ -1,0 +1,21 @@
+{
+  "name": "@weibo-archiver/cli",
+  "type": "module",
+  "version": "0.3.11",
+  "description": "Weibo archiver CLI tool",
+  "author": "Chilfish",
+  "module": "./dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint .",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@weibo-archiver/shared": "workspace:^",
+    "citty": "^0.1.6"
+  }
+}
