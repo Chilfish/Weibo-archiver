@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserBio } from '@types'
+import type { UserBio } from '@shared'
 import Fuse from 'fuse.js'
 
 const postStore = usePostStore()

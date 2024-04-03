@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { UserBio } from '@types'
+import type { UserBio } from '@shared'
+import { replaceImg } from '@core/utils'
 
 defineProps<{
   user: UserBio

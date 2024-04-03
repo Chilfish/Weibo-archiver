@@ -1,5 +1,5 @@
 import Config from 'conf'
-import type { AppConfig } from '@types'
+import type { AppConfig } from 'packages/shared/src/types'
 
 const now = Date.now()
 

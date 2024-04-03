@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// import { isDark, isInMonkey } from '@core'
 import {
   NConfigProvider,
   NMessageProvider,

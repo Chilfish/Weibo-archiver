@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo, Retweet } from '@types'
+import type { CardInfo, Retweet } from '@shared'
 
 defineProps<{
   post: Retweet

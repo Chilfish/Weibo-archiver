@@ -7,8 +7,7 @@
     "moduleResolution": "bundler",
     "paths": {
       "@database": ["../../packages/database/src"],
-      "@core/*": ["../../packages/core/src/*"],
-      "@types": ["../../types/index"]
+      "@core/*": ["../../packages/core/src/*"]
     },
     "types": [
       "node",

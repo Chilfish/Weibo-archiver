@@ -4,8 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
-      "@types": ["../../types/index"],
-      "#preload": ["../../apps/dekstop/preload/src/index"]
+      "@shared": ["../shared/src/index.ts"]
     }
   },
   "exclude": [

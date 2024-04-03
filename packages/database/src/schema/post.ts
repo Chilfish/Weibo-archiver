@@ -1,7 +1,7 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import type { CardInfo } from '@types'
 import type { Comment } from '../shared'
 import { type UserTable, userTable } from './user'
+import type { CardInfo } from '~/src/types'
 
 export const postTable = sqliteTable('posts', {
   id: integer('id').notNull().primaryKey({ autoIncrement: true }),

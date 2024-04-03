@@ -1,4 +1,4 @@
-import type { ProtocolMap } from '@types'
+import type { ProtocolMap } from './types'
 
 export const protocolMap: ProtocolMap = {
   img: {

@@ -1,6 +1,5 @@
-import type { UserBio, UserInfo } from '@types'
-import { weiFetch } from '../utils/fetch'
-import { parseFollowing } from '../utils'
+import type { UserBio, UserInfo } from '../types'
+import { parseFollowing, weiFetch } from '../'
 
 export async function userInfo(
   { id, name }: { id?: string, name?: string },

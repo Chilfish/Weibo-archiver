@@ -1,4 +1,3 @@
-import type Conf from 'conf'
 import type { Post } from './post'
 
 /**
@@ -82,11 +81,4 @@ export interface AppConfig {
      */
     cookie: string
   }
-}
-
-type OnChange = (callback: (newValue: AppConfig, oldValue: AppConfig) => void) => Function
-
-export type Config = Pick<Conf<AppConfig>, 'get' | 'set' | 'path'> & {
-  data: AppConfig
-  onChange: OnChange
 }

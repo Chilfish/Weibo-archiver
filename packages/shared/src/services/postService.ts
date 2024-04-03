@@ -4,12 +4,12 @@ import type {
   FetchReturn,
   Post,
   PostMeta,
-} from '@types'
+} from '../types'
 import {
   delay,
   postsParser,
   weiFetch,
-} from '../utils'
+} from '../'
 
 /**
  * 获取微博总数

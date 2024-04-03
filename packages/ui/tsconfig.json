@@ -4,10 +4,15 @@
     "baseUrl": ".",
     "paths": {
       "#preload": ["../../apps/desktop/preload/src/index"],
-      "@types": ["../../types/index"],
-      "@core/*": ["../core/src/*"]
+      "@core/*": ["../core/src/*"],
+      "@shared": ["../shared/src/index.ts"]
     }
   },
+  "include": [
+    "src/**/*",
+    "../shared/src/**/*",
+    "../core/src/**/*"
+  ],
   "exclude": [
     "../../apps/desktop/**/*",
     "../../apps/web/**/*"

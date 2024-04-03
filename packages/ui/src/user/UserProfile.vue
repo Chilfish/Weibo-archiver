@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { UserInfo } from '@types'
+import type { UserInfo } from '@shared'
+import { replaceImg } from '@core/utils'
 
 withDefaults(defineProps<{
   user: UserInfo
