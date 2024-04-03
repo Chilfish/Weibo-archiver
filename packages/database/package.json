@@ -10,8 +10,8 @@
     "studio": "pnpm rebuild && drizzle-kit studio"
   },
   "dependencies": {
-    "better-sqlite3": "^9.4.3",
-    "drizzle-orm": "^0.30.3",
+    "better-sqlite3": "^9.4.4",
+    "drizzle-orm": "^0.30.6",
     "drizzle-zod": "^0.5.1"
   },
   "devDependencies": {

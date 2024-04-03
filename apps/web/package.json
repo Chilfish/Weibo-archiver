@@ -18,12 +18,12 @@
     "typecheck": "nuxi typecheck"
   },
   "devDependencies": {
-    "@bg-dev/nuxt-naiveui": "^1.10.4",
-    "@nuxt/image": "^1.4.0",
-    "@nuxtjs/color-mode": "^3.3.2",
+    "@bg-dev/nuxt-naiveui": "^1.12.2",
+    "@nuxt/image": "^1.5.0",
+    "@nuxtjs/color-mode": "^3.3.3",
     "@nuxtjs/seo": "2.0.0-rc.8",
     "@pinia/nuxt": "^0.5.1",
-    "@unocss/nuxt": "^0.58.6",
+    "@unocss/nuxt": "^0.58.9",
     "@vercel/analytics": "^1.2.2",
     "@vueuse/nuxt": "^10.9.0",
     "@weibo-archiver/core": "workspace:^",

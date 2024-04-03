@@ -2,7 +2,7 @@
   "name": "weibo-archiver",
   "type": "module",
   "version": "0.3.11",
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@8.15.6",
   "description": "Archive your Weibo posts before being banned completely.",
   "author": {
     "name": "Chilfish",
@@ -38,18 +38,18 @@
     "vue": "^3.4.21"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.8.3",
-    "@unocss/eslint-config": "^0.58.6",
-    "@unocss/eslint-plugin": "^0.58.6",
+    "@antfu/eslint-config": "^2.12.1",
+    "@unocss/eslint-config": "^0.58.9",
+    "@unocss/eslint-plugin": "^0.58.9",
     "eslint": "npm:eslint-ts-patch@8.55.0-1",
     "eslint-plugin-format": "^0.1.0",
     "eslint-ts-patch": "8.55.0-1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "pnpm": "^8.15.5",
+    "pnpm": "^8.15.6",
     "tsx": "^4.7.1",
-    "typescript": "^5.4.2",
-    "vue-tsc": "^2.0.6"
+    "typescript": "^5.4.3",
+    "vue-tsc": "^2.0.7"
   },
   "lint-staged": {
     "*": "eslint --fix"

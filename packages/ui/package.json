@@ -13,6 +13,6 @@
   "devDependencies": {
     "@iconify-json/tabler": "^1.1.109",
     "naive-ui": "^2.38.1",
-    "unocss": "^0.58.6"
+    "unocss": "^0.58.9"
   }
 }
