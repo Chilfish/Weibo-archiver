@@ -9,6 +9,7 @@ export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
 export const core = path.resolve(packages, 'core/src')
 const ui = path.resolve(packages, 'ui/src')
+const shared = path.resolve(packages, 'shared/src')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
 const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
@@ -19,6 +20,7 @@ export default defineConfig({
     alias: {
       '@core': core,
       '@ui': ui,
+      '@shared': shared,
     },
   },
   build: {
@@ -35,10 +37,11 @@ export default defineConfig({
         '@vueuse/core',
         util.unimportPreset,
       ],
-      dts: path.resolve(root, 'types/auto-imports.d.ts'),
+      dts: path.resolve(shared, 'types/auto-imports.d.ts'),
       dirs: [
         core,
         ui,
+        shared,
       ],
     }),
 

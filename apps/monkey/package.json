@@ -10,6 +10,8 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@weibo-archiver/core": "workspace:^",
+    "@weibo-archiver/shared": "workspace:^",
     "@weibo-archiver/ui": "workspace:^"
   },
   "devDependencies": {

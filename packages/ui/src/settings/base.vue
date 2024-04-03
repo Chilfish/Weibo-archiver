@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
-import type { Post, PostData, UserBio, UserInfo } from '@types'
+import type { Post, PostData, UserBio, UserInfo } from '@shared'
 import { destr } from 'destr'
 import { useStorage } from '@vueuse/core'
 import { parseOldPost } from '@weibo-archiver/core'

@@ -2,7 +2,6 @@ import type { Post, PostMeta } from './post'
 
 export * from './protocol'
 export * from './config'
-export * from './IPC'
 export * from './post'
 
 export type MethodObj<T> = {

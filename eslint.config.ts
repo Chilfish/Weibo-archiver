@@ -11,6 +11,7 @@ export default antfu(
       'vue/no-multiple-template-root': 'off',
       'node/prefer-global/process': 'off',
       'format/prettier': 'off',
+      'antfu/no-import-dist': 'off',
     },
   },
   {

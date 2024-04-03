@@ -36,8 +36,9 @@
     "postintall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "@weibo-archiver/core": "workspace:*",
+    "@weibo-archiver/core": "workspace:^",
     "@weibo-archiver/database": "workspace:*",
+    "@weibo-archiver/shared": "workspace:^",
     "@weibo-archiver/ui": "workspace:*",
     "conf": "^12.0.0",
     "custom-electron-titlebar": "^4.2.8",

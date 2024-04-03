@@ -2,6 +2,9 @@ import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
+const core = join(root, 'packages/core/src')
+const shared = join(root, 'packages/shared/src')
+const ui = join(root, 'packages/ui/src')
 
 export default defineNuxtConfig({
   srcDir: 'src/',
@@ -27,19 +30,18 @@ export default defineNuxtConfig({
   },
 
   alias: {
-    '@core': join(root, 'packages/core/src'),
+    '@core': core,
+    '@shared': shared,
   },
 
   imports: {
     dirs: [
-      'stores',
-      join(root, 'packages/core/src'),
+      core,
+      shared,
     ],
   },
   components: {
-    dirs: [
-      join(root, 'packages/ui/src'),
-    ],
+    dirs: [ui],
   },
 
   experimental: {

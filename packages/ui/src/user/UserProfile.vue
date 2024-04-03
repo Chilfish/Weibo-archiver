@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserInfo } from '@types'
+import type { UserInfo } from '@shared'
 
 withDefaults(defineProps<{
   user: UserInfo

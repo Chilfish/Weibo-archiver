@@ -27,6 +27,7 @@
     "@vercel/analytics": "^1.2.2",
     "@vueuse/nuxt": "^10.9.0",
     "@weibo-archiver/core": "workspace:^",
+    "@weibo-archiver/shared": "workspace:^",
     "@weibo-archiver/ui": "workspace:^",
     "dayjs-nuxt": "^2.1.9",
     "nuxt": "3.10.3"

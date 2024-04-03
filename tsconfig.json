@@ -10,9 +10,9 @@
     "moduleResolution": "Bundler",
     "paths": {
       "@core/*": ["packages/core/src/*"],
+      "@shared": ["packages/shared/src/index.ts"],
       "@database/*": ["packages/database/src/*"],
-      "@ui/*": ["packages/ui/src/*"],
-      "@types": ["./types/index"]
+      "@ui/*": ["packages/ui/src/*"]
     },
     "types": [
       "vite/client",
@@ -30,8 +30,7 @@
     "packages",
     "*.ts",
     "*.tsx",
-    "*.d.ts",
-    "types/*.d.ts"
+    "*.d.ts"
   ],
   "exclude": [
     "dist",

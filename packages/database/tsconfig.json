@@ -3,12 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@types": [
-        "../../types/index"
-      ]
+      "~/*": ["./*"]
     }
   },
   "exclude": [

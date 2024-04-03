@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo } from '@types'
+import type { CardInfo } from '@shared'
 
 defineProps<{
   card: CardInfo

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post, User } from '@types'
+import type { Post, User } from '@shared'
 import { KeyUser } from '@core/constants/vueProvide'
 import { deleteOld } from '@core/utils/storage'
 import { storeToRefs } from 'pinia'

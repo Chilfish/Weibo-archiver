@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import type { UID, UserInfo } from '@types'
+import { parseOldPost } from '@shared'
 import { IDB } from '../utils/storage'
-import { parseOldPost } from '../utils'
+import type { UID, UserInfo } from '~/src/types'
 
 export const usePublicStore = defineStore('public', () => {
   const globalImg = ref('')

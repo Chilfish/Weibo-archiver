@@ -1,8 +1,8 @@
 import customTitlebar from 'custom-electron-titlebar'
 import { contextBridge } from 'electron'
 import type { DBMethods } from '@database'
-import type { IPCFetch, IPCFile } from '@types'
-import { config } from '@core/utils/config'
+import type { IPCFetch, IPCFile } from 'packages/shared/src/types'
+import { config } from '@core'
 import { IPCRenderer } from '../../utils'
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -1,7 +1,7 @@
 import { dialog } from 'electron'
 import fs from 'fs-extra'
 
-import type { IPCFile } from '@types'
+import type { IPCFile } from 'packages/shared/src/types'
 import { mainLog } from '../../utils/logs'
 import { IPCMain } from '../../utils/index'
 

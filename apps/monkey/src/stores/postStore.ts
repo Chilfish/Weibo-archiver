@@ -1,8 +1,8 @@
 import { defineStore, storeToRefs } from 'pinia'
-import type { Post, UID, UserBio, UserInfo } from '@types'
 import { EmptyIDB, IDB } from '@core/utils/storage'
 import saveAs from 'file-saver'
 import { useConfigStore } from './configStore'
+import type { Post, UID, UserBio, UserInfo } from '~/src/types'
 
 export const usePostStore = defineStore('post', () => {
   /* 获取到的所有帖子，但会卡内存 */

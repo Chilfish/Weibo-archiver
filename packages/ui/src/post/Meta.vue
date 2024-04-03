@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Comment, Post, Retweet } from '@types'
+import type { Comment, Post, Retweet } from '@shared'
 import { useMessage } from 'naive-ui'
 
 const props = defineProps<{

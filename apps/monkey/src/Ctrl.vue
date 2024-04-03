@@ -2,7 +2,7 @@
 import { useMessage } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 
-import { fetchFollowings } from '@core/services'
+import { fetchFollowings } from '@shared'
 import { useConfigStore, usePostStore } from './stores'
 import Config from './Config.vue'
 
@@ -225,3 +225,4 @@ p {
   padding: 6px;
 }
 </style>
+@shared/services

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Comment } from '@types'
+import type { Comment } from '@shared'
 
 defineProps<{
   comments: Comment[]

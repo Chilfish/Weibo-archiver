@@ -7,8 +7,7 @@
       "~/*": ["./src/*"],
       "@core/*": ["../../../packages/core/src/*"],
       "@ui/*": ["../../../packages/ui/src/*"],
-      "@database/*": ["../../../packages/database/src/*"],
-      "@types": ["../../../types/index"]
+      "@database/*": ["../../../packages/database/src/*"]
     }
   },
   "exclude": [

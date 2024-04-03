@@ -1,6 +1,6 @@
 import fileSaver from 'file-saver'
-import type { Post, UserBio, UserInfo } from '@types'
-import { imgsParser } from './parse'
+import { imgsParser } from '@shared'
+import type { Post, UserBio, UserInfo } from '~/src/types'
 
 export async function exportData(
   posts: Post[],
