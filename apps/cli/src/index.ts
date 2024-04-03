@@ -4,6 +4,9 @@ import { defineCommand, runMain } from 'citty'
 import { consola } from 'consola'
 import { parseText } from '@weibo-archiver/shared'
 
+/**
+ * CLI 程序入口
+ */
 const main = defineCommand({
   meta: {
     name: 'Weibo archiver',

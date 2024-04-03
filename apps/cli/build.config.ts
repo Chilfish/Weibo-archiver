@@ -1,12 +1,10 @@
-import path from 'node:path'
 import { defineBuildConfig } from 'unbuild'
 
-const shared = path.resolve(path.resolve(), '../../packages/shared/src/index.ts')
-
-export default defineBuildConfig([{
-  entries: [
-    'src/index.ts',
-  ],
+export default defineBuildConfig({
+  entries: [{
+    input: 'src/index.ts',
+    name: 'weibo-archiver',
+  }],
   declaration: false,
   clean: true,
   failOnWarn: false,
@@ -16,27 +14,12 @@ export default defineBuildConfig([{
       target: 'esnext',
     },
     output: {
-      paths: {
-        // 重命名依赖路径
-        '@weibo-archiver/shared': './shared.mjs',
+      // 打包所有的 node_modules 依赖，会 tree-shaking
+      // 所以就只需要将依赖都放在 devDependencies 下就行了
+      manualChunks(id: string) {
+        if (id.includes('node_modules'))
+          return 'vendor'
       },
     },
   },
-  externals: [
-    'consola',
-  ],
-}, {
-  // 曲线救国地将 shared 部分也打包进来
-  entries: [{
-    name: 'shared',
-    input: shared,
-  }],
-  declaration: false,
-  clean: true,
-  failOnWarn: false,
-  rollup: {
-    esbuild: {
-      target: 'esnext',
-    },
-  },
-}])
+})

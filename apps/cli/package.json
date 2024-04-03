@@ -4,7 +4,10 @@
   "version": "0.3.11",
   "description": "Weibo archiver CLI tool",
   "author": "Chilfish",
-  "module": "./dist/index.mjs",
+  "module": "./dist/weibo-archiver.mjs",
+  "bin": {
+    "weibo-archiver": "./dist/weibo-archiver.mjs"
+  },
   "files": [
     "dist"
   ],
@@ -14,8 +17,10 @@
     "lint": "eslint .",
     "start": "tsx src/index.ts"
   },
-  "dependencies": {
+  "devDependencies": {
     "@weibo-archiver/shared": "workspace:^",
-    "citty": "^0.1.6"
+    "c12": "^1.10.0",
+    "citty": "^0.1.6",
+    "consola": "^3.2.3"
   }
 }
