@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { parseOldPost } from '@shared'
+import type { UID, UserInfo } from '@shared'
 import { IDB } from '../utils/storage'
-import type { UID, UserInfo } from '~/src/types'
 
 export const usePublicStore = defineStore('public', () => {
   const globalImg = ref('')
@@ -45,7 +45,7 @@ export const usePublicStore = defineStore('public', () => {
    * 从旧版中迁移 user 数据到 idb 中
    */
   async function migrateUser() {
-    const dbName = `uid-${curUid.value}` as UID
+    const dbName = `uid-${curUid.value || 0}` as UID
     const idb = new IDB(dbName)
 
     const userInDB = await idb.getUserInfo()

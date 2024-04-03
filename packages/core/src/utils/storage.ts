@@ -3,7 +3,7 @@ import Fuse from 'fuse.js'
 import dayjs from 'dayjs'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
-import type { Post, UID, UserBio, UserInfo } from '~/src/types'
+import type { Post, UID, UserBio, UserInfo } from '@shared'
 
 const POST_STORE = 'posts'
 const USER_STORE = 'user'

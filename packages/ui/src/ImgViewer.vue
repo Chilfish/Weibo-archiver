@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { imgViewSrc } from '@core/constants'
 
 const { globalImg } = storeToRefs(usePublicStore())
 

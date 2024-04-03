@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
+import { ImgPlaceholder } from '@core/constants'
+import { referrerPolicy } from '@core/utils'
 
 const props = withDefaults(defineProps<{
   src: string

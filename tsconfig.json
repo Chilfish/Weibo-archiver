@@ -30,7 +30,8 @@
     "packages",
     "*.ts",
     "*.tsx",
-    "*.d.ts"
+    "*.d.ts",
+    "apps/web/.nuxt/imports.d.ts"
   ],
   "exclude": [
     "dist",
