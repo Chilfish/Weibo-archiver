@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 const inShared = [
-  'ofetch',
+  'axios',
   'p-queue',
   '@weibo-archiver/shared',
 ]

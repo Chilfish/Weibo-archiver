@@ -17,7 +17,7 @@ export async function weiFetch<T = { data: any }>(
     const url = new URL(proxyURL)
     proxy = {
       host: url.hostname,
-      port: url.protocol === 'https:' ? 443 : 80,
+      port: +url.port,
     }
   }
 

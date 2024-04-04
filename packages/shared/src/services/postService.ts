@@ -7,7 +7,10 @@ import type {
 } from '../types'
 import {
   delay,
+  filterComments,
+  parseText,
   postsParser,
+  usePausableLoop,
   weiFetch,
 } from '../'
 

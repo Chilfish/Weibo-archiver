@@ -18,7 +18,6 @@
     "start": "node weibo-archiver.mjs"
   },
   "dependencies": {
-    "@vue/reactivity": "^3.4.21",
     "c12": "^1.10.0",
     "citty": "^0.1.6",
     "consola": "^3.2.3"

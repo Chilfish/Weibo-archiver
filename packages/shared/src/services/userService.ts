@@ -1,5 +1,5 @@
 import type { UserBio, UserInfo } from '../types'
-import { parseFollowing, weiFetch } from '../'
+import { delay, parseFollowing, weiFetch } from '../'
 
 export async function userInfo(
   { id, name }: { id?: string, name?: string },
@@ -94,12 +94,15 @@ export async function getMyFollowings(
   }
 }
 
-export function isMe(uid: string) {
-  // 获取头像的链接
-  const links = Array.from(document.querySelector('[role=navigation]')?.querySelectorAll('a') || [])
-  const matched = links[links.length - 1]?.href.match(/\d+/)?.[0] || ''
+export async function isMe(uid: string) {
+  const [withoutUid, withUid] = await Promise.all([
+    weiFetch('/profile/detail'),
+    weiFetch('/profile/detail', {
+      params: { uid },
+    }),
+  ])
 
-  return matched === uid
+  return withUid.data.created_at === withoutUid.data.created_at
 }
 
 export async function fetchFollowings(
@@ -107,7 +110,9 @@ export async function fetchFollowings(
   saveData: (users: UserBio[], total: number) => Promise<void>,
 ) {
   let page = 1
-  const _isMe = isMe(uid)
+  const _isMe = await isMe(uid)
+  console.log('isMe', _isMe)
+
   while (true) {
     await delay(3000)
     const { users, total } = _isMe
@@ -115,6 +120,7 @@ export async function fetchFollowings(
       : await getFollowings(uid, page)
 
     await saveData(users, total)
+
     page += 1
     if (users.length === 0)
       break

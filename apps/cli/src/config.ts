@@ -3,13 +3,12 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { loadConfig } from 'c12'
-import { effect, reactive } from '@vue/reactivity'
 import type { FetchOptions } from '@weibo-archiver/shared'
 
-export const savePath = join(homedir(), 'weibo-archiver')
-export const configFile = join(homedir(), '.config/weibo-archiver.json')
+export const savePath = (uid: string) => join(homedir(), 'weibo-archiver', uid)
+export const configFile = (uid: string) => join(savePath(uid), 'config.json')
 
-type Config = Omit<FetchOptions, 'name'> & {
+export type Config = Omit<FetchOptions, 'name'> & {
   /**
    * 必填，微博登录的 cookie
    */
@@ -19,45 +18,51 @@ type Config = Omit<FetchOptions, 'name'> & {
    * @default ~/weibo-archiver/
    */
   savePath: string
+  /**
+   * 只爬取微博
+   */
+  weiboOnly: boolean
 }
 
-async function saveConfig(config: Config) {
-  await writeFile(configFile, JSON.stringify(config, null, 2))
+export async function getConfig(uid: string) {
+  const path = savePath(uid)
+  const configPath = configFile(uid)
+
+  if (!existsSync(path))
+    await mkdir(path, { recursive: true })
+
+  const config = await loadConfig<Config>({
+    cwd: path,
+    configFile: configPath,
+    defaultConfig: {
+      savePath: path,
+      cookie: '',
+      uid: '',
+      curPage: 0,
+      fetchedCount: 0,
+      isFetchAll: false,
+      largePic: true,
+      repostPic: true,
+      hasRepost: true,
+      hasComment: true,
+      commentCount: 10,
+      startAt: Date.now(),
+      endAt: Date.now(),
+      followingsOnly: false,
+      weiboOnly: false,
+      proxyAgent: '',
+    },
+  }).then(v => v.config!);
+  (globalThis as any).fetchOptions = config
+
+  await saveConfig(config)
+  return config
 }
 
-const config = await loadConfig<Config>({
-  cwd: savePath,
-  configFile,
-  defaultConfig: {
-    savePath,
-    cookie: '',
-    uid: '',
-    curPage: 1,
-    fetchedCount: 0,
-    isFetchAll: false,
-    largePic: true,
-    repostPic: true,
-    hasRepost: true,
-    hasComment: true,
-    hasFavorite: true,
-    commentCount: 10,
-    startAt: Date.now(),
-    endAt: Date.now(),
-    followingsOnly: false,
-  },
+export async function saveConfig(config: Config) {
+  if (!config.uid)
+    return
+  (globalThis as any).fetchOptions = config
 
-}).then(r => reactive(r.config!))
-
-effect(async () => {
-  await saveConfig(config)
-}, {
-  lazy: true,
-})
-
-if (!existsSync(configFile))
-  await saveConfig(config)
-
-if (!existsSync(savePath))
-  await mkdir(savePath, { recursive: true })
-
-export default config
+  await writeFile(configFile(config.uid), JSON.stringify(config, null, 2), 'utf-8')
+}

@@ -11,7 +11,7 @@ export interface FetchOptions {
   /**
    * 用户名
    */
-  name: string
+  name?: string
   /**
    * 已获取的页数
    */
@@ -43,7 +43,7 @@ export interface FetchOptions {
   /**
    * 包括收藏的微博
    */
-  hasFavorite: boolean
+  hasFavorite?: boolean
   /**
    * 评论的数量
    */
