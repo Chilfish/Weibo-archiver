@@ -8,6 +8,7 @@ import type {
 import {
   delay,
   filterComments,
+  isBrowser,
   parseText,
   postsParser,
   usePausableLoop,
@@ -148,7 +149,7 @@ export function fetchPosts(
     const { uid, startAt, endAt, hasRepost, curPage, isFetchAll } = fetchOptions()
     const page = curPage + 1
 
-    console.log(`正在获取第 ${page} 页`)
+    isBrowser && console.log(`正在获取第 ${page} 页`)
 
     return isFetchAll
       ? await fetchAllPosts(uid, page)

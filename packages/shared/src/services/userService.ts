@@ -107,11 +107,10 @@ export async function isMe(uid: string) {
 
 export async function fetchFollowings(
   uid: string,
-  saveData: (users: UserBio[], total: number) => Promise<void>,
+  saveData: (users: UserBio[], total: number, isMe: boolean) => Promise<void>,
 ) {
   let page = 1
   const _isMe = await isMe(uid)
-  console.log('isMe', _isMe)
 
   while (true) {
     await delay(3000)
@@ -119,7 +118,7 @@ export async function fetchFollowings(
       ? await getMyFollowings(page)
       : await getFollowings(uid, page)
 
-    await saveData(users, total)
+    await saveData(users, total, _isMe)
 
     page += 1
     if (users.length === 0)

@@ -3,11 +3,17 @@
 import { defineCommand, runMain } from 'citty'
 import { consola } from 'consola'
 
-import type { UserBio } from '@weibo-archiver/shared'
 import { fetchFollowings, fetchPosts, userDetail } from '@weibo-archiver/shared'
+import type { UserBio } from '@weibo-archiver/shared'
 import type { Config } from './config'
 import { configFile, getConfig, saveConfig } from './config'
-import { appendJson, getLastLine, renameFile, saveJson } from './utils'
+import {
+  appendJson,
+  getLastLine,
+  renameFile,
+  saveJson,
+  updateProgress,
+} from './utils'
 
 let config: Config
 
@@ -185,15 +191,19 @@ async function getUserMeta() {
   const user = await userDetail(uid)
   const followings: UserBio[] = []
 
-  await fetchFollowings(uid, async (data) => {
-    consola.info(`TODO:进度条 抓取关注列表：${followings.length}/${user.followings}`)
+  await fetchFollowings(uid, async (data, total, isMe) => {
+    updateProgress(
+      followings.length,
+      isMe ? total : 200, // 200 是微博的限制
+    )
+
     followings.push(...data)
   })
 
   const userMeta = { user, followings }
   await saveJson(savePath, `meta-${uid}.json`, userMeta)
 
-  consola.success('抓取完成')
+  consola.success('\n抓取完成')
 }
 
 async function getWeibo() {
@@ -202,7 +212,7 @@ async function getWeibo() {
 
   const lastId = await getLastLine(savePath, `data-${uid}.json`)
     .then((data) => {
-      return (+data.id || 0) as number
+      return +data?.id || Number.POSITIVE_INFINITY
     })
 
   consola.info('开始抓取微博：', uid, '上次抓取到的 id：', lastId)
@@ -215,16 +225,18 @@ async function getWeibo() {
         if (post.id >= lastId)
           return
 
-        consola.info(`TODO: 进度条, ${++fetchedCount}/${total}`)
+        fetchedCount++
         config.curPage = Math.ceil(fetchedCount / 20)
         config.fetchedCount = fetchedCount
+
+        updateProgress(fetchedCount, total)
 
         await appendJson(savePath, `data-${uid}.json`, post)
         await saveConfig(config)
       },
     }),
     onFinish: async () => {
-      consola.success('抓取完成')
+      consola.success('\n抓取完成')
     },
     setTotal: (_total) => {
       if (!total)
