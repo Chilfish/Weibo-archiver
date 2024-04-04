@@ -59,6 +59,15 @@ export interface FetchOptions {
   followingsOnly: boolean
 
   /**
+   * 请求代理地址
+   */
+  proxyAgent?: string
+  /**
+   * 用户的 cookie
+   */
+  cookie?: string
+
+  /**
    * 保存帖子
    */
   savePost?: (posts: Post) => Promise<void>

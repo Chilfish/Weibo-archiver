@@ -1,13 +1,15 @@
 import type { useMessage } from 'naive-ui'
-import type { Config, FetchOptions } from './config'
+import type { FetchOptions } from './config'
 
 declare global {
   interface Window {
     $message: ReturnType<typeof useMessage>
-    config: Config
+    fetchOptions: FetchOptions
   }
 
-  interface Global {
-    fetchOptions: FetchOptions
+  namespace NodeJS {
+    interface Global {
+      fetchOptions: FetchOptions
+    }
   }
 }
