@@ -29,8 +29,8 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -40,16 +40,13 @@ jobs:
       - name: Install monkey
         run: pnpm install:monkey
 
-      - name: build monkey
-        run: pnpm build:monkey
-
       - name: Install Web
         run: pnpm install:web
 
-      - name: build web
-        run: pnpm build:web
+      - name: Install CLI
+        run: pnpm install:cli
 
-      - name: zip and copy files
+      - name: build and zip
         run: pnpm release
 
       - name: upload monkey
@@ -69,6 +66,12 @@ jobs:
         with:
           name: weibo-archiver-scripts
           path: dist/weibo-archiver-scripts.zip
+
+      - name: upload cli
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-cli
+          path: dist/weibo-archiver-cli.zip
 
   darft-release:
     runs-on: ubuntu-latest

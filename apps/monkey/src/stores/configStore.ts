@@ -27,7 +27,8 @@ export const useConfigStore = defineStore('config', () => {
     hasFavorite: true,
     commentCount: 6,
     followingsOnly: false,
-    dateRange: [now, now],
+    startAt: now,
+    endAt: now,
   }
 
   const config = useStorage<Config>(KEY, initConfig, localStorage, { mergeDefaults: true })
