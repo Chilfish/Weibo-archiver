@@ -12,15 +12,18 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
+    "build": "tsx build.ts",
     "dev": "unbuild --stub",
     "lint": "eslint .",
-    "start": "tsx src/index.ts"
+    "start": "node weibo-archiver.mjs"
   },
-  "devDependencies": {
-    "@weibo-archiver/shared": "workspace:^",
+  "dependencies": {
+    "@vue/reactivity": "^3.4.21",
     "c12": "^1.10.0",
     "citty": "^0.1.6",
     "consola": "^3.2.3"
+  },
+  "devDependencies": {
+    "@weibo-archiver/shared": "workspace:^"
   }
 }

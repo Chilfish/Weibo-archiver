@@ -6,10 +6,12 @@ const { config } = storeToRefs(useConfigStore())
 
 const dateRange = computed({
   get() {
-    return config.value.dateRange
+    const { startAt, endAt } = config.value
+    return [startAt, endAt] as [number, number]
   },
   set(val: [number, number]) {
-    config.value.dateRange = val ?? [Date.now(), Date.now()]
+    config.value.startAt = val[0] || Date.now()
+    config.value.endAt = val[1] || Date.now()
     config.value.isFetchAll = false
   },
 })

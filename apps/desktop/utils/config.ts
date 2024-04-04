@@ -30,7 +30,8 @@ const config = new Config<AppConfig>({
       hasComment: true,
       hasRepost: true,
       commentCount: 10,
-      dateRange: [now, now],
+      startAt: now,
+      endAt: now,
     },
   },
 })
@@ -39,7 +40,6 @@ const path = config.path.replace(/config\.json$/, '')
 
 config.set('configPath', path)
 config.set('version', version)
-config.set('fetchOptions.dateRange', [now, now])
 
 export default config
 export {

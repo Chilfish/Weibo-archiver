@@ -1,5 +1,11 @@
 import { defineBuildConfig } from 'unbuild'
 
+const inShared = [
+  'ofetch',
+  'p-queue',
+  '@weibo-archiver/shared',
+]
+
 export default defineBuildConfig({
   entries: [{
     input: 'src/index.ts',
@@ -14,10 +20,9 @@ export default defineBuildConfig({
       target: 'esnext',
     },
     output: {
-      // 打包所有的 node_modules 依赖，会 tree-shaking
-      // 所以就只需要将依赖都放在 devDependencies 下就行了
+      // 打包 @weibo-archiver/shared 依赖，会 tree-shaking
       manualChunks(id: string) {
-        if (id.includes('node_modules'))
+        if (inShared.some(dep => id.includes(dep)))
           return 'vendor'
       },
     },

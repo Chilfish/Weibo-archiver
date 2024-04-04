@@ -142,15 +142,14 @@ export function fetchPosts(
 ) {
   async function fetching() {
     await delay(3000)
-    const { uid, dateRange, hasRepost, curPage, isFetchAll } = fetchOptions()
-    const [start, end] = dateRange
+    const { uid, startAt, endAt, hasRepost, curPage, isFetchAll } = fetchOptions()
     const page = curPage + 1
 
     console.log(`正在获取第 ${page} 页`)
 
     return isFetchAll
       ? await fetchAllPosts(uid, page)
-      : await fetchRangePosts(uid, start, end, page, hasRepost)
+      : await fetchRangePosts(uid, startAt, endAt, page, hasRepost)
   }
 
   const { start, pause } = usePausableLoop(async () => {
