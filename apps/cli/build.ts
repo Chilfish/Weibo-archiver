@@ -17,8 +17,8 @@ execSync('pnpm unbuild', { stdio: 'inherit' })
 
 await writeFile(path.join(dist, 'package.json'), pkg)
 
-// 预先下载依赖，并链接到 .bin
-execSync('cd dist && npm install && pnpm link .', { stdio: 'inherit' })
+// 预先下载依赖
+execSync('cd dist && npm install', { stdio: 'inherit' })
 
 const readme = await readFile('README.md', 'utf-8')
 await writeFile(path.join(dist, 'README.md'), readme)
