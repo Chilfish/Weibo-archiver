@@ -50,6 +50,8 @@ const config = await loadConfig<Config>({
 
 effect(async () => {
   await saveConfig(config)
+}, {
+  lazy: true,
 })
 
 if (!existsSync(configFile))

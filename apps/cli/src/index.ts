@@ -2,7 +2,7 @@
 
 import { defineCommand, runMain } from 'citty'
 import { consola } from 'consola'
-import { parseText, userInfo } from '@weibo-archiver/shared'
+import { userInfo } from '@weibo-archiver/shared'
 
 import config from './config'
 
@@ -11,15 +11,14 @@ import config from './config'
  */
 const main = defineCommand({
   meta: {
-    name: 'Weibo archiver',
+    name: 'weibo-archiver',
     version: '0.3.11',
     description: 'Weibo archiver 命令行版本',
   },
   args: {
-    name: {
+    uid: {
       type: 'string',
-      description: 'Your name',
-      required: true,
+      description: '微博用户的 uid',
     },
     savePath: {
       type: 'string',
@@ -28,12 +27,12 @@ const main = defineCommand({
     },
   },
   async run({ args }) {
-    consola.info(`Hello`, parseText(args.name))
     config.savePath = args.savePath
+    config.uid = args.uid || config.uid
 
-    consola.info('已加载的配置：', config)
+    consola.info('已加载的配置：', JSON.stringify(config, null, 2))
 
-    const user = await userInfo({ name: args.name })
+    const user = await userInfo({ id: config.uid })
     console.log(user)
   },
 })

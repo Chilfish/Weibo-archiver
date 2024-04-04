@@ -74,21 +74,6 @@ importers:
         specifier: workspace:^
         version: link:../../packages/shared
 
-  apps/cli/dist:
-    dependencies:
-      '@vue/reactivity':
-        specifier: ^3.4.21
-        version: 3.4.21
-      c12:
-        specifier: ^1.10.0
-        version: 1.10.0
-      citty:
-        specifier: ^0.1.6
-        version: 0.1.6
-      consola:
-        specifier: ^3.2.3
-        version: 3.2.3
-
   apps/desktop:
     dependencies:
       '@weibo-archiver/core':
@@ -4825,7 +4810,7 @@ packages:
       vite: ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.2.7(@types/node@20.11.19)
+      vite: 5.2.7
       vue: 3.4.21(typescript@5.4.3)
     dev: true
 
