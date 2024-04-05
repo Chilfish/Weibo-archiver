@@ -27,13 +27,15 @@ export const useConfigStore = defineStore('config', () => {
     hasFavorite: true,
     commentCount: 6,
     followingsOnly: false,
-    dateRange: [now, now],
+    startAt: now,
+    endAt: now,
   }
 
   const config = useStorage<Config>(KEY, initConfig, localStorage, { mergeDefaults: true })
 
   function setConfig(_config: Partial<FetchOptions>) {
-    Object.assign(config.value, _config)
+    Object.assign(config.value, _config);
+    (globalThis as any).fetchOptions = toRaw(config.value)
   }
 
   function toggleMinimize() {

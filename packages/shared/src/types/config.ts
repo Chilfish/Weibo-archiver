@@ -11,7 +11,7 @@ export interface FetchOptions {
   /**
    * 用户名
    */
-  name: string
+  name?: string
   /**
    * 已获取的页数
    */
@@ -43,15 +43,19 @@ export interface FetchOptions {
   /**
    * 包括收藏的微博
    */
-  hasFavorite: boolean
+  hasFavorite?: boolean
   /**
    * 评论的数量
    */
   commentCount: number
   /**
-   * 日期范围
+   * 开始时间
    */
-  dateRange: [number, number]
+  startAt: number
+  /**
+   * 结束时间
+   */
+  endAt: number
 
   /**
    * 只获取关注列表
@@ -59,26 +63,16 @@ export interface FetchOptions {
   followingsOnly: boolean
 
   /**
+   * 请求代理地址
+   */
+  proxyAgent?: string
+  /**
+   * 用户的 cookie
+   */
+  cookie?: string
+
+  /**
    * 保存帖子
    */
   savePost?: (posts: Post) => Promise<void>
-}
-
-export interface AppConfig {
-  version: string
-  theme: 'light' | 'dark'
-  dataPath: string
-  configPath: string
-  appPath: string
-  publicPath: string
-  osSep: '\\' | '/'
-
-  useCdn: boolean
-  fetchOptions: FetchOptions & {
-
-    /**
-     * 用户的 cookie
-     */
-    cookie: string
-  }
 }

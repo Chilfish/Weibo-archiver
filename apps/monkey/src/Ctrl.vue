@@ -77,7 +77,8 @@ async function startFetch() {
   await start()
 }
 
-window.$message = message
+window.$message = message;
+(globalThis as any).fetchOptions = toRaw(config.value)
 
 /**
  * 初始化用户信息

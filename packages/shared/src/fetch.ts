@@ -1,19 +1,34 @@
-import type { FetchOptions } from 'ofetch'
-import { ofetch } from 'ofetch'
+import Axios, { type AxiosRequestConfig } from 'axios'
+import type { FetchOptions } from './types'
 
-export const aborter = new AbortController()
+const axios = Axios.create({
+  baseURL: 'https://weibo.com/ajax',
+})
 
 export async function weiFetch<T = { data: any }>(
   path: string,
-  options?: FetchOptions<'json'>,
+  options?: AxiosRequestConfig,
 ) {
-  return ofetch<T>(`https://weibo.com/ajax${path}`, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0',
-    },
-    retry: 3,
-    retryDelay: 5000,
-    signal: aborter.signal,
+  const fetchOptions: FetchOptions = (globalThis as any).fetchOptions ?? {}
+
+  const proxyURL = fetchOptions.proxyAgent
+  let proxy: AxiosRequestConfig['proxy'] = false
+  if (proxyURL) {
+    const url = new URL(proxyURL)
+    proxy = {
+      host: url.hostname,
+      port: +url.port,
+    }
+  }
+
+  const headers = options?.headers ?? {}
+  if (fetchOptions?.cookie)
+    headers.Cookie = fetchOptions.cookie
+
+  return axios<T>({
+    url: path,
+    proxy,
+    headers,
     ...options,
-  })
+  }).then(res => res.data)
 }

@@ -8,6 +8,7 @@ import type {
   UserBio,
 } from './types'
 import { fetchComments, fetchLongText } from './services'
+import { delay } from '.'
 
 export const weibo = 'https://weibo.com'
 
