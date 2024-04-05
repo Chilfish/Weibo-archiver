@@ -206,7 +206,7 @@ async function getUserMeta() {
     followings.push(...data)
   })
 
-  const userMeta = { user, followings }
+  const userMeta = { user, followings, weibo: [] }
   await saveJson(savePath, `meta-${uid}.json`, userMeta)
 
   consola.success('\n抓取完成')
