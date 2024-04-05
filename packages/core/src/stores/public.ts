@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { parseOldPost } from '@shared'
 import type { UID, UserInfo } from '@shared'
-import { IDB } from '../utils/storage'
+import { DB_VERSION, IDB } from '../utils/storage'
 
 export const usePublicStore = defineStore('public', () => {
   const globalImg = ref('')
@@ -45,6 +45,9 @@ export const usePublicStore = defineStore('public', () => {
    * 从旧版中迁移 user 数据到 idb 中
    */
   async function migrateUser() {
+    if (DB_VERSION >= 4)
+      return
+
     const dbName = `uid-${curUid.value || 0}` as UID
     const idb = new IDB(dbName)
 
@@ -58,7 +61,7 @@ export const usePublicStore = defineStore('public', () => {
     const posts = await idb.getAllDBPosts()
     let user = curUser.value
     if (!user) {
-      const _user = users.value.find(u => u.uid === curUid.value) || posts[0].user as any
+      const _user = users.value.find(u => u.uid === curUid.value) || posts[0]?.user as any
 
       user = {
         uid: _user.id,
