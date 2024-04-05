@@ -82,6 +82,7 @@ declare global {
   const imgsParser: typeof import('../parse')['imgsParser']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
+  const isBrowser: typeof import('../index')['isBrowser']
   const isDark: typeof import('../../../core/src/composables/index')['isDark']
   const isDefined: typeof import('@vueuse/core')['isDefined']
   const isElectron: typeof import('../../../core/src/utils/index')['isElectron']
