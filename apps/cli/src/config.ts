@@ -5,8 +5,8 @@ import { join } from 'node:path'
 import { loadConfig } from 'c12'
 import type { FetchOptions } from '@weibo-archiver/shared'
 
-export const savePath = (uid: string) => join(homedir(), 'weibo-archiver', uid)
-export const configFile = (uid: string) => join(savePath(uid), 'config.json')
+export const defaultSavePath = (uid: string) => join(homedir(), 'weibo-archiver', uid)
+export const defaultConfigFile = (uid: string) => join(defaultSavePath(uid), 'config.json')
 
 export type Config = Omit<FetchOptions, 'name'> & {
   /**
@@ -24,18 +24,20 @@ export type Config = Omit<FetchOptions, 'name'> & {
   weiboOnly: boolean
 }
 
-export async function getConfig(uid: string) {
-  const path = savePath(uid)
-  const configPath = configFile(uid)
+export async function getConfig(
+  uid: string,
+  savePath = defaultSavePath(uid),
+) {
+  const configPath = join(savePath, 'config.json')
 
-  if (!existsSync(path))
-    await mkdir(path, { recursive: true })
+  if (!existsSync(savePath))
+    await mkdir(savePath, { recursive: true })
 
   const config = await loadConfig<Config>({
-    cwd: path,
+    cwd: savePath,
     configFile: configPath,
     defaultConfig: {
-      savePath: path,
+      savePath,
       cookie: '',
       uid: '',
       curPage: 0,
@@ -64,5 +66,6 @@ export async function saveConfig(config: Config) {
     return
   (globalThis as any).fetchOptions = config
 
-  await writeFile(configFile(config.uid), JSON.stringify(config, null, 2), 'utf-8')
+  const path = join(config.savePath, 'config.json')
+  await writeFile(path, JSON.stringify(config, null, 2), 'utf-8')
 }

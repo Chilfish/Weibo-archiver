@@ -6,7 +6,7 @@ import { consola } from 'consola'
 import { fetchFollowings, fetchPosts, userDetail } from '@weibo-archiver/shared'
 import type { UserBio } from '@weibo-archiver/shared'
 import type { Config } from './config'
-import { configFile, getConfig, saveConfig } from './config'
+import { getConfig, saveConfig } from './config'
 import {
   appendJson,
   getLastLine,
@@ -83,11 +83,6 @@ const main = defineCommand({
     //   description: '是否导出关注的人',
     //   default: true,
     // },
-    followingsOnly: {
-      type: 'boolean',
-      description: '是否只导出关注的人',
-      default: false,
-    },
     weiboOnly: {
       type: 'boolean',
       description: '是否只导出微博',
@@ -115,18 +110,23 @@ const main = defineCommand({
     // },
   },
   async run({ args }) {
-    config = await getConfig(args.uid)
+    // console.log(args)
+    config = await getConfig(args.uid, args.savePath)
     await checkArgs(args)
 
-    consola.info('配置文件：', configFile(args.uid))
     consola.info('已加载的配置：', config);
     (globalThis as any).fetchOptions = config
 
-    await running()
+    const { weiboOnly } = config
+
+    !weiboOnly && await getUserMeta()
+    await getWeibo()
 
     consola.success('全部任务完成')
   },
 })
+
+runMain(main)
 
 async function checkArgs(args: any) {
   const startAt = new Date(args.startAt).getTime()
@@ -146,11 +146,17 @@ async function checkArgs(args: any) {
   if (args.savePath)
     savePath = args.savePath
 
+  // 重新开始抓取，则清空状态并备份原数据
   if (args.restart) {
     fetchedCount = 0
     curPage = 0
     await renameFile(savePath, `data-${args.uid}.json`)
   }
+
+  // 若不指定时间范围，则抓取全部微博
+  let isFetchAll = args.fetchAll
+  if (startAt && endAt)
+    isFetchAll = false
 
   config = {
     fetchedCount,
@@ -159,7 +165,7 @@ async function checkArgs(args: any) {
     uid: args.uid,
     cookie: args.cookie || config.cookie,
     proxyAgent: args.proxyAgent || config.proxyAgent,
-    isFetchAll: args.fetchAll,
+    isFetchAll,
     largePic: args.largePic,
     repostPic: args.repostPic,
     hasRepost: args.repost,
@@ -207,7 +213,7 @@ async function getUserMeta() {
 }
 
 async function getWeibo() {
-  let { uid, fetchedCount, savePath } = config
+  let { uid, fetchedCount, savePath, isFetchAll } = config
   let total = 0
 
   const lastId = await getLastLine(savePath, `data-${uid}.json`)
@@ -222,7 +228,7 @@ async function getWeibo() {
       ...config,
       async savePost(post) {
         // 按时间顺序来说，从上往下 id 逐渐减小
-        if (post.id >= lastId)
+        if (post.id >= lastId && isFetchAll)
           return
 
         fetchedCount++
@@ -246,12 +252,3 @@ async function getWeibo() {
 
   await start()
 }
-
-async function running() {
-  const { weiboOnly, followingsOnly } = config
-
-  !weiboOnly && await getUserMeta()
-  !followingsOnly && await getWeibo()
-}
-
-runMain(main)
