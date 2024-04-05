@@ -32,6 +32,8 @@
 > 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇暂时只接受改 bug 的 pr <br/>
 > 有关项目的进展路线等，可见 [项目的 Todo] 部分
 
+如果想体验预览版，在 [actions] 中会自动构建每次提交的 beta 版本
+
 ### 注意事项 | 声明
 
 该工具仅能获取公开可见的微博，对于那些仅半年可见之外的、仅粉丝（自己）可见的等，若不是自己的微博，将无法获取。
@@ -58,19 +60,20 @@
 
 - [/core](packages/core/) 包含了工具函数、pinia 等数据处理的核心
 - [/ui](packages/ui/) 包含 UI 部分的组件代码
-- [/database](packages/database/) Sqlite3 Drizzle-ORM
+- [/database](packages/database/) Desktop 的 Sqlite3 Drizzle-ORM
 
 在 apps 目录下，为最终的应用
 
 - [/web](apps/web/) 是用于最终查看微博数据的网页，目前托管在 [vercel] 上
 - [/monkey](apps/monkey/) 用于打包成油猴脚本
+- [/cli](apps/cli) Nodejs 命令行版本
 - [/desktop](apps/desktop/) 桌面端版本
 
 只需要在根目录中 `pnpm i` 即为所有子项目安转依赖，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
 
-而如果只需要开发或打包 web 端，可以运行 `pnpm install:web`，这将只安装 web 端的依赖，届时再运行 `pnpm dev:web` 即可。至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpm dlx serve .\.output\public\` 来查看
+而如果只需要开发或打包 web 端，可以运行 `pnpm install:web`，这将只安装 web 端的依赖，届时再运行 `pnpm dev:web` 即可。至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
 
-> 直接部署到 vercel 前，需要先去 vercel 的项目设置中将 Root Directory 设为 `apps/web`，才能正确识别
+> 直接部署到 vercel 前，需要先去 vercel 的项目设置中将 Root Directory 设为 `apps/web`，才能正确识别项目并构建
 
 目前我还在学习着 electron 开发，桌面端部分还得再等等🥺原型什么的还在设计
 
@@ -101,3 +104,4 @@
 [赞助地址]: https://chilfish.top/sponsors
 [vercel]: https://vercel.com
 [使用教程]: https://docs.qq.com/doc/DTWttbXlMUGxZZnZq
+[actions]: https://github.com/Chilfish/Weibo-archiver/actions
