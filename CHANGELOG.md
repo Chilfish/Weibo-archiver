@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.3.12
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.11...v0.3.12)
+
+### 🚀 Enhancements
+
+- **cli:** 纯 CLI 版本支持 ([#47](https://github.com/Chilfish/Weibo-archiver/pull/47))
+
+### 🩹 Fixes
+
+- **web:** The new example & use provide/inject the user info ([4327673](https://github.com/Chilfish/Weibo-archiver/commit/4327673))
+- Build configs ([cc1b210](https://github.com/Chilfish/Weibo-archiver/commit/cc1b210))
+
+### 💅 Refactors
+
+- 重改 monorepo 结构，分离部分 core 到 shared ([#46](https://github.com/Chilfish/Weibo-archiver/pull/46))
+
+### 📦 Build
+
+- **web:** Fix vercel ignore build shell [no ci] ([564b1ca](https://github.com/Chilfish/Weibo-archiver/commit/564b1ca))
+- **cli:** Fix deps & pack the scripts ([5f5bd15](https://github.com/Chilfish/Weibo-archiver/commit/5f5bd15))
+
+### 🏡 Chore
+
+- Update deps ([8bd24ab](https://github.com/Chilfish/Weibo-archiver/commit/8bd24ab))
+- **docs:** Update readme ([47724ef](https://github.com/Chilfish/Weibo-archiver/commit/47724ef))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.11
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.10...v0.3.11)

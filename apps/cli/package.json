@@ -1,7 +1,7 @@
 {
   "name": "@weibo-archiver/cli",
   "type": "module",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "description": "Weibo archiver CLI tool",
   "author": "Chilfish",
   "module": "./dist/weibo-archiver.mjs",
