@@ -1,10 +1,13 @@
-name: beta Build Monkey Script
+name: beta build
 
 on:
   workflow_dispatch:
   push:
     branches-ignore:
       - monkey
+    tags-ignore:
+      # 发 release 时不触发构建
+      - v*
     paths-ignore:
       - '**.md'
       - '.github/**'

@@ -1,4 +1,4 @@
-name: Release Monkey Script and webapp
+name: Release apps
 
 on:
   workflow_dispatch:
