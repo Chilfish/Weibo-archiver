@@ -2,7 +2,6 @@
   "name": "weibo-archiver",
   "type": "module",
   "version": "0.3.12",
-  "packageManager": "pnpm@9.0.0",
   "description": "Archive your Weibo posts before being banned completely.",
   "author": {
     "name": "Chilfish",
