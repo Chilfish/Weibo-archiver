@@ -28,14 +28,14 @@ export async function getConfig(
   uid: string,
   savePath = defaultSavePath(uid),
 ) {
-  const configPath = join(savePath, 'config.json')
+  const configFile = 'config.json'
 
   if (!existsSync(savePath))
     await mkdir(savePath, { recursive: true })
 
   const config = await loadConfig<Config>({
     cwd: savePath,
-    configFile: configPath,
+    configFile,
     defaultConfig: {
       savePath,
       cookie: '',
