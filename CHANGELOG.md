@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.3.13
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.12...v0.3.13)
+
+### 🩹 Fixes
+
+- **ci:** Rename the title [no ci] ([20567bf](https://github.com/Chilfish/Weibo-archiver/commit/20567bf))
+- **cli:** ConfigFile path resolve ([#49](https://github.com/Chilfish/Weibo-archiver/pull/49))
+- **monkey:** 可以选择不导出关注列表 ([05b9345](https://github.com/Chilfish/Weibo-archiver/commit/05b9345))
+- **monkey:** 不再匹配 /n/username ([72b7e59](https://github.com/Chilfish/Weibo-archiver/commit/72b7e59))
+
+### 📦 Build
+
+- Update deps ([43aceb6](https://github.com/Chilfish/Weibo-archiver/commit/43aceb6))
+- Don't specify the packageManager version ([8a7f683](https://github.com/Chilfish/Weibo-archiver/commit/8a7f683))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+- Rainy ([@geekrainy](http://github.com/geekrainy))
+
 ## v0.3.12
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.11...v0.3.12)
