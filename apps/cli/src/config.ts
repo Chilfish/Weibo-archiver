@@ -18,10 +18,6 @@ export type Config = Omit<FetchOptions, 'name'> & {
    * @default ~/weibo-archiver/
    */
   savePath: string
-  /**
-   * 只爬取微博
-   */
-  weiboOnly: boolean
 }
 
 export async function getConfig(

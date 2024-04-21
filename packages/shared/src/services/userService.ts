@@ -95,14 +95,20 @@ export async function getMyFollowings(
 }
 
 export async function isMe(uid: string) {
-  const [withoutUid, withUid] = await Promise.all([
-    weiFetch('/profile/detail'),
-    weiFetch('/profile/detail', {
-      params: { uid },
-    }),
-  ])
+  try {
+    const [withoutUid, withUid] = await Promise.all([
+      weiFetch('/profile/detail'),
+      weiFetch('/profile/detail', {
+        params: { uid },
+      }),
+    ])
 
-  return withUid.data.created_at === withoutUid.data.created_at
+    return withUid.data.created_at === withoutUid.data.created_at
+  }
+  catch (e) {
+    console.error('isMe error', e)
+    return false
+  }
 }
 
 export async function fetchFollowings(

@@ -80,11 +80,22 @@ const dateRange = computed({
         重置为所有微博
       </button>
     </div>
-    <n-checkbox
-      v-model:checked="config.followingsOnly"
-      label="只导出关注列表"
-      size="small"
-    />
+
+    <div>
+      <n-checkbox
+        v-if="!config.weiboOnly"
+        v-model:checked="config.followingsOnly"
+        label="只导出关注列表"
+        size="small"
+      />
+      <n-checkbox
+        v-if="!config.followingsOnly"
+        v-model:checked="config.weiboOnly"
+        label="只导出微博"
+        size="small"
+      />
+    </div>
+
     <div
       v-show="config.hasComment"
       class="flex items-center gap-4"

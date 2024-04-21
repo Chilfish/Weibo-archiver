@@ -105,13 +105,15 @@ export const usePostStore = defineStore('post', () => {
     const posts = await getAll()
     console.log('导出的数量：', posts.length)
 
-    const followings = await idb.value.getFollowings()
+    const followings = config.value.weiboOnly
+      ? []
+      : await idb.value.getFollowings()
 
     const res = await exportData(posts, userInfo.value, followings)
     if (!res)
       return
     const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
-    saveAs(scripts, 'scripts.zip')
+    saveAs(scripts, 'weibo-archiver-scripts.zip')
   }
 
   return {

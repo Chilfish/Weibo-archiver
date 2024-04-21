@@ -72,6 +72,11 @@ export interface FetchOptions {
   cookie?: string
 
   /**
+   * 只爬取微博
+   */
+  weiboOnly: boolean
+
+  /**
    * 保存帖子
    */
   savePost?: (posts: Post) => Promise<void>

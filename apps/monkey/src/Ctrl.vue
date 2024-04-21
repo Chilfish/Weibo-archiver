@@ -28,12 +28,15 @@ const { pause, start } = fetchPosts({
   }),
   setTotal: total => postStore.total = total,
   onFinish: async () => {
-    message.success('获取完毕~，正在获取关注列表')
-    isFetchingFollowings.value = true
-    await fetchFollowings(
-      config.value.uid,
-      async data => postStore.addFollowings(data),
-    )
+    if (!config.value.weiboOnly) {
+      message.success('获取完毕~，正在获取关注列表')
+      isFetchingFollowings.value = true
+      await fetchFollowings(
+        config.value.uid,
+        async data => postStore.addFollowings(data),
+      )
+    }
+
     await postStore.exportDatas()
 
     isStart.value = false
