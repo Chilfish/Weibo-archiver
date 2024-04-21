@@ -61,7 +61,6 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
-          'https://weibo.com/n/*',
         ],
       },
       server: {

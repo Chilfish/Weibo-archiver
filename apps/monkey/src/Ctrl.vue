@@ -88,8 +88,7 @@ window.$message = message;
  */
 async function init() {
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
-  const username = document.URL.match(/\/n\/(.+)/)?.[1] ?? ''
-  const { uid, name } = await userInfo({ id, name: decodeURIComponent(username) })
+  const { uid, name } = await userInfo({ id })
 
   postStore.userInfo = await userDetail(uid)
   configStore.setConfig({ uid, name })
