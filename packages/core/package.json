@@ -9,12 +9,12 @@
   "dependencies": {
     "@vueuse/core": "^10.9.0",
     "@weibo-archiver/shared": "workspace:^",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "destr": "^2.0.3",
     "file-saver": "^2.0.5",
     "fuse.js": "^7.0.0",
     "idb": "^8.0.0",
     "pinia": "^2.1.7",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.2"
   }
 }
