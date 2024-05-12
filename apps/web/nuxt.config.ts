@@ -99,7 +99,17 @@ export default defineNuxtConfig({
 
   typescript: {
     tsConfig: {
-      extends: join(root, 'tsconfig.json'),
+      compilerOptions: {
+        types: [
+          'naive-ui/volar',
+        ],
+
+      },
+      include: [
+        shared,
+        ui,
+        core,
+      ],
     },
   },
 

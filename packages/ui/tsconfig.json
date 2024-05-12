@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "#preload": ["../../apps/desktop/preload/src/index"],
       "@core/*": ["../core/src/*"],
       "@shared": ["../shared/src/index.ts"]
     }
@@ -14,7 +13,6 @@
     "../core/src/**/*"
   ],
   "exclude": [
-    "../../apps/desktop/**/*",
     "../../apps/web/**/*"
   ]
 }
