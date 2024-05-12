@@ -8,7 +8,6 @@
   },
   "exclude": [
     "../ui/**/*",
-    "../../apps/desktop/**/*",
     "../../apps/web/**/*"
   ]
 }

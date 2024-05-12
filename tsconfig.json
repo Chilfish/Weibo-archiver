@@ -11,7 +11,6 @@
     "paths": {
       "@core/*": ["packages/core/src/*"],
       "@shared": ["packages/shared/src/index.ts"],
-      "@database/*": ["packages/database/src/*"],
       "@ui/*": ["packages/ui/src/*"]
     },
     "types": [
