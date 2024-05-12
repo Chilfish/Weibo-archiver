@@ -102,4 +102,4 @@
 [赞助地址]: https://chilfish.top/sponsors
 [vercel]: https://vercel.com
 [使用教程]: https://docs.qq.com/doc/DTWttbXlMUGxZZnZq
-[actions]: https://github.com/Chilfish/Weibo-archiver/actions
+[actions]: https://github.com/Chilfish/Weibo-archiver/actions/workflows/beta-build.yml?query=branch:main+event:push+is:success
