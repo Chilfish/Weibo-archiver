@@ -19,7 +19,8 @@
   },
   "peerDependencies": {
     "axios": "^1.6.8",
-    "p-queue": "^8.0.1"
+    "p-queue": "^8.0.1",
+    "p-timeout": "^6.1.2"
   },
   "devDependencies": {
     "@bg-dev/nuxt-naiveui": "^1.13.2",
