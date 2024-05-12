@@ -27,7 +27,7 @@
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/seo": "2.0.0-rc.8",
     "@pinia/nuxt": "^0.5.1",
-    "@unocss/nuxt": "^0.59.4",
+    "@unocss/nuxt": "^0.60.2",
     "@vercel/analytics": "^1.2.2",
     "@vueuse/nuxt": "^10.9.0",
     "@weibo-archiver/core": "workspace:^",

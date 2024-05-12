@@ -30,9 +30,9 @@
     "postinstall": "simple-git-hooks"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.16.2",
-    "@unocss/eslint-config": "^0.59.4",
-    "@unocss/eslint-plugin": "^0.59.4",
+    "@antfu/eslint-config": "^2.17.0",
+    "@unocss/eslint-config": "^0.60.2",
+    "@unocss/eslint-plugin": "^0.60.2",
     "eslint": "npm:eslint-ts-patch@8.55.0-1",
     "eslint-plugin-format": "^0.1.1",
     "eslint-ts-patch": "8.55.0-1",
@@ -40,10 +40,10 @@
     "lint-staged": "^15.2.2",
     "pnpm": "^9.1.0",
     "simple-git-hooks": "^2.11.1",
-    "tsx": "^4.9.3",
+    "tsx": "^4.10.1",
     "typescript": "^5.4.5",
     "unbuild": "^2.0.0",
-    "vue-tsc": "^2.0.16"
+    "vue-tsc": "^2.0.17"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
