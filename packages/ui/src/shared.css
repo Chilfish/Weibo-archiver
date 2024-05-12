@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  --uno: bg-light-700 dark:bg-dark-700;
+  @apply: bg-light-700 dark:bg-dark-700;
 }
 
 .n-message-container.n-message-container--top {
@@ -44,7 +44,7 @@
   /* min-width: 446px; */
 }
 .n-date-panel.n-date-panel--daterange.n-date-panel--shadow {
-  --uno: flex-col flex sm:grid;
+  @apply: flex-col flex sm:grid;
 }
 
 p {
@@ -63,32 +63,32 @@ html.dark {
 span.icon,
 i.icon {
   vertical-align: middle;
-  --uno: inline-flex items-center select-none cursor-pointer;
+  @apply: inline-flex items-center select-none cursor-pointer;
 }
 
 #plugin-app {
-  --uno: w-full absolute top-0 right-0 z-1000;
+  @apply: w-full absolute top-0 right-0 z-1000;
 }
 
 .btns button {
-  --uno: btn;
+  @apply: btn;
 }
 
 .icons > span {
-  --uno: text-4 inline-flex items-center text-gray hover:text-teal-700 cursor-pointer;
+  @apply: text-4 inline-flex items-center text-gray hover:text-teal-700 cursor-pointer;
 }
 
 .icons .icon {
-  --uno: mx-2;
+  @apply: mx-2;
 }
 
 a,
 p button {
-  --uno: text-teal-600 hover:text-teal-700;
+  @apply: text-teal-600 hover:text-teal-700;
 }
 
 p {
-  --uno: text-black dark:text-light;
+  @apply: text-black dark:text-light;
 }
 
 .text-wrap {

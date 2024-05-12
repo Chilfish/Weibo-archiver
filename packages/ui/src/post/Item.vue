@@ -21,7 +21,7 @@ watchEffect(() => {
   <article
     :id="post.mblogid"
     ref="articleRef"
-    class="post"
+    class="post flex flex-col gap-2 rounded-2 bg-white p-4 shadow dark:bg-dark"
   >
     <div class="flex justify-between">
       <post-profile />
@@ -70,10 +70,6 @@ watchEffect(() => {
 </template>
 
 <style>
-article.post {
-  --uno: flex flex-col gap-2 rounded-2 bg-white p-4 shadow dark:bg-dark;
-}
-
 .post:hover .copy-id {
  opacity: 1 !important;
 }
