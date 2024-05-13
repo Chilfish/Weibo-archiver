@@ -159,20 +159,20 @@ async function clearData() {
             使用默认的 CDN（{{ imgCdn }}）
           </n-radio>
 
-          <n-radio :value="customimgHost">
-            <span>
+          <div>
+            <n-radio :value="customimgHost">
               使用自建图床链接（指向图片所在的目录）
-            </span>
+            </n-radio>
             <n-input
               v-model:value="customimgHost"
-              class="mt-2"
+              class="mt-2 max-w-80%"
               placeholder="请输入"
             >
               <template #prefix>
                 <i class="i-tabler:link icon" />
               </template>
             </n-input>
-          </n-radio>
+          </div>
         </n-radio-group>
       </n-form-item>
 
