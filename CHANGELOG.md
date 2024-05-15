@@ -1,5 +1,47 @@
 # Changelog
 
+## v0.4.0
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.13...v0.4.0)
+
+### 🚀 Enhancements
+
+- Support user's remark (web) ([d672200](https://github.com/Chilfish/Weibo-archiver/commit/d672200))
+
+### 🩹 Fixes
+
+- Build error ([83521fb](https://github.com/Chilfish/Weibo-archiver/commit/83521fb))
+- **web:** Css use `@apply` instead of `--uno` ([87d7eac](https://github.com/Chilfish/Weibo-archiver/commit/87d7eac))
+- **web:** Self-built hosting input cannot gain focus ([ff58836](https://github.com/Chilfish/Weibo-archiver/commit/ff58836))
+
+### 💅 Refactors
+
+- ⚠️  Temporarily remove /desktop app ([#50](https://github.com/Chilfish/Weibo-archiver/pull/50))
+
+### 📦 Build
+
+- Update deps ([64a59a4](https://github.com/Chilfish/Weibo-archiver/commit/64a59a4))
+- Update deps ([331dffc](https://github.com/Chilfish/Weibo-archiver/commit/331dffc))
+- Fix missing peer dep dependency in CI ([0e0074a](https://github.com/Chilfish/Weibo-archiver/commit/0e0074a))
+
+### 🏡 Chore
+
+- **docs:** Update README ([c4c02b2](https://github.com/Chilfish/Weibo-archiver/commit/c4c02b2))
+- Lint files ([cd3907d](https://github.com/Chilfish/Weibo-archiver/commit/cd3907d))
+
+### 🤖 CI
+
+- **build:** Fix setup pnpm ([7ff82ef](https://github.com/Chilfish/Weibo-archiver/commit/7ff82ef))
+- **build:** Fix installs ([6fa87c2](https://github.com/Chilfish/Weibo-archiver/commit/6fa87c2))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Temporarily remove /desktop app ([#50](https://github.com/Chilfish/Weibo-archiver/pull/50))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.3.13
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.12...v0.3.13)
