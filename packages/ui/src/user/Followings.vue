@@ -19,7 +19,7 @@ const searchResults = computed(() => {
 
 onMounted(() => {
   fuse.value = new Fuse(postStore.followings, {
-    keys: ['name'],
+    keys: ['name', 'remark'],
     ignoreLocation: true,
     includeScore: true,
     useExtendedSearch: true,

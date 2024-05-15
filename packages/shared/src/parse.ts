@@ -155,6 +155,7 @@ export function parseFollowing(user: any) {
     name: user.screen_name,
     avatar: user.profile_image_url,
     bio: user.description,
+    remark: user.remark || undefined,
   } as UserBio
 }
 

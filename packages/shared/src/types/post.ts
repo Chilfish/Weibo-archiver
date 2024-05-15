@@ -4,6 +4,7 @@ export interface User {
   uid: string
   name: string
   avatar: string
+  remark?: string // 备注
 }
 
 export type UserBio = User & {

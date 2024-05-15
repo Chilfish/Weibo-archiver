@@ -29,7 +29,15 @@ defineProps<{
     />
     <div>
       <div class="text-3.5 font-bold sm:text-4">
-        @{{ user.name }}
+        <span>
+          @{{ user.name }}
+        </span>
+        <span
+          v-if="user.remark"
+          class="text-xs text-gray-500"
+        >
+          （{{ user.remark }}）
+        </span>
       </div>
       <div
         text="sm:4 3 black dark:light-8"
