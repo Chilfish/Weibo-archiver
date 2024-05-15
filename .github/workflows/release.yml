@@ -26,14 +26,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      - name: Install monkey
-        run: pnpm install:monkey
-
-      - name: Install Web
-        run: pnpm install:web
-
-      - name: Install CLI
-        run: pnpm install:cli
+      - name: Install Deps
+        run: pnpm install
 
       - name: build and zip
         run: pnpm release
