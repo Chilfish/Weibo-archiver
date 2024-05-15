@@ -7,7 +7,7 @@ const root = path.resolve(path.resolve(), '../../')
 
 const pkg = await readFile('package.json', 'utf-8')
   // 移除 dist 前缀
-  .then(data => data.replace(/dist\//gm, ''))
+  .then(data => data.replace(/dist\//g, ''))
   // 移除 devDependencies
   .then(data => JSON.parse(data))
   .then((data) => {

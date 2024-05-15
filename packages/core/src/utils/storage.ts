@@ -246,8 +246,8 @@ export class IDB {
           .replace(/<[^>]+>/g, ' ') // 移除所有 HTML 标签
           .replace(/(undefined|查看图片|查看链接|转发微博)/, '')
           .replace(/&[a-z]+;/g, ' ') // 移除 HTML 实体字符
-          .replace(/[\s\n]+/g, ' ') // 移除多余的空白字符
-          .replace(/@[\u4E00-\u9FA5a-zA-Z0-9_-]+/g, '') // 移除 @ 用户名
+          .replace(/\s+/g, ' ') // 移除多余的空白字符
+          .replace(/@[\u4E00-\u9FA5\w-]+/g, '') // 移除 @ 用户名
           .trim(),
       }
     })

@@ -6,7 +6,7 @@ import path from 'node:path'
 const imgs_path = path.resolve(process.argv[2] || 'imgs.csv')
 
 const url_list = await readFile(imgs_path, 'utf-8')
-  .then(text => text.replace(/\r\n/gm, '\n').split(',\n'))
+  .then(text => text.replace(/\r\n/g, '\n').split(',\n'))
   .catch((e) => {
     console.error(`未找到 imgs.csv 文件, ${e}`)
     process.exit(1)
@@ -26,7 +26,7 @@ for (let url of url_list) {
       continue
 
     const file_name = url.split('/').pop().split('?')[0]
-    const prefix = url.match(/^(?:https?:\/\/)?([^:\/\n]+)/)?.[1]
+    const prefix = url.match(/^(?:https?:\/\/)?([^:/\n]+)/)?.[1]
 
     if (!prefix)
       throw new Error(`无法获取图片地址`)

@@ -25,7 +25,7 @@ export function replaceImg(img: string, forceCdn = false) {
   }
 
   const name = img.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
-  const prefix = img.match(/^(?:https?:\/\/)?([^:\/\n]+)/im)?.[1] // 域名
+  const prefix = img.match(/^(?:https?:\/\/)?([^:/\n]+)/im)?.[1] // 域名
 
   if (!prefix || !name)
     return img

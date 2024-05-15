@@ -30,8 +30,8 @@
     "*.ts",
     "*.tsx",
     "*.d.ts",
-    "apps/web/.nuxt/imports.d.ts"
-  ],
+    "apps/web/.nuxt/imports.d.ts",
+    "eslint.config.js"],
   "exclude": [
     "dist",
     "node_modules"
