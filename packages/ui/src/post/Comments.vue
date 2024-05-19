@@ -24,8 +24,8 @@ defineProps<{
           class="justify-start!"
         />
         <span class="hidden sm:inline-block">
-          评论 {{ comment.comments_count }} |
-          点赞 {{ comment.like_count }}
+          评论 {{ comment.comments_count || 0 }} |
+          点赞 {{ comment.like_count || 0 }}
         </span>
       </div>
     </div>

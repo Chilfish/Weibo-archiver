@@ -71,7 +71,7 @@ watchEffect(() => {
 
 <style>
 .post:hover .copy-id {
- opacity: 1 !important;
+ opacity: 1;
 }
 
 .post .n-collapse-item__content-inner {

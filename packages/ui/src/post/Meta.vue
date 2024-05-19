@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Comment, Post, Retweet } from '@shared'
-import { useMessage } from 'naive-ui'
+// import { useMessage } from 'naive-ui'
 
 const props = defineProps<{
   meta: Post | Comment | Retweet
@@ -9,19 +9,19 @@ const props = defineProps<{
 
 const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm')
 
-const url = computed(() => `#${(props.meta as any).mblogid}`)
-const message = useMessage()
+// const url = computed(() => `#${(props.meta as any).mblogid}`)
+// const message = useMessage()
 
-const { copy } = useClipboard({
-  source: url,
-})
+// const { copy } = useClipboard({
+//   source: url,
+// })
 </script>
 
 <template>
   <div
     class="flex flex-wrap items-center justify-end gap-1 text-3 text-gray sm:gap-3"
   >
-    <a
+    <!-- <a
       v-if="'mblogid' in meta && isBody"
       :href="url"
       class="copy-id opacity-0 transition-opacity"
@@ -31,7 +31,7 @@ const { copy } = useClipboard({
       }"
     >
       复制本地链接
-    </a>
+    </a> -->
 
     <a
       v-if="'detail_url' in meta"
@@ -47,7 +47,10 @@ const { copy } = useClipboard({
       {{ meta.region_name.replace(' ', '') }}
     </span>
 
-    <span v-if="meta.source" class="hidden sm:inline">
+    <span
+      v-if="meta.source"
+      class="hidden sm:inline"
+    >
       来自<span v-html="meta.source" />
     </span>
   </div>
