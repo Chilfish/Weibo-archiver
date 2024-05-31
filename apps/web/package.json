@@ -23,14 +23,14 @@
     "p-timeout": "^6.1.2"
   },
   "devDependencies": {
-    "@bg-dev/nuxt-naiveui": "^1.13.2",
+    "@bg-dev/nuxt-naiveui": "^1.13.3",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/color-mode": "^3.4.1",
     "@nuxtjs/seo": "2.0.0-rc.8",
     "@pinia/nuxt": "^0.5.1",
-    "@unocss/nuxt": "^0.60.2",
-    "@vercel/analytics": "^1.2.2",
-    "@vueuse/nuxt": "^10.9.0",
+    "@unocss/nuxt": "^0.60.3",
+    "@vercel/analytics": "^1.3.1",
+    "@vueuse/nuxt": "^10.10.0",
     "@weibo-archiver/core": "workspace:^",
     "@weibo-archiver/shared": "workspace:^",
     "@weibo-archiver/ui": "workspace:^",

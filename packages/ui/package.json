@@ -8,11 +8,11 @@
   "main": "index.ts",
   "dependencies": {
     "@weibo-archiver/core": "workspace:^",
-    "sass": "^1.77.1"
+    "sass": "^1.77.4"
   },
   "devDependencies": {
-    "@iconify-json/tabler": "^1.1.111",
+    "@iconify-json/tabler": "^1.1.113",
     "naive-ui": "^2.38.2",
-    "unocss": "^0.60.2"
+    "unocss": "^0.60.3"
   }
 }

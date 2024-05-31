@@ -71,6 +71,7 @@ export default defineNuxtConfig({
     static: true,
     routeRules: {
       '/': { redirect: '/post' },
+      '/docs': { redirect: 'https://docs.qq.com/doc/DTWttbXlMUGxZZnZq' },
     },
     prerender: {
       crawlLinks: false,
