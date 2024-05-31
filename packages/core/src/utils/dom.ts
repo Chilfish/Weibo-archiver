@@ -1,3 +1,4 @@
+import { useStorage } from '@vueuse/core'
 import { ImgPlaceholder } from '../constants'
 
 /**
@@ -28,6 +29,7 @@ export function waitForElement<T extends Element = HTMLElement>(
 export function lazyLoadImage(
   imgs?: NodeListOf<HTMLImageElement> | HTMLImageElement[],
 ) {
+  const imgHost = useStorage('imgHost', '/')
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -35,7 +37,9 @@ export function lazyLoadImage(
         const src = img.getAttribute('data-preview-src') || ImgPlaceholder
 
         // 使用缩略图
-        img.src = src.startsWith(imgCdn) ? src.replace('large', 'orj360') : src
+        img.src = src.startsWith(imgCdn) || imgHost.value === 'weibo'
+          ? src.replace('large', 'orj360')
+          : src
 
         img.onerror = () => {
           img.src = ImgPlaceholder

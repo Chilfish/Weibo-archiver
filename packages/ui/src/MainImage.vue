@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
 import { ImgPlaceholder } from '@core/constants'
-import { referrerPolicy } from '@core/utils'
 
 const props = withDefaults(defineProps<{
   src: string
@@ -39,17 +38,7 @@ async function setImgSrc() {
   const img = imgRef.value.imageRef as HTMLImageElement
   const { disconnect } = lazyLoadImage([img])
   disconnectFn.value = disconnect
-
-  if (!isElectron) {
-    realSrc.value = replaceImg(props.src)
-    return
-  }
-
-  if (import.meta.env.DEV || !props.src.startsWith('/'))
-    return
-
-  const config = window.config.data
-  realSrc.value = `file://${config.publicPath}${props.src.slice(1)}`
+  realSrc.value = replaceImg(props.src)
 }
 
 watch(() => props.src, setImgSrc)
@@ -71,7 +60,6 @@ onUnmounted(() => {
     :preview-src="realSrc"
     :img-props="{
       class: 'transition-width',
-      referrerpolicy: referrerPolicy,
     }"
   />
 </template>

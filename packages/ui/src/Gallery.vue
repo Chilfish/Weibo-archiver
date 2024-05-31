@@ -17,7 +17,7 @@ const imgWidth = computed(() => {
 
 <template>
   <div
-    class="mt-4 min-w-fit flex flex-wrap items-center gap-1"
+    class="mt-4 min-w-fit flex flex-wrap items-center gap-2px"
   >
     <n-image-group>
       <main-image
