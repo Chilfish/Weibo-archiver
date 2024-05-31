@@ -9,6 +9,7 @@ export default antfu({
     'node/prefer-global/process': 'off',
     'format/prettier': 'off',
     'antfu/no-import-dist': 'off',
+    'antfu/top-level-function': 'off',
   },
   ignores: [
     'pnpm-lock.yaml',

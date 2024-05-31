@@ -6,7 +6,7 @@
   "author": {
     "name": "Chilfish",
     "email": "chill4fish@gmail.com",
-    "url": "https://chilfish.top"
+    "url": "https://github.com/Chilfish"
   },
   "license": "MIT",
   "homepage": "https://github.com/Chilfish/Weibo-archiver.git",
@@ -42,6 +42,11 @@
     "typescript": "^5.4.5",
     "unbuild": "^2.0.0",
     "vue-tsc": "^2.0.19"
+  },
+  "pnpm": {
+    "overrides": {
+      "@babel/helper-module-imports": "~7.22.15"
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
