@@ -65,8 +65,8 @@ export async function fetchRangePosts(
     params: {
       uid,
       page,
-      starttime: start / 1000,
-      endtime: end / 1000,
+      starttime: dayStart(start) / 1000,
+      endtime: dayEnd(end) / 1000,
       hasori: 1, // 是否包含原创
       hasret: hasRepost ? 1 : 0, // 是否包含转发
       hastext: 1, // 是否包含文字

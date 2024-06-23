@@ -11,6 +11,19 @@ export function delay(ms = 2000) {
   return new Promise(resolve => setTimeout(resolve, randomMs))
 }
 
+export function dayStart(date: Date | number) {
+  if (typeof date === 'number') {
+    date = new Date(date)
+  }
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime()
+}
+export function dayEnd(date: Date | number) {
+  if (typeof date === 'number') {
+    date = new Date(date)
+  }
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59).getTime()
+}
+
 /**
  * 可暂停/恢复的循环
  * @param fn
