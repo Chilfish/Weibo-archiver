@@ -115,6 +115,10 @@ const startButtonText = computed(() => {
 
   return `开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
 })
+
+const {
+  VITE_APP_VERSION,
+} = import.meta.env
 </script>
 
 <template>
@@ -124,7 +128,7 @@ const startButtonText = computed(() => {
   >
     <div class="flex items-center justify-between">
       <h2 class="text-5 text-black font-bold">
-        Weibo archiver, user: {{ config.name }}
+        Weibo archiver <span class="ml-1 text-3">(v{{ VITE_APP_VERSION }})</span>
       </h2>
 
       <button
@@ -134,6 +138,10 @@ const startButtonText = computed(() => {
         <i class="i-tabler:arrows-minimize icon" />
       </button>
     </div>
+
+    <h3 class="">
+      用户名: @{{ config.name }}
+    </h3>
 
     <n-alert type="info">
       <p>
