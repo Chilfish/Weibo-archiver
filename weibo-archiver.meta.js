@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Weibo Archiver
 // @namespace    chilfish/monkey
-// @version      0.4.0
+// @version      0.4.1
 // @author       Chilfish
 // @description  将你的新浪微博存档备份的油猴脚本，为号被完全夹没前绸缪 😭
 // @license      MIT
