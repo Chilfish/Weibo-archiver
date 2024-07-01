@@ -91,6 +91,7 @@ async function init() {
   const { uid, name } = await userInfo({ id })
 
   postStore.userInfo = await userDetail(uid)
+  console.log('userInfo', postStore.userInfo)
   configStore.setConfig({ uid, name })
 }
 
@@ -236,4 +237,3 @@ p {
   padding: 6px;
 }
 </style>
-@shared/services

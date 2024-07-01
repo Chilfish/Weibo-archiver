@@ -39,8 +39,6 @@ export async function userDetail(
     },
   })
 
-  const _uid = data.verified_url.match(/(\d+)/)?.[1] ?? ''
-
   const detail = {
     createdAt: data.created_at,
     birthday: data.birthday,
@@ -49,7 +47,7 @@ export async function userDetail(
     birthday: string
   }
 
-  const info = await userInfo({ id: _uid })
+  const info = await userInfo({ id: uid })
   return {
     ...info,
     ...detail,
