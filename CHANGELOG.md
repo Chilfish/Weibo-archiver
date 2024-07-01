@@ -1,5 +1,39 @@
 # Changelog
 
+## v0.4.1...v0.4.2
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.1...v0.4.2)
+
+### 🩹 Fixes
+
+- **monkey:** Fetch user info api changed ([5549d5f](https://github.com/Chilfish/Weibo-archiver/commit/5549d5f))
+- **monkey:** Load app version from .env ([d5a0058](https://github.com/Chilfish/Weibo-archiver/commit/d5a0058))
+- **web:** Better empty post page ([a42d6c8](https://github.com/Chilfish/Weibo-archiver/commit/a42d6c8))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
+## v0.4.0...v0.4.1
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.0...v0.4.1)
+
+### 🩹 Fixes
+
+- **web:** Psot ui details ([008335e](https://github.com/Chilfish/Weibo-archiver/commit/008335e))
+- **web:** 图片可以使用微博原链接了 ([fd85c3f](https://github.com/Chilfish/Weibo-archiver/commit/fd85c3f))
+- **monkey:** Start and end of date range ([ac683fc](https://github.com/Chilfish/Weibo-archiver/commit/ac683fc))
+- **monkey:** Set version ([455ad6b](https://github.com/Chilfish/Weibo-archiver/commit/455ad6b))
+
+### 📦 Build
+
+- Update deps ([b2eba24](https://github.com/Chilfish/Weibo-archiver/commit/b2eba24))
+- Update deps ([bf6999b](https://github.com/Chilfish/Weibo-archiver/commit/bf6999b))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.4.0
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.3.13...v0.4.0)
