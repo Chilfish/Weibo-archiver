@@ -1,4 +1,10 @@
 <script setup lang="ts">
+withDefaults(defineProps<{
+  showDonate: boolean
+}>(), {
+  showDonate: true,
+})
+
 const version = import.meta.env.VITE_APP_VERSION
 </script>
 
@@ -55,7 +61,10 @@ const version = import.meta.env.VITE_APP_VERSION
         使用文档
       </a>
     </p>
-    <p class="mt-2">
+    <p
+      v-if="showDonate"
+      class="mt-2"
+    >
       如果觉得这个项目对你有帮助，可以考虑
       <a
         href="https://chilfish.top/sponsors"
