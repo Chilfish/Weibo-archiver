@@ -277,7 +277,9 @@ export class IDB {
           .map(t => searchToken.some(s => t.startsWith(s)) ? t : `'${t}`)
           .join(' ')
 
-        return fuse.search(query).map(r => r.item.time).sort()
+        return fuse.search(query)
+          .map(r => r.item.time)
+          .sort((a, b) => b - a) // 新帖子在前
       },
     }
   }
