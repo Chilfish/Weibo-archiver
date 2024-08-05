@@ -16,11 +16,11 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
-    "@vitejs/plugin-vue": "^5.0.4",
-    "unplugin-auto-import": "^0.17.6",
-    "unplugin-vue-components": "^0.27.0",
-    "unplugin-vue-macros": "^2.9.3",
-    "vite": "^5.2.12",
-    "vite-plugin-monkey": "^4.0.0"
+    "@vitejs/plugin-vue": "^5.1.2",
+    "unplugin-auto-import": "^0.18.2",
+    "unplugin-vue-components": "^0.27.3",
+    "unplugin-vue-macros": "^2.11.4",
+    "vite": "^5.3.5",
+    "vite-plugin-monkey": "^4.0.6"
   }
 }
