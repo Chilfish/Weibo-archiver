@@ -31,7 +31,7 @@ const server = http.createServer(async (req, res) => {
 
     await pipeline(fileStream, compressStream, res)
   }
-  catch (err) {
+  catch {
     res.statusCode = 404
     res.end(`File not found: ${req.url}`)
   }

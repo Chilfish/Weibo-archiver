@@ -119,7 +119,10 @@ const main = defineCommand({
 
     const { weiboOnly } = config
 
-    !weiboOnly && await getUserMeta()
+    if (!weiboOnly) {
+      await getUserMeta()
+    }
+
     await getWeibo()
 
     consola.success('全部任务完成')

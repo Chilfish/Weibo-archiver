@@ -15,8 +15,12 @@ export const usePublicStore = defineStore('public', () => {
     if (typeof localStorage === 'undefined')
       return
 
-    users.value.length && localStorage.setItem('users', JSON.stringify(users.value))
-    curUid.value && localStorage.setItem('curUid', curUid.value)
+    if (users.value.length) {
+      localStorage.setItem('users', JSON.stringify(users.value))
+    }
+    if (curUid.value) {
+      localStorage.setItem('curUid', curUid.value)
+    }
   })
 
   function addUser(user: UserInfo | null | undefined) {

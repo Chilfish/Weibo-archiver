@@ -26,12 +26,13 @@ export async function datePrompt(mes: string) {
       || time < 0
       || time > Date.now()
       || Number.isNaN(time)
-    )
+    ) {
       throw new Error('日期格式不正确')
+    }
 
     return time
   }
-  catch (_e) {
+  catch {
     consola.error('日期格式不正确，格式如：2024-01-01')
     return datePrompt(mes)
   }
@@ -53,12 +54,13 @@ export async function numberPrompt(
       Number.isNaN(n)
       || !Number.isFinite(n)
       || (validate && !validate(n))
-    )
+    ) {
       throw new Error('请输入数字')
+    }
 
     return n
   }
-  catch (_e) {
+  catch {
     consola.error('请输入合规的数字')
     return numberPrompt(mes)
   }

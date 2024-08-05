@@ -185,6 +185,8 @@ export function parseOldPost(
 
 /**
  * 从返回的 api 中提取信息
+ * @param post 微博数据
+ * @param options 选项
  * @param isRepost 是否是转发，用在递归判断中
  */
 export async function postFilter(
@@ -205,7 +207,8 @@ export async function postFilter(
     const { text, textImg } = await fetchLongText(post)
     const imgs = includeImgs ? parseImg(imgSize, post.pic_ids, post.pic_infos) : []
 
-    textImg && imgs.push(textImg)
+    if (textImg)
+      imgs.push(textImg)
 
     const postId = post.id
     const uid = post.user?.idstr || options.uid

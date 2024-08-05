@@ -149,7 +149,8 @@ export function fetchPosts(
     const { uid, startAt, endAt, hasRepost, curPage, isFetchAll } = fetchOptions()
     const page = curPage + 1
 
-    isBrowser && console.log(`正在获取第 ${page} 页`)
+    if (isBrowser)
+      console.log(`正在获取第 ${page} 页`)
 
     return isFetchAll
       ? await fetchAllPosts(uid, page)

@@ -102,7 +102,8 @@ export class IDB {
 
     try {
       const target = (page - 1) * limit
-      target && await cursor.advance(target)
+      if (target)
+        await cursor.advance(target)
 
       while (cursor && posts.length < limit) {
         posts.push(cursor.value)
@@ -128,7 +129,8 @@ export class IDB {
 
     for (const time of times) {
       const post = await index.get(time)
-      post && posts.push(post)
+      if (post)
+        posts.push(post)
     }
 
     return posts
@@ -310,7 +312,8 @@ export class IDB {
 
     try {
       const target = (page - 1) * limit
-      target && await cursor.advance(target)
+      if (target)
+        await cursor.advance(target)
 
       while (cursor && posts.length < limit) {
         posts.push(cursor.value)

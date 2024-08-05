@@ -72,7 +72,7 @@ export async function getLastLine(
   try {
     return JSON.parse(lastLine)
   }
-  catch (e) {
+  catch {
     return null
   }
   finally {
