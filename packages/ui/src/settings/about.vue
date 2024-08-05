@@ -1,11 +1,19 @@
 <script setup lang="ts">
+import { formatDate } from '@shared'
+
 withDefaults(defineProps<{
   showDonate: boolean
 }>(), {
   showDonate: true,
 })
 
-const version = import.meta.env.VITE_APP_VERSION
+const {
+  VITE_APP_VERSION: version,
+  VITE_GIT_COMMIT_HASH: commitHash,
+  VITE_GIT_COMMIT_URL: commitUrl,
+  VITE_GIT_COMMIT_DATE: commitDate,
+  // VITE_GIT_LAST_COMMIT_MESSAGE: commitMessage,
+} = import.meta.env
 </script>
 
 <template>
@@ -45,13 +53,22 @@ const version = import.meta.env.VITE_APP_VERSION
 
     <h2 class="text-6 font-bold">
       Weibo Archiver v{{ version }}
+
+      <a
+        :href="commitUrl"
+        target="_blank"
+        :title="`查看提交，最后一次构建于${formatDate(commitDate, 'YYYY/MM/DD-HH:ss')}`"
+      >
+        @{{ commitHash }}
+      </a>
     </h2>
 
-    <p class="text-5">
+    <h3 class="text-5">
       一个简单的微博备份工具，为账号被完全夹没前未雨绸缪😭
-    </p>
+    </h3>
+
     <p>
-      第一次使用？点击查看
+      第一次使用？查看
       <a
         href="https://docs.qq.com/doc/DTWttbXlMUGxZZnZq"
         target="_blank"
@@ -60,6 +77,14 @@ const version = import.meta.env.VITE_APP_VERSION
       >
         使用文档
       </a>
+
+      <span>
+        ，或者在
+        <RouterLink to="/example">
+          这里
+        </RouterLink>
+        查看示例数据
+      </span>
     </p>
     <p
       v-if="showDonate"

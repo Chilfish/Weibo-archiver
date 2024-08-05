@@ -10,20 +10,9 @@ const hasPosts = ref(false)
     <div class="sm:ml-16">
       <settings-about :show-donate="false" />
 
-      <div
-        class="py-6 text-center"
-      >
-        <p class="mb-2 text-xl font-bold">
-          暂无微博数据，点击右上角设置来导入吧👋
-        </p>
-        <p>
-          或者点击
-          <RouterLink to="/example">
-            这里
-          </RouterLink>
-          查看示例数据
-        </p>
-      </div>
+      <p class="mb-2 py-6 text-center text-xl font-bold">
+        暂无微博数据，点击右上角设置来导入吧👋
+      </p>
     </div>
 
     <n-image

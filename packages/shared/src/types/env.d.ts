@@ -22,6 +22,11 @@ interface ImportMetaEnv {
   readonly VITE_IS_ELECTRON: 'true' | 'false'
 
   readonly VITE_COOKIE: string
+
+  readonly VITE_GIT_COMMIT_DATE: string
+  readonly VITE_GIT_COMMIT_HASH: string
+  readonly VITE_GIT_LAST_COMMIT_MESSAGE: string
+  readonly VITE_GIT_COMMIT_URL: string
 }
 
 interface ImportMeta {

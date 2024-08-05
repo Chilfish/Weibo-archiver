@@ -1,5 +1,17 @@
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
+import { execSync } from 'node:child_process'
+
+const commitHash = execSync('git rev-parse --short HEAD').toString().trimEnd()
+const commitUrl = `https://github.com/Chilfish/Weibo-archiver/commit/${commitHash}`
+
+const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd()
+const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd()
+
+process.env.VITE_GIT_COMMIT_DATE = commitDate
+process.env.VITE_GIT_COMMIT_HASH = commitHash
+process.env.VITE_GIT_LAST_COMMIT_MESSAGE = lastCommitMessage
+process.env.VITE_GIT_COMMIT_URL = commitUrl
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const core = join(root, 'packages/core/src')
