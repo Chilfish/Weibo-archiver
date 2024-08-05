@@ -18,7 +18,7 @@ const hasPosts = ref(false)
     <n-image
       class="mx-auto sm:w-1/2"
       preview-disabled
-      src="https://p.chilfish.top/weibo/feature.webp"
+      src="https://p.chilfish.top/weibo/cover.webp"
       alt="features"
       :img-props="{
         class: 'rounded-2! shadow-lg',

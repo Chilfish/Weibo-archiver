@@ -51,16 +51,21 @@ const {
       </a>
     </div>
 
-    <h2 class="text-6 font-bold">
+    <h2 class="text-7 font-bold">
       Weibo Archiver v{{ version }}
 
-      <a
-        :href="commitUrl"
-        target="_blank"
-        :title="`查看提交，最后一次构建于${formatDate(commitDate, 'YYYY/MM/DD-HH:ss')}`"
-      >
-        @{{ commitHash }}
-      </a>
+      <n-tooltip trigger="hover">
+        <template #trigger>
+          <a
+            :href="commitUrl"
+            target="_blank"
+            class="text-5"
+          >
+            @{{ commitHash }}
+          </a>
+        </template>
+        最新一次构建于 {{ formatDate(commitDate) }}
+      </n-tooltip>
     </h2>
 
     <h3 class="text-5">
@@ -80,7 +85,10 @@ const {
 
       <span>
         ，或者在
-        <RouterLink to="/example">
+        <RouterLink
+          class="font-bold underline"
+          to="/example"
+        >
           这里
         </RouterLink>
         查看示例数据

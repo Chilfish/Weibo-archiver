@@ -71,11 +71,6 @@ onUnmounted(() => {
 $width: 7rem;
 
 .n-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-
   img {
     min-width: $width !important;
     border-radius: 4px;

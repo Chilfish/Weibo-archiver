@@ -61,3 +61,12 @@ const imgWidth = computed(() => {
     </n-image-group>
   </div>
 </template>
+
+<style scoped>
+.n-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+</style>
