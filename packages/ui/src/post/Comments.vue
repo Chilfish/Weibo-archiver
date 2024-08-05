@@ -35,7 +35,7 @@ defineProps<{
     <main-image
       v-if="comment.img && !comment.img.includes('sinaurl')"
       :src="comment.img"
-      class="h-10rem"
+      class="h-10rem justify-start!"
     />
   </div>
 </template>

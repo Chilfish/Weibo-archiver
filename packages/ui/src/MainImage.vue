@@ -79,6 +79,8 @@ $width: 7rem;
   img {
     min-width: $width !important;
     border-radius: 4px;
+    height: 100%;
+    width: 100%;
   }
 
   // &:not(.img-error) {
