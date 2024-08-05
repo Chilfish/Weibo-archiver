@@ -60,6 +60,9 @@ onUnmounted(() => {
     :preview-src="realSrc"
     :img-props="{
       class: 'transition-width',
+      style: {
+        minHeight,
+      },
     }"
   />
 </template>
@@ -68,11 +71,14 @@ onUnmounted(() => {
 $width: 7rem;
 
 .n-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
   img {
     min-width: $width !important;
     border-radius: 4px;
-    height: 100%;
-    width: 100%;
   }
 
   // &:not(.img-error) {

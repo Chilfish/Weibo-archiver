@@ -17,6 +17,7 @@ defineProps<{
       class="h-28 w-28 rounded-2"
       fit="cover"
       preview-disabled
+      min-height="7rem"
       :src="card.img"
     />
     <div class="flex flex-col p-4">
