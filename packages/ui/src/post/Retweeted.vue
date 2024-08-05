@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <article
-    class="mt-4 flex flex-col gap-2 rounded-2 bg-light p-3 dark:bg-dark"
+    class="mt-4 flex flex-col gap-2 rounded-2 bg-light p-3 dark:bg-dark-5"
   >
     <post-profile
       v-if="post.user?.uid"

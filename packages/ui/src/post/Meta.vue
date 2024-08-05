@@ -20,6 +20,9 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm')
 <template>
   <div
     class="flex flex-wrap items-center justify-end gap-1 text-3 text-gray sm:gap-3"
+    :style="{
+      flexDirection: isBody ? 'row' : 'row-reverse',
+    }"
   >
     <!-- <a
       v-if="'mblogid' in meta && isBody"
@@ -37,6 +40,7 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm')
       v-if="'detail_url' in meta"
       :href="meta.detail_url"
       target="_blank"
+      class="to-weibo opacity-0 transition-opacity"
     >
       跳转到原微博
     </a>
@@ -55,3 +59,9 @@ const date = useDateFormat(props.meta.created_at, 'YY-MM-DD HH:mm')
     </span>
   </div>
 </template>
+
+<style lang="scss">
+.post:hover a.to-weibo {
+  opacity: 1;
+}
+</style>
