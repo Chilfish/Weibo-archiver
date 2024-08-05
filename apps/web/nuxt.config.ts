@@ -9,6 +9,7 @@ const ui = join(root, 'packages/ui/src')
 export default defineNuxtConfig({
   srcDir: 'src/',
   serverDir: 'server',
+
   dir: {
     public: '../public',
   },
@@ -40,6 +41,7 @@ export default defineNuxtConfig({
       shared,
     ],
   },
+
   components: {
     dirs: [ui],
   },
@@ -123,4 +125,6 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false,
   },
+
+  compatibilityDate: '2024-08-06',
 })

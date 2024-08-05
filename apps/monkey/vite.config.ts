@@ -76,7 +76,7 @@ export default defineConfig({
             'https://unpkg.com/vue-demi@latest/lib/index.iife.js',
             version => `https://unpkg.com/pinia@${version}/dist/pinia.iife.js`,
           ],
-          // 'naive-ui': cdn.unpkg('naive-ui', 'dist/index.prod.js'),
+          'naive-ui': cdn.unpkg('naive', 'dist/index.prod.js'),
           'file-saver': [
             'saveAs',
             _ => 'https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js',
