@@ -12,7 +12,7 @@ import { delay } from '.'
 
 export const weibo = 'https://weibo.com'
 
-export const link = (text: string, url = weibo) => `<a href="${url}">${text}</a>`
+export const link = (text: string, url = weibo) => `<a target="_blank" href="${url}">${text}</a>`
 
 /**
  * 解析正文，例如 @user => link(user, userUrl)
