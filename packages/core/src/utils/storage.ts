@@ -155,6 +155,11 @@ export class IDB {
     return posts
   }
 
+  async getDBPostById(id: string) {
+    const posts = await this.getAllDBPosts()
+    return posts.find(post => post.mblogid === id)
+  }
+
   /**
    * 获取帖子总数
    */
@@ -381,7 +386,9 @@ export class IDB {
     const posts = await this.getAllDBPosts()
 
     posts
-      .reverse()
+      .sort((a, b) => {
+        return dayjs(b.created_at).valueOf() - dayjs(a.created_at).valueOf()
+      }) // 新帖子在前
       .forEach((post) => {
         post.imgs.forEach((img) => {
           result.push({
@@ -415,6 +422,7 @@ export class EmptyIDB extends IDB {
   async getDBPosts(_page = 1, _limit = 10) { return [] as Post[] }
   async getDBPostByTime(_times: number[]) { return [] as Post[] }
   async getAllDBPosts() { return [] as Post[] }
+  async getDBPostById(_id: string) { return {} as Post | undefined }
   async getPostCount() { return 0 }
   async clearDB() { }
   async getSize() { return '0' }

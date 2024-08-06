@@ -2,6 +2,8 @@
 import { useStorage } from '@vueuse/core'
 import { ImgPlaceholder } from '@core/constants'
 
+import type { ImageProps } from 'naive-ui'
+
 const props = withDefaults(defineProps<{
   src: string
   alt?: string
@@ -10,10 +12,12 @@ const props = withDefaults(defineProps<{
   minHeight?: string | number
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   lazy?: boolean
-}>(), {
+  preview?: boolean
+} >(), {
   fit: 'contain',
   alt: 'image',
   lazy: true,
+  preview: true,
 })
 
 const realSrc = ref(props.src)
@@ -64,6 +68,7 @@ onUnmounted(() => {
         minHeight,
       },
     }"
+    :preview-disabled="!preview"
   />
 </template>
 

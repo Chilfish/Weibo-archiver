@@ -9,7 +9,7 @@ const props = defineProps<{
 
 const publicStore = usePublicStore()
 
-const user = toRef(props.user || inject(KeyUser)!)
+const user = toRef(props.user || inject(KeyUser) || publicStore.curUser!)
 
 const avatar = computed(() => {
   const url = user.value.avatar

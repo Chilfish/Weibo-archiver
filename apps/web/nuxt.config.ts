@@ -45,6 +45,7 @@ export default defineNuxtConfig({
   alias: {
     '@core': core,
     '@shared': shared,
+    '@ui': ui,
   },
 
   imports: {

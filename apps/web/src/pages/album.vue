@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import type { Album } from '@shared'
+import { PostItem } from '@ui'
+import { useModal } from 'naive-ui'
+
+import { KeyUser } from '@core/constants/vueProvide'
+
+import { useWindowSize } from '@vueuse/core'
 
 const album = shallowRef<Album[]>([])
 const postStore = usePostStore()
-const width = '12rem'
+
+const { width: windowWidth } = useWindowSize()
+
+const isMobile = computed(() => windowWidth.value < 768)
+const width = computed(() => isMobile.value ? '7rem' : '12rem')
 const loadSize = 16
 
 const loadedAlbum = ref<AlbumGroup[]>([]) // 用于存储已加载的相册
@@ -52,22 +62,49 @@ function handleLoad() {
   })
 }
 
+const modal = useModal()
+const message = useMessage()
+async function openDetail(id: string) {
+  const post = await postStore.getById(id)
+  if (!post)
+    return message.warning('微博不存在本地')
+
+  modal.create({
+    title: '微博详情',
+    preset: 'card',
+    style: {
+      width: '50rem',
+    },
+    content: () =>
+      h(
+        PostItem,
+        {
+          post,
+        },
+      ),
+  })
+}
+const publicStore = usePublicStore()
 onMounted(async () => {
   album.value = await postStore.getAllImgs()
   handleLoad()
+
+  const { curUser } = publicStore
+  console.log(curUser)
+  provide(KeyUser, curUser as unknown as User)
 })
 </script>
 
 <template>
   <main
     id="album"
-    class="mx-auto mt-20 rounded-2 p-4 md:w-70rem"
+    class="mx-auto rounded-2 p-4 md:w-70rem"
     bg="light dark:dark"
   >
     <n-infinite-scroll
       :distance="5"
       :style="{
-        height: 'calc(100vh - 8rem)',
+        height: 'calc(100vh - 6rem)',
       }"
       @load="handleLoad"
     >
@@ -78,13 +115,12 @@ onMounted(async () => {
           :key="item.date"
           class="mb-4 flex flex-col gap-2"
         >
-          <h2 class="w-full text-start text-2xl font-bold">
+          <h2 class="w-full text-start text-5 font-bold">
             {{ item.date }}
           </h2>
           <div
             class="flex flex-wrap items-center gap-1 px-6"
           >
-            <!-- {{ item.imgs }} -->
             <MainImage
               v-for="{ id, url } in item.imgs"
               :id="`img-${id}`"
@@ -95,7 +131,9 @@ onMounted(async () => {
                 height: width,
               }"
               :min-height="width"
+              :preview="false"
               fit="cover"
+              @click="() => openDetail(id)"
             />
           </div>
         </section>

@@ -62,7 +62,9 @@ onNuxtReady(async () => {
 
 <template>
   <nuxt-layout>
-    <NuxtPage v-if="loaded" />
+    <AppMain v-if="loaded">
+      <NuxtPage />
+    </AppMain>
     <n-spin
       v-else
       class="center pt-16"

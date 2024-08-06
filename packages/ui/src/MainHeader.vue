@@ -45,11 +45,25 @@ const showSettings = ref(false)
     :style="headerStyle"
     class="fixed z-99 h-16 w-full flex items-center gap-4 bg-[#69696A30] px-4 backdrop-blur-8 transition-all sm:px-8"
   >
-    <router-link
-      class="i-tabler-brand-weibo icon h-6 w-6"
-      :to="`/post?page=1&pageSize=${route.query.pageSize || 10}`"
-      title="返回首页"
-    />
+    <n-tooltip trigger="hover">
+      <template #trigger>
+        <router-link
+          class="i-tabler-brand-weibo icon h-6 w-6"
+          to="/post"
+        />
+      </template>
+      返回首页
+    </n-tooltip>
+
+    <n-tooltip trigger="hover">
+      <template #trigger>
+        <router-link
+          class="i-tabler:photo icon h-6 w-6"
+          to="/album"
+        />
+      </template>
+      查看相册
+    </n-tooltip>
 
     <form
       class="relative mr-auto h-12 min-w-2/5"
@@ -66,13 +80,17 @@ const showSettings = ref(false)
       >
     </form>
 
-    <button
-      class="rounded-2 p-1.6"
-      hover:bg="light-200 dark:dark-200"
-      title="打开设置"
-      @click="() => showSettings = true"
-    >
-      <i class="i-tabler:settings icon h-6 w-6" />
-    </button>
+    <n-tooltip trigger="hover">
+      <template #trigger>
+        <button
+          class="rounded-2 p-1.6"
+          hover:bg="light-200 dark:dark-200"
+          @click="() => showSettings = true"
+        >
+          <i class="i-tabler:settings icon h-6 w-6" />
+        </button>
+      </template>
+      打开设置
+    </n-tooltip>
   </header>
 </template>

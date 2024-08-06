@@ -6,6 +6,7 @@ import { EmptyIDB, IDB } from '../utils/storage'
 export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
   const followings = shallowRef<UserBio[]>([])
+  const allImages: Album[] = []
 
   const idb = ref(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
@@ -206,6 +207,11 @@ export const usePostStore = defineStore('post', () => {
     return posts
   }
 
+  async function getById(id: string) {
+    await waitIDB()
+    return await idb.value.getDBPostById(id)
+  }
+
   async function getFollowings() {
     await waitIDB()
     return await idb.value
@@ -217,17 +223,12 @@ export const usePostStore = defineStore('post', () => {
    * 获取所有图片，以月份分组
    */
   async function getAllImgs() {
+    if (allImages.length)
+      return allImages
+
     await waitIDB()
     const imgs = await idb.value.getImgs()
 
-    /**
-     * [
-     *   {
-     *  date: '2021年01月',
-     *  imgs: ['url1', 'url2', ...]
-     * }
-     * ]
-     */
     const result: Album[] = []
 
     for (const { img, date, id } of imgs) {
@@ -238,6 +239,7 @@ export const usePostStore = defineStore('post', () => {
       const data = { url: img, id, date: key }
       result.push(data)
     }
+    allImages.push(...result)
 
     return result
   }
@@ -275,5 +277,6 @@ export const usePostStore = defineStore('post', () => {
     searchAndTime,
     getFollowings,
     getAllImgs,
+    getById,
   }
 })

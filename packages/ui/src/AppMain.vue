@@ -2,6 +2,7 @@
 import {
   NConfigProvider,
   NMessageProvider,
+  NModalProvider,
   darkTheme,
   dateZhCN,
   zhCN,
@@ -17,8 +18,10 @@ const theme = computed(() => isInMonkey || !isDark.value ? null : darkTheme)
     :date-locale="dateZhCN"
     :theme
   >
-    <NMessageProvider>
-      <slot />
-    </NMessageProvider>
+    <NModalProvider>
+      <NMessageProvider>
+        <slot />
+      </NMessageProvider>
+    </NModalProvider>
   </NConfigProvider>
 </template>

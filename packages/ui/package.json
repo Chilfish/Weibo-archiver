@@ -5,7 +5,7 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "main": "index.ts",
+  "main": "src/index.ts",
   "dependencies": {
     "@weibo-archiver/core": "workspace:^",
     "sass": "^1.77.8"
