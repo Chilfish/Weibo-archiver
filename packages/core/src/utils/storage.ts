@@ -3,7 +3,12 @@ import Fuse from 'fuse.js'
 import dayjs from 'dayjs'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
-import type { Post, UID, UserBio, UserInfo } from '@shared'
+import type {
+  Post,
+  UID,
+  UserBio,
+  UserInfo,
+} from '@shared'
 
 const POST_STORE = 'posts'
 const USER_STORE = 'user'
@@ -52,6 +57,7 @@ export async function checkDB(uid: number) {
 export class IDB {
   idb: Promise<IDBPDatabase<AppDB>>
   name: UID
+  posts: Post[] = []
 
   constructor(
     name: UID,
@@ -140,8 +146,13 @@ export class IDB {
    * 获取所有帖子
    */
   async getAllDBPosts() {
+    if (this.posts.length)
+      return this.posts
+
     const db = await this.idb
-    return await db.getAll(POST_STORE)
+    const posts = await db.getAll(POST_STORE)
+    this.posts = posts
+    return posts
   }
 
   /**
@@ -364,6 +375,31 @@ export class IDB {
     const db = await this.idb
     return await db.getAll(FLOWERINGS_STORE)
   }
+
+  async getImgs() {
+    const result: Album[] = []
+    const posts = await this.getAllDBPosts()
+
+    posts
+      .reverse()
+      .forEach((post) => {
+        post.imgs.forEach((img) => {
+          result.push({
+            img,
+            date: new Date(post.created_at),
+            id: post.mblogid,
+          })
+        })
+      })
+
+    return result
+  }
+}
+
+interface Album {
+  img: string
+  id: string
+  date: Date
 }
 
 export type SeachResult = FuseResult<{
@@ -399,4 +435,5 @@ export class EmptyIDB extends IDB {
   async setUserInfo(_user: UserInfo): Promise<void> {}
   async addFollowings(_followings: UserBio[]): Promise<void> {}
   async getFollowings(): Promise<UserBio[]> { return [] }
+  async getImgs(): Promise<Album[]> { return [] }
 }

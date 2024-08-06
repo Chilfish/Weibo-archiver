@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import type { Post, UID, UserBio, UserInfo } from '@shared'
+import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
 import { EmptyIDB, IDB } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {
@@ -213,6 +213,35 @@ export const usePostStore = defineStore('post', () => {
       .then(data => data.sort((a, b) => a.name.localeCompare(b.name)))
   }
 
+  /**
+   * 获取所有图片，以月份分组
+   */
+  async function getAllImgs() {
+    await waitIDB()
+    const imgs = await idb.value.getImgs()
+
+    /**
+     * [
+     *   {
+     *  date: '2021年01月',
+     *  imgs: ['url1', 'url2', ...]
+     * }
+     * ]
+     */
+    const result: Album[] = []
+
+    for (const { img, date, id } of imgs) {
+      const year = date.getFullYear()
+      const month = date.getMonth() + 1
+      const key = `${year}年${month.toString().padStart(2, '0')}月`
+
+      const data = { url: img, id, date: key }
+      result.push(data)
+    }
+
+    return result
+  }
+
   return {
     total,
     totalDB,
@@ -245,5 +274,6 @@ export const usePostStore = defineStore('post', () => {
     searchPost,
     searchAndTime,
     getFollowings,
+    getAllImgs,
   }
 })

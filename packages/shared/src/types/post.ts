@@ -85,3 +85,9 @@ export interface PostData {
   user: UserInfo
   followings: UserBio[]
 }
+
+export interface Album {
+  url: string
+  id: string
+  date: string
+}
