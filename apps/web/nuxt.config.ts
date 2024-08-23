@@ -88,10 +88,6 @@ export default defineNuxtConfig({
       // '/': { redirect: '/post' },
       '/docs': { redirect: 'https://docs.qq.com/doc/DTWttbXlMUGxZZnZq' },
     },
-    prerender: {
-      crawlLinks: false,
-      routes: ['/post'],
-    },
   },
 
   app: {
