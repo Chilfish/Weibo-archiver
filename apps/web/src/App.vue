@@ -38,37 +38,19 @@ useHead({
 })
 
 const route = useRoute()
-const loaded = ref(route.path === '/example')
+const clientOnlyRoutes = ['/album']
 
-onNuxtReady(async () => {
-  const publicStore = usePublicStore()
-  const users = localStorage.getItem('users')
-  const curUid = localStorage.getItem('curUid')
-
-  publicStore.users = JSON.parse(users || '[]')
-  publicStore.curUid = curUid || ''
-
-  watchImmediate(() => publicStore.curUid, async () => {
-    if (route.path === '/example')
-      return
-    loaded.value = false
-    await publicStore.migrateUser()
-    loaded.value = true
-  })
-
-  loaded.value = true
-})
+const isClientOnly = computed(() => clientOnlyRoutes.includes(route.path))
 </script>
 
 <template>
   <nuxt-layout>
-    <AppMain v-if="loaded">
-      <NuxtPage />
+    <AppMain>
+      <ClientOnly v-if="isClientOnly">
+        <NuxtPage />
+      </ClientOnly>
+
+      <NuxtPage v-else />
     </AppMain>
-    <n-spin
-      v-else
-      class="center pt-16"
-      size="large"
-    />
   </nuxt-layout>
 </template>

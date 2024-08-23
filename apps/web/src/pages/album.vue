@@ -84,9 +84,16 @@ async function openDetail(id: string) {
       ),
   })
 }
+
 const publicStore = usePublicStore()
+const router = useRouter()
 onMounted(async () => {
   album.value = await postStore.getAllImgs()
+  if (album.value.length === 0) {
+    message.warning('没有找到任何图片')
+    return
+  }
+
   handleLoad()
 
   const { curUser } = publicStore
@@ -98,10 +105,25 @@ onMounted(async () => {
 <template>
   <main
     id="album"
-    class="mx-auto rounded-2 p-4 md:w-70rem"
+    class="mx-auto mt-20 rounded-2 p-4 md:w-70rem"
     bg="light dark:dark"
   >
+    <n-empty
+      v-if="loadedAlbum.length === 0"
+      description="没有找到任何图片"
+    >
+      <template #extra>
+        <n-button
+          type="primary"
+          @click="() => router.push('/post')"
+        >
+          返回首页
+        </n-button>
+      </template>
+    </n-empty>
+
     <n-infinite-scroll
+      v-else
       :distance="5"
       :style="{
         height: 'calc(100vh - 6rem)',

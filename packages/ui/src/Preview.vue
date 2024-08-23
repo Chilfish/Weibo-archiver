@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Post, User } from '@shared'
 import { KeyUser } from '@core/constants/vueProvide'
-import { deleteOld } from '@core/utils/storage'
 import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useMessage } from 'naive-ui'
 
 const hasPosts = defineModel('hasPosts', {
   type: Boolean,
@@ -15,6 +15,8 @@ const { curUid, curUser } = storeToRefs(usePublicStore())
 const { totalDB } = storeToRefs(postStore)
 
 const route = useRoute()
+const router = useRouter()
+const message = useMessage()
 
 const posts = ref([] as Post[])
 
@@ -25,7 +27,7 @@ provide(KeyUser, curUser as unknown as User)
 
 onMounted(async () => {
   // 删除旧版数据
-  await deleteOld()
+  // await deleteOld()
 
   if (!curUid.value) {
     loaded.value = true
@@ -36,6 +38,11 @@ onMounted(async () => {
   await postStore.init()
 
   loaded.value = true
+
+  if (postStore.total === 0) {
+    message.warning('还未导入数据，请先导入数据')
+    router.push('/')
+  }
 })
 
 watchImmediate(

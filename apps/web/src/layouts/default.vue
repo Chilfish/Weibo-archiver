@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 </script>
 
 <template>
@@ -9,7 +8,7 @@
     <client-only>
       <img-viewer />
     </client-only>
-    <main class="mt-16 h-full">
+    <main class="pt-16">
       <slot />
     </main>
   </app-main>

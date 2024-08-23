@@ -2,6 +2,7 @@
 import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
 import type { Post, PostData, UserBio, UserInfo } from '@shared'
 import { destr } from 'destr'
+import { useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 import { parseOldPost } from '@shared'
 import { imgCdn } from '@core/constants'
@@ -12,6 +13,7 @@ const customimgHost = useStorage('customimgHost', '')
 const postStore = usePostStore()
 const publicStore = usePublicStore()
 
+const router = useRouter()
 const message = useMessage()
 const coverMode = ref(false)
 const fileList = ref<any>([])
@@ -92,6 +94,7 @@ async function paeseAndImport(_data: string) {
   user.postCount = postStore.total
 
   message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
+  router.push('/post')
 }
 
 function onImportData({ file }: UploadCustomRequestOptions) {
@@ -132,6 +135,7 @@ async function clearData() {
     publicStore.rmUser()
 
     message.success('清空成功')
+    router.push('/')
   }
   catch (e) {
     console.error(`清空失败: ${e}`)

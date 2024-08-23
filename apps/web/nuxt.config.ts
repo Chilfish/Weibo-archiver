@@ -85,7 +85,7 @@ export default defineNuxtConfig({
     },
     static: true,
     routeRules: {
-      '/': { redirect: '/post' },
+      // '/': { redirect: '/post' },
       '/docs': { redirect: 'https://docs.qq.com/doc/DTWttbXlMUGxZZnZq' },
     },
     prerender: {
@@ -119,7 +119,6 @@ export default defineNuxtConfig({
         types: [
           'naive-ui/volar',
         ],
-
       },
       include: [
         shared,
