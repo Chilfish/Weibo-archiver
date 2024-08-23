@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { useModal } from 'naive-ui'
+import { useWindowSize } from '@vueuse/core'
+
 import type { Album } from '@shared'
 import { PostItem } from '@ui'
-import { useModal } from 'naive-ui'
-
 import { KeyUser } from '@core/constants/vueProvide'
-
-import { useWindowSize } from '@vueuse/core'
 
 const album = shallowRef<Album[]>([])
 const postStore = usePostStore()
@@ -14,7 +13,7 @@ const { width: windowWidth } = useWindowSize()
 
 const isMobile = computed(() => windowWidth.value < 768)
 const width = computed(() => isMobile.value ? '7rem' : '12rem')
-const loadSize = 16
+const loadSize = 32
 
 const loadedAlbum = ref<AlbumGroup[]>([]) // 用于存储已加载的相册
 
@@ -86,39 +85,45 @@ async function openDetail(id: string) {
 }
 
 const publicStore = usePublicStore()
-const router = useRouter()
+const loaded = ref(false)
 onMounted(async () => {
+  publicStore.load()
+
   album.value = await postStore.getAllImgs()
-  if (album.value.length === 0) {
-    message.warning('没有找到任何图片')
-    return
-  }
 
   handleLoad()
-
   const { curUser } = publicStore
-  console.log(curUser)
   provide(KeyUser, curUser as unknown as User)
+
+  loaded.value = true
+  if (album.value.length === 0) {
+    message.warning('没有找到任何图片')
+  }
 })
 </script>
 
 <template>
   <main
     id="album"
-    class="mx-auto mt-20 rounded-2 p-4 md:w-70rem"
+    class="mx-auto mt-4 rounded-2 p-4 md:w-70rem"
     bg="light dark:dark"
   >
+    <n-spin
+      v-if="!loaded"
+      class="center pt-16"
+      size="large"
+    />
     <n-empty
-      v-if="loadedAlbum.length === 0"
+      v-else-if="album.length === 0"
       description="没有找到任何图片"
     >
       <template #extra>
-        <n-button
-          type="primary"
-          @click="() => router.push('/post')"
+        <router-link
+          to="/post"
+          class="btn hover:text-white"
         >
           返回首页
-        </n-button>
+        </router-link>
       </template>
     </n-empty>
 

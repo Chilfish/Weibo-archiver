@@ -223,11 +223,13 @@ export const usePostStore = defineStore('post', () => {
    * 获取所有图片，以月份分组
    */
   async function getAllImgs() {
-    if (allImages.length)
+    if (allImages.length > 0)
       return allImages
 
     await waitIDB()
     const imgs = await idb.value.getImgs()
+
+    console.log('Get imgs', imgs)
 
     const result: Album[] = []
 
