@@ -1,5 +1,39 @@
 # Changelog
 
+
+## v0.4.2...v0.4.3
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.2...v0.4.3)
+
+### 🚀 Enhancements
+
+- **web:** Add commit metadata ([394491d](https://github.com/Chilfish/Weibo-archiver/commit/394491d))
+- **web:** Add album to view all images ([88ec83b](https://github.com/Chilfish/Weibo-archiver/commit/88ec83b))
+- **web:** Show post detail on clicked ([f667f3b](https://github.com/Chilfish/Weibo-archiver/commit/f667f3b))
+
+### 🩹 Fixes
+
+- **web:** Sort search results in descending order by date ([0bb605a](https://github.com/Chilfish/Weibo-archiver/commit/0bb605a))
+- **style:** Reformat code with linting adjustments ([1e2e086](https://github.com/Chilfish/Weibo-archiver/commit/1e2e086))
+- **web:** Optimize image gallery aspect ratio for different device sizes ([5273dc6](https://github.com/Chilfish/Weibo-archiver/commit/5273dc6))
+- **web:** Post styles ([b808de8](https://github.com/Chilfish/Weibo-archiver/commit/b808de8))
+- **web:** Image style in comments ([fcaaf6c](https://github.com/Chilfish/Weibo-archiver/commit/fcaaf6c))
+- **web:** Styles and infos ([26dc3b4](https://github.com/Chilfish/Weibo-archiver/commit/26dc3b4))
+- **parse:** Open link in new tab ([a029109](https://github.com/Chilfish/Weibo-archiver/commit/a029109))
+- **web:** Home page & post page ([53f842c](https://github.com/Chilfish/Weibo-archiver/commit/53f842c))
+- **web:** Loading album ([8fe1261](https://github.com/Chilfish/Weibo-archiver/commit/8fe1261))
+- **web:** Update nuxt config ([47c3014](https://github.com/Chilfish/Weibo-archiver/commit/47c3014))
+
+### 📦 Build
+
+- Update deps ([85710d2](https://github.com/Chilfish/Weibo-archiver/commit/85710d2))
+- Better configs ([5b7c1b3](https://github.com/Chilfish/Weibo-archiver/commit/5b7c1b3))
+- Update deps ([1caf447](https://github.com/Chilfish/Weibo-archiver/commit/1caf447))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
+
 ## v0.4.1...v0.4.2
 
 [compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.1...v0.4.2)
