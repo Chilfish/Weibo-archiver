@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process'
-import { copyFile, readdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { copyFile, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const dist = path.relative(path.resolve(), 'dist')
@@ -19,18 +19,11 @@ execSync('pnpm unbuild', { stdio: 'inherit' })
 
 await writeFile(path.join(dist, 'package.json'), pkg)
 
-// 预先下载依赖
-execSync('cd dist && npm install', { stdio: 'inherit' })
+const copyFiles = [
+  'README.md',
+  'LICENSE',
+]
 
-const readme = await readFile('README.md', 'utf-8')
-await writeFile(path.join(dist, 'README.md'), readme)
-
-await rm(path.join(dist, 'package-lock.json'))
-
-// 复制 scripts 的下载图片脚本
-const scripts = path.join(root, 'scripts')
-const files = await readdir(scripts)
-for (const file of files) {
-  if (file.endsWith('.mjs'))
-    await copyFile(path.join(scripts, file), path.join(dist, file))
+for (const file of copyFiles) {
+  await copyFile(path.join(root, file), path.join(dist, file))
 }
