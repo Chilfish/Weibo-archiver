@@ -1,8 +1,8 @@
 import type { Post, PostMeta } from './post'
 
-export * from './protocol'
 export * from './config'
 export * from './post'
+export * from './protocol'
 
 export type MethodObj<T> = {
   [K in keyof T]: (...args: any) => any

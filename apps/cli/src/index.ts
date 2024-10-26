@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { defineCommand, runMain } from 'citty'
-import { consola } from 'consola'
-
-import { fetchFollowings, fetchPosts, userDetail } from '@weibo-archiver/shared'
 import type { UserBio } from '@weibo-archiver/shared'
 import type { Config } from './config'
+
+import { fetchFollowings, fetchPosts, userDetail } from '@weibo-archiver/shared'
+import { defineCommand, runMain } from 'citty'
+import { consola } from 'consola'
 import { getConfig, saveConfig } from './config'
 import {
   appendJson,

@@ -1,9 +1,9 @@
-import { homedir } from 'node:os'
-import { mkdir, writeFile } from 'node:fs/promises'
+import type { FetchOptions } from '@weibo-archiver/shared'
 import { existsSync } from 'node:fs'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { loadConfig } from 'c12'
-import type { FetchOptions } from '@weibo-archiver/shared'
 
 export const defaultSavePath = (uid: string) => join(homedir(), 'weibo-archiver', uid)
 export const defaultConfigFile = (uid: string) => join(defaultSavePath(uid), 'config.json')

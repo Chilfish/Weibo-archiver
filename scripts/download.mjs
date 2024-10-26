@@ -1,6 +1,6 @@
+import { Buffer } from 'node:buffer'
 import { existsSync, mkdirSync } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
-import { Buffer } from 'node:buffer'
 import path from 'node:path'
 
 const imgs_path = path.resolve(process.argv[2] || 'imgs.csv')

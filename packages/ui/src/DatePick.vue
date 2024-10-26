@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import type { Post } from '@shared'
+import dayjs from 'dayjs'
 
 import { storeToRefs } from 'pinia'
 

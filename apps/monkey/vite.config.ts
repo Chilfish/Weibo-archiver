@@ -1,9 +1,9 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
-import monkey, { cdn, util } from 'vite-plugin-monkey'
-import AutoImport from 'unplugin-auto-import/vite'
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import { defineConfig } from 'vite'
+import monkey, { cdn, util } from 'vite-plugin-monkey'
 
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')

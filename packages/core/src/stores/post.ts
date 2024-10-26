@@ -1,6 +1,6 @@
+import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
 import { defineStore } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
 import { EmptyIDB, IDB } from '../utils/storage'
 
 export const usePostStore = defineStore('post', () => {

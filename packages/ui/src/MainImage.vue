@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core'
 import { ImgPlaceholder } from '@core/constants'
 
-import type { ImageProps } from 'naive-ui'
+import { useStorage } from '@vueuse/core'
 
 const props = withDefaults(defineProps<{
   src: string

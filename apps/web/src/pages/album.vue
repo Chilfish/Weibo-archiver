@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useModal } from 'naive-ui'
-import { useWindowSize } from '@vueuse/core'
-
 import type { Album } from '@shared'
-import { PostItem } from '@ui'
 import { KeyUser } from '@core/constants/vueProvide'
+
+import { PostItem } from '@ui'
+import { useWindowSize } from '@vueuse/core'
+import { useMessage, useModal } from 'naive-ui'
 
 const album = shallowRef<Album[]>([])
 const postStore = usePostStore()

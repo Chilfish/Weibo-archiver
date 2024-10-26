@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Post, User } from '@shared'
 import { KeyUser } from '@core/constants/vueProvide'
+import { useMessage } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import { useMessage } from 'naive-ui'
 
 const hasPosts = defineModel('hasPosts', {
   type: Boolean,

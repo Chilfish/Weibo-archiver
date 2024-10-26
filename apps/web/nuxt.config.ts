@@ -1,6 +1,6 @@
-import { fileURLToPath } from 'node:url'
-import { join } from 'node:path'
 import { execSync } from 'node:child_process'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const commitHash = execSync('git rev-parse --short HEAD').toString().trimEnd()
 const commitUrl = `https://github.com/Chilfish/Weibo-archiver/commit/${commitHash}`
@@ -134,5 +134,5 @@ export default defineNuxtConfig({
     inlineStyles: false,
   },
 
-  compatibilityDate: '2024-08-06',
+  compatibilityDate: '2024-10-26',
 })

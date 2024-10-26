@@ -34,7 +34,6 @@ declare global {
   const ImgPlaceholder: typeof import('../../../core/src/constants/index')['ImgPlaceholder']
   const KeyUser: typeof import('../../../core/src/constants/vueProvide')['KeyUser']
   const PostItem: typeof import('../../../ui/src/index')['PostItem']
-  const aborter: typeof import('../fetch')['aborter']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const computed: typeof import('vue')['computed']

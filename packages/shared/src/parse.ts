@@ -1,4 +1,3 @@
-import PQueue from 'p-queue'
 import type {
   CardInfo,
   Comment,
@@ -7,8 +6,9 @@ import type {
   Post,
   UserBio,
 } from './types'
-import { fetchComments, fetchLongText } from './services'
+import PQueue from 'p-queue'
 import { delay } from '.'
+import { fetchComments, fetchLongText } from './services'
 
 export const weibo = 'https://weibo.com'
 

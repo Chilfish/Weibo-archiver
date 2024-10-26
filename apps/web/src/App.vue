@@ -44,13 +44,11 @@ const isClientOnly = computed(() => clientOnlyRoutes.includes(route.path))
 </script>
 
 <template>
-  <nuxt-layout>
-    <AppMain>
-      <ClientOnly v-if="isClientOnly">
-        <NuxtPage />
-      </ClientOnly>
+  <NuxtLayout>
+    <ClientOnly v-if="isClientOnly">
+      <NuxtPage />
+    </ClientOnly>
 
-      <NuxtPage v-else />
-    </AppMain>
-  </nuxt-layout>
+    <NuxtPage v-else />
+  </NuxtLayout>
 </template>

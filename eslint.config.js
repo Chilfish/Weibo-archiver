@@ -10,6 +10,7 @@ export default antfu({
     'format/prettier': 'off',
     'antfu/no-import-dist': 'off',
     'antfu/top-level-function': 'off',
+    'antfu/no-top-level-await': 'off',
   },
   ignores: [
     'pnpm-lock.yaml',

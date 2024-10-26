@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
+  darkTheme,
+  dateZhCN,
   NConfigProvider,
   NMessageProvider,
   NModalProvider,
-  darkTheme,
-  dateZhCN,
   zhCN,
 } from 'naive-ui'
 

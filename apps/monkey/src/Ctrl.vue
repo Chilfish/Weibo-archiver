@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useMessage } from 'naive-ui'
-import { storeToRefs } from 'pinia'
-
 import { fetchFollowings } from '@shared'
-import { useConfigStore, usePostStore } from './stores'
+import { useMessage } from 'naive-ui'
+
+import { storeToRefs } from 'pinia'
 import Config from './Config.vue'
+import { useConfigStore, usePostStore } from './stores'
 
 const message = useMessage()
 

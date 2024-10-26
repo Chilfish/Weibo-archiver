@@ -1,6 +1,6 @@
-import { copyFile, readFile, readdir, rm, writeFile } from 'node:fs/promises'
-import path from 'node:path'
 import { execSync } from 'node:child_process'
+import { copyFile, readdir, readFile, rm, writeFile } from 'node:fs/promises'
+import path from 'node:path'
 
 const dist = path.relative(path.resolve(), 'dist')
 const root = path.resolve(path.resolve(), '../../')

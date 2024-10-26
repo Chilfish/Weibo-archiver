@@ -1,5 +1,5 @@
 export * from './composables'
-export * from './utils'
 export * from './constants'
 export * from './constants/vueProvide'
 export * from './stores'
+export * from './utils'

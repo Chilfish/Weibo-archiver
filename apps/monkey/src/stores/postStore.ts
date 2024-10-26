@@ -1,8 +1,8 @@
-import { defineStore, storeToRefs } from 'pinia'
-import saveAs from 'file-saver'
-
 import type { Post, UID, UserBio, UserInfo } from '@shared'
 import { EmptyIDB, IDB } from '@core/utils/storage'
+
+import saveAs from 'file-saver'
+import { defineStore, storeToRefs } from 'pinia'
 import { useConfigStore } from './configStore'
 
 export const usePostStore = defineStore('post', () => {

@@ -1,8 +1,8 @@
 import { destr } from 'destr'
 
 export * from './dom'
-export * from './image'
 export * from './export'
+export * from './image'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 

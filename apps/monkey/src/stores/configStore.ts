@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { useStorage } from '@vueuse/core'
 import type { FetchOptions } from '@shared'
+import { useStorage } from '@vueuse/core'
+import { defineStore } from 'pinia'
 
 type Config = FetchOptions & {
   isMinimize: boolean
