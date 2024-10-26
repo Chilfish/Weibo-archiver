@@ -71,7 +71,7 @@
 
 只需要在根目录中 `pnpm i` 即为所有子项目安转依赖，`pnpm dev:monkey` 对应的是在 /monkey 中的 `pnpm dev`
 
-而如果只需要开发或打包 web 端，可以运行 `pnpm install:web`，这将只安装 web 端的依赖，届时再运行 `pnpm dev:web` 即可。至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
+至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
 
 > 直接部署到 vercel 前，需要先去 vercel 的项目设置中将 Root Directory 设为 `apps/web`，才能正确识别项目并构建
 

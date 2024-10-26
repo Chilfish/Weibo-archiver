@@ -1,6 +1,7 @@
 {
   "name": "@weibo-archiver/ui",
   "type": "module",
+  "private": true,
   "description": "",
   "author": "",
   "license": "ISC",

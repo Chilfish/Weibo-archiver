@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.4.3...v0.4.4
+
+[compare changes](https://github.com/Chilfish/Weibo-archiver/compare/v0.4.3...main)
+
+### 🩹 Fixes
+
+- **scripts:** Add config & concurrency for download ([048f8ce](https://github.com/Chilfish/Weibo-archiver/commit/048f8ce))
+
+### 📦 Build
+
+- Update deps ([a7886c2](https://github.com/Chilfish/Weibo-archiver/commit/a7886c2))
+- **cli:** For publish ([8cef6c2](https://github.com/Chilfish/Weibo-archiver/commit/8cef6c2))
+
+### 🎨 Styles
+
+- Update eslint formats ([3144ccb](https://github.com/Chilfish/Weibo-archiver/commit/3144ccb))
+
+### ❤️ Contributors
+
+- Chilfish ([@Chilfish](http://github.com/Chilfish))
 
 ## v0.4.2...v0.4.3
 

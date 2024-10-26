@@ -1,6 +1,7 @@
 {
   "name": "@weibo-archiver/shared",
   "type": "module",
+  "private": true,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

@@ -1,14 +1,14 @@
 {
-  "name": "weibo-archiver",
   "type": "module",
-  "version": "0.4.3",
+  "version": "0.4.4",
+  "private": true,
   "description": "Archive your Weibo posts before being banned completely.",
   "author": {
     "name": "Chilfish",
     "email": "chill4fish@gmail.com",
     "url": "https://github.com/Chilfish"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/Chilfish/Weibo-archiver.git",
   "repository": {
     "type": "git",
@@ -23,12 +23,9 @@
     "dev:monkey": "pnpm -F monkey dev",
     "build:web": "pnpm -F web generate",
     "build:monkey": "pnpm -F monkey build",
-    "build:cli": "pnpm -F shared build && pnpm -F cli build",
+    "build:cli": "pnpm -F shared build && pnpm -F weibo-archiver build",
     "preview:web": "pnpm -F web preview",
     "typecheck:web": "pnpm -F web typecheck",
-    "install:web": "pnpm -F web... install",
-    "install:monkey": "pnpm -F monkey... install",
-    "install:cli": "pnpm -F cli... install",
     "release": "tsx release.ts",
     "lint": "eslint .",
     "postinstall": "simple-git-hooks"

@@ -23,7 +23,7 @@ let config: Config
 const main = defineCommand({
   meta: {
     name: 'weibo-archiver',
-    version: '0.4.3',
+    version: '0.4.4',
     description: 'Weibo archiver 命令行版本',
   },
   args: {

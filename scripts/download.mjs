@@ -35,7 +35,7 @@ const args = Argv.init([
   },
 ], {
   name: 'Weibo-archiver 图片下载器',
-  version: '0.3.7',
+  version: '0.4.4',
   description: '下载脚本导出的 imgs.csv 中的图片',
 })
 

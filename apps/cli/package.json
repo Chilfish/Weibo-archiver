@@ -1,13 +1,13 @@
 {
-  "name": "@weibo-archiver/cli",
+  "name": "weibo-archiver",
   "type": "module",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Weibo archiver CLI tool",
   "author": {
     "name": "Chilfish",
     "email": "chil4fish@gmail.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/Chilfish/Weibo-archiver",
   "bugs": {
     "url": "https://github.com/Chilfish/Weibo-archiver/issues"
