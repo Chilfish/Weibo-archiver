@@ -29,9 +29,10 @@
 
 更多操作细节可见 [使用教程]
 
+同时也支持 ClI 模式，可以在 [Node.js 官网] 下载安装 Node.js 后，使用 `npx weibo-archiver` 来启动，具体的使用方法可见 `npx weibo-archiver --help` 和 [README](apps/cli/README.md)
+
 > [!IMPORTANT]
-> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇<br/>
-> 有关项目的进展路线等，可见 [项目的 Todo] 部分
+> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇
 
 如果想体验预览版，在 [actions] 中会自动构建每次提交的 beta 版本
 
