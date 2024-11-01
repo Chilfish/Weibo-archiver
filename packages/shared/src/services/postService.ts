@@ -6,6 +6,8 @@ import type {
   PostMeta,
 } from '../types'
 import {
+  dayEnd,
+  dayStart,
   delay,
   filterComments,
   isBrowser,
