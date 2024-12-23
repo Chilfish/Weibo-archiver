@@ -7,7 +7,8 @@
   "author": "Chilfish",
   "scripts": {
     "dev": "vite --port=3333",
-    "build": "vite build"
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "peerDependencies": {
     "axios": "^1.6.8",

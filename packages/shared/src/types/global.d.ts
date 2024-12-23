@@ -6,11 +6,6 @@ declare global {
     $message: ReturnType<typeof useMessage>
     fetchOptions: FetchOptions
 
-    readonly __COMMIT_DATE__: string
-    readonly __COMMIT_HASH__: string
-    readonly __LAST_COMMIT_MESSAGE__: string
-    readonly __COMMIT_URL__: string
-    readonly __VERSION__: string
   }
 
   namespace NodeJS {
@@ -19,3 +14,9 @@ declare global {
     }
   }
 }
+
+declare const __COMMIT_DATE__: string
+declare const __COMMIT_HASH__: string
+declare const __LAST_COMMIT_MESSAGE__: string
+declare const __COMMIT_URL__: string
+declare const __VERSION__: string
