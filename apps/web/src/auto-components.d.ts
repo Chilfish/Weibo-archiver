@@ -60,7 +60,5 @@ declare module 'vue' {
     UserFollowings: typeof import('./../../../packages/ui/src/user/Followings.vue')['default']
     UserProfile: typeof import('./../../../packages/ui/src/user/Profile.vue')['default']
     UserSwitch: typeof import('./../../../packages/ui/src/user/Switch.vue')['default']
-    UserUserProfile: typeof import('./../../../packages/ui/src/user/UserProfile.vue')['default']
-    UserUserSwitch: typeof import('./../../../packages/ui/src/user/UserSwitch.vue')['default']
   }
 }

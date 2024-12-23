@@ -21,7 +21,7 @@
   "scripts": {
     "dev:web": "pnpm -F web dev",
     "dev:monkey": "pnpm -F monkey dev",
-    "build:web": "pnpm -F web generate",
+    "build:web": "pnpm -F web build",
     "build:monkey": "pnpm -F monkey build",
     "build:cli": "pnpm -F shared build && pnpm -F weibo-archiver build",
     "preview:web": "pnpm -F web preview",
