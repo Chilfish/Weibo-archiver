@@ -2,7 +2,5 @@
 </script>
 
 <template>
-  <client-only>
-    <Preview />
-  </client-only>
+  <Preview />
 </template>

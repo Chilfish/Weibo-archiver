@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useHead, useSeoMeta } from '@unhead/vue'
+
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
 const description = `${appName} 一个微博备份工具，在账号被完全夹没前未雨绸缪 😭。`
@@ -36,19 +38,14 @@ useHead({
     },
   ],
 })
-
-const route = useRoute()
-const clientOnlyRoutes = ['/album']
-
-const isClientOnly = computed(() => clientOnlyRoutes.includes(route.path))
 </script>
 
 <template>
-  <NuxtLayout>
-    <ClientOnly v-if="isClientOnly">
-      <NuxtPage />
-    </ClientOnly>
-
-    <NuxtPage v-else />
-  </NuxtLayout>
+  <app-main>
+    <main-header />
+    <img-viewer />
+    <main class="pt-16">
+      <router-view />
+    </main>
+  </app-main>
 </template>

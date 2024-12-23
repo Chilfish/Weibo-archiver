@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core'
-import { ImgPlaceholder } from '../constants'
+import { imgCdn, ImgPlaceholder } from '../constants'
 
 /**
  * Wait for an element to be added to the DOM.

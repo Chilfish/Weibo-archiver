@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Comment, Post, Retweet } from '@shared'
+import { useDateFormat } from '@vueuse/core'
 // import { useMessage } from 'naive-ui'
 
 const props = defineProps<{

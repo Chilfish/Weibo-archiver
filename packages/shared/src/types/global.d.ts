@@ -5,6 +5,7 @@ declare global {
   interface Window {
     $message: ReturnType<typeof useMessage>
     fetchOptions: FetchOptions
+
   }
 
   namespace NodeJS {
@@ -13,3 +14,9 @@ declare global {
     }
   }
 }
+
+declare const __COMMIT_DATE__: string
+declare const __COMMIT_HASH__: string
+declare const __LAST_COMMIT_MESSAGE__: string
+declare const __COMMIT_URL__: string
+declare const __VERSION__: string

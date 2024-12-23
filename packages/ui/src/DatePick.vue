@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { Post } from '@shared'
+import { usePostStore } from '@core/stores'
 import dayjs from 'dayjs'
-
 import { storeToRefs } from 'pinia'
+
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const emits = defineEmits<{
   picked: [posts: Post[]]
@@ -40,7 +43,7 @@ onMounted(() => {
   }
 })
 
-watchImmediate([start, end], async () => {
+watch([start, end], async () => {
   if (start.value === now && end.value === now) {
     router.push({
       query: {
@@ -63,7 +66,7 @@ watchImmediate([start, end], async () => {
     },
   })
   emits('picked', posts)
-})
+}, { immediate: true })
 
 watch([curPage, pageSize], async () => {
   if (start.value === now || end.value === now)

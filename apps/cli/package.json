@@ -1,7 +1,7 @@
 {
   "name": "weibo-archiver",
   "type": "module",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Weibo archiver CLI tool",
   "author": {
     "name": "Chilfish",
@@ -23,7 +23,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsx build.ts",
+    "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint .",
     "start": "node weibo-archiver.mjs"
@@ -35,7 +35,7 @@
   "dependencies": {
     "c12": "^2.0.1",
     "citty": "^0.1.6",
-    "consola": "^3.2.3"
+    "consola": "^3.3.0"
   },
   "devDependencies": {
     "@weibo-archiver/shared": "workspace:^"

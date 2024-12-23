@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePostStore } from '@core/stores'
 import { storeToRefs } from 'pinia'
 
 const { curPage, pageSize, total } = storeToRefs(usePostStore())

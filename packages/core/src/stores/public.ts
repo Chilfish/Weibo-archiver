@@ -2,6 +2,7 @@ import type { UID, UserInfo } from '@shared'
 import { parseOldPost } from '@shared'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
+import { computed, ref, toRaw, watchEffect } from 'vue'
 import { DB_VERSION, IDB } from '../utils/storage'
 
 export const usePublicStore = defineStore('public', () => {

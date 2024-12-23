@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { Post, PostData, UserBio, UserInfo } from '@shared'
 import { imgCdn } from '@core/constants'
+import { usePostStore, usePublicStore } from '@core/stores'
+import { exportData } from '@core/utils'
 import { parseOldPost } from '@shared'
 import { useStorage } from '@vueuse/core'
 import { destr } from 'destr'
 import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
+import { computed, ref, toRaw } from 'vue'
 import { useRouter } from 'vue-router'
 
 const useLocalImage = useStorage('imgHost', '/')

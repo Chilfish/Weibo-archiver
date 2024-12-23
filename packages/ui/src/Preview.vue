@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Post, User } from '@shared'
 import { KeyUser } from '@core/constants/vueProvide'
+import { usePostStore, usePublicStore } from '@core/stores'
 import { useMessage } from 'naive-ui'
 import { storeToRefs } from 'pinia'
+import { onMounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const hasPosts = defineModel('hasPosts', {
@@ -45,7 +47,7 @@ onMounted(async () => {
   }
 })
 
-watchImmediate(
+watch(
   [() => route.query, loaded, totalDB, curUid],
   async () => {
     postsLoaded.value = false
@@ -58,6 +60,7 @@ watchImmediate(
     postsLoaded.value = true
     hasPosts.value = totalDB.value > 0
   },
+  { immediate: true },
 )
 </script>
 

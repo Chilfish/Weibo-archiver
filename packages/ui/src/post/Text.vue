@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { usePublicStore } from '@core/stores'
+import { parseProtocol } from '@shared'
+import { onMounted, ref } from 'vue'
+
 const props = defineProps<{
   text: string
 }>()

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SettingsWeb from './settings/web.vue'
 

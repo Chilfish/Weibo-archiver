@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Post } from '@shared'
+import { ref, watchEffect } from 'vue'
 
 defineProps<{
   post: Post

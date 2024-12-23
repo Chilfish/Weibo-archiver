@@ -7,13 +7,14 @@ withDefaults(defineProps<{
   showDonate: true,
 })
 
-const {
-  VITE_APP_VERSION: version,
-  VITE_GIT_COMMIT_HASH: commitHash,
-  VITE_GIT_COMMIT_URL: commitUrl,
-  VITE_GIT_COMMIT_DATE: commitDate,
-  // VITE_GIT_LAST_COMMIT_MESSAGE: commitMessage,
-} = import.meta.env
+// @ts-expect-error is injected by Vite
+const version = __VERSION__ || '0.4.4'
+// @ts-expect-error is injected by Vite
+const commitHash = __COMMIT_HASH__
+// @ts-expect-error is injected by Vite
+const commitUrl = __COMMIT_URL__
+// @ts-expect-error is injected by Vite
+const commitDate = __COMMIT_DATE__
 </script>
 
 <template>
@@ -52,9 +53,12 @@ const {
     </div>
 
     <h2 class="text-7 font-bold">
-      Weibo Archiver v{{ version }}
+      Weibo Archiver {{ version }}
 
-      <n-tooltip trigger="hover">
+      <n-tooltip
+        v-if="commitHash"
+        trigger="hover"
+      >
         <template #trigger>
           <a
             :href="commitUrl"

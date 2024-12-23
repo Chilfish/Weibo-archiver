@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { Album } from '@shared'
+import type { Album, User } from '@shared'
 import { KeyUser } from '@core/constants/vueProvide'
 
-import { PostItem } from '@ui'
+import { usePostStore, usePublicStore } from '@core/stores'
+import { PostItem } from '@ui/index'
 import { useWindowSize } from '@vueuse/core'
 import { useMessage, useModal } from 'naive-ui'
+import { computed, h, onMounted, provide, ref, shallowRef } from 'vue'
 
 const album = shallowRef<Album[]>([])
 const postStore = usePostStore()

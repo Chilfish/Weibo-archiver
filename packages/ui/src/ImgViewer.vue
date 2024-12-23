@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { imgViewSrc } from '@core/constants'
+import { usePublicStore } from '@core/stores'
+import { replaceImg, waitForElement } from '@core/utils'
 import { storeToRefs } from 'pinia'
+import { onMounted, ref, watch } from 'vue'
 
 const { globalImg } = storeToRefs(usePublicStore())
 

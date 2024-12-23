@@ -32,7 +32,7 @@ async function compressFolder(folderPath: string, outputPath: string) {
 
 const root = path.resolve()
 const scripts = path.join(root, 'scripts')
-const webDist = path.join(root, 'apps/web/.output')
+const webDist = path.join(root, 'apps/web/dist')
 const cliDist = path.join(root, 'apps/cli/dist')
 
 const appName = 'weibo-archiver'
