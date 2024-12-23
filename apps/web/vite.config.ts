@@ -9,16 +9,12 @@ import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import pkg from './package.json'
 
-const commitHash = execSync('git rev-parse --short HEAD').toString().trimEnd()
-const commitUrl = `https://github.com/Chilfish/Weibo-archiver/commit/${commitHash}`
-
-const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd()
-const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd()
-
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const core = path.join(root, 'packages/core/src')
 const shared = path.join(root, 'packages/shared/src')
 const ui = path.join(root, 'packages/ui/src')
+
+const { commitHash, commitDate, commitUrl, lastCommitMessage } = getGitInfo()
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -69,3 +65,33 @@ export default defineConfig({
     },
   },
 })
+
+function getGitInfo() {
+  const repoUrl = 'https://github.com/Chilfish/Weibo-archiver/commit'
+  try {
+    const commitHash = execSync('git rev-parse --short HEAD').toString().trimEnd()
+    const commitUrl = `${repoUrl}/${commitHash}`
+
+    const commitDate = execSync('git log -1 --format=%cI').toString().trimEnd()
+    const lastCommitMessage = execSync('git show -s --format=%s').toString().trimEnd()
+
+    return { commitHash, commitDate, commitUrl, lastCommitMessage }
+  }
+  catch {
+    // https://vercel.com/docs/projects/environment-variables/system-environment-variables#VERCEL_GIT_COMMIT_SHA
+    const {
+      VERCEL_GIT_COMMIT_SHA: commitHash,
+      VERCEL_GIT_COMMIT_DATE: commitDate,
+      VERCEL_GIT_COMMIT_MESSAGE: lastCommitMessage,
+    } = process.env
+
+    const shortCommitHash = commitHash?.slice(0, 7)
+
+    return {
+      commitHash: shortCommitHash,
+      commitDate: commitDate || new Date().toISOString(),
+      commitUrl: `${repoUrl}/${shortCommitHash}`,
+      lastCommitMessage,
+    }
+  }
+}
