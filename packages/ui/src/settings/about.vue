@@ -8,12 +8,12 @@ withDefaults(defineProps<{
 })
 
 const {
-  VITE_APP_VERSION: version,
-  VITE_GIT_COMMIT_HASH: commitHash,
-  VITE_GIT_COMMIT_URL: commitUrl,
-  VITE_GIT_COMMIT_DATE: commitDate,
+  __VERSION__: version,
+  __COMMIT_HASH__: commitHash,
+  __COMMIT_URL__: commitUrl,
+  __COMMIT_DATE__: commitDate,
   // VITE_GIT_LAST_COMMIT_MESSAGE: commitMessage,
-} = import.meta.env
+} = window
 </script>
 
 <template>

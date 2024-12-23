@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { User } from '@shared'
 
+import { imgCdn } from '@core/constants'
 import { KeyUser } from '@core/constants/vueProvide'
+import { usePublicStore } from '@core/stores'
+import { replaceImg } from '@core/utils'
+import { computed, inject, toRef } from 'vue'
 
 const props = defineProps<{
   user?: User

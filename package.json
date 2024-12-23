@@ -45,11 +45,6 @@
     "unbuild": "^3.0.1",
     "vue-tsc": "^2.1.10"
   },
-  "pnpm": {
-    "overrides": {
-      "@babel/helper-module-imports": "7.22.15"
-    }
-  },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
   },

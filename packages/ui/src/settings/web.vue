@@ -25,7 +25,7 @@ window.$message = useMessage()
     </n-tab-pane>
 
     <n-tab-pane name="about" tab="关于">
-      <settings-about />
+      <settings-about :show-donate="true" />
     </n-tab-pane>
   </n-tabs>
 </template>

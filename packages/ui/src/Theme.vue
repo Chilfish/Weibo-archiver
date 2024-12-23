@@ -1,4 +1,6 @@
 <script setup lang="tsx">
+import { isDark } from '@core/composables'
+
 function ThemeItem(props: { theme: string }) {
   const dark = props.theme === 'Dark'
   const bg = dark ? 'bg-zinc-800' : 'bg-white'

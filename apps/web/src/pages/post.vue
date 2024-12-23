@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { usePublicStore } from '@core/stores'
+import { onMounted, ref } from 'vue'
+
 const loaded = ref(false)
 
-onNuxtReady(async () => {
+onMounted(async () => {
   const publicStore = usePublicStore()
   publicStore.load()
   loaded.value = true
@@ -9,9 +12,7 @@ onNuxtReady(async () => {
 </script>
 
 <template>
-  <client-only v-if="loaded">
-    <Preview />
-  </client-only>
+  <Preview v-if="loaded" />
   <n-spin
     v-else
     class="center pt-16"

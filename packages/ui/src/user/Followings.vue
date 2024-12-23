@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { UserBio } from '@shared'
+import { usePostStore } from '@core/stores'
+import { useDebounce } from '@vueuse/core'
 import Fuse from 'fuse.js'
+import { computed, onMounted, ref, shallowRef } from 'vue'
 
 const postStore = usePostStore()
 const search = ref('')

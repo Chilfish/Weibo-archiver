@@ -1,7 +1,10 @@
 import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
+import { watchImmediate } from '@vueuse/core'
 import { defineStore } from 'pinia'
+import { computed, ref, shallowRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EmptyIDB, IDB } from '../utils/storage'
+import { usePublicStore } from './public'
 
 export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
@@ -229,7 +232,7 @@ export const usePostStore = defineStore('post', () => {
     await waitIDB()
     const imgs = await idb.value.getImgs()
 
-    console.log('Get imgs', imgs)
+    // console.log('Get imgs', imgs)
 
     const result: Album[] = []
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePublicStore } from '@core/stores'
 import { storeToRefs } from 'pinia'
 
 const { otherUsers, curUid, curUser, users } = storeToRefs(usePublicStore())
@@ -13,13 +14,13 @@ function switchUser(uid: string) {
     暂无用户数据，先去导入吧
   </div>
 
-  <tmeplate v-if="curUser">
+  <template v-if="curUser">
     <div class="title sm:w-35vw">
       当前用户
     </div>
 
     <UserProfile :user="curUser" />
-  </tmeplate>
+  </template>
 
   <div
     v-if="otherUsers.length"

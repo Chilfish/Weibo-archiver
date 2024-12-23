@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ImgPlaceholder } from '@core/constants'
+import { lazyLoadImage, replaceImg } from '@core/utils'
 
 import { useStorage } from '@vueuse/core'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
   src: string
