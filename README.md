@@ -32,9 +32,8 @@
 同时也支持 ClI 模式，可以在 [Node.js 官网] 下载安装 Node.js 后，使用 `npx weibo-archiver` 来启动，具体的使用方法可见 `npx weibo-archiver --help` 和 [README](apps/cli/README.md)
 
 > [!IMPORTANT]
-> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等，欢迎大家提 issues 或发起讨论😇
-
-如果想体验预览版，在 [actions] 中会自动构建每次提交的 beta 版本
+> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等😇
+> 如果有疑问，可以在 [issues](https://github.com/Chilfish/Weibo-archiver/issues/new) 发起讨论或咨询我的qq邮箱 chilfish 💕
 
 ### 注意事项 | 声明
 
@@ -75,8 +74,6 @@
 至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
 
 > 直接部署到 vercel 前，需要先去 vercel 的项目设置中将 Root Directory 设为 `apps/web`，才能正确识别项目并构建
-
-有关项目的进展路线等，可见 [项目的 Todo] 部分
 
 ### 鸣谢
 
