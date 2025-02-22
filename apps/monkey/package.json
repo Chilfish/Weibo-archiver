@@ -17,10 +17,10 @@
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
     "@vitejs/plugin-vue": "^5.2.1",
-    "unplugin-auto-import": "^0.19.0",
-    "unplugin-vue-components": "^0.28.0",
-    "unplugin-vue-macros": "^2.13.6",
-    "vite": "^6.0.5",
-    "vite-plugin-monkey": "^5.0.3"
+    "unplugin-auto-import": "^19.1.0",
+    "unplugin-vue-components": "^28.4.0",
+    "unplugin-vue-macros": "^2.14.2",
+    "vite": "^6.1.1",
+    "vite-plugin-monkey": "^5.0.8"
   }
 }
