@@ -42,6 +42,19 @@ jobs:
       - name: build and zip
         run: pnpm release
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+          cache-dependency-path: server/go.sum
+
+      - name: Build Go binaries
+        run: |
+          cd server
+          chmod +x build.sh
+          ./build.sh
+
       - name: upload monkey
         uses: actions/upload-artifact@v4
         with:
@@ -65,3 +78,9 @@ jobs:
         with:
           name: weibo-archiver-cli
           path: dist/weibo-archiver-cli.zip
+
+      - name: upload go binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-go
+          path: server/dist/*
