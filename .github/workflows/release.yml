@@ -64,14 +64,23 @@ jobs:
           name: weibo-archiver-cli
           path: dist/weibo-archiver-cli.zip
 
-      - name: upload go binaries
+      - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-binaries
-          path: |
-            server/dist/weibo-archiver-windows-amd64.zip
-            server/dist/weibo-archiver-linux-amd64.tar.gz
-            server/dist/weibo-archiver-darwin-amd64.tar.gz
+          name: weibo-archiver-windows-amd64.zip
+          path: server/dist/weibo-archiver-windows-amd64.zip
+
+      - name: upload go binaries (Linux)
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-linux-amd64.tar.gz
+          path: server/dist/weibo-archiver-linux-amd64.tar.gz
+
+      - name: upload go binaries (macOS)
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-darwin-amd64.tar.gz
+          path: server/dist/weibo-archiver-darwin-amd64.tar.gz
 
   darft-release:
     runs-on: ubuntu-latest
