@@ -67,8 +67,11 @@ jobs:
       - name: upload go binaries
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-go
-          path: server/dist/*
+          name: weibo-archiver-binaries
+          path: |
+            server/dist/weibo-archiver-windows-amd64.zip
+            server/dist/weibo-archiver-linux-amd64.tar.gz
+            server/dist/weibo-archiver-darwin-amd64.tar.gz
 
   darft-release:
     runs-on: ubuntu-latest
