@@ -11,7 +11,7 @@ import (
 func main() {
 	info := utils.AppInfo{
 		Name:        "Weibo-archiver Tools",
-		Version:     "0.4.4",
+		Version:     "0.5.0",
 		Description: "Download and serve weibo images",
 	}
 

@@ -8,7 +8,7 @@ withDefaults(defineProps<{
 })
 
 // @ts-expect-error is injected by Vite
-const version = __VERSION__ || '0.4.4'
+const version = __VERSION__ || '0.5.0'
 // @ts-expect-error is injected by Vite
 const commitHash = __COMMIT_HASH__
 // @ts-expect-error is injected by Vite

@@ -1,7 +1,7 @@
 {
   "name": "@weibo-archiver/web",
   "type": "module",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "private": true,
   "description": "",
   "author": "Chilfish",
