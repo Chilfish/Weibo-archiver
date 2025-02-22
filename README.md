@@ -23,17 +23,28 @@
 
 ### 使用方式
 
-需要浏览器装有 [Tampermonkey](https://tampermonkey.net/) 或 [Violentmonkey](https://violentmonkey.github.io/) 插件。
+首先需要浏览器装有 [Tampermonkey](https://tampermonkey.net/) 插件。
+
+#### 1. 备份微博数据
 
 安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。支持断点续传，可恢复到上次的进度。
 
-更多操作细节可见 [使用教程]
+#### 2. 下载微博中的图片（不是必须的）
+
+为了防止微博图片链接失效，建议及时下载图片到本地：
+
+1. 在 [releases] 中下载对应平台的可执行文件：
+   - Windows: `weibo-archiver-windows-amd64.zip`
+   - macOS: `weibo-archiver-darwin-amd64.tar.gz`
+   - Linux: `weibo-archiver-linux-amd64.tar.gz`
+2. 解压后按照 [本地服务器使用说明](server/README.md) 操作
+3. 下载完成后可以在本地离线浏览所有图片和微博数据
+
+#### 3. 命令行模式
 
 同时也支持 ClI 模式，可以在 [Node.js 官网] 下载安装 Node.js 后，使用 `npx weibo-archiver` 来启动，具体的使用方法可见 `npx weibo-archiver --help` 和 [README](apps/cli/README.md)
 
-> [!IMPORTANT]
-> 该项目还在锐意开发中，可能会有很多不稳定的 bug 等😇
-> 如果有疑问，可以在 [issues](https://github.com/Chilfish/Weibo-archiver/issues/new) 发起讨论或咨询我的qq邮箱 chilfish 💕
+更多详细操作可以查看 [使用教程]
 
 ### 注意事项 | 声明
 
@@ -49,7 +60,7 @@
 
 - 评论区：获取时，将默认同时获取前 6 条热评，总数不超过 20 条。这是为了避免频繁调用接口，而可能会导致的不明问题。暂时也不支持楼中楼
 
-- 媒体文件：只能获取图片，将以图片链接文件的形式导出，需要同时使用压缩包里的 `download.mjs` 脚本下载好之后，才能在预览页面中可见。这是为了能够离线预览，同时也是为了防止某天图片突然被夹没了😅。并且由于视频文件可能会过大、过长，将采用外链的形式来呈现。
+- 媒体文件：只能获取图片，将以图片链接文件的形式导出，需要同时使用下载图片工具下载好之后，才能在预览页面中可见。这是为了能够离线预览，同时也是为了防止某天图片突然被夹没了😅。并且由于视频文件可能会过大、过长，将采用外链的形式来呈现。
 
 - 不过可以将下载后的图片上传到你自己的图床服务器里，注意不要改变文件目录，再在预览页面的设置中填写你的图床链接即可
 
@@ -74,6 +85,8 @@
 至于运行打包后的结果，由于是静态的资源，可以直接用 nginx 服务，或是运行 `pnpx serve .\.output\public\` 来查看
 
 > 直接部署到 vercel 前，需要先去 vercel 的项目设置中将 Root Directory 设为 `apps/web`，才能正确识别项目并构建
+
+在 server 目录下是使用 go 语言编写的一个本地服务器，用于下载图片和浏览微博数据，具体使用方法可见 [本地服务器使用说明](server/README.md)
 
 ### 鸣谢
 
