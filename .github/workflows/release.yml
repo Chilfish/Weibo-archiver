@@ -58,12 +58,6 @@ jobs:
           name: weibo-archiver-webapp
           path: dist/weibo-archiver-webapp.zip
 
-      - name: upload scripts
-        uses: actions/upload-artifact@v4
-        with:
-          name: weibo-archiver-scripts
-          path: dist/weibo-archiver-scripts.zip
-
       - name: upload cli
         uses: actions/upload-artifact@v4
         with:

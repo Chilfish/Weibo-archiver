@@ -31,7 +31,6 @@ async function compressFolder(folderPath: string, outputPath: string) {
 }
 
 const root = path.resolve()
-const scripts = path.join(root, 'scripts')
 const webDist = path.join(root, 'apps/web/dist')
 const cliDist = path.join(root, 'apps/cli/dist')
 
@@ -46,7 +45,6 @@ console.log('构建完成')
 
 // 打包
 await compressFolder(webDist, path.join(root, `dist/${appName}-webapp.zip`))
-await compressFolder(scripts, path.join(root, `dist/${appName}-scripts.zip`))
 await compressFolder(cliDist, path.join(root, `dist/${appName}-cli.zip`))
 
 console.log('打包完成')
