@@ -30,6 +30,9 @@
     "lint": "eslint .",
     "postinstall": "simple-git-hooks"
   },
+  "dependencies": {
+    "lucide-vue-next": "^0.476.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^4.3.0",
     "@unocss/eslint-config": "^66.0.0",
