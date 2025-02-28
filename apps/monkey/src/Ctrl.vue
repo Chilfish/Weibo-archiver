@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { fetchFollowings } from '@shared'
 import { Button } from '@workspace/ui/shadcn/button'
-import { useMessage } from 'naive-ui'
+import { Progress } from '@workspace/ui/shadcn/progress'
+import { useToast } from '@workspace/ui/shadcn/toast'
+
+import { Minimize2 } from 'lucide-vue-next'
 
 import { storeToRefs } from 'pinia'
 import Config from './Config.vue'
 import { useConfigStore, usePostStore } from './stores'
 
-const message = useMessage()
+const toast = useToast()
 
 const postStore = usePostStore()
 const configStore = useConfigStore()
@@ -19,8 +22,8 @@ const isFetchingFollowings = ref(false)
 
 const { config } = storeToRefs(configStore)
 
-const percentage = computed(() => config.value.fetchedCount / postStore.total * 100)
-const progressText = computed(() => () => `${config.value.fetchedCount}/${postStore.total} 条`)
+const percentage = computed(() => config.value.fetchedCount / postStore.total * 100 || 0)
+const progressText = computed(() => `${config.value.fetchedCount}/${postStore.total} 条`)
 
 const { pause, start } = fetchPosts({
   fetchOptions: () => ({
@@ -30,7 +33,7 @@ const { pause, start } = fetchPosts({
   setTotal: total => postStore.total = total,
   onFinish: async () => {
     if (!config.value.weiboOnly) {
-      message.success('获取完毕~，正在获取关注列表')
+      toast.success('获取完毕~，正在获取关注列表')
       isFetchingFollowings.value = true
       await fetchFollowings(
         config.value.uid,
@@ -47,9 +50,7 @@ const { pause, start } = fetchPosts({
 })
 
 async function startFetch() {
-  message.info('开始爬取中，请稍等~', {
-    duration: 5000,
-  })
+  toast.info('开始爬取中，请稍等~')
 
   await postStore.setDB()
 
@@ -81,7 +82,6 @@ async function startFetch() {
   await start()
 }
 
-window.$message = message;
 (globalThis as any).fetchOptions = toRaw(config.value)
 
 /**
@@ -133,41 +133,31 @@ const {
         Weibo archiver <span class="ml-1 text-3">(v{{ VITE_APP_VERSION }})</span>
       </h2>
 
-      <button
+      <Button
         title="最小化"
+        variant="ghost"
         @click="configStore.toggleMinimize"
       >
-        <i class="i-tabler:arrows-minimize icon" />
-      </button>
+        <Minimize2 />
+      </Button>
     </div>
 
     <h3 class="">
       用户名: @{{ config.name }}
     </h3>
 
-    <n-alert type="info">
-      <p>
-        导出完毕后，可在
-        <a
-          href="https://weibo.chilfish.top"
-          target="_blank"
-        >
-          预览页
-        </a>
-        中导入数据查看
-      </p>
-    </n-alert>
-
     <Config />
 
-    <n-progress
-      type="line"
-      :percentage="percentage"
-    >
-      {{ progressText() }}
-    </n-progress>
+    <div class="flex items-center gap-2">
+      <Progress
+        :model-value="percentage"
+      />
 
-    <div class="btns flex gap-2">
+      <div class="min-w-fit">
+        {{ progressText }}
+      </div>
+    </div>
+    <div class="flex gap-2">
       <Button
         v-show="!isStart || isStop"
         @click="startFetch"
@@ -182,37 +172,35 @@ const {
         正在获取{{ isFetchingFollowings ? '关注列表' : '微博' }} ~
       </div>
 
-      <button
+      <Button
         v-show="isStart && !isFinish"
         @click="toggleStop"
       >
         {{ isStop ? '继续' : '暂停' }}
-      </button>
+      </Button>
 
-      <button
+      <Button
         v-show="isFinish || isStop"
         @click="postStore.exportDatas"
       >
         导出
-      </button>
+      </Button>
     </div>
   </div>
 
   <div
-    class="card minimize shadow-xl"
+    v-show="config.isMinimize"
+    class="card w-16 shadow-xl p-2!"
     @click="configStore.toggleMinimize"
   >
     <img
       src="https://p.chilfish.top/weibo/icon.webp"
       alt="Weibo archiver logo"
-      class="h-14 w-14"
     >
   </div>
 </template>
 
 <style scoped>
-@import url('./reset.css');
-
 p {
   color: black !important;
 }
@@ -221,7 +209,6 @@ p {
   position: fixed;
   right: 1rem; /* 16px */
   top: 5rem; /* 80px */
-  z-index: 999;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -231,10 +218,5 @@ p {
   background-color: white;
   color: black;
   transition: all 0.3s ease-in-out;
-}
-
-.minimize {
-  z-index: 0;
-  padding: 6px;
 }
 </style>

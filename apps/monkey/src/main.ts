@@ -2,7 +2,9 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import App from './App.vue'
-import { naive } from './naiveui'
+
+import 'uno.css'
+import './reset.css'
 
 const app = createApp(App)
 
@@ -12,7 +14,6 @@ document.body.append(div)
 
 app
   .use(createPinia())
-  .use(naive)
   .mount(div)
 
 console.log('weibo-archiver 加载成功')

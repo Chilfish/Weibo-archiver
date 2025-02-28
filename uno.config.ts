@@ -19,6 +19,10 @@ export default defineConfig({
       'p-4': '#e8ccc7',
       'p-5': '#7d8bae',
       'p-6': '#45496a',
+      'primary': '#ea8011',
+      'primary-foreground': '#fff',
+      'secondary': '#18a058',
+      'secondary-foreground': '#fff',
     },
   },
   shortcuts: [
