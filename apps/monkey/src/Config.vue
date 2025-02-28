@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { DateRange } from 'reka-ui'
 import type { Ref } from 'vue'
-import { DateFormatter, getLocalTimeZone, today } from '@internationalized/date'
+import { DateFormatter, today } from '@internationalized/date'
 import { cn } from '@workspace/shared/lib/utils'
 import { Button } from '@workspace/ui/shadcn/button'
 
 import { CheckboxLabel } from '@workspace/ui/shadcn/checkbox'
+import Label from '@workspace/ui/shadcn/label/Label.vue'
 import { Popover, PopoverContent, PopoverTrigger } from '@workspace/ui/shadcn/popover'
 import { RangeCalendar } from '@workspace/ui/shadcn/range-calendar'
 import {
@@ -15,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@workspace/ui/shadcn/select'
+
 import {
   Tooltip,
   TooltipContent,
@@ -22,18 +24,19 @@ import {
 } from '@workspace/ui/shadcn/tooltip'
 
 import { CalendarIcon } from 'lucide-vue-next'
-
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import { useConfigStore } from './stores'
 
 const { config } = storeToRefs(useConfigStore())
 
-const df = new DateFormatter('en-US', {
+const df = new DateFormatter('zh-cn', {
   dateStyle: 'medium',
 })
-const startDate = today(getLocalTimeZone())
-const endDate = startDate.add({ days: 7 })
+const tz = 'Asia/Shanghai'
+const endDate = today(tz)
+const startDate = endDate.subtract({ days: 7 })
+const tomorrow = endDate.add({ days: 1 })
 
 const dateRange = ref({
   start: startDate,
@@ -42,10 +45,10 @@ const dateRange = ref({
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <p class="text-black!">
+  <div class="mt-4 flex flex-col gap-3">
+    <Label>
       请选择要存档的范围，默认为所有微博
-    </p>
+    </Label>
 
     <Popover>
       <PopoverTrigger as-child>
@@ -59,11 +62,11 @@ const dateRange = ref({
           <CalendarIcon class="mr-2 h-4 w-4" />
           <template v-if="dateRange.start">
             <template v-if="dateRange.end">
-              {{ df.format(dateRange.start.toDate(getLocalTimeZone())) }} - {{ df.format(dateRange.end.toDate(getLocalTimeZone())) }}
+              {{ df.format(dateRange.start.toDate(tz)) }} - {{ df.format(dateRange.end.toDate(tz)) }}
             </template>
 
             <template v-else>
-              {{ df.format(dateRange.start.toDate(getLocalTimeZone())) }}
+              {{ df.format(dateRange.start.toDate(tz)) }}
             </template>
           </template>
           <template v-else>
@@ -75,13 +78,19 @@ const dateRange = ref({
         to="#plugin-app"
         class="w-auto p-0"
       >
-        <RangeCalendar v-model="dateRange" initial-focus :number-of-months="2" @update:start-value="(startDate) => dateRange.start = startDate" />
+        <RangeCalendar
+          v-model="dateRange"
+          initial-focus
+          locale="zh-cn"
+          :number-of-months="2"
+          :max-date="tomorrow"
+          @update:start-value="(startDate) => dateRange.start = startDate"
+        />
       </PopoverContent>
     </Popover>
 
     <div
-      v-if="!config.followingsOnly"
-      class="center flex-wrap justify-start gap-2"
+      class="options flex flex-wrap items-center justify-start gap-3"
     >
       <CheckboxLabel
         id="largePic"
@@ -158,7 +167,9 @@ const dateRange = ref({
       v-show="config.hasComment"
       class="flex items-center gap-4"
     >
-      <span>要获取的评论数（最多20条）</span>
+      <Label
+        class="min-w-fit"
+      >要获取的评论数（最多20条）</Label>
       <Select
         v-model="config.commentCount"
         class="w-26"
@@ -180,4 +191,8 @@ const dateRange = ref({
 
 <style scoped>
 @import url('./reset.css');
+
+.options button {
+  padding: 0;
+}
 </style>

@@ -19,7 +19,7 @@ const delegatedProps = computed(() => {
     v-bind="delegatedProps"
     :class="
       cn(
-        'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+        'sd-label',
         props.class,
       )
     "
@@ -27,3 +27,9 @@ const delegatedProps = computed(() => {
     <slot />
   </Label>
 </template>
+
+<style>
+.sd-label {
+  @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+}
+</style>

@@ -25,7 +25,7 @@ export const useConfigStore = defineStore('config', () => {
     hasRepost: true,
     hasComment: true,
     hasFavorite: true,
-    commentCount: 6,
+    commentCount: 5,
     followingsOnly: false,
     weiboOnly: false,
     startAt: now,

@@ -5,30 +5,29 @@ import { Checkbox } from './'
 interface Props {
   id: string
   label: string
-  checked?: boolean
-  modelValue?: boolean
   class?: string
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['update:checked', 'update:modelValue'])
 
-const updateValue = (val: boolean) => {
-  emit('update:checked', val)
-  emit('update:modelValue', val)
-}
+const model = defineModel<boolean>({ required: true })
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="sd-checkbox-label">
     <Checkbox
       :id="id"
-      :checked="checked || modelValue"
+      v-model="model"
       :class="props.class"
-      @update:checked="updateValue"
     />
     <Label :for="id">
       {{ label }}
     </Label>
   </div>
 </template>
+
+<style>
+.sd-checkbox-label {
+  @apply flex items-center gap-2;
+}
+</style>

@@ -18,9 +18,18 @@ const forwardedProps = useForwardProps(delegatedProps)
 
 <template>
   <RangeCalendarGrid
-    :class="cn('w-full border-collapse space-y-1', props.class)"
+    :class="cn(
+      'sd-range-calendar-grid',
+      props.class,
+    )"
     v-bind="forwardedProps"
   >
     <slot />
   </RangeCalendarGrid>
 </template>
+
+<style>
+.sd-range-calendar-grid {
+  @apply w-full border-collapse space-y-1;
+}
+</style>

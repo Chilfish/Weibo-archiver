@@ -28,14 +28,24 @@ const delegatedProps = computed(() => {
     v-bind="delegatedProps"
     :class="
       cn(
-        'relative h-2 w-full overflow-hidden rounded-full bg-primary/20',
+        'sd-progress',
         props.class,
       )
     "
   >
     <ProgressIndicator
-      class="h-full w-full flex-1 bg-primary transition-all"
+      class="sd-progress-indicator"
       :style="`transform: translateX(-${100 - (props.modelValue ?? 0)}%);`"
     />
   </ProgressRoot>
 </template>
+
+<style>
+.sd-progress {
+  @apply relative h-2 w-full overflow-hidden rounded-full bg-primary/20;
+}
+
+.sd-progress-indicator {
+  @apply h-full w-full flex-1 bg-primary transition-all;
+}
+</style>

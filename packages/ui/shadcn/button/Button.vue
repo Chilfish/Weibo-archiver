@@ -21,14 +21,14 @@ const props = withDefaults(defineProps<Props>(), {
   <Primitive
     :as="as"
     :as-child="asChild"
-    :class="cn(buttonVariants({ variant, size }), props.class, 'button')"
+    :class="cn(buttonVariants({ variant, size }), props.class, 'sd-button')"
   >
     <slot />
   </Primitive>
 </template>
 
 <style>
-.button {
+.sd-button {
   @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0;
 }
 </style>

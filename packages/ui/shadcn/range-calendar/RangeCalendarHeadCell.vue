@@ -18,9 +18,18 @@ const forwardedProps = useForwardProps(delegatedProps)
 
 <template>
   <RangeCalendarHeadCell
-    :class="cn('w-8 rounded-md text-[0.8rem] font-normal text-muted-foreground', props.class)"
+    :class="cn(
+      'sd-range-calendar-head-cell',
+      props.class,
+    )"
     v-bind="forwardedProps"
   >
     <slot />
   </RangeCalendarHeadCell>
 </template>
+
+<style>
+.sd-range-calendar-head-cell {
+  @apply w-8 rounded-md text-[0.8rem] font-normal select-none;
+}
+</style>
