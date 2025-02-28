@@ -2,7 +2,7 @@ import path from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
-import monkey, { cdn, util } from 'vite-plugin-monkey'
+import monkey from 'vite-plugin-monkey'
 
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
@@ -57,21 +57,31 @@ export default defineConfig({
       build: {
         metaFileName: true,
         externalGlobals: {
-          'vue': cdn.unpkg('Vue', 'dist/vue.global.prod.js')
-            .concat(util.dataUrl(';window.Vue=Vue;')),
+          'vue': [
+            'Vue',
+            version => `https://unpkg.com/vue@${version}/dist/vue.global.prod.js`,
+          ],
           'pinia': [
             'Pinia',
             'https://unpkg.com/vue-demi@latest/lib/index.iife.js',
-            version => `https://unpkg.com/pinia@${version}/dist/pinia.iife.js`,
+            version => `https://unpkg.com/pinia@${version}/dist/pinia.iife.prod.js`,
           ],
           'file-saver': [
             'saveAs',
             _ => 'https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js',
           ],
-          'axios': 'https://unpkg.com/axios@latest/dist/axios.min.js',
-          'idb': 'https://unpkg.com/idb@latest/build/iife/index-min.js',
-          'dayjs': 'https://unpkg.com/dayjs@latest/dayjs.min.js',
-          'fuse.js': 'https://unpkg.com/fuse.js@latest/dist/fuse.min.js',
+          'axios': [
+            'axios',
+            'https://unpkg.com/axios@latest/dist/axios.min.js',
+          ],
+          'dayjs': [
+            'dayjs',
+            'https://unpkg.com/dayjs@latest/dayjs.min.js',
+          ],
+          'fuse.js': [
+            'Fuse',
+            'https://unpkg.com/fuse.js@latest/dist/fuse.min.js',
+          ],
         },
         fileName: 'weibo-archiver.user.js',
       },
