@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import type { DateRange } from 'reka-ui'
-import type { Ref } from 'vue'
-import { DateFormatter, today } from '@internationalized/date'
-import { cn } from '@workspace/shared/lib/utils'
-import { Button } from '@workspace/ui/shadcn/button'
-
 import { CheckboxLabel } from '@workspace/ui/shadcn/checkbox'
+import { Input } from '@workspace/ui/shadcn/input'
 import Label from '@workspace/ui/shadcn/label/Label.vue'
-import { Popover, PopoverContent, PopoverTrigger } from '@workspace/ui/shadcn/popover'
-import { RangeCalendar } from '@workspace/ui/shadcn/range-calendar'
+
 import {
   Select,
   SelectContent,
@@ -16,78 +10,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@workspace/ui/shadcn/select'
-
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@workspace/ui/shadcn/tooltip'
-
-import { CalendarIcon } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
 import { useConfigStore } from './stores'
 
 const { config } = storeToRefs(useConfigStore())
-
-const df = new DateFormatter('zh-cn', {
-  dateStyle: 'medium',
-})
-const tz = 'Asia/Shanghai'
-const endDate = today(tz)
-const startDate = endDate.subtract({ days: 7 })
-const tomorrow = endDate.add({ days: 1 })
-
-const dateRange = ref({
-  start: startDate,
-  end: endDate,
-}) as Ref<DateRange>
+const now = new Date()
+const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
 </script>
 
 <template>
   <div class="mt-4 flex flex-col gap-3">
-    <Label>
-      请选择要存档的范围，默认为所有微博
-    </Label>
+    <div class="">
+      <Label>
+        请选择要存档的范围，默认为所有微博
+      </Label>
 
-    <Popover>
-      <PopoverTrigger as-child>
-        <Button
-          variant="outline"
-          :class="cn(
-            'w-[280px] justify-start text-left font-normal',
-            !dateRange && 'text-muted-foreground',
-          )"
-        >
-          <CalendarIcon class="mr-2 h-4 w-4" />
-          <template v-if="dateRange.start">
-            <template v-if="dateRange.end">
-              {{ df.format(dateRange.start.toDate(tz)) }} - {{ df.format(dateRange.end.toDate(tz)) }}
-            </template>
-
-            <template v-else>
-              {{ df.format(dateRange.start.toDate(tz)) }}
-            </template>
-          </template>
-          <template v-else>
-            Pick a date
-          </template>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        to="#plugin-app"
-        class="w-auto p-0"
-      >
-        <RangeCalendar
-          v-model="dateRange"
-          initial-focus
-          locale="zh-cn"
-          :number-of-months="2"
-          :max-date="tomorrow"
-          @update:start-value="(startDate) => dateRange.start = startDate"
+      <div class="max-w-fit flex items-center justify-between gap-3">
+        <Input
+          id="startAt"
+          v-model="config.startAt"
+          type="date"
         />
-      </PopoverContent>
-    </Popover>
+        <span>  至   </span>
+
+        <Input
+          id="endAt"
+          v-model="config.endAt"
+          type="date"
+          :max="tomorrow"
+        />
+      </div>
+    </div>
 
     <div
       class="options flex flex-wrap items-center justify-start gap-3"
