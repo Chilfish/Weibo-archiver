@@ -21,6 +21,8 @@ export default defineConfig({
       '@core': core,
       '@ui': ui,
       '@shared': shared,
+      '@workspace/ui': `${packages}/ui/`,
+      '@workspace/shared': `${packages}/shared/`,
     },
   },
   build: {

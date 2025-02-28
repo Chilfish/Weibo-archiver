@@ -10,6 +10,7 @@ import { defineConfig } from 'vite'
 import pkg from './package.json'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
+const workspace = path.join(root, 'packages/')
 const core = path.join(root, 'packages/core/src')
 const shared = path.join(root, 'packages/shared/src')
 const ui = path.join(root, 'packages/ui/src')
@@ -23,6 +24,8 @@ export default defineConfig({
       '@core': core,
       '@shared': shared,
       '@ui': ui,
+      '@workspace/ui': `${workspace}/ui/`,
+      '@workspace/shared': `${workspace}/shared/`,
     },
   },
   plugins: [

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { fetchFollowings } from '@shared'
+import { Button } from '@workspace/ui/shadcn/button'
 import { useMessage } from 'naive-ui'
 
 import { storeToRefs } from 'pinia'
@@ -167,12 +168,12 @@ const {
     </n-progress>
 
     <div class="btns flex gap-2">
-      <button
+      <Button
         v-show="!isStart || isStop"
         @click="startFetch"
       >
         {{ startButtonText }}
-      </button>
+      </Button>
 
       <div
         v-show="isStart && !isFinish && !isStop"

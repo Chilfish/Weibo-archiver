@@ -31,7 +31,11 @@
     "postinstall": "simple-git-hooks"
   },
   "dependencies": {
-    "lucide-vue-next": "^0.476.0"
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.476.0",
+    "reka-ui": "^2.0.1",
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.3.0",
