@@ -1,118 +1,157 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { CheckboxLabel } from '@workspace/ui/shadcn/checkbox'
+import { Input } from '@workspace/ui/shadcn/input'
+import Label from '@workspace/ui/shadcn/label/Label.vue'
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@workspace/ui/shadcn/select'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@workspace/ui/shadcn/tooltip'
 import { useConfigStore } from './stores'
 
-const { config } = storeToRefs(useConfigStore())
+const configStore = useConfigStore()
 
-const dateRange = computed({
-  get() {
-    const { startAt, endAt } = config.value
-    return [startAt, endAt] as [number, number]
-  },
-  set(val: [number, number]) {
-    config.value.startAt = val[0] || Date.now()
-    config.value.endAt = val[1] || Date.now()
-    config.value.isFetchAll = false
-  },
-})
+const now = new Date()
+const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <p class="text-black!">
-      请选择要存档的范围，默认为所有微博
-    </p>
+  <div class="mt-4 flex flex-col gap-3">
+    <div class="">
+      <Label>
+        请选择要存档的范围，默认为所有微博
+      </Label>
 
-    <n-date-picker
-      v-model:value="dateRange"
-      type="daterange"
-      clearable
-    />
+      <div class="max-w-fit flex items-center justify-between gap-3">
+        <Input
+          id="startAt"
+          v-model="configStore.config.startAt"
+          type="date"
+          :max="tomorrow"
+        />
+        <span>  至   </span>
+
+        <Input
+          id="endAt"
+          v-model="configStore.config.endAt"
+          type="date"
+          :max="tomorrow"
+        />
+      </div>
+    </div>
 
     <div
-      v-if="!config.followingsOnly"
-      class="center flex-wrap justify-start gap-2"
+      class="options flex flex-wrap items-center justify-start gap-3"
     >
-      <n-checkbox
-        v-model:checked="config.largePic"
-        label="导出原图"
-        size="small"
+      <CheckboxLabel
+        id="largePic"
+        v-model="configStore.config.largePic"
+        label="使用原图"
       />
-      <n-tooltip trigger="hover">
-        <template #trigger>
-          <n-checkbox
-            v-model:checked="config.hasComment"
+
+      <Tooltip>
+        <TooltipTrigger>
+          <CheckboxLabel
+            id="hasComment"
+            v-model="configStore.config.hasComment"
             label="包含评论"
-            size="small"
           />
-        </template>
-        包含评论将会减慢速度
-      </n-tooltip>
-      <n-checkbox
-        v-model:checked="config.hasRepost"
-        label="包含转发的微博"
-        size="small"
-      />
-      <n-checkbox
-        v-show="config.hasRepost"
-        v-model:checked="config.repostPic"
-        label="导出转发的图片"
-        size="small"
-      />
+        </TooltipTrigger>
+        <TooltipContent>
+          包含评论将会减慢速度
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <CheckboxLabel
+            id="hasRepost"
+            v-model="configStore.config.hasRepost"
+            label="包含转发的微博"
+          />
+        </TooltipTrigger>
+        <TooltipContent>
+          包含转发的微博将会减慢速度
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger>
+          <CheckboxLabel
+            v-show="configStore.config.hasRepost"
+            id="repostPic"
+            v-model="configStore.config.repostPic"
+            label="导出转发的图片"
+          />
+        </TooltipTrigger>
+        <TooltipContent>
+          包含转发的微博将会减慢速度
+        </TooltipContent>
+      </Tooltip>
 
-      <n-tooltip trigger="hover">
-        <template #trigger>
-          <n-checkbox
-            v-model:checked="config.restore"
+      <Tooltip>
+        <TooltipTrigger>
+          <CheckboxLabel
+            id="restore"
+            v-model="configStore.config.restore"
             label="继续上次的记录"
-            size="small"
           />
-        </template>
-        默认开始前都会清空之前的状态
-      </n-tooltip>
+        </TooltipTrigger>
+        <TooltipContent>
+          默认开始前都会清空之前的状态
+        </TooltipContent>
+      </Tooltip>
 
-      <button
-        class="py-1 text-3.5 btn bg-#18a058! hover:bg-green-7!"
-        @click="() => {
-          config.isFetchAll = true
-        }"
-      >
-        重置为所有微博
-      </button>
-    </div>
-
-    <div>
-      <n-checkbox
-        v-if="!config.weiboOnly"
-        v-model:checked="config.followingsOnly"
+      <CheckboxLabel
+        v-if="!configStore.config.weiboOnly"
+        id="followingsOnly"
+        v-model="configStore.config.followingsOnly"
         label="只导出关注列表"
-        size="small"
       />
-      <n-checkbox
-        v-if="!config.followingsOnly"
-        v-model:checked="config.weiboOnly"
+      <CheckboxLabel
+        v-if="!configStore.config.followingsOnly"
+        id="weiboOnly"
+        v-model="configStore.config.weiboOnly"
         label="只导出微博"
-        size="small"
       />
     </div>
 
     <div
-      v-show="config.hasComment"
+      v-show="configStore.config.hasComment"
       class="flex items-center gap-4"
     >
-      <span>要获取的评论数（最多20条）</span>
-      <n-input-number
-        v-model="config.commentCount"
-        size="small"
+      <Label
+        class="min-w-fit"
+      >要获取的评论数（最多20条）</Label>
+      <Select
+        v-model="configStore.config.commentCount"
         class="w-26"
-        :default-value="6"
-        :min="0"
-        :max="20"
-      />
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="选择评论数" />
+        </SelectTrigger>
+        <SelectContent
+          to="#plugin-app"
+        >
+          <SelectItem v-for="n in [0, 1, 2, 3, 4]" :key="n * 5" :value="n * 5">
+            {{ n * 5 ? `${n * 5}条` : '没有' }}评论
+          </SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   </div>
 </template>
 
 <style scoped>
 @import url('./reset.css');
+
+.options button {
+  padding: 0;
+}
 </style>

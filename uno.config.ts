@@ -3,10 +3,12 @@ import {
   presetAttributify,
   presetIcons,
   presetTypography,
-  presetUno,
+  presetWind3,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import presetAnimations from 'unocss-preset-animations'
+import { presetShadcn } from 'unocss-preset-shadcn'
 
 export default defineConfig({
   theme: {
@@ -17,6 +19,10 @@ export default defineConfig({
       'p-4': '#e8ccc7',
       'p-5': '#7d8bae',
       'p-6': '#45496a',
+      'primary': '#ea8011',
+      'primary-foreground': '#fff',
+      'secondary': '#18a058',
+      'secondary-foreground': '#fff',
     },
   },
   shortcuts: [
@@ -33,12 +39,14 @@ export default defineConfig({
     },
   ],
   presets: [
-    presetUno(),
+    presetWind3(),
     presetAttributify(),
     presetIcons({
       scale: 1.2,
     }),
     presetTypography(),
+    presetAnimations(),
+    presetShadcn(),
   ],
   transformers: [
     transformerDirectives(),
@@ -47,4 +55,9 @@ export default defineConfig({
   safelist: [
     'i-tabler:photo',
   ],
+  content: {
+    pipeline: {
+      include: [/\.(vue|ts|tsx|html)($|\?)/],
+    },
+  },
 })

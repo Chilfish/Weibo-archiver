@@ -16,7 +16,7 @@
     "p-timeout": "^6.1.2"
   },
   "dependencies": {
-    "@unhead/vue": "^1.11.19",
+    "@unhead/vue": "^1.11.20",
     "@vueuse/core": "^12.7.0",
     "@vueuse/router": "^12.7.0",
     "pinia": "^3.0.1",
@@ -29,10 +29,6 @@
     "@weibo-archiver/core": "workspace:^",
     "@weibo-archiver/shared": "workspace:^",
     "@weibo-archiver/ui": "workspace:^",
-    "unocss": "^66.0.0",
-    "unocss-preset-animations": "^1.1.1",
-    "unocss-preset-shadcn": "^0.3.2",
-    "unplugin-vue-components": "^28.4.0",
-    "vite": "^6.1.1"
+    "vite": "^6.2.0"
   }
 }

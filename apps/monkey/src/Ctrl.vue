@@ -1,87 +1,25 @@
 <script setup lang="ts">
-import { fetchFollowings } from '@shared'
-import { useMessage } from 'naive-ui'
+import { userDetail, userInfo } from '@shared'
+import { Button } from '@workspace/ui/shadcn/button'
+import { Progress } from '@workspace/ui/shadcn/progress'
+import { Minimize2 } from 'lucide-vue-next'
 
 import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
+import { useFetch } from './composables/useFetch'
 import Config from './Config.vue'
 import { useConfigStore, usePostStore } from './stores'
 
-const message = useMessage()
-
-const postStore = usePostStore()
 const configStore = useConfigStore()
-
-const isStart = ref(false)
-const isStop = ref(false)
-const isFinish = ref(false)
-const isFetchingFollowings = ref(false)
-
+const postStore = usePostStore()
 const { config } = storeToRefs(configStore)
-
-const percentage = computed(() => config.value.fetchedCount / postStore.total * 100)
-const progressText = computed(() => () => `${config.value.fetchedCount}/${postStore.total} 条`)
-
-const { pause, start } = fetchPosts({
-  fetchOptions: () => ({
-    ...config.value,
-    savePost: post => postStore.add(post),
-  }),
-  setTotal: total => postStore.total = total,
-  onFinish: async () => {
-    if (!config.value.weiboOnly) {
-      message.success('获取完毕~，正在获取关注列表')
-      isFetchingFollowings.value = true
-      await fetchFollowings(
-        config.value.uid,
-        async data => postStore.addFollowings(data),
-      )
-    }
-
-    await postStore.exportDatas()
-
-    isStart.value = false
-    isFinish.value = true
-    config.value.curPage--
-  },
-})
-
-async function startFetch() {
-  message.info('开始爬取中，请稍等~', {
-    duration: 5000,
-  })
-
-  await postStore.setDB()
-
-  isStart.value = true
-  isFinish.value = false
-  isStop.value = false
-  isFetchingFollowings.value = false
-
-  // 如果只获取关注列表
-  if (config.value.followingsOnly) {
-    isFetchingFollowings.value = true
-    await fetchFollowings(
-      config.value.uid,
-      async data => postStore.addFollowings(data),
-    )
-    await postStore.exportFollowings()
-    isStart.value = false
-    isFinish.value = true
-    return
-  }
-
-  // 如果是重新开始，不保留上次 fetch 的状态
-  if (!config.value.restore || !config.value.isFetchAll)
-    await postStore.reset()
-
-  await postStore.setCount()
-  await postStore.setUser()
-
-  await start()
-}
-
-window.$message = message;
-(globalThis as any).fetchOptions = toRaw(config.value)
+const { progress } = storeToRefs(postStore)
+const {
+  state,
+  startButtonText,
+  startFetch,
+  toggleStop,
+} = useFetch()
 
 /**
  * 初始化用户信息
@@ -92,29 +30,11 @@ async function init() {
 
   postStore.userInfo = await userDetail(uid)
   console.log('userInfo', postStore.userInfo)
-  configStore.setConfig({ uid, name })
+  configStore.updateConfig({ uid, name })
 }
 
 onMounted(async () => {
   await init()
-})
-
-function toggleStop() {
-  isStop.value = !isStop.value
-  if (isStop.value)
-    pause()
-  else
-    start()
-}
-
-const startButtonText = computed(() => {
-  if (config.value.followingsOnly)
-    return '获取关注列表'
-
-  if (isStop.value)
-    return `重新开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
-
-  return `开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
 })
 
 const {
@@ -132,108 +52,91 @@ const {
         Weibo archiver <span class="ml-1 text-3">(v{{ VITE_APP_VERSION }})</span>
       </h2>
 
-      <button
+      <Button
         title="最小化"
+        variant="ghost"
         @click="configStore.toggleMinimize"
       >
-        <i class="i-tabler:arrows-minimize icon" />
-      </button>
+        <Minimize2 />
+      </Button>
     </div>
 
-    <h3 class="">
+    <h3>
       用户名: @{{ config.name }}
     </h3>
 
-    <n-alert type="info">
-      <p>
-        导出完毕后，可在
-        <a
-          href="https://weibo.chilfish.top"
-          target="_blank"
-        >
-          预览页
-        </a>
-        中导入数据查看
-      </p>
-    </n-alert>
-
     <Config />
 
-    <n-progress
-      type="line"
-      :percentage="percentage"
-    >
-      {{ progressText() }}
-    </n-progress>
+    <div class="flex items-center gap-2">
+      <Progress
+        :model-value="progress.percentage"
+      />
 
-    <div class="btns flex gap-2">
-      <button
-        v-show="!isStart || isStop"
+      <div class="min-w-fit">
+        {{ progress.fetchedCount }}/{{ progress.total }}
+      </div>
+    </div>
+
+    <div class="flex gap-2">
+      <Button
+        v-show="!state.isStart || state.isStop"
         @click="startFetch"
       >
         {{ startButtonText }}
-      </button>
+      </Button>
 
       <div
-        v-show="isStart && !isFinish && !isStop"
+        v-show="state.isStart && !state.isFinish && !state.isStop"
         class="center"
       >
-        正在获取{{ isFetchingFollowings ? '关注列表' : '微博' }} ~
+        正在获取{{ state.isFetchingFollowings ? '关注列表' : '微博' }} ~
       </div>
 
-      <button
-        v-show="isStart && !isFinish"
+      <Button
+        v-show="state.isStart && !state.isFinish"
         @click="toggleStop"
       >
-        {{ isStop ? '继续' : '暂停' }}
-      </button>
+        {{ state.isStop ? '继续' : '暂停' }}
+      </Button>
 
-      <button
-        v-show="isFinish || isStop"
-        @click="postStore.exportDatas"
+      <Button
+        v-show="state.isFinish || state.isStop"
+        @click="postStore.exportAllData"
       >
         导出
-      </button>
+      </Button>
     </div>
   </div>
 
   <div
-    class="card minimize shadow-xl"
+    v-show="config.isMinimize"
+    class="card w-16 shadow-xl p-2!"
     @click="configStore.toggleMinimize"
   >
     <img
       src="https://p.chilfish.top/weibo/icon.webp"
       alt="Weibo archiver logo"
-      class="h-14 w-14"
     >
   </div>
 </template>
 
 <style scoped>
-@import url('./reset.css');
-
 p {
   color: black !important;
 }
 
 .card {
   position: fixed;
-  right: 1rem; /* 16px */
-  top: 5rem; /* 80px */
-  z-index: 999;
+  right: 1rem;
+  top: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem; /* 16px */
-  border-radius: 0.5rem; /* 8px */
-  padding: 1rem; /* 16px */
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
   background-color: white;
   color: black;
   transition: all 0.3s ease-in-out;
-}
-
-.minimize {
-  z-index: 0;
-  padding: 6px;
 }
 </style>

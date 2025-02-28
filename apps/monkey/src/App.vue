@@ -1,26 +1,25 @@
 <script setup lang="ts">
-import AppMain from '@ui/AppMain.vue'
+import { Toaster } from '@workspace/ui/shadcn/toast'
+import { TooltipProvider } from '@workspace/ui/shadcn/tooltip'
 import Ctrl from './Ctrl.vue'
-
-import 'uno.css'
-import '@ui/shared.css'
 </script>
 
 <template>
-  <AppMain>
+  <TooltipProvider>
     <Ctrl />
-  </AppMain>
+    <Toaster />
+  </TooltipProvider>
 </template>
 
-<style lang="scss">
-.n-base-clear {
-  display: none !important;
+<style>
+#plugin-app {
+  z-index: 100;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-#plugin-app {
- &,
- & p {
-   font-size: 13px;
-  }
+:root {
+  font-size: 14px;
 }
 </style>

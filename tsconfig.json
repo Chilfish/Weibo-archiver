@@ -12,7 +12,8 @@
     "paths": {
       "@core/*": ["packages/core/src/*"],
       "@shared": ["packages/shared/src/index.ts"],
-      "@ui/*": ["packages/ui/src/*"]
+      "@ui/*": ["packages/ui/src/*"],
+      "@workspace/*": ["packages/*"]
     },
     "types": [
       "vite/client",
