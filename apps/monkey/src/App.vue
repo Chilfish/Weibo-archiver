@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Toaster } from '@workspace/ui/shadcn/toast'
 import { TooltipProvider } from '@workspace/ui/shadcn/tooltip'
 import Ctrl from './Ctrl.vue'
 </script>
@@ -6,6 +7,7 @@ import Ctrl from './Ctrl.vue'
 <template>
   <TooltipProvider>
     <Ctrl />
+    <Toaster />
   </TooltipProvider>
 </template>
 

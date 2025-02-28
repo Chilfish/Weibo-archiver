@@ -1,134 +1,125 @@
 import type { Post, UID, UserBio, UserInfo } from '@shared'
+import type { FetchProgress } from '../types'
+import { exportData } from '@core/utils'
 import { EmptyIDB, IDB } from '@core/utils/storage'
-
-import saveAs from 'file-saver'
 import { defineStore, storeToRefs } from 'pinia'
+import { computed, reactive, ref, toRaw } from 'vue'
 import { useConfigStore } from './configStore'
 
 export const usePostStore = defineStore('post', () => {
-  /* 获取到的所有帖子，但会卡内存 */
-  // const posts = shallowRef([] as Post[])
-
   const userInfo = ref<UserInfo | null>(null)
-
   const configStore = useConfigStore()
   const { config } = storeToRefs(configStore)
 
-  /* 每页的帖子数量 */
-  const pageSize = ref(20)
+  const state = reactive({
+    pageSize: 20,
+    total: 0,
+    idb: new EmptyIDB() as IDB,
+  })
 
-  /* 总帖子数 */
-  const total = ref(0)
+  const progress = computed<FetchProgress>(() => ({
+    percentage: (config.value.fetchedCount / state.total) * 100 || 0,
+    fetchedCount: config.value.fetchedCount,
+    total: state.total,
+  }))
 
-  const idb = ref<IDB>(new EmptyIDB())
-
-  async function setDB() {
+  async function initializeDB() {
     const wrappedUid = `uid-${config.value.uid}` as UID
-    if (idb.value.name === wrappedUid)
+    if (state.idb.name === wrappedUid)
       return
-    idb.value = new IDB(wrappedUid)
 
-    await idb.value.clearFollowings()
+    state.idb = new IDB(wrappedUid)
+    await state.idb.clearFollowings()
+    await waitForDBInitialization()
   }
 
-  /**
-   * 等待 IDB 初始化完成
-   */
-  async function waitIDB() {
+  async function waitForDBInitialization() {
     const dbName = `uid-${config.value.uid}`
-
-    while (idb.value.name !== dbName)
+    while (state.idb.name !== dbName) {
       await new Promise(r => setTimeout(r, 300))
+    }
   }
 
-  /**
-   * 重置 fetch 状态
-   */
-  async function reset() {
-    total.value = 0
-    pageSize.value = 20
-    configStore.setConfig({
+  async function resetState() {
+    state.total = 0
+    state.pageSize = 20
+    configStore.updateConfig({
       curPage: 0,
       fetchedCount: 0,
     })
 
-    await setDB()
-    await idb.value.clearDB()
+    await initializeDB()
+    await state.idb.clearDB()
   }
 
-  /**
-   * 添加帖子
-   */
-  async function add(newPost: Post) {
-    await waitIDB()
-    await idb.value.addDBPost(newPost)
-    config.value.fetchedCount += 1
-
-    config.value.curPage = Math.ceil(config.value.fetchedCount / 20)
+  async function addPost(newPost: Post) {
+    try {
+      await state.idb.addDBPost(newPost)
+      configStore.updateConfig({
+        fetchedCount: config.value.fetchedCount + 1,
+        curPage: Math.ceil((config.value.fetchedCount + 1) / 20),
+      })
+    }
+    catch (error) {
+      console.error('Failed to add post:', error)
+      throw new Error('Failed to add post to database')
+    }
   }
 
-  async function getAll() {
-    await waitIDB()
-    return await idb.value.getAllDBPosts()
+  async function getAllPosts() {
+    return await state.idb.getAllDBPosts()
   }
 
-  async function setCount() {
-    await waitIDB()
-    const count = await idb.value.getPostCount()
-    configStore.setConfig({ fetchedCount: count })
+  async function updatePostCount() {
+    const count = await state.idb.getPostCount()
+    configStore.updateConfig({ fetchedCount: count })
   }
 
-  async function setUser() {
+  async function updateUserInfo() {
     if (!userInfo.value)
       return
-    await waitIDB()
-
-    const user = toRaw(userInfo.value)
-    await idb.value.setUserInfo(user)
+    await state.idb.setUserInfo(toRaw(userInfo.value))
   }
 
-  async function addFollowings(followings: UserBio[]) {
-    await waitIDB()
-    await idb.value.addFollowings(followings)
+  async function addFollowingUsers(followings: UserBio[]) {
+    await state.idb.addFollowings(followings)
   }
 
-  async function exportFollowings() {
-    await waitIDB()
-    const data = await idb.value.getFollowings()
+  async function exportFollowingUsers() {
+    const data = await state.idb.getFollowings()
     return await exportData([], userInfo.value, data)
   }
 
-  /**
-   * 导出数据
-   */
-  async function exportDatas() {
-    const posts = await getAll()
-    console.log('导出的数量：', posts.length)
+  async function exportAllData() {
+    try {
+      const posts = await getAllPosts()
+      console.log('Exporting posts count:', posts.length)
 
-    const followings = config.value.weiboOnly
-      ? []
-      : await idb.value.getFollowings()
+      const followings = config.value.weiboOnly
+        ? []
+        : await state.idb.getFollowings()
 
-    const res = await exportData(posts, userInfo.value, followings)
-    if (!res)
-      return
-    const scripts = 'https://github.com/Chilfish/Weibo-archiver/raw/monkey/scripts.zip'
-    saveAs(scripts, 'weibo-archiver-scripts.zip')
+      await exportData(posts, userInfo.value, followings)
+    }
+    catch (error) {
+      console.error('Failed to export data:', error)
+      throw new Error('Failed to export data')
+    }
   }
 
   return {
-    total,
-    pageSize,
     userInfo,
+    progress,
+    state,
 
-    setDB,
-    add,
-    reset,
-    getAll,
-    setCount,
-    setUser,
-    exportDatas,
-    addFollowings,
-    exportFollowings,
+    initializeDB,
+    addPost,
+    resetState,
+    getAllPosts,
+    updatePostCount,
+    updateUserInfo,
+    exportAllData,
+    addFollowingUsers,
+    exportFollowingUsers,
   }
 })

@@ -15,10 +15,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@workspace/ui/shadcn/tooltip'
-import { storeToRefs } from 'pinia'
 import { useConfigStore } from './stores'
 
-const { config } = storeToRefs(useConfigStore())
+const configStore = useConfigStore()
+
 const now = new Date()
 const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
 </script>
@@ -33,14 +33,15 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       <div class="max-w-fit flex items-center justify-between gap-3">
         <Input
           id="startAt"
-          v-model="config.startAt"
+          v-model="configStore.config.startAt"
           type="date"
+          :max="tomorrow"
         />
         <span>  至   </span>
 
         <Input
           id="endAt"
-          v-model="config.endAt"
+          v-model="configStore.config.endAt"
           type="date"
           :max="tomorrow"
         />
@@ -52,7 +53,7 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
     >
       <CheckboxLabel
         id="largePic"
-        v-model="config.largePic"
+        v-model="configStore.config.largePic"
         label="使用原图"
       />
 
@@ -60,7 +61,7 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
         <TooltipTrigger>
           <CheckboxLabel
             id="hasComment"
-            v-model="config.hasComment"
+            v-model="configStore.config.hasComment"
             label="包含评论"
           />
         </TooltipTrigger>
@@ -72,7 +73,7 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
         <TooltipTrigger>
           <CheckboxLabel
             id="hasRepost"
-            v-model="config.hasRepost"
+            v-model="configStore.config.hasRepost"
             label="包含转发的微博"
           />
         </TooltipTrigger>
@@ -83,9 +84,9 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       <Tooltip>
         <TooltipTrigger>
           <CheckboxLabel
-            v-show="config.hasRepost"
+            v-show="configStore.config.hasRepost"
             id="repostPic"
-            v-model="config.repostPic"
+            v-model="configStore.config.repostPic"
             label="导出转发的图片"
           />
         </TooltipTrigger>
@@ -98,7 +99,7 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
         <TooltipTrigger>
           <CheckboxLabel
             id="restore"
-            v-model="config.restore"
+            v-model="configStore.config.restore"
             label="继续上次的记录"
           />
         </TooltipTrigger>
@@ -108,28 +109,28 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       </Tooltip>
 
       <CheckboxLabel
-        v-if="!config.weiboOnly"
+        v-if="!configStore.config.weiboOnly"
         id="followingsOnly"
-        v-model="config.followingsOnly"
+        v-model="configStore.config.followingsOnly"
         label="只导出关注列表"
       />
       <CheckboxLabel
-        v-if="!config.followingsOnly"
+        v-if="!configStore.config.followingsOnly"
         id="weiboOnly"
-        v-model="config.weiboOnly"
+        v-model="configStore.config.weiboOnly"
         label="只导出微博"
       />
     </div>
 
     <div
-      v-show="config.hasComment"
+      v-show="configStore.config.hasComment"
       class="flex items-center gap-4"
     >
       <Label
         class="min-w-fit"
       >要获取的评论数（最多20条）</Label>
       <Select
-        v-model="config.commentCount"
+        v-model="configStore.config.commentCount"
         class="w-26"
       >
         <SelectTrigger>

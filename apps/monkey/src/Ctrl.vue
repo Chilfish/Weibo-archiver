@@ -1,88 +1,25 @@
 <script setup lang="ts">
-import { fetchFollowings } from '@shared'
+import { userDetail, userInfo } from '@shared'
 import { Button } from '@workspace/ui/shadcn/button'
 import { Progress } from '@workspace/ui/shadcn/progress'
-import { useToast } from '@workspace/ui/shadcn/toast'
-
 import { Minimize2 } from 'lucide-vue-next'
 
 import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
+import { useFetch } from './composables/useFetch'
 import Config from './Config.vue'
 import { useConfigStore, usePostStore } from './stores'
 
-const toast = useToast()
-
-const postStore = usePostStore()
 const configStore = useConfigStore()
-
-const isStart = ref(false)
-const isStop = ref(false)
-const isFinish = ref(false)
-const isFetchingFollowings = ref(false)
-
+const postStore = usePostStore()
 const { config } = storeToRefs(configStore)
-
-const percentage = computed(() => config.value.fetchedCount / postStore.total * 100 || 0)
-const progressText = computed(() => `${config.value.fetchedCount}/${postStore.total} 条`)
-
-const { pause, start } = fetchPosts({
-  fetchOptions: () => ({
-    ...config.value,
-    savePost: post => postStore.add(post),
-  }),
-  setTotal: total => postStore.total = total,
-  onFinish: async () => {
-    if (!config.value.weiboOnly) {
-      toast.success('获取完毕~，正在获取关注列表')
-      isFetchingFollowings.value = true
-      await fetchFollowings(
-        config.value.uid,
-        async data => postStore.addFollowings(data),
-      )
-    }
-
-    await postStore.exportDatas()
-
-    isStart.value = false
-    isFinish.value = true
-    config.value.curPage--
-  },
-})
-
-async function startFetch() {
-  toast.info('开始爬取中，请稍等~')
-
-  await postStore.setDB()
-
-  isStart.value = true
-  isFinish.value = false
-  isStop.value = false
-  isFetchingFollowings.value = false
-
-  // 如果只获取关注列表
-  if (config.value.followingsOnly) {
-    isFetchingFollowings.value = true
-    await fetchFollowings(
-      config.value.uid,
-      async data => postStore.addFollowings(data),
-    )
-    await postStore.exportFollowings()
-    isStart.value = false
-    isFinish.value = true
-    return
-  }
-
-  // 如果是重新开始，不保留上次 fetch 的状态
-  if (!config.value.restore || !config.value.isFetchAll)
-    await postStore.reset()
-
-  await postStore.setCount()
-  await postStore.setUser()
-
-  await start()
-}
-
-(globalThis as any).fetchOptions = toRaw(config.value)
+const { progress } = storeToRefs(postStore)
+const {
+  state,
+  startButtonText,
+  startFetch,
+  toggleStop,
+} = useFetch()
 
 /**
  * 初始化用户信息
@@ -93,29 +30,11 @@ async function init() {
 
   postStore.userInfo = await userDetail(uid)
   console.log('userInfo', postStore.userInfo)
-  configStore.setConfig({ uid, name })
+  configStore.updateConfig({ uid, name })
 }
 
 onMounted(async () => {
   await init()
-})
-
-function toggleStop() {
-  isStop.value = !isStop.value
-  if (isStop.value)
-    pause()
-  else
-    start()
-}
-
-const startButtonText = computed(() => {
-  if (config.value.followingsOnly)
-    return '获取关注列表'
-
-  if (isStop.value)
-    return `重新开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
-
-  return `开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
 })
 
 const {
@@ -142,7 +61,7 @@ const {
       </Button>
     </div>
 
-    <h3 class="">
+    <h3>
       用户名: @{{ config.name }}
     </h3>
 
@@ -150,38 +69,39 @@ const {
 
     <div class="flex items-center gap-2">
       <Progress
-        :model-value="percentage"
+        :model-value="progress.percentage"
       />
 
       <div class="min-w-fit">
-        {{ progressText }}
+        {{ progress.fetchedCount }}/{{ progress.total }}
       </div>
     </div>
+
     <div class="flex gap-2">
       <Button
-        v-show="!isStart || isStop"
+        v-show="!state.isStart || state.isStop"
         @click="startFetch"
       >
         {{ startButtonText }}
       </Button>
 
       <div
-        v-show="isStart && !isFinish && !isStop"
+        v-show="state.isStart && !state.isFinish && !state.isStop"
         class="center"
       >
-        正在获取{{ isFetchingFollowings ? '关注列表' : '微博' }} ~
+        正在获取{{ state.isFetchingFollowings ? '关注列表' : '微博' }} ~
       </div>
 
       <Button
-        v-show="isStart && !isFinish"
+        v-show="state.isStart && !state.isFinish"
         @click="toggleStop"
       >
-        {{ isStop ? '继续' : '暂停' }}
+        {{ state.isStop ? '继续' : '暂停' }}
       </Button>
 
       <Button
-        v-show="isFinish || isStop"
-        @click="postStore.exportDatas"
+        v-show="state.isFinish || state.isStop"
+        @click="postStore.exportAllData"
       >
         导出
       </Button>
@@ -207,14 +127,14 @@ p {
 
 .card {
   position: fixed;
-  right: 1rem; /* 16px */
-  top: 5rem; /* 80px */
+  right: 1rem;
+  top: 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem; /* 16px */
-  border-radius: 0.5rem; /* 8px */
-  padding: 1rem; /* 16px */
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
   background-color: white;
   color: black;
   transition: all 0.3s ease-in-out;

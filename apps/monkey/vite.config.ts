@@ -1,7 +1,6 @@
 import path from 'node:path'
 import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 import monkey, { cdn, util } from 'vite-plugin-monkey'
 
@@ -33,19 +32,6 @@ export default defineConfig({
   plugins: [
     Vue(),
     UnoCSS(),
-    AutoImport({
-      imports: [
-        'vue',
-        '@vueuse/core',
-        util.unimportPreset,
-      ],
-      dts: path.resolve(shared, 'types/auto-imports.d.ts'),
-      dirs: [
-        core,
-        ui,
-        shared,
-      ],
-    }),
 
     monkey({
       entry: 'src/main.ts',

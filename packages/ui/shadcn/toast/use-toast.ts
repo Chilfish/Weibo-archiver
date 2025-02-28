@@ -1,6 +1,6 @@
 import type { Component, VNode } from 'vue'
 import type { ToastProps } from '.'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
@@ -123,6 +123,8 @@ function dispatch(action: Action) {
 
 function useToast() {
   return {
+    toasts: computed(() => state.value.toasts),
+    toast,
     success: (message: string) => toast({
       title: '成功',
       description: message,
