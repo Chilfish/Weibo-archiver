@@ -3,19 +3,16 @@ import { userDetail, userInfo } from '@shared'
 import { Button } from '@workspace/ui/shadcn/button'
 import { Progress } from '@workspace/ui/shadcn/progress'
 import { Minimize2 } from 'lucide-vue-next'
-
-import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
-import { useFetch } from './composables/useFetch'
-import Config from './Config.vue'
-import { useConfigStore, usePostStore } from './stores'
 
-const configStore = useConfigStore()
-const postStore = usePostStore()
-const { config } = storeToRefs(configStore)
-const { progress } = storeToRefs(postStore)
+import { config, useConfig } from './composables/useConfig'
+import { fetchState, useFetch } from './composables/useFetch'
+import { usePost } from './composables/usePost'
+import Config from './Config.vue'
+
+const { toggleMinimize, updateConfig } = useConfig()
+const post = usePost()
 const {
-  state,
   startButtonText,
   startFetch,
   toggleStop,
@@ -28,9 +25,9 @@ async function init() {
   const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
   const { uid, name } = await userInfo({ id })
 
-  postStore.userInfo = await userDetail(uid)
-  console.log('userInfo', postStore.userInfo)
-  configStore.updateConfig({ uid, name })
+  post.userInfo.value = await userDetail(uid)
+  console.log('userInfo', post.userInfo.value)
+  updateConfig({ uid, name })
 }
 
 onMounted(async () => {
@@ -55,7 +52,7 @@ const {
       <Button
         title="最小化"
         variant="ghost"
-        @click="configStore.toggleMinimize"
+        @click="toggleMinimize"
       >
         <Minimize2 />
       </Button>
@@ -69,39 +66,39 @@ const {
 
     <div class="flex items-center gap-2">
       <Progress
-        :model-value="progress.percentage"
+        :model-value="post.progress.value.percentage"
       />
 
       <div class="min-w-fit">
-        {{ progress.fetchedCount }}/{{ progress.total }}
+        {{ post.progress.value.fetchedCount }}/{{ post.progress.value.total }}
       </div>
     </div>
 
     <div class="flex gap-2">
       <Button
-        v-show="!state.isStart || state.isStop"
+        v-show="!fetchState.isStart || fetchState.isStop"
         @click="startFetch"
       >
         {{ startButtonText }}
       </Button>
 
       <div
-        v-show="state.isStart && !state.isFinish && !state.isStop"
+        v-show="fetchState.isStart && !fetchState.isFinish && !fetchState.isStop"
         class="center"
       >
-        正在获取{{ state.isFetchingFollowings ? '关注列表' : '微博' }} ~
+        正在获取{{ fetchState.isFetchingFollowings ? '关注列表' : '微博' }} ~
       </div>
 
       <Button
-        v-show="state.isStart && !state.isFinish"
+        v-show="fetchState.isStart && !fetchState.isFinish"
         @click="toggleStop"
       >
-        {{ state.isStop ? '继续' : '暂停' }}
+        {{ fetchState.isStop ? '继续' : '暂停' }}
       </Button>
 
       <Button
-        v-show="state.isFinish || state.isStop"
-        @click="postStore.exportAllData"
+        v-show="fetchState.isFinish || fetchState.isStop"
+        @click="post.exportAllData"
       >
         导出
       </Button>
@@ -111,7 +108,7 @@ const {
   <div
     v-show="config.isMinimize"
     class="card w-16 shadow-xl p-2!"
-    @click="configStore.toggleMinimize"
+    @click="toggleMinimize"
   >
     <img
       src="https://p.chilfish.top/weibo/icon.webp"

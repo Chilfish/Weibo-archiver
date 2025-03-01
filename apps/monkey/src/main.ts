@@ -1,4 +1,3 @@
-import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -12,8 +11,6 @@ const div = document.createElement('div')
 div.id = 'plugin-app'
 document.body.append(div)
 
-app
-  .use(createPinia())
-  .mount(div)
+app.mount(div)
 
 console.log('weibo-archiver 加载成功')

@@ -1,7 +1,6 @@
 import type { UserConfig } from '../types'
 import { useStorage } from '@vueuse/core'
-import { defineStore } from 'pinia'
-import { toRaw } from 'vue'
+import { toRaw, watch } from 'vue'
 
 const STORAGE_KEY = 'weibo-archiver'
 
@@ -25,21 +24,16 @@ const createInitialConfig = (): UserConfig => ({
   endAt: Date.now(),
 })
 
-export const useConfigStore = defineStore('config', () => {
-  const config = useStorage<UserConfig>(
-    STORAGE_KEY,
-    createInitialConfig(),
-    localStorage,
-    { mergeDefaults: true },
-  )
+// 全局配置状态
+export const config = useStorage<UserConfig>(
+  STORAGE_KEY,
+  createInitialConfig(),
+  localStorage,
+  { mergeDefaults: true },
+)
 
+export function useConfig() {
   function updateConfig(newConfig: Partial<UserConfig>) {
-    const { startAt, endAt } = newConfig
-    if (startAt && endAt) {
-      newConfig.isFetchAll = false
-      newConfig.startAt = new Date(startAt).getTime()
-      newConfig.endAt = new Date(endAt).getTime()
-    }
     Object.assign(config.value, newConfig)
     updateGlobalFetchOptions()
   }
@@ -59,10 +53,19 @@ export const useConfigStore = defineStore('config', () => {
     updateGlobalFetchOptions()
   }
 
+  watch(config, (newConfig) => {
+    const { startAt, endAt } = newConfig
+    if (startAt && endAt) {
+      newConfig.isFetchAll = false
+      newConfig.startAt = new Date(startAt).getTime()
+      newConfig.endAt = new Date(endAt).getTime()
+    }
+  }, { immediate: true })
+
   return {
     config,
     updateConfig,
     toggleMinimize,
     resetConfig,
   }
-})
+}

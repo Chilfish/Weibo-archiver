@@ -2,7 +2,6 @@
 import { CheckboxLabel } from '@workspace/ui/shadcn/checkbox'
 import { Input } from '@workspace/ui/shadcn/input'
 import Label from '@workspace/ui/shadcn/label/Label.vue'
-
 import {
   Select,
   SelectContent,
@@ -15,9 +14,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@workspace/ui/shadcn/tooltip'
-import { useConfigStore } from './stores'
-
-const configStore = useConfigStore()
+import { config } from './composables/useConfig'
 
 const now = new Date()
 const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
@@ -30,21 +27,32 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
         请选择要存档的范围，默认为所有微博
       </Label>
 
-      <div class="max-w-fit flex items-center justify-between gap-3">
-        <Input
-          id="startAt"
-          v-model="configStore.config.startAt"
-          type="date"
-          :max="tomorrow"
-        />
-        <span>  至   </span>
+      <div class="date-range-picker">
+        <div class="date-input-group">
+          <Label for="startAt" class="text-xs text-gray-500">开始日期</Label>
+          <Input
+            id="startAt"
+            v-model="config.startAt"
+            type="date"
+            :max="tomorrow"
+            class="date-input"
+          />
+        </div>
 
-        <Input
-          id="endAt"
-          v-model="configStore.config.endAt"
-          type="date"
-          :max="tomorrow"
-        />
+        <div class="divider">
+          至
+        </div>
+
+        <div class="date-input-group">
+          <Label for="endAt" class="text-xs text-gray-500">结束日期</Label>
+          <Input
+            id="endAt"
+            v-model="config.endAt"
+            type="date"
+            :max="tomorrow"
+            class="date-input"
+          />
+        </div>
       </div>
     </div>
 
@@ -53,15 +61,17 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
     >
       <CheckboxLabel
         id="largePic"
-        v-model="configStore.config.largePic"
+        v-model="config.largePic"
         label="使用原图"
       />
 
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger
+          as="div"
+        >
           <CheckboxLabel
             id="hasComment"
-            v-model="configStore.config.hasComment"
+            v-model="config.hasComment"
             label="包含评论"
           />
         </TooltipTrigger>
@@ -70,10 +80,12 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
         </TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger
+          as="div"
+        >
           <CheckboxLabel
             id="hasRepost"
-            v-model="configStore.config.hasRepost"
+            v-model="config.hasRepost"
             label="包含转发的微博"
           />
         </TooltipTrigger>
@@ -82,11 +94,13 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
         </TooltipContent>
       </Tooltip>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger
+          as="div"
+        >
           <CheckboxLabel
-            v-show="configStore.config.hasRepost"
+            v-show="config.hasRepost"
             id="repostPic"
-            v-model="configStore.config.repostPic"
+            v-model="config.repostPic"
             label="导出转发的图片"
           />
         </TooltipTrigger>
@@ -96,10 +110,12 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       </Tooltip>
 
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger
+          as="div"
+        >
           <CheckboxLabel
             id="restore"
-            v-model="configStore.config.restore"
+            v-model="config.restore"
             label="继续上次的记录"
           />
         </TooltipTrigger>
@@ -109,28 +125,28 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       </Tooltip>
 
       <CheckboxLabel
-        v-if="!configStore.config.weiboOnly"
+        v-if="!config.weiboOnly"
         id="followingsOnly"
-        v-model="configStore.config.followingsOnly"
+        v-model="config.followingsOnly"
         label="只导出关注列表"
       />
       <CheckboxLabel
-        v-if="!configStore.config.followingsOnly"
+        v-if="!config.followingsOnly"
         id="weiboOnly"
-        v-model="configStore.config.weiboOnly"
+        v-model="config.weiboOnly"
         label="只导出微博"
       />
     </div>
 
     <div
-      v-show="configStore.config.hasComment"
+      v-show="config.hasComment"
       class="flex items-center gap-4"
     >
       <Label
         class="min-w-fit"
       >要获取的评论数（最多20条）</Label>
       <Select
-        v-model="configStore.config.commentCount"
+        v-model="config.commentCount"
         class="w-26"
       >
         <SelectTrigger>
@@ -153,5 +169,22 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
 
 .options button {
   padding: 0;
+}
+
+.date-range-picker {
+  @apply flex items-end gap-4 mt-2 max-w-fit bg-gray-50/50 p-3 rounded-lg;
+}
+
+.date-input-group {
+  @apply flex flex-col gap-1;
+}
+
+.date-input {
+  @apply px-3 py-1.5 rounded-md border-gray-200 bg-white focus:border-primary;
+  color-scheme: light;
+}
+
+.divider {
+  @apply flex items-end mb-1.5 text-gray-500 px-1;
 }
 </style>

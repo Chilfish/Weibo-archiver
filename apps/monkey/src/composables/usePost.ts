@@ -2,60 +2,59 @@ import type { Post, UID, UserBio, UserInfo } from '@shared'
 import type { FetchProgress } from '../types'
 import { exportData } from '@core/utils'
 import { EmptyIDB, IDB } from '@core/utils/storage'
-import { defineStore, storeToRefs } from 'pinia'
 import { computed, reactive, ref, toRaw } from 'vue'
-import { useConfigStore } from './configStore'
+import { config, useConfig } from './useConfig'
 
-export const usePostStore = defineStore('post', () => {
-  const userInfo = ref<UserInfo | null>(null)
-  const configStore = useConfigStore()
-  const { config } = storeToRefs(configStore)
+// 全局状态
+const userInfo = ref<UserInfo | null>(null)
+const { updateConfig } = useConfig()
 
-  const state = reactive({
-    pageSize: 20,
-    total: 0,
-    idb: new EmptyIDB() as IDB,
-  })
+export const postState = reactive({
+  pageSize: 20,
+  total: 0,
+  idb: new EmptyIDB() as IDB,
+})
 
-  const progress = computed<FetchProgress>(() => ({
-    percentage: (config.value.fetchedCount / state.total) * 100 || 0,
-    fetchedCount: config.value.fetchedCount,
-    total: state.total,
-  }))
+const progress = computed<FetchProgress>(() => ({
+  percentage: (config.value.fetchedCount / postState.total) * 100 || 0,
+  fetchedCount: config.value.fetchedCount,
+  total: postState.total,
+}))
 
+export function usePost() {
   async function initializeDB() {
     const wrappedUid = `uid-${config.value.uid}` as UID
-    if (state.idb.name === wrappedUid)
+    if (postState.idb.name === wrappedUid)
       return
 
-    state.idb = new IDB(wrappedUid)
-    await state.idb.clearFollowings()
+    postState.idb = new IDB(wrappedUid)
+    await postState.idb.clearFollowings()
     await waitForDBInitialization()
   }
 
   async function waitForDBInitialization() {
     const dbName = `uid-${config.value.uid}`
-    while (state.idb.name !== dbName) {
+    while (postState.idb.name !== dbName) {
       await new Promise(r => setTimeout(r, 300))
     }
   }
 
   async function resetState() {
-    state.total = 0
-    state.pageSize = 20
-    configStore.updateConfig({
+    postState.total = 0
+    postState.pageSize = 20
+    updateConfig({
       curPage: 0,
       fetchedCount: 0,
     })
 
     await initializeDB()
-    await state.idb.clearDB()
+    await postState.idb.clearDB()
   }
 
   async function addPost(newPost: Post) {
     try {
-      await state.idb.addDBPost(newPost)
-      configStore.updateConfig({
+      await postState.idb.addDBPost(newPost)
+      updateConfig({
         fetchedCount: config.value.fetchedCount + 1,
         curPage: Math.ceil((config.value.fetchedCount + 1) / 20),
       })
@@ -67,26 +66,26 @@ export const usePostStore = defineStore('post', () => {
   }
 
   async function getAllPosts() {
-    return await state.idb.getAllDBPosts()
+    return await postState.idb.getAllDBPosts()
   }
 
   async function updatePostCount() {
-    const count = await state.idb.getPostCount()
-    configStore.updateConfig({ fetchedCount: count })
+    const count = await postState.idb.getPostCount()
+    updateConfig({ fetchedCount: count })
   }
 
   async function updateUserInfo() {
     if (!userInfo.value)
       return
-    await state.idb.setUserInfo(toRaw(userInfo.value))
+    await postState.idb.setUserInfo(toRaw(userInfo.value))
   }
 
   async function addFollowingUsers(followings: UserBio[]) {
-    await state.idb.addFollowings(followings)
+    await postState.idb.addFollowings(followings)
   }
 
   async function exportFollowingUsers() {
-    const data = await state.idb.getFollowings()
+    const data = await postState.idb.getFollowings()
     return await exportData([], userInfo.value, data)
   }
 
@@ -97,7 +96,7 @@ export const usePostStore = defineStore('post', () => {
 
       const followings = config.value.weiboOnly
         ? []
-        : await state.idb.getFollowings()
+        : await postState.idb.getFollowings()
 
       await exportData(posts, userInfo.value, followings)
     }
@@ -110,7 +109,7 @@ export const usePostStore = defineStore('post', () => {
   return {
     userInfo,
     progress,
-    state,
+    state: postState,
 
     initializeDB,
     addPost,
@@ -122,4 +121,4 @@ export const usePostStore = defineStore('post', () => {
     addFollowingUsers,
     exportFollowingUsers,
   }
-})
+}

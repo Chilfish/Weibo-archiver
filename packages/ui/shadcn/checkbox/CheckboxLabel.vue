@@ -20,7 +20,7 @@ const model = defineModel<boolean>({ required: true })
       v-model="model"
       :class="props.class"
     />
-    <Label :for="id">
+    <Label :for="id" class="cursor-pointer select-none text-sm">
       {{ label }}
     </Label>
   </div>
@@ -28,6 +28,6 @@ const model = defineModel<boolean>({ required: true })
 
 <style>
 .sd-checkbox-label {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-3 hover:opacity-90;
 }
 </style>
