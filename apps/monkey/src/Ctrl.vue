@@ -32,6 +32,7 @@ async function init() {
 
 onMounted(async () => {
   await init()
+  await post.initializeDB()
 })
 
 const {
@@ -70,7 +71,7 @@ const {
       />
 
       <div class="min-w-fit">
-        {{ post.progress.value.fetchedCount }}/{{ post.progress.value.total }}
+        {{ post.progress.value.fetchedCount }}/{{ config.total }}
       </div>
     </div>
 

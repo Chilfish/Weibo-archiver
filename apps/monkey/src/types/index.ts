@@ -8,7 +8,6 @@ export interface FetchState {
 export interface FetchProgress {
   percentage: number
   fetchedCount: number
-  total: number
 }
 
 export interface UserConfig {
@@ -29,6 +28,7 @@ export interface UserConfig {
   endAt: number
   curPage: number
   fetchedCount: number
+  total: number
 }
 
 export type FetchOptions = Omit<UserConfig, 'isMinimize' | 'restore'>

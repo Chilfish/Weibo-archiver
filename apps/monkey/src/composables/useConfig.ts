@@ -22,6 +22,7 @@ const createInitialConfig = (): UserConfig => ({
   weiboOnly: false,
   startAt: Date.now(),
   endAt: Date.now(),
+  total: 0,
 })
 
 // 全局配置状态

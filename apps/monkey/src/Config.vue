@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatDate } from '@shared'
 import { CheckboxLabel } from '@workspace/ui/shadcn/checkbox'
 import { Input } from '@workspace/ui/shadcn/input'
 import Label from '@workspace/ui/shadcn/label/Label.vue'
@@ -16,8 +17,10 @@ import {
 } from '@workspace/ui/shadcn/tooltip'
 import { config } from './composables/useConfig'
 
+const ymd = (date: Date | number) => formatDate(date, 'YYYY-MM-DD')
+
 const now = new Date()
-const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+const tomorrow = ymd(new Date(now.getTime() + 24 * 60 * 60 * 1000))
 </script>
 
 <template>
@@ -32,10 +35,11 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
           <Label for="startAt" class="text-xs text-gray-500">开始日期</Label>
           <Input
             id="startAt"
-            v-model="config.startAt"
+            :value="ymd(config.startAt)"
             type="date"
             :max="tomorrow"
             class="date-input"
+            @update:model-value="(v) => config.startAt = new Date(v).getTime()"
           />
         </div>
 
@@ -47,10 +51,11 @@ const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
           <Label for="endAt" class="text-xs text-gray-500">结束日期</Label>
           <Input
             id="endAt"
-            v-model="config.endAt"
+            :value="ymd(config.endAt)"
             type="date"
             :max="tomorrow"
             class="date-input"
+            @update:model-value="(v) => config.endAt = new Date(v).getTime()"
           />
         </div>
       </div>

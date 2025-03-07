@@ -11,14 +11,12 @@ const { updateConfig } = useConfig()
 
 export const postState = reactive({
   pageSize: 20,
-  total: 0,
   idb: new EmptyIDB() as IDB,
 })
 
 const progress = computed<FetchProgress>(() => ({
-  percentage: (config.value.fetchedCount / postState.total) * 100 || 0,
+  percentage: (config.value.fetchedCount / config.value.total) * 100 || 0,
   fetchedCount: config.value.fetchedCount,
-  total: postState.total,
 }))
 
 export function usePost() {
@@ -30,6 +28,7 @@ export function usePost() {
     postState.idb = new IDB(wrappedUid)
     await postState.idb.clearFollowings()
     await waitForDBInitialization()
+    console.log('DB initialized', postState.idb, config.value)
   }
 
   async function waitForDBInitialization() {
@@ -40,11 +39,11 @@ export function usePost() {
   }
 
   async function resetState() {
-    postState.total = 0
     postState.pageSize = 20
     updateConfig({
       curPage: 0,
       fetchedCount: 0,
+      total: 0,
     })
 
     await initializeDB()

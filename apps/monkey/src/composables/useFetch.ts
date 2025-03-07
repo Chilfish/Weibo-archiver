@@ -3,7 +3,7 @@ import { fetchFollowings, fetchPosts } from '@shared'
 import { useToast } from '@workspace/ui/shadcn/toast'
 import { computed, reactive } from 'vue'
 import { config, useConfig } from './useConfig'
-import { postState, usePost } from './usePost'
+import { usePost } from './usePost'
 
 // 全局状态
 const toast = useToast()
@@ -23,7 +23,9 @@ export function useFetch() {
       ...config.value,
       savePost: newPost => post.addPost(newPost),
     }),
-    setTotal: total => postState.total = total,
+    setTotal: (total) => {
+      updateConfig({ total })
+    },
     onFinish: async () => {
       if (!config.value.weiboOnly) {
         toast.success('获取完毕~，正在获取关注列表')
@@ -45,8 +47,6 @@ export function useFetch() {
   async function startFetch() {
     toast.info('开始爬取中，请稍等~')
 
-    await post.initializeDB()
-
     fetchState.isStart = true
     fetchState.isFinish = false
     fetchState.isStop = false
@@ -66,7 +66,7 @@ export function useFetch() {
     }
 
     // 如果是重新开始，不保留上次 fetch 的状态
-    if (!config.value.restore || !config.value.isFetchAll)
+    if (!config.value.restore)
       await post.resetState()
 
     await post.updatePostCount()
