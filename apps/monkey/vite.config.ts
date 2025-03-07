@@ -3,6 +3,7 @@ import Vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import monkey from 'vite-plugin-monkey'
+import { version } from './package.json'
 
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
@@ -50,6 +51,7 @@ export default defineConfig({
         match: [
           'https://weibo.com/u/*',
         ],
+        version,
       },
       server: {
         open: false,
@@ -60,11 +62,6 @@ export default defineConfig({
           'vue': [
             'Vue',
             version => `https://unpkg.com/vue@${version}/dist/vue.global.prod.js`,
-          ],
-          'pinia': [
-            'Pinia',
-            'https://unpkg.com/vue-demi@latest/lib/index.iife.js',
-            version => `https://unpkg.com/pinia@${version}/dist/pinia.iife.prod.js`,
           ],
           'file-saver': [
             'saveAs',
