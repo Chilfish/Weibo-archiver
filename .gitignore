@@ -15,4 +15,12 @@ packages/core/src/constants/data.mjs
 
 .vercel
 
-.vercel
+tmp/
+
+*.exe
+*.dmg
+*.deb
+*.rpm
+*.tar.gz
+*.tar.xz
+*.tar.bz2

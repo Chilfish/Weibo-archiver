@@ -38,25 +38,23 @@ func InitFlags(info AppInfo) Options {
 
 	// 显示帮助信息
 	if *help {
+		exeName := filepath.Base(os.Args[0])
+
 		fmt.Printf("%s v%s - %s\n\n", info.Name, info.Version, info.Description)
-		fmt.Printf("用法: %s [选项]\n\n", filepath.Base(os.Args[0]))
+		fmt.Printf("用法: %s [选项]\n\n", exeName)
 		fmt.Println("选项:")
 		pflag.PrintDefaults()
 
 		fmt.Println("\n示例:")
-		fmt.Println("  " + filepath.Base(os.Args[0]) + " --dl --imgs-path imgs.csv --download-folder images")
-		fmt.Println("  " + filepath.Base(os.Args[0]) + " --server --download-folder images")
+		fmt.Println("\t" + exeName + " --dl -i imgs.csv -o images")
+		fmt.Println("\t" + exeName + " --server -o images")
+		fmt.Println("\t" + exeName + " (无参数，将进入交互模式)")
 		os.Exit(0)
 	}
 
 	// 检查运行模式
 	if opts.IsDownload && opts.IsServer {
 		fmt.Println("错误: 不能同时运行下载模式和服务器模式")
-		os.Exit(1)
-	}
-
-	if !opts.IsDownload && !opts.IsServer {
-		fmt.Println("错误: 必须指定 --dl 或 --server 模式")
 		os.Exit(1)
 	}
 

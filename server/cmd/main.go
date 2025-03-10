@@ -2,9 +2,11 @@ package main
 
 import (
 	"log"
+	"os"
 	"weibo-archiver/internal/config"
 	"weibo-archiver/internal/downloader"
 	"weibo-archiver/internal/server"
+	"weibo-archiver/internal/ui"
 	"weibo-archiver/internal/utils"
 )
 
@@ -15,8 +17,21 @@ func main() {
 		Description: "Download and serve weibo images",
 	}
 
-	// 解析命令行参数
-	opts := utils.InitFlags(info)
+	// 检查是否有命令行参数
+	var opts utils.Options
+	var err error
+
+	if len(os.Args) > 1 {
+		// 解析命令行参数
+		opts = utils.InitFlags(info)
+	} else {
+		// 使用交互式方式获取参数
+	  utils.SetInteractiveUI(ui.NewUI())
+		opts, err = utils.RunInteractive()
+		if err != nil {
+			log.Fatalf("交互式配置失败: %v", err)
+		}
+	}
 
 	// 获取web根目录
 	webRoot, err := config.GetWebRoot()
