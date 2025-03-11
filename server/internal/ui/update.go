@@ -1,13 +1,25 @@
 package ui
 
 import (
-	"fmt"
-	"os"
-	"strings"
+	"errors"
+	"weibo-archiver/internal/config"
+	"weibo-archiver/internal/utils"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 )
+
+// View 渲染视图
+func (m Model) View() string {
+	switch m.State {
+	case StateSelectMode:
+		return RenderModeSelection(m)
+	case StateConfigForm:
+		return RenderConfigForm(m)
+	default:
+		return "未知状态"
+	}
+}
 
 // Update 处理消息并返回更新后的模型
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -79,7 +91,20 @@ func updateConfigForm(m Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 		// 确认按钮被选中并按下回车
 		if s == "enter" && m.CurInput == len(m.Inputs) {
-			return validateAndComplete(m)
+			m = validateAndComplete(m)
+
+			if m.Error != nil {
+				return m, nil
+			}
+
+			cfg := &config.Config{
+				ImagesPath: m.ImgDir,
+				WebPath:    m.ImgDir,
+				CSVPath:    m.CsvFile,
+			}
+
+			utils.Run(cfg)
+			return m, nil
 		}
 
 		// 输入框导航
@@ -119,112 +144,22 @@ func updateConfigForm(m Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 // validateAndComplete 验证输入并完成
-func validateAndComplete(m Model) (tea.Model, tea.Cmd) {
+func validateAndComplete(m Model) Model {
 	m.ImgDir = m.Inputs[0].Value()
 
-	// 验证图片目录
-	if m.ImgDir == "" {
-		m.Error = fmt.Errorf("%s不能为空", Text.ImageDirLabel)
-		m.CurInput = 0 // 聚焦有问题的字段
-		return m, nil
+	if errorMsg := CheckImageDir(m); errorMsg != "" {
+		m.Error = errors.New(errorMsg)
+		return m
 	}
 
 	// 下载模式需验证CSV文件
 	if m.IsDownload {
 		m.CsvFile = m.Inputs[1].Value()
-
-		// 验证CSV文件
-		if m.CsvFile == "" {
-			m.Error = fmt.Errorf("%s不能为空", Text.CSVFileLabel)
-			m.CurInput = 1
-			return m, nil
+		if errorMsg := CheckCSVFile(m); errorMsg != "" {
+			m.Error = errors.New(errorMsg)
+			return m
 		}
-
-		// 检查CSV文件是否存在
-		if !fileExists(m.CsvFile) {
-			m.Error = fmt.Errorf("文件不存在: %s", m.CsvFile)
-			m.CurInput = 1
-			return m, nil
-		}
-
-		// 检查是否为CSV文件
-		if !strings.HasSuffix(strings.ToLower(m.CsvFile), ".csv") {
-			m.Error = fmt.Errorf("%s 不是CSV文件", m.CsvFile)
-			m.CurInput = 1
-			return m, nil
-		}
-	} else {
-		// 服务器模式不需要CSV文件
-		m.CsvFile = DefaultValues.CSVFile
 	}
-
-	// 验证通过，退出程序
-	return m, tea.Quit
-}
-
-// View 渲染视图
-func (m Model) View() string {
-	switch m.State {
-	case StateSelectMode:
-		return renderModeSelection(m)
-	case StateConfigForm:
-		return renderConfigForm(m)
-	default:
-		return "未知状态"
-	}
-}
-
-// renderModeSelection 渲染模式选择界面
-func renderModeSelection(m Model) string {
-	return fmt.Sprintf("\n %s\n\n%s",
-		Styles.Title.Render(Text.AppTitle),
-		m.ModeList.View())
-}
-
-// renderConfigForm 渲染配置表单界面
-func renderConfigForm(m Model) string {
-	var b strings.Builder
-
-	// 标题
-	modeTitle := Text.ServerMode
-	if m.IsDownload {
-		modeTitle = Text.DownloadMode
-	}
-	b.WriteString(fmt.Sprintf("\n %s - %s\n\n",
-		Styles.Title.Render(Text.AppTitle),
-		modeTitle))
-
-	// 提示文本
-	b.WriteString(fmt.Sprintf(" %s\n\n", fmt.Sprintf(Text.ConfigPrompt, modeTitle)))
-
-	// 图片目录输入框
-	b.WriteString(fmt.Sprintf(" %s: %s\n\n", Text.ImageDirLabel, m.Inputs[0].View()))
-
-	// CSV文件输入框 (仅下载模式)
-	if m.IsDownload {
-		b.WriteString(fmt.Sprintf(" %s: %s\n\n", Text.CSVFileLabel, m.Inputs[1].View()))
-	}
-
-	// 确认按钮
-	button := Text.ConfirmButton
-	if m.CurInput == len(m.Inputs) {
-		button = Styles.Button.Render(button)
-	}
-	b.WriteString(fmt.Sprintf("\n %s\n\n", button))
-
-	// 错误信息
-	if m.Error != nil {
-		b.WriteString(Styles.Error.Render(fmt.Sprintf(" 错误: %s\n\n", m.Error)))
-	}
-
-	// 帮助文本
-	b.WriteString(Styles.Help.Render(fmt.Sprintf(" %s\n", Text.HelpText)))
-
-	return b.String()
-}
-
-// fileExists 检查文件或目录是否存在
-func fileExists(path string) bool {
-	_, err := os.Stat(path)
-	return err == nil
+	m.Error = nil
+	return m
 }

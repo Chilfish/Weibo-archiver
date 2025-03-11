@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -85,5 +87,6 @@ func NewModel() Model {
 
 // Init 初始化模型
 func (m Model) Init() tea.Cmd {
+	fmt.Println("Init")
 	return nil
 }
