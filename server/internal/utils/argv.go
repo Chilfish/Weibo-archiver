@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"weibo-archiver/internal/config"
+
 	"github.com/spf13/pflag"
 )
 
@@ -14,24 +16,15 @@ type AppInfo struct {
 	Description string
 }
 
-type Options struct {
-	IsDownload     bool
-	IsServer       bool
-	ImgsPath       string
-	DownloadFolder string
-	Concurrency    int
-	Delay          int
-}
-
-func InitFlags(info AppInfo) Options {
+func InitFlags(info AppInfo) config.Config {
 	// 定义命令行参数
-	opts := Options{}
-	pflag.BoolVarP(&opts.IsDownload, "dl", "d", false, "下载模式")
-	pflag.BoolVarP(&opts.IsServer, "server", "s", false, "服务器模式")
-	pflag.StringVarP(&opts.ImgsPath, "imgs-path", "i", "imgs.csv", "imgs.csv 的路径")
-	pflag.StringVarP(&opts.DownloadFolder, "download-folder", "o", "images", "图片保存的文件夹")
+	opts := config.Config{}
+	pflag.BoolVarP(&opts.IsDownloadMode, "dl", "d", false, "下载模式")
+	pflag.BoolVarP(&opts.IsServerMode, "server", "s", false, "服务器模式")
+	pflag.StringVarP(&opts.CSVPath, "imgs-path", "i", "imgs.csv", "imgs.csv 的路径")
+	pflag.StringVarP(&opts.ImagesPath, "download-folder", "o", "images", "图片保存的文件夹")
 	pflag.IntVarP(&opts.Concurrency, "concurrency", "c", 4, "同时下载的最大数量")
-	pflag.IntVarP(&opts.Delay, "delay", "t", 0, "每次下载的间隔时间（秒）")
+	pflag.IntVarP(&opts.DownloadDelay, "delay", "t", 0, "每次下载的间隔时间（秒）")
 	help := pflag.BoolP("help", "h", false, "显示帮助信息")
 
 	pflag.Parse()
@@ -53,16 +46,16 @@ func InitFlags(info AppInfo) Options {
 	}
 
 	// 检查运行模式
-	if opts.IsDownload && opts.IsServer {
+	if opts.IsDownloadMode && opts.IsServerMode {
 		fmt.Println("错误: 不能同时运行下载模式和服务器模式")
 		os.Exit(1)
 	}
 
 	// 解析路径
-	absImgsPath, _ := filepath.Abs(opts.ImgsPath)
-	absDownloadFolder, _ := filepath.Abs(opts.DownloadFolder)
-	opts.ImgsPath = absImgsPath
-	opts.DownloadFolder = absDownloadFolder
+	absImgsPath, _ := filepath.Abs(opts.CSVPath)
+	absImagesPath, _ := filepath.Abs(opts.ImagesPath)
+	opts.CSVPath = absImgsPath
+	opts.ImagesPath = absImagesPath
 
 	return opts
 }

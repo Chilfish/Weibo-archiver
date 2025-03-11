@@ -1,4 +1,4 @@
-package downloader
+package utils
 
 import (
 	"bufio"
@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 	"weibo-archiver/internal/config"
-	"weibo-archiver/internal/queue"
 
 	"github.com/schollz/progressbar/v3"
 )
@@ -26,7 +25,7 @@ type ImageInfo struct {
 	Filename string
 }
 
-func New(cfg *config.Config) *Downloader {
+func NewDownloader(cfg *config.Config) *Downloader {
 	return &Downloader{config: cfg}
 }
 
@@ -73,7 +72,7 @@ func (info *ImageInfo) getFullFilename() string {
 
 // readURLs 读取CSV文件中的URL列表
 func (d *Downloader) readURLs() ([]string, error) {
-	file, err := os.Open(d.config.ImagesCSVPath)
+	file, err := os.Open(d.config.CSVPath)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +178,7 @@ func (d *Downloader) Start() error {
 	// 读取CSV文件
 	urls, err := d.readURLs()
 	if err != nil {
-		return fmt.Errorf("读取 %s 失败: %w", d.config.ImagesCSVPath, err)
+		return fmt.Errorf("读取 %s 失败: %w", d.config.CSVPath, err)
 	}
 
 	// 构建下载映射
@@ -202,7 +201,7 @@ func (d *Downloader) Start() error {
 		}
 	}
 
-	fmt.Printf("imgs.csv 路径: %s\n下载目录: %s\n", d.config.ImagesCSVPath, d.config.ImagesPath)
+	fmt.Printf("imgs.csv 路径: %s\n下载目录: %s\n", d.config.CSVPath, d.config.ImagesPath)
 	fmt.Printf("找到 %d 张有效图片，已存在 %d 张图片，实际需要下载 %d 张图片。按 Ctrl+C 可以中断下载。\n",
 		len(urlMap), len(existingFiles), len(downloadList))
 
@@ -215,7 +214,7 @@ func (d *Downloader) Start() error {
 	bar := progressbar.Default(int64(len(downloadList)))
 
 	// 创建下载队列
-	q := queue.NewPQueue(d.config.Concurrency, time.Duration(d.config.DownloadDelay)*time.Second)
+	q := NewPQueue(d.config.Concurrency, time.Duration(d.config.DownloadDelay)*time.Second)
 	downloaded := 0
 
 	// 添加下载任务

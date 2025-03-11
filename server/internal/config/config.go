@@ -8,12 +8,12 @@ import (
 
 type Config struct {
 	Version        string
-	ImagesPath     string
-	WebRoot        string
 	Port           int
 	Concurrency    int
 	DownloadDelay  int
-	ImagesCSVPath  string
+	ImagesPath     string
+	WebPath        string
+	CSVPath        string
 	IsDownloadMode bool
 	IsServerMode   bool
 }
@@ -26,12 +26,3 @@ func GetExecutableDir() (string, error) {
 	}
 	return filepath.Dir(exe), nil
 }
-
-// GetWebRoot 获取前端文件目录
-func GetWebRoot() (string, error) {
-	exeDir, err := GetExecutableDir()
-	if err != nil {
-		return "", err
-	}
-	return exeDir, nil
-} 

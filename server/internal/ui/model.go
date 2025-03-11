@@ -42,28 +42,6 @@ type Model struct {
 	Error         error
 }
 
-// Options 存储最终的用户选项
-type Options struct {
-	IsDownload     bool
-	IsServer       bool
-	ImgsPath       string
-	DownloadFolder string
-	Concurrency    int
-	Delay          int
-}
-
-// ToMap 转换选项为map，避免循环导入
-func (o Options) ToMap() map[string]interface{} {
-	return map[string]interface{}{
-		"is_download":     o.IsDownload,
-		"is_server":       o.IsServer,
-		"imgs_path":       o.ImgsPath,
-		"download_folder": o.DownloadFolder,
-		"concurrency":     o.Concurrency,
-		"delay":           o.Delay,
-	}
-}
-
 // NewModel 创建并初始化一个新模型
 func NewModel() Model {
 	// 创建模式选择列表项

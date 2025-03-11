@@ -1,8 +1,6 @@
 package ui
 
 import (
-	"weibo-archiver/internal/config"
-
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -46,8 +44,6 @@ var Styles = struct {
 	Button: lipgloss.NewStyle().Foreground(lipgloss.Color("#7D56F4")),
 }
 
-var Config = config.Config{}
-
 // DefaultValues 默认值
 var DefaultValues = struct {
 	ImgDir      string
@@ -55,8 +51,8 @@ var DefaultValues = struct {
 	Concurrency int
 	Delay       int
 }{
-	ImgDir:      "images",
-	CSVFile:     "imgs.csv",
+	ImgDir:      "",
+	CSVFile:     "",
 	Concurrency: 4,
 	Delay:       0,
 }
