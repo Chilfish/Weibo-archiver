@@ -38,7 +38,7 @@ export function replaceImg(img: string, forceCdn = false) {
 
   // 本地图片
   if (imgHost === '/')
-    return `http://localhost:3000/${fileName}`
+    return `http://localhost:3000/images/${fileName}`
 
   // 自建图床
   const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
