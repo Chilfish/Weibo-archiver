@@ -36,7 +36,6 @@ func main() {
 		Concurrency:    opts.Concurrency,
 		DownloadDelay:  opts.DownloadDelay,
 		ImagesPath:     opts.ImagesPath,
-		WebPath:        opts.WebPath,
 		CSVPath:        opts.CSVPath,
 		IsDownloadMode: opts.IsDownloadMode,
 		IsServerMode:   opts.IsServerMode,

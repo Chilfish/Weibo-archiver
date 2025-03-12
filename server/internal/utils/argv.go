@@ -52,10 +52,8 @@ func InitFlags(info AppInfo) config.Config {
 	}
 
 	// 解析路径
-	absImgsPath, _ := filepath.Abs(opts.CSVPath)
-	absImagesPath, _ := filepath.Abs(opts.ImagesPath)
-	opts.CSVPath = absImgsPath
-	opts.ImagesPath = absImagesPath
+	opts.CSVPath, _ = filepath.Abs(opts.CSVPath)
+	opts.ImagesPath, _ = filepath.Abs(opts.ImagesPath)
 
 	return opts
 }

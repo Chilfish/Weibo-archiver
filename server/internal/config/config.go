@@ -12,7 +12,6 @@ type Config struct {
 	Concurrency    int
 	DownloadDelay  int
 	ImagesPath     string
-	WebPath        string
 	CSVPath        string
 	IsDownloadMode bool
 	IsServerMode   bool

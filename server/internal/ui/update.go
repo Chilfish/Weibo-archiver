@@ -99,7 +99,6 @@ func updateConfigForm(m Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 			cfg := &config.Config{
 				ImagesPath: m.ImgDir,
-				WebPath:    m.ImgDir,
 				CSVPath:    m.CsvFile,
 			}
 
