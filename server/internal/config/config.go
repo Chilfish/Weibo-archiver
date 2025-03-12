@@ -15,6 +15,7 @@ type Config struct {
 	CSVPath        string
 	IsDownloadMode bool
 	IsServerMode   bool
+	IsExited    bool
 }
 
 // GetExecutableDir 获取可执行文件所在目录

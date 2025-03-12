@@ -1,19 +1,28 @@
 package ui
 
 import (
-	"fmt"
+	"weibo-archiver/internal/config"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 // RunInteractive 运行交互式UI并返回用户选择的选项
-func RunInteractive() error {
-	model := NewModel()
-	p := tea.NewProgram(model)
+func RunInteractive() (*config.Config, error) {
+	p := tea.NewProgram(NewModel())
 
-	_, err := p.Run()
-	if err != nil {
-		return fmt.Errorf("UI运行出错: %v", err)
+	teaModel, err := p.Run()
+
+	model := teaModel.(Model)
+
+	cfg := &config.Config{
+		ImagesPath:     model.ImgDir,
+		CSVPath:        model.CsvFile,
+		IsDownloadMode: model.IsDownload,
+		IsServerMode:   model.IsServer,
+		IsExited:       model.IsExited,
+		Concurrency:    6,
+		DownloadDelay:  1,
 	}
-	return nil
+
+	return cfg, err
 }

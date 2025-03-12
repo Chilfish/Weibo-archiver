@@ -97,19 +97,13 @@ func (d *Downloader) readURLs() ([]string, error) {
 // buildDownloadMap 构建下载映射
 func (d *Downloader) buildDownloadMap(urls []string) (map[string]*ImageInfo, error) {
 	urlMap := make(map[string]*ImageInfo)
-	var invalidURLs []string
 
 	for _, rawURL := range urls {
 		info, err := parseImageURL(rawURL)
 		if err != nil {
-			invalidURLs = append(invalidURLs, rawURL)
 			continue
 		}
 		urlMap[info.getFullFilename()] = info
-	}
-
-	if len(invalidURLs) > 0 {
-		fmt.Printf("警告: 发现 %d 个无效URL\n", len(invalidURLs))
 	}
 
 	return urlMap, nil
@@ -201,8 +195,7 @@ func (d *Downloader) Start() error {
 		}
 	}
 
-	fmt.Printf("imgs.csv 路径: %s\n下载目录: %s\n", d.config.CSVPath, d.config.ImagesPath)
-	fmt.Printf("找到 %d 张有效图片，已存在 %d 张图片，实际需要下载 %d 张图片。按 Ctrl+C 可以中断下载。\n",
+	fmt.Printf("找到 %d 张有效图片，已存在 %d 张图片，实际需要下载 %d 张图片。\n",
 		len(urlMap), len(existingFiles), len(downloadList))
 
 	if len(downloadList) == 0 {
