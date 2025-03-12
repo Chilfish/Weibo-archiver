@@ -2,8 +2,6 @@ package ui
 
 import (
 	"errors"
-	"weibo-archiver/internal/config"
-	"weibo-archiver/internal/utils"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -37,6 +35,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// 通用键盘处理
 		switch msg.String() {
 		case "ctrl+c", "q":
+			m.IsExited = true
 			return m, tea.Quit
 		}
 
@@ -91,19 +90,7 @@ func updateConfigForm(m Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 		// 确认按钮被选中并按下回车
 		if s == "enter" && m.CurInput == len(m.Inputs) {
-			m = validateAndComplete(m)
-
-			if m.Error != nil {
-				return m, nil
-			}
-
-			cfg := &config.Config{
-				ImagesPath: m.ImgDir,
-				CSVPath:    m.CsvFile,
-			}
-
-			utils.Run(cfg)
-			return m, nil
+			return validateAndComplete(m), tea.Quit
 		}
 
 		// 输入框导航
@@ -143,7 +130,7 @@ func updateConfigForm(m Model, msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 }
 
 // validateAndComplete 验证输入并完成
-func validateAndComplete(m Model) Model {
+func validateAndComplete(m Model) tea.Model {
 	m.ImgDir = m.Inputs[0].Value()
 
 	if errorMsg := CheckImageDir(m); errorMsg != "" {

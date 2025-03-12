@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"weibo-archiver/internal/config"
@@ -16,19 +17,21 @@ func main() {
 	}
 
 	var opts config.Config
-	var err error
 
 	if len(os.Args) < 2 {
-		err = ui.RunInteractive()
+		cfg, err := ui.RunInteractive()
 		if err != nil {
 			log.Fatalf("交互式配置失败: %v", err)
 		}
+		opts = *cfg
+	} else {
+		opts = utils.InitFlags(info)
+	}
 
+	if opts.IsExited {
 		return
 	}
 
-	// 解析命令行参数
-	opts = utils.InitFlags(info)
 	// 创建配置
 	cfg := &config.Config{
 		Version:        info.Version,
@@ -39,6 +42,17 @@ func main() {
 		CSVPath:        opts.CSVPath,
 		IsDownloadMode: opts.IsDownloadMode,
 		IsServerMode:   opts.IsServerMode,
+	}
+
+	fmt.Println("使用配置:")
+	for k, v := range map[string]interface{}{
+		"  图片目录":     cfg.ImagesPath,
+		"  CSV文件":        cfg.CSVPath,
+		"  端口":           cfg.Port,
+		"  并发数":    cfg.Concurrency,
+		"  下载延迟":  cfg.DownloadDelay,
+	} {
+		fmt.Printf("%s: %v\n", k, v)
 	}
 
 	utils.Run(cfg)

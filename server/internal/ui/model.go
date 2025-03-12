@@ -1,8 +1,6 @@
 package ui
 
 import (
-	"fmt"
-
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -38,6 +36,7 @@ type Model struct {
 	IsServer   bool
 	ImgDir     string
 	CsvFile    string
+	IsExited   bool
 
 	// 界面属性
 	Width, Height int
@@ -82,11 +81,11 @@ func NewModel() Model {
 		State:    StateSelectMode,
 		ModeList: modeList,
 		Inputs:   inputs,
+		IsExited: false,
 	}
 }
 
 // Init 初始化模型
 func (m Model) Init() tea.Cmd {
-	fmt.Println("Init")
 	return nil
 }

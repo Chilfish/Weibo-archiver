@@ -13,6 +13,12 @@ type PQueue struct {
 }
 
 func NewPQueue(concurrency int, delay time.Duration) *PQueue {
+	if concurrency == 0 {
+		concurrency = 6
+	}
+	if delay == 0 {
+		delay = 1 * time.Second
+	}
 	q := &PQueue{
 		concurrency: concurrency,
 		delay:       delay,
