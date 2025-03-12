@@ -40,7 +40,5 @@ func (s *Server) Start() error {
 	fmt.Printf("\t- 图片访问: http://localhost:%d/images/\n", port)
 	fmt.Printf("\t- 网页访问: http://localhost:%d\n", port)
 
-	fmt.Println("\n按 Ctrl+C 可停止服务器")
-
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), s.mux)
 }
