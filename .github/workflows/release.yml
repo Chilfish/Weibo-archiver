@@ -7,80 +7,79 @@ on:
       - 'v*.*.*'
 
 jobs:
-  nodejs-build:
+  install-and-build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node-version: [22]
+        node-version: [20]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
         with:
-          version: 10
-
-      - name: Setup Node.js ${{ matrix.node-version }}
+          version: 9
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      - name: Install Node.js Dependencies
+      - name: Install Deps
         run: pnpm install
 
-      - name: Build and Zip Frontend
+      - name: build and zip
         run: pnpm release
 
-      - name: Upload Monkey Script Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: weibo-archiver.user.js
-          path: dist/weibo-archiver.user.js
-
-      - name: Upload CLI Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: weibo-archiver-cli
-          path: dist/weibo-archiver-cli.zip
-
-  go-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Go
+      - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.21'
           cache: true
           cache-dependency-path: server/go.sum
 
-      - name: Install Go Dependencies and Build
+      - name: Build Go binaries
         run: |
           sudo apt-get update && sudo apt-get install -y zip
           cd server
           chmod +x build.sh
           ./build.sh
 
-      - name: Upload Go Binaries (Windows) Artifact
+      - name: upload monkey
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver.user.js
+          path: dist/weibo-archiver.user.js
+
+      - name: upload web
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-webapp
+          path: dist/weibo-archiver-webapp.zip
+
+      - name: upload cli
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-cli
+          path: dist/weibo-archiver-cli.zip
+
+      - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver-windows-amd64.zip
           path: server/dist/weibo-archiver-windows-amd64.zip
 
-      - name: Upload Go Binaries (Linux) Artifact
+      - name: upload go binaries (Linux)
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver-linux-amd64.tar.gz
           path: server/dist/weibo-archiver-linux-amd64.tar.gz
 
-      - name: Upload Go Binaries (macOS) Artifact
+      - name: upload go binaries (macOS)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-macos-amd64.tar.gz
+          name: weibo-archiver-darwin-amd64.tar.gz
           path: server/dist/weibo-archiver-darwin-amd64.tar.gz
 
   darft-release:
