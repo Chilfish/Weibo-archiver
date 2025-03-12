@@ -35,7 +35,7 @@
 
 1. 在 [releases] 中下载对应平台的可执行文件：
    - Windows: `weibo-archiver-windows-amd64.zip`
-   - macOS: `weibo-archiver-darwin-amd64.tar.gz`
+   - macOS: `weibo-archiver-macos-amd64.tar.gz`
    - Linux: `weibo-archiver-linux-amd64.tar.gz`
 2. 解压后按照 [本地服务器使用说明](server/README.md) 操作
 3. 下载完成后可以在本地离线浏览所有图片和微博数据

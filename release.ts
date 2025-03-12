@@ -36,6 +36,7 @@ const cliDist = path.join(root, 'apps/cli/dist')
 const appName = 'weibo-archiver'
 
 // 构建
+execSync('pnpm build:web', { stdio: 'inherit' })
 execSync('pnpm build:monkey', { stdio: 'inherit' })
 execSync('pnpm build:cli', { stdio: 'inherit' })
 

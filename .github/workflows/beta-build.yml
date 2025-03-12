@@ -7,7 +7,7 @@ on:
       - monkey
     tags-ignore:
       # 发 release 时不触发构建
-      - v*
+      - '**'
     paths-ignore:
       - '**.md'
       - '.github/**'
@@ -61,12 +61,6 @@ jobs:
           name: weibo-archiver.user.js
           path: dist/weibo-archiver.user.js
 
-      - name: upload web
-        uses: actions/upload-artifact@v4
-        with:
-          name: weibo-archiver-webapp
-          path: dist/weibo-archiver-webapp.zip
-
       - name: upload cli
         uses: actions/upload-artifact@v4
         with:
@@ -88,5 +82,5 @@ jobs:
       - name: upload go binaries (macOS)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-darwin-amd64.tar.gz
+          name: weibo-archiver-macos-amd64.tar.gz
           path: server/dist/weibo-archiver-darwin-amd64.tar.gz
