@@ -31,20 +31,17 @@ async function compressFolder(folderPath: string, outputPath: string) {
 }
 
 const root = path.resolve()
-const webDist = path.join(root, 'apps/web/dist')
 const cliDist = path.join(root, 'apps/cli/dist')
 
 const appName = 'weibo-archiver'
 
 // 构建
-execSync('pnpm build:web', { stdio: 'inherit' })
 execSync('pnpm build:monkey', { stdio: 'inherit' })
 execSync('pnpm build:cli', { stdio: 'inherit' })
 
 console.log('构建完成')
 
 // 打包
-await compressFolder(webDist, path.join(root, `dist/${appName}-webapp.zip`))
 await compressFolder(cliDist, path.join(root, `dist/${appName}-cli.zip`))
 
 console.log('打包完成')
