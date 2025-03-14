@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { userDetail, userInfo } from '@shared'
 import { onMounted } from 'vue'
-
 import Header from './component/Header.vue'
+import Options from './component/Options.vue'
 import Search from './component/Search.vue'
+
 import { config, useConfig } from './composables/useConfig'
 import { fetchState, useFetch } from './composables/useFetch'
 import { usePost } from './composables/usePost'
@@ -37,14 +38,14 @@ onMounted(async () => {
 <template>
   <div
     v-show="!config.isMinimize"
-    class="fixed-card bg-base-200"
+    class="fixed-card bg-base-200 w-96 shadow-2xl"
     data-theme="light"
   >
     <Header />
     <div class="divider my-0" />
 
     <Search />
-
+    <Options />
     <!-- <Config /> -->
 
     <div class="flex items-center gap-2">

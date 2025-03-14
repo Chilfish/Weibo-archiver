@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { User } from '@shared'
 import { ArrowRight, Search } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const searchText = ref('')
 const searchResult = ref<User[]>([])
@@ -15,6 +15,16 @@ const mockData: User[] = [
   {
     uid: 'uid-2',
     name: '李四三',
+    avatar: 'https://unavatar.io/github/x',
+  },
+  {
+    uid: 'uid-3',
+    name: '王五',
+    avatar: 'https://unavatar.io/github/x',
+  },
+  {
+    uid: 'uid-4',
+    name: '赵六',
     avatar: 'https://unavatar.io/github/x',
   },
 ]
@@ -34,21 +44,31 @@ function setUser(user: User) {
   searchText.value = user.name
   searchResult.value = []
 }
+
+watch(searchText, (value) => {
+  if (value.length === 0) {
+    searchResult.value = []
+  }
+})
 </script>
 
 <template>
   <div
     class="flex flex-col gap-2"
   >
-    <div class="label">
+    <label
+      for="wa-search-user"
+      class="label"
+    >
       搜索用户
-    </div>
-    <label class="input">
+    </label>
+    <label class="input w-full">
       <Search
         class="h-[1em] cursor-pointer opacity-50"
         @click="searchUser"
       />
       <input
+        id="wa-search-user"
         v-model="searchText"
         type="search"
         required
@@ -57,11 +77,14 @@ function setUser(user: User) {
       >
     </label>
 
-    <div class="flex flex-col gap-1">
+    <div
+      v-if="searchResult.length"
+      class="bg-base-100 max-h-56 flex flex-col gap-1 overflow-y-auto rounded-lg p-2"
+    >
       <div
         v-for="user in searchResult"
         :key="user.uid"
-        class="hover:bg-base-100 flex cursor-pointer items-center gap-2 rounded-lg p-2"
+        class="hover:bg-base-300 flex cursor-pointer items-center gap-2 rounded-lg p-2"
         @click="setUser(user)"
       >
         <div class="avatar">
