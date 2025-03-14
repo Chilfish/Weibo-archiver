@@ -1,6 +1,6 @@
 import path from 'node:path'
+import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
-import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 import monkey from 'vite-plugin-monkey'
 import { version } from './package.json'
@@ -32,7 +32,7 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
-    UnoCSS(),
+    tailwindcss(),
 
     monkey({
       entry: 'src/main.ts',
@@ -50,6 +50,7 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/u/*',
+          'http://localhost:5173/*',
         ],
         version,
       },

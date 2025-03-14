@@ -1,20 +1,6 @@
 <script setup lang="ts">
 import { formatDate } from '@shared'
-import { CheckboxLabel } from '@workspace/ui/shadcn/checkbox'
-import { Input } from '@workspace/ui/shadcn/input'
-import Label from '@workspace/ui/shadcn/label/Label.vue'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@workspace/ui/shadcn/select'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@workspace/ui/shadcn/tooltip'
+
 import { config } from './composables/useConfig'
 
 const ymd = (date: Date | number) => formatDate(date, 'YYYY-MM-DD')
@@ -62,88 +48,6 @@ const tomorrow = ymd(new Date(now.getTime() + 24 * 60 * 60 * 1000))
     </div>
 
     <div
-      class="options flex flex-wrap items-center justify-start gap-3"
-    >
-      <CheckboxLabel
-        id="largePic"
-        v-model="config.largePic"
-        label="使用原图"
-      />
-
-      <Tooltip>
-        <TooltipTrigger
-          as="div"
-        >
-          <CheckboxLabel
-            id="hasComment"
-            v-model="config.hasComment"
-            label="包含评论"
-          />
-        </TooltipTrigger>
-        <TooltipContent>
-          包含评论将会减慢速度
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger
-          as="div"
-        >
-          <CheckboxLabel
-            id="hasRepost"
-            v-model="config.hasRepost"
-            label="包含转发的微博"
-          />
-        </TooltipTrigger>
-        <TooltipContent>
-          包含转发的微博将会减慢速度
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger
-          as="div"
-        >
-          <CheckboxLabel
-            v-show="config.hasRepost"
-            id="repostPic"
-            v-model="config.repostPic"
-            label="导出转发的图片"
-          />
-        </TooltipTrigger>
-        <TooltipContent>
-          包含转发的微博将会减慢速度
-        </TooltipContent>
-      </Tooltip>
-
-      <Tooltip>
-        <TooltipTrigger
-          as="div"
-        >
-          <CheckboxLabel
-            id="restore"
-            v-model="config.restore"
-            label="继续上次的记录"
-          />
-        </TooltipTrigger>
-        <TooltipContent>
-          默认开始前都会清空之前的状态
-        </TooltipContent>
-      </Tooltip>
-
-      <CheckboxLabel
-        v-if="!config.weiboOnly"
-        id="followingsOnly"
-        v-model="config.followingsOnly"
-        label="只导出关注列表"
-      />
-      <CheckboxLabel
-        v-if="!config.followingsOnly"
-        id="weiboOnly"
-        v-model="config.weiboOnly"
-        label="只导出微博"
-      />
-    </div>
-
-    <div
       v-show="config.hasComment"
       class="flex items-center gap-4"
     >
@@ -170,26 +74,7 @@ const tomorrow = ymd(new Date(now.getTime() + 24 * 60 * 60 * 1000))
 </template>
 
 <style scoped>
-@import url('./reset.css');
-
 .options button {
   padding: 0;
-}
-
-.date-range-picker {
-  @apply flex items-end gap-4 mt-2 max-w-fit bg-gray-50/50 p-3 rounded-lg;
-}
-
-.date-input-group {
-  @apply flex flex-col gap-1;
-}
-
-.date-input {
-  @apply px-3 py-1.5 rounded-md border-gray-200 bg-white focus:border-primary;
-  color-scheme: light;
-}
-
-.divider {
-  @apply flex items-end mb-1.5 text-gray-500 px-1;
 }
 </style>

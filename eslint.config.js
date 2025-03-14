@@ -11,6 +11,7 @@ export default antfu({
     'antfu/no-import-dist': 'off',
     'antfu/top-level-function': 'off',
     'antfu/no-top-level-await': 'off',
+    'unused-imports/no-unused-vars': 'warn',
   },
   ignores: [
     'pnpm-lock.yaml',

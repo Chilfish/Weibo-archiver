@@ -1,17 +1,109 @@
 <script setup lang="ts">
-import { Toaster } from '@workspace/ui/shadcn/toast'
-import { TooltipProvider } from '@workspace/ui/shadcn/tooltip'
-import Ctrl from './Ctrl.vue'
+import { userDetail, userInfo } from '@shared'
+import { onMounted } from 'vue'
+
+import Header from './component/Header.vue'
+import Search from './component/Search.vue'
+import { config, useConfig } from './composables/useConfig'
+import { fetchState, useFetch } from './composables/useFetch'
+import { usePost } from './composables/usePost'
+
+const { toggleMinimize, updateConfig } = useConfig()
+const post = usePost()
+const {
+  startButtonText,
+  startFetch,
+  toggleStop,
+} = useFetch()
+
+/**
+ * 初始化用户信息
+ */
+async function init() {
+  const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
+  const { uid, name } = await userInfo({ id })
+
+  post.userInfo.value = await userDetail(uid)
+  console.log('userInfo', post.userInfo.value)
+  updateConfig({ uid, name })
+}
+
+onMounted(async () => {
+  // await init().catch(console.error)
+  // await post.initializeDB()
+})
 </script>
 
 <template>
-  <TooltipProvider>
-    <Ctrl />
-    <Toaster />
-  </TooltipProvider>
+  <div
+    v-show="!config.isMinimize"
+    class="fixed-card bg-base-200"
+    data-theme="light"
+  >
+    <Header />
+    <div class="divider my-0" />
+
+    <Search />
+
+    <!-- <Config /> -->
+
+    <div class="flex items-center gap-2">
+      <progress
+        :value="post.progress.value.percentage"
+      />
+
+      <div class="min-w-fit">
+        {{ post.progress.value.fetchedCount }}/{{ config.total }}
+      </div>
+    </div>
+
+    <div class="flex gap-2">
+      <button
+        v-show="!fetchState.isStart || fetchState.isStop"
+        class="btn"
+        @click="startFetch"
+      >
+        {{ startButtonText }}
+      </button>
+
+      <div
+        v-show="fetchState.isStart && !fetchState.isFinish && !fetchState.isStop"
+        class="center"
+      >
+        正在获取{{ fetchState.isFetchingFollowings ? '关注列表' : '微博' }} ~
+      </div>
+
+      <button
+        v-show="fetchState.isStart && !fetchState.isFinish"
+        class="btn"
+        @click="toggleStop"
+      >
+        {{ fetchState.isStop ? '继续' : '暂停' }}
+      </button>
+
+      <button
+        v-show="fetchState.isFinish || fetchState.isStop"
+        class="btn"
+        @click="post.exportAllData"
+      >
+        导出
+      </button>
+    </div>
+  </div>
+
+  <div
+    v-show="config.isMinimize"
+    class="fixed-card w-16 shadow-xl p-2!"
+    @click="toggleMinimize"
+  >
+    <img
+      src="https://p.chilfish.top/weibo/icon.webp"
+      alt="Weibo archiver logo"
+    >
+  </div>
 </template>
 
-<style>
+<style scoped>
 #plugin-app {
   z-index: 100;
   position: relative;
@@ -21,5 +113,22 @@ import Ctrl from './Ctrl.vue'
 
 :root {
   font-size: 14px;
+}
+
+p {
+  color: black !important;
+}
+
+.fixed-card {
+  position: fixed;
+  right: 1rem;
+  top: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
 }
 </style>
