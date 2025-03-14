@@ -57,7 +57,6 @@ export function useConfig() {
   watch(config, (newConfig) => {
     const { startAt, endAt } = newConfig
     if (startAt && endAt) {
-      newConfig.isFetchAll = false
       newConfig.startAt = new Date(startAt).getTime()
       newConfig.endAt = new Date(endAt).getTime()
     }

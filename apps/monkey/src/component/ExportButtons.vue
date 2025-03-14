@@ -11,7 +11,7 @@ type ExportState = 'idle' | 'running' | 'paused' | 'completed'
 
 const exportState = ref<ExportState>('idle')
 const { startFetch, toggleStop, startButtonText } = useFetch()
-const { exportAllData } = usePost()
+const { exportAllData, resetState } = usePost()
 
 // Main export button text based on state
 const mainButtonText = computed(() => {
@@ -102,14 +102,13 @@ function handlePauseExport() {
 
 // Reset the export process
 function handleResetExport() {
-  // Confirm before resetting
   if (confirm('确定要重新开始导出吗？已获取的数据将被丢弃。')) {
     exportState.value = 'idle'
-    // If it was stopped, toggle it back
     if (fetchState.isStop) {
-      toggleStop()
+      resetState().then(() => {
+        toggleStop()
+      })
     }
-    // Reset any other state as needed
   }
 }
 

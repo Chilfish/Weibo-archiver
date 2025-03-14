@@ -82,13 +82,14 @@ export function useFetch() {
   }
 
   const startButtonText = computed(() => {
+    const user = config.value?.name || '【未设置用户】'
     if (config.value.followingsOnly)
-      return '获取关注列表'
+      return `获取 ${user} 的关注列表`
 
     if (fetchState.isStop)
-      return `重新开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
+      return `重新开始获取 @${user} 的${config.value.isFetchAll ? '全部' : '部分'}微博`
 
-    return `开始获取 ${config.value.isFetchAll ? '全部' : '部分'} 微博`
+    return `开始获取 @${user} 的${config.value.isFetchAll ? '全部' : '部分'}微博`
   })
 
   return {

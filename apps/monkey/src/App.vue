@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ExportButtons from './component/ExportButtons.vue'
 import Header from './component/Header.vue'
+import Logo from './component/Logo.vue'
 import Options from './component/Options.vue'
 import Search from './component/Search.vue'
 
@@ -11,7 +12,8 @@ const { toggleMinimize } = useConfig()
 
 <template>
   <div
-    v-show="!config.isMinimize" class="fixed-card bg-base-200 w-96 gap-2 overflow-y-auto shadow-2xl space-y-2"
+    v-show="!config.isMinimize"
+    class="fixed-card bg-base-200 w-96 gap-2 overflow-x-hidden overflow-y-auto border-2 border-gray-200 rounded-lg p-4 shadow-2xl space-y-2"
     data-theme="light"
   >
     <Header />
@@ -26,10 +28,7 @@ const { toggleMinimize } = useConfig()
     class="fixed-card w-16 shadow-xl p-2!"
     @click="toggleMinimize"
   >
-    <img
-      src="https://p.chilfish.top/weibo/icon.webp"
-      alt="Weibo archiver logo"
-    >
+    <Logo />
   </div>
 </template>
 
@@ -53,8 +52,6 @@ p {
   position: fixed;
   right: 1rem;
   top: 5rem;
-  border-radius: 0.5rem;
-  padding: 1rem;
   transition: all 0.3s ease-in-out;
   max-height: 80vh;
   z-index: 1000;

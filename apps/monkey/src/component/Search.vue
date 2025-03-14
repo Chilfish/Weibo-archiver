@@ -1,24 +1,27 @@
 <script setup lang="ts">
 import type { UserInfo } from '@shared'
-import { searchUser as searchUserService } from '@shared'
+import { searchUser as searchUserService, userDetail } from '@shared'
 import { ArrowRight, Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 import { useConfig } from '../composables/useConfig'
 import { usePost, userInfo } from '../composables/usePost'
 import LazyImage from './LazyImage.vue'
 
-const searchText = ref('')
-const searchResult = ref<UserInfo[]>([])
 const { config } = useConfig()
 const post = usePost()
+const searchText = ref(config.value.name)
+const searchResult = ref<UserInfo[]>([])
 
 async function searchUser() {
-  const users = await searchUserService(searchText.value)
+  const isUid = /^\d+$/.test(searchText.value)
+  const users = isUid
+    ? await userDetail(searchText.value).then(user => [user])
+    : await searchUserService(searchText.value)
+  console.log(users)
   searchResult.value = users
 }
 
 async function setUser(user: UserInfo) {
-  console.log(user)
   searchText.value = user.name
   searchResult.value = []
   userInfo.value = user
@@ -27,6 +30,13 @@ async function setUser(user: UserInfo) {
 
   await post.updateUserInfo()
   await post.initializeDB()
+}
+
+function formatNumber(num: number) {
+  if (num > 10000) {
+    return `${(num / 10000).toFixed(1)}万`
+  }
+  return num
 }
 
 watch(searchText, (value) => {
@@ -40,15 +50,14 @@ watch(searchText, (value) => {
   <div class="flex flex-col gap-2">
     <label
       for="wa-search-user"
-      class="label"
+      class="label font-semibold"
     >
       搜索用户
     </label>
     <label class="input w-full">
-      <Search
-        class="h-[1em] cursor-pointer opacity-50"
-        @click="searchUser"
-      />
+      <span class="label">
+        当前用户
+      </span>
       <input
         id="wa-search-user"
         v-model="searchText"
@@ -57,6 +66,10 @@ watch(searchText, (value) => {
         placeholder="昵称或id"
         @keyup.enter="searchUser"
       >
+      <Search
+        class="h-[1em] cursor-pointer"
+        @click="searchUser"
+      />
     </label>
 
     <div
@@ -80,7 +93,7 @@ watch(searchText, (value) => {
             {{ user.name }}
           </div>
           <div class="text-xs text-gray-500">
-            {{ user.uid }}
+            uid: {{ user.uid }}；粉丝：{{ formatNumber(user.followers) }}
           </div>
         </div>
 

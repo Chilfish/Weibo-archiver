@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { UserConfig } from '../types'
-import { RotateCw } from 'lucide-vue-next'
-import { config, useConfig } from '../composables/useConfig'
+import { config } from '../composables/useConfig'
 import DateRange from './DateRange.vue'
 
 interface Option {
@@ -49,28 +48,28 @@ const options: Option[] = [
     remark: '只导出微博，不导出关注列表',
     disabled: config => config.followingsOnly,
   },
+  {
+    label: '继续上次的记录',
+    value: 'restore',
+    remark: '从上次终止的地方继续',
+  },
 ] as const
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
-    <div class="flex">
+  <div
+    tabindex="0"
+    class="bg-base-100 collapse collapse-arrow border-base-300 text-base-content! border m-0!"
+  >
+    <input type="checkbox" checked>
+
+    <div class="collapse-title flex py-3 pr-8 font-semibold">
       <label class="label">
         导出选项
       </label>
-
-      <button
-        class="btn-ghost btn-sm text-base-content ml-auto text-sm btn"
-        @click="useConfig().resetConfig"
-      >
-        <div class="flex items-center gap-1">
-          <RotateCw class="h-4 w-4" />
-          重置
-        </div>
-      </button>
     </div>
 
-    <div class="bg-base-100 card px-4 py-2">
+    <div class="collapse-content">
       <div
         v-for="option in options"
         :key="option.value"
@@ -96,49 +95,52 @@ const options: Option[] = [
           :disabled="option.disabled?.(config)"
         >
       </div>
-    </div>
 
-    <label
-      for="commentCount"
-      class="label"
-    >
-      评论获取数量
-    </label>
-
-    <select
-      id="commentCount"
-      v-model="config.commentCount"
-      class="select w-full px-4"
-      :disabled="!config.hasComment"
-    >
-      <option disabled selected>
-        请选择
-      </option>
-      <option
-        v-for="i in 4"
-        :key="i"
-        :value="i * 5"
+      <label
+        for="commentCount"
+        class="label my-2 font-semibold"
       >
-        {{ i * 5 }} 条
-      </option>
-    </select>
+        评论获取数量
+      </label>
 
-    <label
-      for="timeRange"
-      class="label"
-    >
-      导出的时间范围
-    </label>
+      <select
+        id="commentCount"
+        v-model="config.commentCount"
+        class="select w-full px-4"
+        :disabled="!config.hasComment"
+      >
+        <option
+          disabled
+          selected
+        >
+          请选择
+        </option>
+        <option
+          v-for="i in 4"
+          :key="i"
+          :value="i * 5"
+        >
+          {{ i * 5 }} 条
+        </option>
+      </select>
 
-    <DateRange
-      :disabled="config.isFetchAll"
-      :start="config.startAt"
-      :end="config.endAt"
-      @change="(start, end) => {
-        config.startAt = start
-        config.endAt = end
-      }"
-      @error="console.log"
-    />
+      <label
+        for="timeRange"
+        class="label my-2 font-semibold"
+      >
+        导出的时间范围
+      </label>
+
+      <DateRange
+        :disabled="config.isFetchAll"
+        :start="config.startAt"
+        :end="config.endAt"
+        @change="(start, end) => {
+          config.startAt = start
+          config.endAt = end
+        }"
+        @error="console.log"
+      />
+    </div>
   </div>
 </template>
