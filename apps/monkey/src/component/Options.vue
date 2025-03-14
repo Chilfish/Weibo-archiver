@@ -2,14 +2,21 @@
 import type { UserConfig } from '../types'
 import { RotateCw } from 'lucide-vue-next'
 import { config, useConfig } from '../composables/useConfig'
+import DateRange from './DateRange.vue'
 
 interface Option {
   label: string
   value: keyof UserConfig
   remark?: string
+  disabled?: (config: UserConfig) => boolean
 }
 
 const options: Option[] = [
+  {
+    label: '导出全部微博',
+    value: 'isFetchAll',
+    remark: '导出全部微博，不限制时间范围',
+  },
   {
     label: '使用原图',
     value: 'largePic',
@@ -31,14 +38,16 @@ const options: Option[] = [
     remark: '导出微博时包含部分一级评论',
   },
   {
-    label: '导出关注列表',
+    label: '只导出关注列表',
     value: 'followingsOnly',
     remark: '只导出关注列表，不爬取微博',
+    disabled: config => config.weiboOnly,
   },
   {
     label: '只导出微博',
     value: 'weiboOnly',
     remark: '只导出微博，不导出关注列表',
+    disabled: config => config.followingsOnly,
   },
 ] as const
 </script>
@@ -61,7 +70,7 @@ const options: Option[] = [
       </button>
     </div>
 
-    <div class="bg-base-100 card px-4 py-2">
+    <div class="card bg-base-100 px-4 py-2">
       <div
         v-for="option in options"
         :key="option.value"
@@ -84,6 +93,7 @@ const options: Option[] = [
           v-model="config[option.value]"
           type="checkbox"
           class="toggle toggle-primary ml-auto"
+          :disabled="option.disabled?.(config)"
         >
       </div>
     </div>
@@ -112,5 +122,23 @@ const options: Option[] = [
         {{ i * 5 }} 条
       </option>
     </select>
+
+    <label
+      for="timeRange"
+      class="label"
+    >
+      导出的时间范围
+    </label>
+
+    <DateRange
+      :disabled="config.isFetchAll"
+      :start="config.startAt"
+      :end="config.endAt"
+      @change="(start, end) => {
+        config.startAt = start
+        config.endAt = end
+      }"
+      @error="console.log"
+    />
   </div>
 </template>
