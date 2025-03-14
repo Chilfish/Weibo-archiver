@@ -38,7 +38,7 @@ onMounted(async () => {
 <template>
   <div
     v-show="!config.isMinimize"
-    class="fixed-card bg-base-200 w-96 shadow-2xl"
+    class="fixed-card bg-base-200 w-96 gap-2 shadow-2xl"
     data-theme="light"
   >
     <Header />
@@ -127,7 +127,6 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
   border-radius: 0.5rem;
   padding: 1rem;
   transition: all 0.3s ease-in-out;

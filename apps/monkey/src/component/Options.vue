@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { UserConfig } from '../types'
-import { config } from '../composables/useConfig'
+import { RotateCw } from 'lucide-vue-next'
+import { config, useConfig } from '../composables/useConfig'
 
 interface Option {
   label: string
@@ -44,37 +45,34 @@ const options: Option[] = [
 
 <template>
   <div class="flex flex-col gap-2">
-    <div class="label">
-      导出选项
+    <div class="flex">
+      <label class="label">
+        导出选项
+      </label>
+
+      <button
+        class="btn-outline btn-sm text-base-content ml-auto text-sm btn"
+        @click="useConfig().resetConfig"
+      >
+        <div class="flex items-center gap-1">
+          <RotateCw class="h-4 w-4" />
+          重置
+        </div>
+      </button>
     </div>
 
     <div class="card bg-base-100 max-h-56 overflow-y-auto px-4 py-2">
-      <div
-        v-for="option in options"
-        :key="option.value"
-        class="flex items-center gap-2 py-2"
-      >
-        <label
-          class=""
-          :for="option.value"
-        >
+      <div v-for="option in options" :key="option.value" class="flex items-center gap-2 py-2">
+        <label class="" :for="option.value">
           <span>
             {{ option.label }}
           </span>
-          <span
-            v-if="option.remark"
-            class="block text-sm text-gray-500"
-          >
+          <span v-if="option.remark" class="block text-sm text-gray-500">
             {{ option.remark }}
           </span>
         </label>
 
-        <input
-          :id="option.value"
-          v-model="config[option.value]"
-          type="checkbox"
-          class="toggle ml-auto"
-        >
+        <input :id="option.value" v-model="config[option.value]" type="checkbox" class="toggle ml-auto">
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@
 import type { User } from '@shared'
 import { ArrowRight, Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
+import LazyImage from './LazyImage.vue'
 
 const searchText = ref('')
 const searchResult = ref<User[]>([])
@@ -53,44 +54,29 @@ watch(searchText, (value) => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col gap-2"
-  >
-    <label
-      for="wa-search-user"
-      class="label"
-    >
+  <div class="flex flex-col gap-2">
+    <label for="wa-search-user" class="label">
       搜索用户
     </label>
     <label class="input w-full">
-      <Search
-        class="h-[1em] cursor-pointer opacity-50"
-        @click="searchUser"
-      />
+      <Search class="h-[1em] cursor-pointer opacity-50" @click="searchUser" />
       <input
-        id="wa-search-user"
-        v-model="searchText"
-        type="search"
-        required
-        placeholder="昵称或id"
+        id="wa-search-user" v-model="searchText" type="search" required placeholder="昵称或id"
         @keyup.enter="searchUser"
       >
     </label>
 
-    <div
-      v-if="searchResult.length"
-      class="bg-base-100 max-h-56 flex flex-col gap-1 overflow-y-auto rounded-lg p-2"
-    >
+    <div v-if="searchResult.length" class="bg-base-100 max-h-56 flex flex-col gap-1 overflow-y-auto rounded-lg p-2">
       <div
-        v-for="user in searchResult"
-        :key="user.uid"
-        class="hover:bg-base-300 flex cursor-pointer items-center gap-2 rounded-lg p-2"
-        @click="setUser(user)"
+        v-for="user in searchResult" :key="user.uid"
+        class="hover:bg-base-300 flex cursor-pointer items-center gap-2 rounded-lg p-2" @click="setUser(user)"
       >
         <div class="avatar">
-          <div class="w-8 rounded-full">
-            <img :src="user.avatar">
-          </div>
+          <LazyImage
+            :src="user.avatar"
+            :alt="user.name"
+            class="h-8 w-8 rounded-full"
+          />
         </div>
         <div class="flex flex-col">
           <div class="text-sm font-bold">
@@ -101,11 +87,7 @@ watch(searchText, (value) => {
           </div>
         </div>
 
-        <a
-          :href="`https://weibo.com/u/${user.uid}`"
-          target="_blank"
-          class="btn-link ml-auto btn"
-        >
+        <a :href="`https://weibo.com/u/${user.uid}`" target="_blank" class="btn-link ml-auto btn">
           <ArrowRight class="h-4 w-4" />
         </a>
       </div>
