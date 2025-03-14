@@ -51,7 +51,7 @@ const options: Option[] = [
       </label>
 
       <button
-        class="btn-outline btn-sm text-base-content ml-auto text-sm btn"
+        class="btn-ghost btn-sm text-base-content ml-auto text-sm btn"
         @click="useConfig().resetConfig"
       >
         <div class="flex items-center gap-1">
@@ -61,19 +61,56 @@ const options: Option[] = [
       </button>
     </div>
 
-    <div class="card bg-base-100 max-h-56 overflow-y-auto px-4 py-2">
-      <div v-for="option in options" :key="option.value" class="flex items-center gap-2 py-2">
-        <label class="" :for="option.value">
+    <div class="bg-base-100 card px-4 py-2">
+      <div
+        v-for="option in options"
+        :key="option.value"
+        class="flex items-center py-2"
+      >
+        <label :for="option.value">
           <span>
             {{ option.label }}
           </span>
-          <span v-if="option.remark" class="block text-sm text-gray-500">
+          <span
+            v-if="option.remark"
+            class="block text-sm text-gray-500"
+          >
             {{ option.remark }}
           </span>
         </label>
 
-        <input :id="option.value" v-model="config[option.value]" type="checkbox" class="toggle ml-auto">
+        <input
+          :id="option.value"
+          v-model="config[option.value]"
+          type="checkbox"
+          class="toggle toggle-primary ml-auto"
+        >
       </div>
     </div>
+
+    <label
+      for="commentCount"
+      class="label"
+    >
+      评论获取数量
+    </label>
+
+    <select
+      id="commentCount"
+      v-model="config.commentCount"
+      class="select w-full px-4"
+      :disabled="!config.hasComment"
+    >
+      <option disabled selected>
+        请选择
+      </option>
+      <option
+        v-for="i in 4"
+        :key="i"
+        :value="i * 5"
+      >
+        {{ i * 5 }} 条
+      </option>
+    </select>
   </div>
 </template>

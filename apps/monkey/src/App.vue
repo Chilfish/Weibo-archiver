@@ -38,12 +38,10 @@ onMounted(async () => {
 <template>
   <div
     v-show="!config.isMinimize"
-    class="fixed-card bg-base-200 w-96 gap-2 shadow-2xl"
+    class="fixed-card bg-base-200 w-96 gap-2 overflow-y-auto shadow-2xl space-y-2"
     data-theme="light"
   >
     <Header />
-    <div class="divider my-0" />
-
     <Search />
     <Options />
     <!-- <Config /> -->
@@ -124,11 +122,9 @@ p {
   position: fixed;
   right: 1rem;
   top: 5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   border-radius: 0.5rem;
   padding: 1rem;
   transition: all 0.3s ease-in-out;
+  max-height: 80vh;
 }
 </style>

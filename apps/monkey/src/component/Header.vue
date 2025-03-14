@@ -15,9 +15,14 @@ const {
     class="flex items-center gap-2"
   >
     <Logo />
-    <h2 class="mr-4 flex items-center gap-2 text-lg font-bold">
+    <h2
+      class="mr-4 flex items-center gap-2 text-lg font-bold"
+    >
       <span>Weibo archiver</span>
-      <div class="badge badge-primary badge-soft">
+      <div
+        v-if="VITE_APP_VERSION"
+        class="badge badge-primary badge-soft"
+      >
         v{{ VITE_APP_VERSION }}
       </div>
     </h2>

@@ -4,7 +4,7 @@ import { onMounted, ref, useTemplateRef } from 'vue'
 const props = defineProps<{
   src: string
   alt: string
-  class?: string
+  imgClass?: string
 }>()
 
 const imgRef = useTemplateRef<HTMLImageElement>('imgRef')
@@ -28,7 +28,7 @@ onMounted(() => {
       ref="imgRef"
       :src="src"
       :alt="alt"
-      :class="props.class"
+      :class="props.imgClass"
       class="lazy-image"
     >
     <div v-if="isLoading" class="skeleton h-full w-full" />
