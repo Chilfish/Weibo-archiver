@@ -147,7 +147,7 @@ export function fetchPosts(
   { fetchOptions, onFinish, setTotal }: FetchPosts,
 ) {
   async function fetching() {
-    await delay(3000)
+    await delay(1000)
     const { uid, startAt, endAt, hasRepost, curPage, isFetchAll } = fetchOptions()
     const page = curPage + 1
 

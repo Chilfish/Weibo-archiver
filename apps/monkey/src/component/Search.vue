@@ -4,12 +4,12 @@ import { searchUser as searchUserService, userDetail } from '@shared'
 import { ArrowRight, Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 import { useConfig } from '../composables/useConfig'
-import { usePost, userInfo } from '../composables/usePost'
+import { usePost } from '../composables/usePost'
 import LazyImage from './LazyImage.vue'
 
 const { config } = useConfig()
 const post = usePost()
-const searchText = ref(config.value.name)
+const searchText = ref(config.value.user?.name || '')
 const searchResult = ref<UserInfo[]>([])
 
 async function searchUser() {
@@ -24,9 +24,7 @@ async function searchUser() {
 async function setUser(user: UserInfo) {
   searchText.value = user.name
   searchResult.value = []
-  userInfo.value = user
-  config.value.uid = user.uid
-  config.value.name = user.name
+  config.value.user = user
 
   await post.updateUserInfo()
   await post.initializeDB()
@@ -48,12 +46,6 @@ watch(searchText, (value) => {
 
 <template>
   <div class="flex flex-col gap-2">
-    <label
-      for="wa-search-user"
-      class="label font-semibold"
-    >
-      搜索用户
-    </label>
     <label class="input w-full">
       <span class="label">
         当前用户
@@ -63,7 +55,7 @@ watch(searchText, (value) => {
         v-model="searchText"
         type="search"
         required
-        placeholder="昵称或id"
+        placeholder="搜索昵称或数字 id"
         @keyup.enter="searchUser"
       >
       <Search

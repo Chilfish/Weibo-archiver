@@ -49,8 +49,8 @@ export default defineConfig({
         license: 'MIT',
         namespace: 'chilfish/monkey',
         match: [
-          'https://weibo.com/u/*',
-          'http://localhost:5173/*',
+          'https://weibo.com/*',
+          'https://m.weibo.cn/*',
         ],
         version,
       },

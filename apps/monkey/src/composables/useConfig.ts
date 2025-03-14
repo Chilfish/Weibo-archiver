@@ -7,8 +7,6 @@ const STORAGE_KEY = 'weibo-archiver'
 const createInitialConfig = (): UserConfig => ({
   isMinimize: true,
   restore: false,
-  uid: '',
-  name: '',
   curPage: 0,
   fetchedCount: 0,
   isFetchAll: true,
@@ -50,8 +48,8 @@ export function useConfig() {
   }
 
   function resetConfig() {
-    const { uid, name, isMinimize } = config.value
-    config.value = { ...createInitialConfig(), uid, name, isMinimize }
+    const { user, isMinimize } = config.value
+    config.value = { ...createInitialConfig(), user, isMinimize }
     updateGlobalFetchOptions()
   }
 

@@ -138,7 +138,7 @@ export async function fetchFollowings(
   const _isMe = await isMe(uid)
 
   while (true) {
-    await delay(3000)
+    await delay(1000)
     const { users, total } = _isMe
       ? await getMyFollowings(page)
       : await getFollowings(uid, page)

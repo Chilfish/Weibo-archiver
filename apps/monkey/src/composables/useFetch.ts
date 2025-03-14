@@ -1,12 +1,10 @@
 import type { FetchState } from '../types'
 import { fetchFollowings, fetchPosts } from '@shared'
-import { useToast } from '@workspace/ui/shadcn/toast'
 import { computed, reactive } from 'vue'
 import { config, useConfig } from './useConfig'
 import { usePost } from './usePost'
 
 // 全局状态
-const toast = useToast()
 const { updateConfig } = useConfig()
 const post = usePost()
 
@@ -21,6 +19,7 @@ export function useFetch() {
   const { pause, start } = fetchPosts({
     fetchOptions: () => ({
       ...config.value,
+      uid: config.value.user?.uid || '',
       savePost: newPost => post.addPost(newPost),
     }),
     setTotal: (total) => {
@@ -28,10 +27,9 @@ export function useFetch() {
     },
     onFinish: async () => {
       if (!config.value.weiboOnly) {
-        toast.success('获取完毕~，正在获取关注列表')
         fetchState.isFetchingFollowings = true
         await fetchFollowings(
-          config.value.uid,
+          config.value.user?.uid || '',
           async data => post.addFollowingUsers(data),
         )
       }
@@ -43,8 +41,6 @@ export function useFetch() {
   })
 
   async function startFetch() {
-    toast.info('开始爬取中，请稍等~')
-
     fetchState.isStart = true
     fetchState.isFinish = false
     fetchState.isStop = false
@@ -54,7 +50,7 @@ export function useFetch() {
     if (config.value.followingsOnly) {
       fetchState.isFetchingFollowings = true
       await fetchFollowings(
-        config.value.uid,
+        config.value.user?.uid || '',
         async data => post.addFollowingUsers(data),
       )
       await post.exportFollowingUsers()
@@ -82,7 +78,7 @@ export function useFetch() {
   }
 
   const startButtonText = computed(() => {
-    const user = config.value?.name || '【未设置用户】'
+    const user = config.value?.user?.name || '【未设置用户】'
     if (config.value.followingsOnly)
       return `获取 ${user} 的关注列表`
 

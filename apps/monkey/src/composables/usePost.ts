@@ -1,13 +1,12 @@
-import type { Post, UID, UserBio, UserInfo } from '@shared'
+import type { Post, UID, UserBio } from '@shared'
 import type { FetchProgress } from '../types'
 import { exportData } from '@core/utils'
 import { EmptyIDB, IDB } from '@core/utils/storage'
-import { computed, reactive, ref, toRaw } from 'vue'
+import { computed, reactive, toRaw } from 'vue'
 import { config, useConfig } from './useConfig'
 
 const { updateConfig } = useConfig()
 
-export const userInfo = ref<UserInfo | null>(null)
 export const postState = reactive({
   pageSize: 20,
   idb: new EmptyIDB() as IDB,
@@ -21,7 +20,7 @@ export const progress = computed<FetchProgress>(() => ({
 
 export function usePost() {
   async function initializeDB() {
-    const wrappedUid = `uid-${config.value.uid}` as UID
+    const wrappedUid = `uid-${config.value.user?.uid || ''}` as UID
     if (postState.idb.name === wrappedUid)
       return
 
@@ -32,7 +31,7 @@ export function usePost() {
   }
 
   async function waitForDBInitialization() {
-    const dbName = `uid-${config.value.uid}`
+    const dbName = `uid-${config.value.user?.uid || ''}`
     while (postState.idb.name !== dbName) {
       await new Promise(r => setTimeout(r, 300))
     }
@@ -74,9 +73,10 @@ export function usePost() {
   }
 
   async function updateUserInfo() {
-    if (!userInfo.value)
+    const user = config.value.user
+    if (!user)
       return
-    await postState.idb.setUserInfo(toRaw(userInfo.value))
+    await postState.idb.setUserInfo(toRaw(user))
   }
 
   async function addFollowingUsers(followings: UserBio[]) {
@@ -85,19 +85,18 @@ export function usePost() {
 
   async function exportFollowingUsers() {
     const data = await postState.idb.getFollowings()
-    return await exportData([], userInfo.value, data)
+    return await exportData([], config.value.user, data)
   }
 
   async function exportAllData() {
     try {
       const posts = await getAllPosts()
-      console.log('Exporting posts count:', posts.length)
 
       const followings = config.value.weiboOnly
         ? []
         : await postState.idb.getFollowings()
 
-      await exportData(posts, userInfo.value, followings)
+      await exportData(posts, config.value.user, followings)
     }
     catch (error) {
       console.error('Failed to export data:', error)
@@ -106,7 +105,6 @@ export function usePost() {
   }
 
   return {
-    userInfo,
     progress,
     state: postState,
 
