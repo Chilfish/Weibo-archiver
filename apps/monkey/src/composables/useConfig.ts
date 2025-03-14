@@ -7,8 +7,6 @@ const STORAGE_KEY = 'weibo-archiver'
 const createInitialConfig = (): UserConfig => ({
   isMinimize: true,
   restore: false,
-  uid: '',
-  name: '',
   curPage: 0,
   fetchedCount: 0,
   isFetchAll: true,
@@ -23,6 +21,7 @@ const createInitialConfig = (): UserConfig => ({
   startAt: Date.now(),
   endAt: Date.now(),
   total: 0,
+  theme: 'winter',
 })
 
 // 全局配置状态
@@ -49,15 +48,14 @@ export function useConfig() {
   }
 
   function resetConfig() {
-    const { uid, name, isMinimize } = config.value
-    config.value = { ...createInitialConfig(), uid, name, isMinimize }
+    const { user, isMinimize } = config.value
+    config.value = { ...createInitialConfig(), user, isMinimize }
     updateGlobalFetchOptions()
   }
 
   watch(config, (newConfig) => {
     const { startAt, endAt } = newConfig
     if (startAt && endAt) {
-      newConfig.isFetchAll = false
       newConfig.startAt = new Date(startAt).getTime()
       newConfig.endAt = new Date(endAt).getTime()
     }

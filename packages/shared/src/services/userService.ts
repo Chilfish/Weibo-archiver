@@ -1,6 +1,27 @@
 import type { UserBio, UserInfo } from '../types'
 import { delay, parseFollowing, weiFetch } from '../'
 
+export async function searchUser(keyword: string) {
+  const { data } = await weiFetch(`/side/search`, {
+    params: {
+      q: keyword,
+    },
+  })
+
+  return data.users.map((user: any) => {
+    return {
+      uid: user.id.toString(),
+      name: user.screen_name,
+      avatar: user.avatar_large,
+      followers: user.followers_count,
+      followings: user.friends_count,
+      bio: user.description,
+      createdAt: user.created_at,
+      birthday: user.birthday,
+    } satisfies UserInfo
+  })
+}
+
 export async function userInfo(
   { id, name }: { id?: string, name?: string },
 ) {
@@ -117,7 +138,7 @@ export async function fetchFollowings(
   const _isMe = await isMe(uid)
 
   while (true) {
-    await delay(3000)
+    await delay(1000)
     const { users, total } = _isMe
       ? await getMyFollowings(page)
       : await getFollowings(uid, page)

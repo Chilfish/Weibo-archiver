@@ -58,6 +58,9 @@ export default defineConfig({
   content: {
     pipeline: {
       include: [/\.(vue|ts|tsx|html)($|\?)/],
+      exclude: [
+        'apps/monkey/*',
+      ],
     },
   },
 })

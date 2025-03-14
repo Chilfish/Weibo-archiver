@@ -7,7 +7,7 @@ export * from './types'
 export const isBrowser = typeof window !== 'undefined'
 
 export function delay(ms = 2000) {
-  const randomMs = Math.random() * ms + 1000
+  const randomMs = Math.random() * ms
   return new Promise(resolve => setTimeout(resolve, randomMs))
 }
 

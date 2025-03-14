@@ -1,3 +1,5 @@
+import type { UserInfo } from '@shared'
+
 export interface FetchState {
   isStart: boolean
   isStop: boolean
@@ -11,8 +13,7 @@ export interface FetchProgress {
 }
 
 export interface UserConfig {
-  uid: string
-  name: string
+  user?: UserInfo
   isMinimize: boolean
   restore: boolean
   isFetchAll: boolean
@@ -29,6 +30,7 @@ export interface UserConfig {
   curPage: number
   fetchedCount: number
   total: number
+  theme: string
 }
 
 export type FetchOptions = Omit<UserConfig, 'isMinimize' | 'restore'>
