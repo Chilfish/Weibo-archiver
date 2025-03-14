@@ -7,7 +7,7 @@
     "typecheck": "tsc --noEmit -p ./tsconfig.json"
   },
   "dependencies": {
-    "@vueuse/core": "^12.7.0",
+    "@vueuse/core": "^13.0.0",
     "@weibo-archiver/shared": "workspace:^",
     "dayjs": "^1.11.13",
     "destr": "^2.0.3",
