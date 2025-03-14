@@ -29,6 +29,7 @@ export interface UserConfig {
   curPage: number
   fetchedCount: number
   total: number
+  theme: string
 }
 
 export type FetchOptions = Omit<UserConfig, 'isMinimize' | 'restore'>

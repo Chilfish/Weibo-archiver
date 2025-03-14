@@ -59,7 +59,7 @@ const options: Option[] = [
 <template>
   <div
     tabindex="0"
-    class="bg-base-100 collapse collapse-arrow border-base-300 text-base-content! border m-0!"
+    class="collapse collapse-arrow bg-base-100 border-base-300 text-base-content! border m-0!"
   >
     <input type="checkbox" checked>
 
@@ -81,7 +81,7 @@ const options: Option[] = [
           </span>
           <span
             v-if="option.remark"
-            class="block text-sm text-gray-500"
+            class="block text-[0.8rem] text-gray-500"
           >
             {{ option.remark }}
           </span>

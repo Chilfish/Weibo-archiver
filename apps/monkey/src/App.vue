@@ -13,39 +13,32 @@ const { toggleMinimize } = useConfig()
 <template>
   <div
     v-show="!config.isMinimize"
-    class="fixed-card bg-base-200 w-96 gap-2 overflow-x-hidden overflow-y-auto border-2 border-gray-200 rounded-lg p-4 shadow-2xl space-y-2"
-    data-theme="light"
+    class="fixed-card bg-base-200 text-base-content max-h-[80vh] w-96 gap-2 overflow-x-hidden overflow-y-auto border-2 border-gray-200 rounded-lg p-4 shadow-2xl space-y-2"
+    :data-theme="config.theme"
   >
     <Header />
     <Search />
     <Options />
-    <div class="divider" />
+    <div class="divider m-2" />
     <ExportButtons />
   </div>
 
-  <div
+  <Logo
+
     v-show="config.isMinimize"
-    class="fixed-card w-16 shadow-xl p-2!"
+    class="fixed-card h-12 w-12 border-2 border-gray-200 rounded-lg shadow-2xl"
     @click="toggleMinimize"
-  >
-    <Logo />
-  </div>
+  />
 </template>
 
-<style scoped>
+<style>
 #plugin-app {
   z-index: 100;
   position: relative;
   width: 100%;
   height: 100%;
-}
+  font-size: 15px;
 
-:root {
-  font-size: 14px;
-}
-
-p {
-  color: black !important;
 }
 
 .fixed-card {
@@ -53,7 +46,6 @@ p {
   right: 1rem;
   top: 5rem;
   transition: all 0.3s ease-in-out;
-  max-height: 80vh;
   z-index: 1000;
 }
 

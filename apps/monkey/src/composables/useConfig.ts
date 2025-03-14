@@ -23,6 +23,7 @@ const createInitialConfig = (): UserConfig => ({
   startAt: Date.now(),
   endAt: Date.now(),
   total: 0,
+  theme: 'winter',
 })
 
 // 全局配置状态

@@ -166,7 +166,7 @@ watch(() => fetchState.isFinish, (isFinish) => {
       </button>
 
       <button
-        class="btn"
+        class="btn-warning btn"
         @click="handleResetExport"
       >
         <RotateCw class="mr-1 h-4 w-4" />

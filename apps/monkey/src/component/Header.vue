@@ -1,37 +1,49 @@
 <script setup lang="ts">
-import { Minimize2 } from 'lucide-vue-next'
+import { Minimize2, Settings } from 'lucide-vue-next'
+import { useTemplateRef } from 'vue'
 import { useConfig } from '../composables/useConfig'
 import Logo from './Logo.vue'
+import Setting from './Setting.vue'
 
 const { toggleMinimize } = useConfig()
 
-const {
-  VITE_APP_VERSION,
-} = import.meta.env
+const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
 </script>
 
 <template>
   <header
-    class="flex items-center gap-2 pb-2"
+    class="flex items-center pb-2"
   >
     <Logo />
     <h2
-      class="mr-4 flex items-center gap-2 text-lg font-bold"
+      class="ml-4 mr-auto flex items-center gap-2"
     >
-      <span>Weibo archiver</span>
-      <div
-        v-if="VITE_APP_VERSION"
-        class="badge badge-primary badge-soft"
+      <span
+        class="text-lg font-bold"
       >
-        v{{ VITE_APP_VERSION }}
-      </div>
+        Weibo archiver
+      </span>
     </h2>
 
     <button
-      class="btn-sm btn-ghost ml-auto btn"
+      class="btn-sm btn-ghost btn-circle mr-1 btn"
+      @click="settingsDialog?.showModal()"
+    >
+      <Settings class="h-4 w-4" />
+    </button>
+
+    <button
+      class="btn-sm btn-ghost btn-circle btn"
       @click="toggleMinimize"
     >
       <Minimize2 class="h-4 w-4" />
     </button>
   </header>
+
+  <dialog
+    ref="settingsDialog"
+    class="modal"
+  >
+    <Setting @close="settingsDialog?.close()" />
+  </dialog>
 </template>
