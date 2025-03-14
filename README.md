@@ -27,18 +27,19 @@
 
 #### 1. 备份微博数据
 
-安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在用户个人主页（必须是通过点击头像来进入）刷新后将自动启动脚本，点击开始后将开始获取数据。支持断点续传，可恢复到上次的进度。
+安装至油猴脚本：[weibo-archiver.user.js][releases]（如果下载缓慢可用境内加速的 [镜像地址]）。在登录后的[微博网页版]刷新后将启动脚本，点击开始后将开始获取数据。支持断点续传，可恢复到上次的进度。
+
+如果通过名字搜索不到想要的用户，可以尝试通过进入用户主页，获取在浏览器URL地址栏中的数字id（如`https://weibo.com/u/1234567890`）来搜索
 
 #### 2. 下载微博中的图片（不是必须的）
 
-为了防止微博图片链接失效，建议及时下载图片到本地：
+为了防止微博图片链接失效，建议及时下载图片到本地
 
-1. 在 [releases] 中下载对应平台的可执行文件：
-   - Windows: `weibo-archiver-windows-amd64.zip`
-   - macOS: `weibo-archiver-macos-amd64.tar.gz`
-   - Linux: `weibo-archiver-linux-amd64.tar.gz`
+1. 在 [releases] 中下载对应平台的可执行文件
 2. 解压后按照 [本地服务器使用说明](server/README.md) 操作
 3. 下载完成后可以在本地离线浏览所有图片和微博数据
+
+该本地服务器还提供离线启动网页来查看微博数据
 
 #### 3. 命令行模式
 
@@ -63,6 +64,8 @@
 - 媒体文件：只能获取图片，将以图片链接文件的形式导出，需要同时使用下载图片工具下载好之后，才能在预览页面中可见。这是为了能够离线预览，同时也是为了防止某天图片突然被夹没了😅。并且由于视频文件可能会过大、过长，将采用外链的形式来呈现。
 
 - 不过可以将下载后的图片上传到你自己的图床服务器里，注意不要改变文件目录，再在预览页面的设置中填写你的图床链接即可
+
+- 对于备份登录的用户是可以导出全部数据，如果是备份别人的微博，由于限制，一次性最多只能导出约900条微博，建议按日期分批导出。
 
 ### 对开发者
 
@@ -93,7 +96,7 @@
 - 感谢 [speechless] 提供的基本思路
 - [vite-plugin-monkey] 提供了打包成油猴脚本的工具
 - [naive-ui] 提供的漂亮 UI 组件库
-- [vercel] 提供的强大云平台😚
+- [vercel] 提供的在线云平台部署😚
 - Github Copilot 😇
 
 ### 赞助
@@ -114,3 +117,4 @@
 [vercel]: https://vercel.com
 [使用教程]: https://docs.qq.com/doc/DTWttbXlMUGxZZnZq
 [actions]: https://github.com/Chilfish/Weibo-archiver/actions/workflows/beta-build.yml?query=branch:main+event:push+is:success
+[微博网页版]: https://weibo.com
