@@ -36,8 +36,6 @@ export function useFetch() {
         )
       }
 
-      await post.exportAllData()
-
       fetchState.isStart = false
       fetchState.isFinish = true
       updateConfig({ curPage: config.value.curPage - 1 })

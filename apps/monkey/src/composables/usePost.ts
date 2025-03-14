@@ -5,10 +5,9 @@ import { EmptyIDB, IDB } from '@core/utils/storage'
 import { computed, reactive, ref, toRaw } from 'vue'
 import { config, useConfig } from './useConfig'
 
-// 全局状态
-const userInfo = ref<UserInfo | null>(null)
 const { updateConfig } = useConfig()
 
+export const userInfo = ref<UserInfo | null>(null)
 export const postState = reactive({
   pageSize: 20,
   idb: new EmptyIDB() as IDB,

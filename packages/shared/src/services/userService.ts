@@ -1,6 +1,28 @@
 import type { UserBio, UserInfo } from '../types'
 import { delay, parseFollowing, weiFetch } from '../'
 
+export async function searchUser(keyword: string) {
+  // https://weibo.com/ajax/side/search?q=%E7%AB%8B%E7%9F%B3%E5%87%9B
+  const { data } = await weiFetch(`/side/search`, {
+    params: {
+      q: keyword,
+    },
+  })
+
+  return data.users.map((user: any) => {
+    return {
+      uid: user.id.toString(),
+      name: user.screen_name,
+      avatar: user.avatar_large,
+      followers: user.followers_count,
+      followings: user.friends_count,
+      bio: user.description,
+      createdAt: user.created_at,
+      birthday: user.birthday,
+    } satisfies UserInfo
+  })
+}
+
 export async function userInfo(
   { id, name }: { id?: string, name?: string },
 ) {

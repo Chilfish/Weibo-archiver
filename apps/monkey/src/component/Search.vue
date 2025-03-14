@@ -1,49 +1,32 @@
 <script setup lang="ts">
-import type { User } from '@shared'
+import type { UserInfo } from '@shared'
+import { searchUser as searchUserService } from '@shared'
 import { ArrowRight, Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
+import { useConfig } from '../composables/useConfig'
+import { usePost, userInfo } from '../composables/usePost'
 import LazyImage from './LazyImage.vue'
 
 const searchText = ref('')
-const searchResult = ref<User[]>([])
+const searchResult = ref<UserInfo[]>([])
+const { config } = useConfig()
+const post = usePost()
 
-const mockData: User[] = [
-  {
-    uid: 'uid-1',
-    name: '张三',
-    avatar: 'https://unavatar.io/github/chilfish',
-  },
-  {
-    uid: 'uid-2',
-    name: '李四三',
-    avatar: 'https://unavatar.io/github/x',
-  },
-  {
-    uid: 'uid-3',
-    name: '王五',
-    avatar: 'https://unavatar.io/github/x',
-  },
-  {
-    uid: 'uid-4',
-    name: '赵六',
-    avatar: 'https://unavatar.io/github/x',
-  },
-]
-
-function searchUser() {
-  console.log(searchText.value)
-  searchResult.value = mockData.filter(user =>
-    user.name.includes(searchText.value)
-    || user.uid.includes(searchText.value),
-  )
-
-  console.log(searchResult.value)
+async function searchUser() {
+  const users = await searchUserService(searchText.value)
+  searchResult.value = users
 }
 
-function setUser(user: User) {
+async function setUser(user: UserInfo) {
   console.log(user)
   searchText.value = user.name
   searchResult.value = []
+  userInfo.value = user
+  config.value.uid = user.uid
+  config.value.name = user.name
+
+  await post.updateUserInfo()
+  await post.initializeDB()
 }
 
 watch(searchText, (value) => {

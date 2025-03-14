@@ -1,5 +1,6 @@
+import type { AxiosRequestConfig } from 'axios'
 import type { FetchOptions } from './types'
-import Axios, { type AxiosRequestConfig } from 'axios'
+import Axios from 'axios'
 
 const axios = Axios.create({
   baseURL: 'https://weibo.com/ajax',

@@ -1,33 +1,12 @@
 <script setup lang="ts">
-import { userDetail, userInfo } from '@shared'
-import { onMounted } from 'vue'
 import ExportButtons from './component/ExportButtons.vue'
 import Header from './component/Header.vue'
 import Options from './component/Options.vue'
 import Search from './component/Search.vue'
 
 import { config, useConfig } from './composables/useConfig'
-import { usePost } from './composables/usePost'
 
-const { toggleMinimize, updateConfig } = useConfig()
-const post = usePost()
-
-/**
- * 初始化用户信息
- */
-async function init() {
-  const id = document.URL.match(/\/(\d+)/)?.[1] ?? ''
-  const { uid, name } = await userInfo({ id })
-
-  post.userInfo.value = await userDetail(uid)
-  console.log('userInfo', post.userInfo.value)
-  updateConfig({ uid, name })
-}
-
-onMounted(async () => {
-  await init().catch(console.error)
-  await post.initializeDB()
-})
+const { toggleMinimize } = useConfig()
 </script>
 
 <template>
@@ -78,5 +57,22 @@ p {
   padding: 1rem;
   transition: all 0.3s ease-in-out;
   max-height: 80vh;
+  z-index: 1000;
+}
+
+.fixed-card::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.fixed-card::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: transparent;
+}
+.fixed-card::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #7a797963;
+}
+.fixed-card {
+  scrollbar-width: thin !important;
 }
 </style>
