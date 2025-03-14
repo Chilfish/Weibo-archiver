@@ -12,7 +12,7 @@ import (
 func main() {
 	info := utils.AppInfo{
 		Name:        "Weibo-archiver Tools",
-		Version:     "0.5.2",
+		Version:     "0.5.3",
 		Description: "Download and serve weibo images",
 	}
 
@@ -46,10 +46,10 @@ func main() {
 
 	fmt.Println("使用配置:")
 	for k, v := range map[string]interface{}{
-		"  图片目录":     cfg.ImagesPath,
-		"  CSV文件":        cfg.CSVPath,
-		"  端口":           cfg.Port,
-		"  并发数":    cfg.Concurrency,
+		"  图片目录":  cfg.ImagesPath,
+		"  CSV文件": cfg.CSVPath,
+		"  端口":    cfg.Port,
+		"  并发数":   cfg.Concurrency,
 		"  下载延迟":  cfg.DownloadDelay,
 	} {
 		fmt.Printf("%s: %v\n", k, v)
