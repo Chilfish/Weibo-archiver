@@ -1,21 +1,16 @@
 <script setup lang="ts">
 import { userDetail, userInfo } from '@shared'
 import { onMounted } from 'vue'
+import ExportButtons from './component/ExportButtons.vue'
 import Header from './component/Header.vue'
 import Options from './component/Options.vue'
 import Search from './component/Search.vue'
 
 import { config, useConfig } from './composables/useConfig'
-import { fetchState, useFetch } from './composables/useFetch'
 import { usePost } from './composables/usePost'
 
 const { toggleMinimize, updateConfig } = useConfig()
 const post = usePost()
-const {
-  startButtonText,
-  startFetch,
-  toggleStop,
-} = useFetch()
 
 /**
  * 初始化用户信息
@@ -30,64 +25,21 @@ async function init() {
 }
 
 onMounted(async () => {
-  // await init().catch(console.error)
-  // await post.initializeDB()
+  await init().catch(console.error)
+  await post.initializeDB()
 })
 </script>
 
 <template>
   <div
-    v-show="!config.isMinimize"
-    class="fixed-card bg-base-200 w-96 gap-2 overflow-y-auto shadow-2xl space-y-2"
+    v-show="!config.isMinimize" class="fixed-card bg-base-200 w-96 gap-2 overflow-y-auto shadow-2xl space-y-2"
     data-theme="light"
   >
     <Header />
     <Search />
     <Options />
-    <!-- <Config /> -->
-
-    <div class="flex items-center gap-2">
-      <progress
-        :value="post.progress.value.percentage"
-      />
-
-      <div class="min-w-fit">
-        {{ post.progress.value.fetchedCount }}/{{ config.total }}
-      </div>
-    </div>
-
-    <div class="flex gap-2">
-      <button
-        v-show="!fetchState.isStart || fetchState.isStop"
-        class="btn"
-        @click="startFetch"
-      >
-        {{ startButtonText }}
-      </button>
-
-      <div
-        v-show="fetchState.isStart && !fetchState.isFinish && !fetchState.isStop"
-        class="center"
-      >
-        正在获取{{ fetchState.isFetchingFollowings ? '关注列表' : '微博' }} ~
-      </div>
-
-      <button
-        v-show="fetchState.isStart && !fetchState.isFinish"
-        class="btn"
-        @click="toggleStop"
-      >
-        {{ fetchState.isStop ? '继续' : '暂停' }}
-      </button>
-
-      <button
-        v-show="fetchState.isFinish || fetchState.isStop"
-        class="btn"
-        @click="post.exportAllData"
-      >
-        导出
-      </button>
-    </div>
+    <div class="divider" />
+    <ExportButtons />
   </div>
 
   <div

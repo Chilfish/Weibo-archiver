@@ -14,7 +14,8 @@ export const postState = reactive({
   idb: new EmptyIDB() as IDB,
 })
 
-const progress = computed<FetchProgress>(() => ({
+// Export progress for use in other components
+export const progress = computed<FetchProgress>(() => ({
   percentage: (config.value.fetchedCount / config.value.total) * 100 || 0,
   fetchedCount: config.value.fetchedCount,
 }))

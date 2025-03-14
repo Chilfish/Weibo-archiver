@@ -5,6 +5,8 @@ export default antfu({
   formatters: true,
   rules: {
     'no-console': 'off',
+    'no-alert': 'off',
+    'no-confirm': 'off',
     'vue/no-multiple-template-root': 'off',
     'node/prefer-global/process': 'off',
     'format/prettier': 'off',

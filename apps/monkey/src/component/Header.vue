@@ -12,7 +12,7 @@ const {
 
 <template>
   <header
-    class="flex items-center gap-2"
+    class="flex items-center gap-2 pb-2"
   >
     <Logo />
     <h2

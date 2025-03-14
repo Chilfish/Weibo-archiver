@@ -70,7 +70,7 @@ const options: Option[] = [
       </button>
     </div>
 
-    <div class="card bg-base-100 px-4 py-2">
+    <div class="bg-base-100 card px-4 py-2">
       <div
         v-for="option in options"
         :key="option.value"
