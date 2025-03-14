@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Minimize2, Settings } from 'lucide-vue-next'
+import { ArrowUpRight, Minimize2, Settings } from 'lucide-vue-next'
 import { useTemplateRef } from 'vue'
 import { useConfig } from '../composables/useConfig'
 import Logo from './Logo.vue'
@@ -16,13 +16,21 @@ const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
   >
     <Logo />
     <h2
-      class="ml-4 mr-auto flex items-center gap-2"
+      class="ml-4 mr-auto flex flex-col"
     >
       <span
         class="text-lg font-bold"
       >
         Weibo archiver
       </span>
+      <a
+        href="https://weibo.chilfish.top"
+        target="_blank"
+        class="text-[0.7rem] text-gray-500!"
+      >
+        在预览网站导入数据
+        <ArrowUpRight class="inline-block h-4 w-4" />
+      </a>
     </h2>
 
     <button

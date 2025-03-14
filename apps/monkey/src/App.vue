@@ -24,7 +24,6 @@ const { toggleMinimize } = useConfig()
   </div>
 
   <Logo
-
     v-show="config.isMinimize"
     class="fixed-card h-12 w-12 border-2 border-gray-200 rounded-lg shadow-2xl"
     @click="toggleMinimize"
