@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import WeiboCard from '../components/weibo/WeiboCard.vue'
+import WeiboCard from '../components/weibo/Weibo.vue'
 import { weiboPosts } from './test.data'
 
 const meta: Meta<typeof WeiboCard> = {

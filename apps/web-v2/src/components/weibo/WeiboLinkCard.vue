@@ -19,6 +19,7 @@ defineProps<{
       :alt="card.title"
       referrerpolicy="no-referrer"
       class="url-card-img"
+      skeleton-class="w-40"
     />
     <div class="url-card-content">
       <h4 class="font-medium text-gray-900 text-sm">

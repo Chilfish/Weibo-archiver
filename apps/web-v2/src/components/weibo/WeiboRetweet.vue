@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import type { Post } from '@workspace/shared'
 import { computed } from 'vue'
-import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
-import WeiboLinkCard from './WeiboLinkCard.vue'
+import WeiboCard from './WeiboCard.vue'
 import WeiboProfile from './WeiboProfile.vue'
 import WeiboText from './WeiboText.vue'
 
 const props = defineProps<{
   post: Post
-  isRetweet?: boolean
 }>()
 
 const actions = computed(() => ({
@@ -20,23 +18,17 @@ const actions = computed(() => ({
 </script>
 
 <template>
-  <div
-    class="weibo-card bg-white rounded-2xl shadow-sm p-5 group"
-  >
+  <div class="weibo-card bg-white rounded-2xl shadow-sm p-5 group">
     <WeiboProfile
       v-if="post.user"
       :user="post.user"
       :meta="post"
     />
     <WeiboText :text="post.text" />
-    <ImageGallery :images="post.imgs" />
-    <WeiboLinkCard v-if="post.card" :card="post.card" />
-    <WeiboActions v-if="!isRetweet" :actions="actions" />
+    <WeiboCard :post="post.retweeted_status!" is-retweet />
+    <WeiboActions
+      class="mt-4"
+      :actions="actions"
+    />
   </div>
 </template>
-
-<style>
-.weibo-card {
-  transition: all 0.25s ease;
-}
-</style>

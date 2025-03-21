@@ -15,6 +15,7 @@ defineProps<{
       :src="user.avatar"
       :alt="user.name"
       class="w-10 h-10 rounded-full object-cover"
+      skeleton-class="w-10 h-10"
     />
     <div>
       <h3 class="font-bold text-gray-900">

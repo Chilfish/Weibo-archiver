@@ -15,7 +15,7 @@ export const Default: Story = {
   render: () => ({
     components: { ImageGallery },
     template: /* html */`
-      <div class="flex flex-col gap-4 w-200">
+      <div class="flex flex-col gap-4 w-full p-4 md:w-200">
         <ImageGallery :images="images" />
         <ImageGallery :images="images" />
       </div>

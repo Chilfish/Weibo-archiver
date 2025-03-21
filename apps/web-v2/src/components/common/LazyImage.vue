@@ -18,6 +18,7 @@ interface Props {
   width?: Numberish
   class?: string
   alt?: string
+  skeletonClass?: string
 }
 
 const props = defineProps<Props>()
@@ -64,6 +65,6 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   >
   <div
     v-if="isLoading"
-    class="skeleton" :class="[props.class]"
+    class="skeleton" :class="[props.skeletonClass]"
   />
 </template>

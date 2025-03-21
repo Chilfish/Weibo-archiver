@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import FilterBar from '../../components/FilterBar.vue'
 import ProfilePanel from '../../components/ProfilePanel.vue'
 import SwitchUser from '../../components/SwitchUser.vue'
-import { users } from '../test.data'
+import Weibo from '../../components/weibo/Weibo.vue'
+import { users, weiboPosts } from '../test.data'
 
 const meta: Meta = {
   title: 'Pages/post',
@@ -16,13 +17,13 @@ const curUser = users[0]
 
 export const Default: Story = {
   render: () => ({
-    components: { FilterBar, ProfilePanel, SwitchUser },
+    components: { FilterBar, ProfilePanel, SwitchUser, Weibo },
     template: /* html */`
-    <main class="flex flex-col p-4 h-screen">
+    <main class="flex flex-col py-4 lg:px-36 bg-base-100">
       <FilterBar />
-      <div class="flex gap-4">
-        <div class="w-full bg-gray-400 h-150vh">
-          微博列表
+      <div class="flex gap-8">
+        <div class="w-full space-y-4">
+          <Weibo v-for="post in posts" :key="post.id" :post="post" />
         </div>
         <div class="flex flex-col gap-4">
           <SwitchUser 
@@ -39,6 +40,7 @@ export const Default: Story = {
       return {
         curUser,
         users,
+        posts: weiboPosts,
       }
     },
   }),

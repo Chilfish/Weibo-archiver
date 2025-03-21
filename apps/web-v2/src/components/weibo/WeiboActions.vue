@@ -14,9 +14,7 @@ defineProps<{
 
 <template>
   <div class="weibo-actions flex items-center gap-6 select-none">
-    <button
-      class="hover:text-red-500"
-    >
+    <button class="hover:text-red-500">
       <Heart class="w-4 h-4" />
       <span>{{ actions.likes }}</span>
     </button>
@@ -33,6 +31,9 @@ defineProps<{
 
 <style>
 .weibo-actions button {
-  @apply flex items-center justify-center gap-2 transition-colors;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s ease;
 }
 </style>

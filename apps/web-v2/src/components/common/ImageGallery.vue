@@ -36,13 +36,13 @@ const computedImages = computed(() => {
       <LazyImage
         :src="image.src"
         :alt="image.alt"
-        class="min-h-48"
+        skeleton-class="min-h-12 md:min-h-48"
       />
     </div>
   </div>
 
   <div
-    v-else
+    v-else-if="computedImages[0]?.src"
     class="image-grid image-grid-1 mb-4"
   >
     <div class="image-grid-item">
@@ -82,8 +82,8 @@ const computedImages = computed(() => {
 
 .image-grid-item {
   position: relative;
-  min-height: 12rem;
   overflow: hidden;
+  min-height: 12rem;
 }
 
 .image-grid-item img,

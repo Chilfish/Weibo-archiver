@@ -71,15 +71,7 @@ export const weiboPosts: Post[] = [
   {
     id: 5146055725552649,
     text: '<a href="//s.weibo.com/weibo?q=%23%E8%8B%A5%E5%8F%B6%E7%9D%A6%23" target="_blank">#若叶睦#</a><a href="//s.weibo.com/weibo?q=%23avemujica%23" target="_blank">#avemujica#</a> ​​​',
-    imgs: [
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-      'https://wx1.sinaimg.cn/orj360/70745653gy1hznrfoobrwj21hc0u0ajo.jpg',
-    ],
+    imgs: images.map(image => image.src),
     reposts_count: 14,
     comments_count: 9,
     like_count: 113,
