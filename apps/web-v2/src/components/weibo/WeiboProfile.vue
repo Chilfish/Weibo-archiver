@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import type { Meta, User } from '@workspace/shared'
+import type { Meta } from '@workspace/shared'
+import { usePublicStore } from '@workspace/core'
 import { formatDate } from '@workspace/shared'
+import { computed } from 'vue'
 import LazyImage from '../common/LazyImage.vue'
 
 defineProps<{
-  user: User
   meta: Meta
 }>()
+
+const publicStore = usePublicStore()
+
+const user = computed(() => publicStore.curUser)
 </script>
 
 <template>
-  <div class="flex items-start gap-3 mb-4">
+  <div
+    v-if="user"
+    class="flex items-start gap-3 mb-4"
+  >
     <LazyImage
       :src="user.avatar"
       :alt="user.name"

@@ -10,6 +10,7 @@ export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
   const followings = shallowRef<UserBio[]>([])
   const allImages: Album[] = []
+  const weibos = ref<Post[]>([])
 
   const idb = ref(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
@@ -150,6 +151,7 @@ export const usePostStore = defineStore('post', () => {
       result = await idb.value.getDBPostByTime(_result)
     }
 
+    weibos.value = result
     return result
   }
 
@@ -207,6 +209,7 @@ export const usePostStore = defineStore('post', () => {
     else
       posts = await searchAndTime(query, start, end, p)
 
+    weibos.value = posts
     return posts
   }
 
@@ -255,6 +258,7 @@ export const usePostStore = defineStore('post', () => {
     pages,
     pageSize,
     curPage,
+    weibos,
     followings,
 
     get,

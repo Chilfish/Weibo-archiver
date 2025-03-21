@@ -24,8 +24,6 @@ const actions = computed(() => ({
     class="weibo-card bg-base-100 rounded-2xl shadow-sm p-5 group"
   >
     <WeiboProfile
-      v-if="post.user"
-      :user="post.user"
       :meta="post"
     />
     <WeiboText :text="post.text" />

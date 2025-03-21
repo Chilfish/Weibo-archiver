@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { usePostStore } from '@workspace/core'
 import { ArrowRight, CalendarDays, Filter, Image, Search } from 'lucide-vue-next'
+import DateSelect from './common/DateSelect.vue'
 import OpenSetting from './common/OpenSetting.vue'
+
+const postStore = usePostStore()
+
+async function onDateConfirm(start: number, end: number) {
+  await postStore.getByTime(1, start, end)
+}
 </script>
 
 <template>
@@ -14,7 +22,7 @@ import OpenSetting from './common/OpenSetting.vue'
           <Filter class="w-4 h-4" />
           <span class="text-gray-700">筛选</span>
         </label>
-        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-white rounded-box w-36 mt-1">
+        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-36 mt-1">
           <li><a class="active:bg-blue-50">全部微博</a></li>
           <li><a class="active:bg-blue-50">含图片</a></li>
           <li><a class="active:bg-blue-50">含视频</a></li>
@@ -25,18 +33,17 @@ import OpenSetting from './common/OpenSetting.vue'
       <div class="dropdown">
         <label
           tabindex="0"
-          class="btn btn-ghost btn-sm gap-1 rounded-full bg-gray-100 hover:bg-gray-200"
+          class="btn btn-ghost btn-sm gap-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
         >
-          <CalendarDays class="w-4 h-4" />
+          <CalendarDays class="w-4 h-4 text-blue-500" />
           <span class="text-gray-700">日期</span>
         </label>
-        <ul
+
+        <DateSelect
           tabindex="0"
-          class="dropdown-content menu p-2 shadow bg-white rounded-box w-36 mt-1"
-        >
-          <li><a class="active:bg-blue-50">最新发布</a></li>
-          <li><a class="active:bg-blue-50">最早发布</a></li>
-        </ul>
+          class="dropdown-content"
+          @confirm="onDateConfirm"
+        />
       </div>
 
       <RouterLink

@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import type { Post } from '@workspace/shared'
 import { usePostStore, usePublicStore } from '@weibo-archiver/core'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
-
-const posts = ref<Post[]>([])
 
 onMounted(async () => {
   publicStore.load()
@@ -15,7 +12,7 @@ onMounted(async () => {
   console.log(publicStore.curUser)
 
   await postStore.init()
-  posts.value = await postStore.get(1).then(res => res.map(post => ({
+  await postStore.get(1).then(res => res.map(post => ({
     ...post,
     user: publicStore.curUser,
   })))
@@ -27,7 +24,7 @@ onMounted(async () => {
     <div class="flex gap-4 flex-col md:flex-row">
       <div class="w-full space-y-4">
         <FilterBar />
-        <Weibo v-for="post in posts" :key="post.id" :post="post" />
+        <Weibo v-for="post in postStore.weibos" :key="post.id" :post="post" />
       </div>
       <div class="flex flex-col gap-4 sticky top-4 self-start px-8 w-full md:w-fit">
         <SwitchUser
