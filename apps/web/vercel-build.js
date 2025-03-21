@@ -13,6 +13,12 @@ const messages = [
   'web',
 ]
 
+// 暂时关闭 web-redesign 分支的自动部署
+if (VERCEL_GIT_COMMIT_REF === 'web-redesign') {
+  console.log('🛑 - Build cancelled')
+  process.exit(0)
+}
+
 const shouldProceed = messages.some((message) => {
   return VERCEL_GIT_COMMIT_MESSAGE.includes(message)
 })
