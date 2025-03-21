@@ -2,7 +2,7 @@
 import type { UserInfo } from '@workspace/shared'
 
 defineProps<{
-  user: UserInfo
+  user?: UserInfo
 }>()
 </script>
 
@@ -11,16 +11,16 @@ defineProps<{
     <div class="avatar mb-4">
       <div class="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
         <img
-          :src="user.avatar"
+          :src="user?.avatar || '/placeholder.webp'"
           alt="User Profile"
         >
       </div>
     </div>
     <h2 class="text-xl font-bold text-gray-800">
-      {{ user.name }}
+      {{ user?.name || '导入您的微博' }}
     </h2>
     <p class="text-center text-gray-600 my-4">
-      {{ user.bio }}
+      {{ user?.bio || '导入您的微博后，可查看您的微博数据' }}
     </p>
 
     <!-- 用户统计摘要 -->
@@ -30,7 +30,7 @@ defineProps<{
           微博
         </div>
         <div class="stat-value text-xl">
-          {{ user.postCount }}
+          {{ user?.postCount || 0 }}
         </div>
       </div>
       <div class="stat place-items-center">
@@ -38,7 +38,7 @@ defineProps<{
           关注
         </div>
         <div class="stat-value text-xl">
-          {{ user.followings }}
+          {{ user?.followings || 0 }}
         </div>
       </div>
       <div class="stat place-items-center">
@@ -46,7 +46,7 @@ defineProps<{
           粉丝
         </div>
         <div class="stat-value text-xl">
-          {{ user.followers }}
+          {{ user?.followers || 0 }}
         </div>
       </div>
     </div>
