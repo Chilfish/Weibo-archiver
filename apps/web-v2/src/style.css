@@ -2,13 +2,10 @@
 
 @plugin "daisyui" {
   themes: all;
-  root: "#app";
 }
 
 :root {
   font-size: 14px;
-  /* background: #f1f2f5;
-  color: #000; */
 }
 
 * {
@@ -34,8 +31,10 @@
   -moz-osx-font-smoothing: grayscale;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
-  @apply: bg-light-700 dark:bg-dark-700;
+}
+
+body {
+  height: 100dvh;
 }
 
 p {
@@ -44,9 +43,4 @@ p {
 
 html {
   scroll-behavior: smooth;
-}
-
-html.dark {
-  background: #111111;
-  color: #fff;
 }
