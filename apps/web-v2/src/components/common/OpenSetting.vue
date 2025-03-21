@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Settings } from 'lucide-vue-next'
 import { useTemplateRef } from 'vue'
-// TODO
-import Setting from '../../../../../packages/ui/src/settings/base.vue'
+import Setting from '../settings/Settings.vue'
 
 const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
 </script>
@@ -24,5 +23,8 @@ const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
       class="modal-box"
       @close="settingsDialog?.close()"
     />
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
   </dialog>
 </template>

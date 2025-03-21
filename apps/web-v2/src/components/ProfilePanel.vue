@@ -16,15 +16,15 @@ defineProps<{
         >
       </div>
     </div>
-    <h2 class="text-xl font-bold text-gray-800">
+    <h2 class="text-xl font-bold text-base-content">
       {{ user?.name || '导入您的微博' }}
     </h2>
-    <p class="text-center text-gray-600 my-4">
+    <p class="text-center text-base-content/80 my-4">
       {{ user?.bio || '导入您的微博后，可查看您的微博数据' }}
     </p>
 
     <!-- 用户统计摘要 -->
-    <div class="stats stats-horizontal shadow-sm bg-white w-full">
+    <div class="stats stats-horizontal shadow-sm w-full">
       <div class="stat place-items-center">
         <div class="stat-title text-xs">
           微博

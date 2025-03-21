@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useHead, useSeoMeta } from '@unhead/vue'
+import { useStorage } from '@vueuse/core'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
@@ -38,8 +39,16 @@ useHead({
     },
   ],
 })
+
+const config = useStorage('config', {
+  theme: 'light',
+})
 </script>
 
 <template>
-  <router-view />
+  <div
+    :data-theme="config.theme"
+  >
+    <router-view />
+  </div>
 </template>

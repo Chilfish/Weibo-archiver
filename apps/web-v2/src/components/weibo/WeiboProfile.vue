@@ -27,15 +27,15 @@ const user = computed(() => props.user || publicStore.curUser)
       skeleton-class="w-10 h-10"
     />
     <div>
-      <h3 class="font-bold text-gray-900">
+      <h3 class="font-bold text-base-content">
         {{ user.name }}
       </h3>
-      <div class="text-xs text-gray-500">
+      <div class="text-xs text-base-content/80">
         {{ formatDate(meta.created_at) }}
       </div>
     </div>
 
-    <div class="flex items-center ml-auto text-xs text-gray-500 gap-2">
+    <div class="flex items-center ml-auto text-xs text-base-content/80 gap-2">
       <a
         :href="meta.detail_url"
         target="_blank"

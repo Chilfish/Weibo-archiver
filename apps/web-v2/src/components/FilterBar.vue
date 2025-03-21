@@ -13,7 +13,7 @@ async function onDateConfirm(start: number, end: number) {
 </script>
 
 <template>
-  <div class="sticky top-0 z-10 rounded-2xl shadow-sm p-3 mb-6 glassmorphism">
+  <div class="sticky top-0 z-10 rounded-2xl shadow-sm p-3 mb-6 bg-base-100">
     <div class="flex items-center gap-2 flex-wrap">
       <OpenSetting />
 
