@@ -58,6 +58,7 @@ export default defineConfig({
       include: [/\.(vue|ts|tsx|html)($|\?)/],
       exclude: [
         'apps/monkey/*',
+        'apps/web-v2/*',
       ],
     },
   },

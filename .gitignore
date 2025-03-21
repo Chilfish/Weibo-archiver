@@ -24,3 +24,5 @@ tmp/
 *.tar.gz
 *.tar.xz
 *.tar.bz2
+
+auto-components.d.ts

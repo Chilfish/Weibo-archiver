@@ -34,7 +34,7 @@ echo "Installing dependencies..."
 go mod tidy
 
 # 检查前端文件是否存在
-WEB_DIST="../apps/web/dist"
+WEB_DIST="../apps/web-v2/dist"
 if [ ! -d "$WEB_DIST" ]; then
     echo "Error: Web dist folder not found at $WEB_DIST"
     exit 1

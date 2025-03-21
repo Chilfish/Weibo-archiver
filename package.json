@@ -19,13 +19,13 @@
     "pnpm": ">=9.4.0"
   },
   "scripts": {
-    "dev:web": "pnpm -F web dev",
+    "dev:web": "pnpm -F web-v2 dev",
     "dev:monkey": "pnpm -F monkey dev",
-    "build:web": "pnpm -F web build",
+    "build:web": "pnpm -F web-v2 build",
     "build:monkey": "pnpm -F monkey build",
     "build:cli": "pnpm -F shared build && pnpm -F weibo-archiver build",
-    "preview:web": "pnpm -F web preview",
-    "typecheck:web": "pnpm -F web typecheck",
+    "preview:web": "pnpm -F web-v2 preview",
+    "typecheck:web": "pnpm -F web-v2 typecheck",
     "release": "tsx release.ts",
     "lint": "eslint .",
     "postinstall": "simple-git-hooks"
