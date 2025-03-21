@@ -36,6 +36,7 @@ const computedImages = computed(() => {
       <LazyImage
         :src="image.src"
         :alt="image.alt"
+        class="min-h-48"
       />
     </div>
   </div>
@@ -81,7 +82,7 @@ const computedImages = computed(() => {
 
 .image-grid-item {
   position: relative;
-  padding-bottom: 100%;
+  min-height: 12rem;
   overflow: hidden;
 }
 

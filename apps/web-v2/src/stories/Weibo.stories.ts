@@ -11,17 +11,53 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+const with9Images = weiboPosts[0]
+const withRetweet = weiboPosts[1]
+const withLinkCard = weiboPosts[2]
+
+export const With9Images: Story = {
   render: () => ({
     components: { WeiboCard },
     template: /* html */ `
-      <div class="flex flex-col gap-4 w-128 p-4 bg-gray-100 rounded-lg">
-        <WeiboCard :post="weiboPosts[0]" />
+      <div class="flex flex-col gap-4 w-168 p-4 bg-gray-100 rounded-lg">
+        <WeiboCard :post />
       </div>
     `,
     setup() {
       return {
-        weiboPosts,
+        post: with9Images,
+      }
+    },
+  }),
+}
+
+export const WithRetweet: Story = {
+  render: () => ({
+    components: { WeiboCard },
+    template: /* html */ `
+      <div class="flex flex-col gap-4 w-168 p-4 bg-gray-100 rounded-lg">
+        <WeiboCard :post />
+      </div>
+    `,
+    setup() {
+      return {
+        post: withRetweet,
+      }
+    },
+  }),
+}
+
+export const WithLinkCard: Story = {
+  render: () => ({
+    components: { WeiboCard },
+    template: /* html */ `
+      <div class="flex flex-col gap-4 w-168 p-4 bg-gray-100 rounded-lg">
+        <WeiboCard :post />
+      </div>
+    `,
+    setup() {
+      return {
+        post: withLinkCard,
       }
     },
   }),

@@ -14,7 +14,12 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: () => ({
     components: { ImageGallery },
-    template: '<ImageGallery :images="images" />',
+    template: /* html */`
+      <div class="flex flex-col gap-4 w-200">
+        <ImageGallery :images="images" />
+        <ImageGallery :images="images" />
+      </div>
+    `,
     setup() {
       return {
         images,
