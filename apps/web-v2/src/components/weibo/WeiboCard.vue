@@ -25,6 +25,7 @@ const actions = computed(() => ({
   >
     <WeiboProfile
       :meta="post"
+      :user="isRetweet ? post.user : undefined"
     />
     <WeiboText :text="post.text" />
     <ImageGallery

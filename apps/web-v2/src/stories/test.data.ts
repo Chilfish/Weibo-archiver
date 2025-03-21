@@ -2,6 +2,16 @@ import type { Post, UserInfo } from '@workspace/shared'
 
 export const users: UserInfo[] = [
   {
+    uid: '7679065628',
+    name: 'Chilfish_',
+    avatar: 'https://tvax3.sinaimg.cn/crop.0.0.600.600.180/008nGzLely8hnl2l8x72dj30go0goabt.jpg?KID=imgbed,tva&Expires=1742568189&ssig=cPtClGQyKL',
+    followers: 25,
+    followings: 162,
+    bio: '大家都好可爱哦🥰🥰',
+    createdAt: '2021-08-22 10:16:44',
+    birthday: '2024-03-04',
+  },
+  {
     uid: 'uid-1',
     name: 'Jessica Chen',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&auto=format&fit=crop&crop=face',

@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import type { Meta } from '@workspace/shared'
+import type { Meta, User } from '@workspace/shared'
 import { usePublicStore } from '@workspace/core'
 import { formatDate } from '@workspace/shared'
 import { computed } from 'vue'
 import LazyImage from '../common/LazyImage.vue'
 
-defineProps<{
+const props = defineProps<{
   meta: Meta
+  user?: User
 }>()
 
 const publicStore = usePublicStore()
 
-const user = computed(() => publicStore.curUser)
+const user = computed(() => props.user || publicStore.curUser)
 </script>
 
 <template>
