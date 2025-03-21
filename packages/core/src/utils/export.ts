@@ -1,5 +1,5 @@
-import type { Post, UserBio, UserInfo } from '@shared'
-import { imgsParser } from '@shared'
+import type { Post, UserBio, UserInfo } from '@workspace/shared'
+import { imgsParser } from '@workspace/shared'
 import fileSaver from 'file-saver'
 
 export async function exportData(

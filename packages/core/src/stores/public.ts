@@ -1,5 +1,5 @@
-import type { UID, UserInfo } from '@shared'
-import { parseOldPost } from '@shared'
+import type { UID, UserInfo } from '@workspace/shared'
+import { parseOldPost } from '@workspace/shared'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
 import { computed, ref, toRaw, watchEffect } from 'vue'

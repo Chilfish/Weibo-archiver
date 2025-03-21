@@ -138,7 +138,7 @@ export const usePostStore = defineStore('post', () => {
 
     let result: Post[]
 
-    await waitIDB()
+    // await waitIDB()
 
     if (path === '/post') {
       result = await idb.value.getDBPosts(p, pageSize.value)
@@ -273,9 +273,9 @@ export const usePostStore = defineStore('post', () => {
       return idb.value.getPostCount()
     },
 
-    init: () => Promise.all([
-      updateTotal(),
-    ]),
+    init: async () => {
+      await updateTotal()
+    },
     updateTotal,
     getByTime,
     searchPost,

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ArrowRight, CalendarDays, Filter, Image, Search, Settings } from 'lucide-vue-next'
+import { ArrowRight, CalendarDays, Filter, Image, Search } from 'lucide-vue-next'
+import OpenSetting from './common/OpenSetting.vue'
 </script>
 
 <template>
@@ -46,13 +47,7 @@ import { ArrowRight, CalendarDays, Filter, Image, Search, Settings } from 'lucid
         <span>相册</span>
       </RouterLink>
 
-      <RouterLink
-        to="/settings"
-        class="btn btn-ghost btn-sm rounded-full bg-blue-50 hover:bg-blue-100 text-blue-500"
-      >
-        <Settings class="w-4 h-4" />
-        <span>设置</span>
-      </RouterLink>
+      <OpenSetting />
 
       <div class="relative flex-grow">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

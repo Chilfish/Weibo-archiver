@@ -3,6 +3,7 @@ import { destr } from 'destr'
 export * from './dom'
 export * from './export'
 export * from './image'
+export * from './message'
 
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 

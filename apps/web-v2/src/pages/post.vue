@@ -1,23 +1,41 @@
 <script setup lang="ts">
-import { users, weiboPosts } from '../stories/test.data'
+import type { Post } from '@workspace/shared'
+import { usePostStore, usePublicStore } from '@weibo-archiver/core'
+import { onMounted, ref } from 'vue'
 
-const curUser = users[0]
+const postStore = usePostStore()
+const publicStore = usePublicStore()
+
+const posts = ref<Post[]>([])
+
+onMounted(async () => {
+  publicStore.load()
+  publicStore.curUid = publicStore.users[0].uid
+
+  console.log(publicStore.curUser)
+
+  await postStore.init()
+  posts.value = await postStore.get(1).then(res => res.map(post => ({
+    ...post,
+    user: publicStore.curUser,
+  })))
+})
 </script>
 
 <template>
-  <main class="flex flex-col py-4 lg:px-48 bg-base-200">
-    <FilterBar />
-    <div class="flex gap-36">
+  <main class="flex flex-col py-8 md:px-12 lg:px-52 bg-base-200">
+    <div class="flex gap-4 flex-col md:flex-row">
       <div class="w-full space-y-4">
-        <Weibo v-for="post in weiboPosts" :key="post.id" :post="post" />
+        <FilterBar />
+        <Weibo v-for="post in posts" :key="post.id" :post="post" />
       </div>
-      <div class="flex flex-col gap-4 sticky top-20 self-start">
+      <div class="flex flex-col gap-4 sticky top-4 self-start px-8 w-full md:w-fit">
         <SwitchUser
           class="w-full"
-          :users="users"
-          :cur-uid="curUser.uid"
+          :users="publicStore.users"
+          :cur-uid="publicStore.curUid"
         />
-        <ProfilePanel :user="curUser" />
+        <ProfilePanel :user="publicStore.curUser" />
       </div>
     </div>
   </main>

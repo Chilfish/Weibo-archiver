@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { isDark } from '@core/composables'
+import { isDark } from '@workspace/core'
 
 function ThemeItem(props: { theme: string }) {
   const dark = props.theme === 'Dark'
