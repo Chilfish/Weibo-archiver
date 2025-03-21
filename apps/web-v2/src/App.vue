@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useHead, useSeoMeta } from '@unhead/vue'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
@@ -40,18 +38,8 @@ useHead({
     },
   ],
 })
-
-const route = useRoute()
-
-const isIndex = computed(() => route.path === '/')
 </script>
 
 <template>
-  <main
-    :class="{
-      'pt-16': !isIndex,
-    }"
-  >
-    <router-view />
-  </main>
+  <router-view />
 </template>

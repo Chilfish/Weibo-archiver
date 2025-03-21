@@ -37,7 +37,6 @@ export default defineConfig({
       dirs: [
         './src/components',
       ],
-      directoryAsNamespace: true,
       resolvers: [
         NaiveUiResolver(),
       ],

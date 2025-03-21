@@ -3,7 +3,7 @@ import { ArrowRight, CalendarDays, Filter, Image, Search, Settings } from 'lucid
 </script>
 
 <template>
-  <div class="sticky top-0 z-10 bg-base-100 rounded-2xl shadow-sm p-3 mb-6">
+  <div class="sticky top-0 z-10 rounded-2xl shadow-sm p-3 mb-6 glassmorphism">
     <div class="flex items-center gap-2 flex-wrap">
       <div class="dropdown">
         <label

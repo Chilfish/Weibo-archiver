@@ -21,7 +21,7 @@ const actions = computed(() => ({
 
 <template>
   <div
-    class="weibo-card bg-white rounded-2xl shadow-sm p-5 group"
+    class="weibo-card bg-base-100 rounded-2xl shadow-sm p-5 group"
   >
     <WeiboProfile
       v-if="post.user"
@@ -29,7 +29,10 @@ const actions = computed(() => ({
       :meta="post"
     />
     <WeiboText :text="post.text" />
-    <ImageGallery :images="post.imgs" />
+    <ImageGallery
+      class="pr-12"
+      :images="post.imgs"
+    />
     <WeiboLinkCard v-if="post.card" :card="post.card" />
     <WeiboActions v-if="!isRetweet" :actions="actions" />
   </div>
