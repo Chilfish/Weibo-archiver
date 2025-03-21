@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import type { UploadCustomRequestOptions } from '@workspace/core'
-import type { Post, PostData, UserBio, UserInfo } from '@workspace/shared'
 import { useStorage } from '@vueuse/core'
-import { exportData, imgCdn, useMessage, usePostStore, usePublicStore } from '@workspace/core'
-import { parseOldPost } from '@workspace/shared'
-import { destr } from 'destr'
+import { exportData, imgCdn, paeseAndImport, useMessage, usePostStore, usePublicStore } from '@workspace/core'
 import { NButton, NForm, NFormItem, NInput, NPopconfirm, NRadio, NRadioGroup, NSwitch, NUpload } from 'naive-ui'
-import { computed, ref, toRaw } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Theme from '../Theme.vue'
 
@@ -24,81 +21,6 @@ const isExporting = ref(false)
 const isImporting = ref(false)
 
 const username = computed(() => `@${publicStore.curUser?.name || '该用户'}`)
-
-/**
- * 判断是否为多行 JSON，以\n分隔的对象
- * ```
- * {}
- * {}
- * ```
- */
-function isMutilLineJson(content: string) {
-  const lines = content.split('\n').filter(Boolean)
-
-  // 只检查第一行和最后一行
-  return lines.length > 1
-    && lines[0].startsWith('{')
-    && lines[lines.length - 1].startsWith('{')
-}
-
-function parseMultiLineJson(content: string) {
-  const lines = content.split('\n').filter(Boolean)
-  return lines.map(line => destr<Post>(line, { strict: true }))
-}
-
-async function paeseAndImport(_data: string) {
-  const data = isMutilLineJson(_data)
-    ? parseMultiLineJson(_data)
-    : destr<PostData | Post[]>(_data, { strict: true })
-
-  let user: UserInfo
-  let posts: Post[]
-  let followings: UserBio[] = []
-
-  if (Array.isArray(data)) {
-    // 来自 cli 的多行json
-    if (!data[0].user?.uid) {
-      posts = data
-      user = publicStore.curUser as UserInfo
-
-      message.warning('正在导入来自 cli 的数据，将使用当前用户信息')
-    }
-    else {
-      posts = data.map(post => parseOldPost(post))
-
-      const _user = data[0].user as any
-      // @ts-expect-error bad
-      user = publicStore.users.find(u => u.uid === _user?.id)
-      if (!user) {
-        user = {
-          uid: _user.id,
-          name: _user.screen_name,
-          avatar: _user.profile_image_url,
-          postCount: posts.length,
-          followers: 0,
-          followings: 0,
-          bio: '',
-          birthday: '',
-          createdAt: '',
-        }
-      }
-    }
-  }
-  else {
-    posts = data.weibo
-    user = data.user
-    followings = data.followings
-  }
-  user = toRaw(user)
-
-  publicStore.importUser(user)
-
-  await postStore.set(posts, user, followings, coverMode.value)
-  user.postCount = postStore.total
-
-  message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
-  router.push('/post')
-}
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File

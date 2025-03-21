@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Download, Trash2, Upload } from 'lucide-vue-next'
+import { paeseAndImport, readFile } from '@workspace/core'
+import { Download, Trash2 } from 'lucide-vue-next'
 import { config } from '../../composables'
 import ImageSourceOption from './ImageSourceOption.vue'
 
@@ -45,6 +46,11 @@ const THEMES = [
   'business',
   'winter',
 ] as const
+
+async function onImportData(e: Event) {
+  const data = await readFile(e)
+  await paeseAndImport(data)
+}
 </script>
 
 <template>
@@ -94,14 +100,20 @@ const THEMES = [
       <h3 class="label">
         数据管理
       </h3>
-      <div class="flex flex-wrap gap-3">
-        <button class="btn btn-sm btn-primary">
-          <Upload class="w-4 h-4 mr-2" />导入数据
-        </button>
-        <button class="btn btn-sm btn-outline">
+
+      <div class="flex flex-col gap-3">
+        <input
+          type="file"
+          accept=".json"
+          class="file-input"
+          placeholder="导入数据"
+          @change="onImportData"
+        >
+
+        <button class="btn btn-sm btn-outline w-fit">
           <Download class="w-4 h-4 mr-2" />导出数据
         </button>
-        <button class="btn btn-sm btn-outline btn-error">
+        <button class="btn btn-sm btn-outline btn-error w-fit">
           <Trash2 class="w-4 h-4 mr-2" />重置所有数据
         </button>
       </div>

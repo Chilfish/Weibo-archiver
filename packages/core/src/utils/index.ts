@@ -3,8 +3,8 @@ import { destr } from 'destr'
 export * from './dom'
 export * from './export'
 export * from './image'
+export * from './import'
 export * from './message'
-
 export const isElectron = import.meta.env.VITE_IS_ELECTRON === 'true'
 
 export const isInMonkey = typeof document !== 'undefined' ? document.URL.includes('weibo.com') : false
