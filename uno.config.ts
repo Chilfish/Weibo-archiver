@@ -8,7 +8,6 @@ import {
   transformerVariantGroup,
 } from 'unocss'
 import presetAnimations from 'unocss-preset-animations'
-import { presetShadcn } from 'unocss-preset-shadcn'
 
 export default defineConfig({
   theme: {
@@ -46,7 +45,6 @@ export default defineConfig({
     }),
     presetTypography(),
     presetAnimations(),
-    presetShadcn(),
   ],
   transformers: [
     transformerDirectives(),

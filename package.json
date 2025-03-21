@@ -52,7 +52,6 @@
     "unbuild": "^3.5.0",
     "unocss": "^66.1.0-beta.5",
     "unocss-preset-animations": "^1.1.1",
-    "unocss-preset-shadcn": "^0.3.2",
     "unplugin-vue-components": "^28.4.1",
     "vue-tsc": "^2.2.8"
   },
