@@ -66,6 +66,10 @@ const computedImages = computed(() => {
   grid-template-columns: 1fr;
 }
 
+.image-grid-1 .image-grid-item img{
+  width: auto;
+}
+
 .image-grid-2,
 .image-grid-4 {
   grid-template-columns: 1fr 1fr;
