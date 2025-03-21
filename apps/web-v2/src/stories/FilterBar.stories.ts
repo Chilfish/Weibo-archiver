@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import FilterBar from '../components/FilterBar.vue'
 
 const meta: Meta<typeof FilterBar> = {
-  title: 'FilterBar',
+  title: 'Components/FilterBar',
   component: FilterBar,
 }
 

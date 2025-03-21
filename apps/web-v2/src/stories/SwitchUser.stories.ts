@@ -3,7 +3,7 @@ import SwitchUser from '../components/SwitchUser.vue'
 import { users } from './test.data'
 
 const meta: Meta<typeof SwitchUser> = {
-  title: 'SwitchUser',
+  title: 'Components/SwitchUser',
   component: SwitchUser,
 }
 

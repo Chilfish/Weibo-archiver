@@ -3,7 +3,7 @@ import ProfilePanel from '../components/ProfilePanel.vue'
 import { users } from './test.data'
 
 const meta: Meta<typeof ProfilePanel> = {
-  title: 'ProfilePanel',
+  title: 'Components/ProfilePanel',
   component: ProfilePanel,
 }
 
