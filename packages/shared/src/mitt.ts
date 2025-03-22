@@ -69,6 +69,7 @@ export function mitt<Events extends Record<EventType, unknown>>(
      * @param {Function} handler Function to call in response to given event
      * @memberOf mitt
      */
+    // @ts-expect-error okok
     on<Key extends keyof Events>(type: Key, handler: GenericEventHandler) {
       const handlers: Array<GenericEventHandler> | undefined = all!.get(type)
       if (handlers) {
@@ -86,6 +87,7 @@ export function mitt<Events extends Record<EventType, unknown>>(
      * @param {Function} [handler] Handler function to remove
      * @memberOf mitt
      */
+    // @ts-expect-error okok
     off<Key extends keyof Events>(type: Key, handler?: GenericEventHandler) {
       const handlers: Array<GenericEventHandler> | undefined = all!.get(type)
       if (handlers) {

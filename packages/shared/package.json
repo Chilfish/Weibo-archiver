@@ -2,26 +2,7 @@
   "name": "@weibo-archiver/shared",
   "type": "module",
   "private": true,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
-    }
-  },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./dist/index.d.ts"
-      ]
-    }
-  },
-  "files": [
-    "dist"
-  ],
+  "main": "src/index.ts",
   "scripts": {
     "build": "unbuild",
     "typecheck": "tsc --noEmit -p ./tsconfig.json"
