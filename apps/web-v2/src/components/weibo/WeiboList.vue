@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRouteQuery } from '@vueuse/router'
 import { usePostStore, usePublicStore } from '@workspace/core'
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -12,7 +11,6 @@ const postStore = usePostStore()
 const publicStore = usePublicStore()
 const { fetchEmojis } = useEmoji()
 
-const curPage = useRouteQuery<number>('page', 1)
 const route = useRoute()
 const router = useRouter()
 
@@ -21,10 +19,6 @@ onBeforeMount(async () => {
     fetchEmojis(),
     postStore.init(),
   ])
-  await postStore.get(curPage.value).then(res => res.map(post => ({
-    ...post,
-    user: publicStore.curUser,
-  })))
 })
 
 function changePage(page: number, pageSize: number) {
@@ -49,26 +43,32 @@ function changePage(page: number, pageSize: number) {
 </script>
 
 <template>
-  <section
-    v-if="postStore.weibos.length > 0"
-    class="flex flex-col gap-4"
-  >
-    <Weibo
-      v-for="post in postStore.weibos"
-      :key="post.id"
-      :post="post"
-    />
+  <template v-if="!postStore.loading">
+    <section
+      v-if="postStore.weibos.length > 0"
+      class="flex flex-col gap-4"
+    >
+      <Weibo
+        v-for="post in postStore.weibos"
+        :key="post.id"
+        :post="post"
+      />
 
-    <Pagination
-      v-model:current="postStore.curPage"
-      v-model:page-size="postStore.pageSize"
-      :total="postStore.total"
-      class="mt-4"
-      @change="changePage"
-    />
-  </section>
+      <Pagination
+        v-model:current="postStore.curPage"
+        v-model:page-size="postStore.pageSize"
+        :total="postStore.total"
+        class="mt-4"
+        @change="changePage"
+      />
+    </section>
 
-  <EmptyWeibo v-else />
+    <EmptyWeibo v-else />
+  </template>
 
+  <span
+    v-else
+    class="loading loading-spinner loading-xl"
+  />
   <ImagePreview />
 </template>

@@ -1,29 +1,18 @@
 import type { UID, UserInfo } from '@workspace/shared'
+import { useStorage } from '@vueuse/core'
 import { parseOldPost } from '@workspace/shared'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
-import { computed, ref, toRaw, watchEffect } from 'vue'
+import { computed, ref, toRaw } from 'vue'
 import { DB_VERSION, IDB } from '../utils/storage'
 
 export const usePublicStore = defineStore('public', () => {
   const globalImg = ref('')
-  const users = ref<UserInfo[]>([])
-  const curUid = ref('')
+  const users = useStorage<UserInfo[]>('users', [])
+  const curUid = useStorage<string>('curUid', '')
 
   const curUser = computed(() => users.value.find(u => u.uid === curUid.value))
   const otherUsers = computed(() => users.value.filter(user => user.uid !== curUid.value))
-
-  watchEffect(() => {
-    if (typeof localStorage === 'undefined')
-      return
-
-    if (users.value.length) {
-      localStorage.setItem('users', JSON.stringify(users.value))
-    }
-    if (curUid.value) {
-      localStorage.setItem('curUid', curUid.value)
-    }
-  })
 
   function load() {
     const _users = localStorage.getItem('users') || '[]'
@@ -48,6 +37,7 @@ export const usePublicStore = defineStore('public', () => {
   }
 
   function rmUser() {
+    console.log('rmUser', curUid.value)
     users.value = users.value.filter(u => u.uid !== curUid.value)
     curUid.value = users.value[0]?.uid || ''
   }

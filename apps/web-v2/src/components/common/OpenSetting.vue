@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Settings } from 'lucide-vue-next'
-import { useTemplateRef } from 'vue'
+import { useId, useTemplateRef } from 'vue'
 import Setting from '../settings/Settings.vue'
 
 const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
@@ -16,6 +16,7 @@ const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
   </button>
 
   <dialog
+    :id="useId()"
     ref="settingsDialog"
     class="modal"
   >

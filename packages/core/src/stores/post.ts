@@ -11,6 +11,7 @@ export const usePostStore = defineStore('post', () => {
   const followings = shallowRef<UserBio[]>([])
   const allImages: Album[] = []
   const weibos = ref<Post[]>([])
+  const loading = ref(false)
 
   const idb = ref(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
@@ -67,6 +68,7 @@ export const usePostStore = defineStore('post', () => {
     _followings?: UserBio[],
     isReplace = false,
   ) {
+    loading.value = true
     await waitIDB()
 
     if (_followings && _followings.length) {
@@ -81,6 +83,9 @@ export const usePostStore = defineStore('post', () => {
     searchFn.value = search
 
     await idb.value.setUserInfo(user)
+    await updateTotal()
+    await get(curPage.value)
+    loading.value = false
   }
 
   async function _searchPost(
@@ -240,6 +245,7 @@ export const usePostStore = defineStore('post', () => {
     pages,
     pageSize,
     curPage,
+    loading,
     weibos,
     followings,
 
@@ -247,8 +253,11 @@ export const usePostStore = defineStore('post', () => {
     set,
 
     clearDB: async () => {
-      await waitIDB()
+      loading.value = true
       await idb.value.clearDB()
+      publicStore.rmUser()
+      weibos.value = []
+      loading.value = false
     },
     getAll: async () => {
       await waitIDB()
@@ -261,6 +270,8 @@ export const usePostStore = defineStore('post', () => {
 
     init: async () => {
       await updateTotal()
+      await get(curPage.value)
+      loading.value = false
     },
     updateTotal,
     getByTime,

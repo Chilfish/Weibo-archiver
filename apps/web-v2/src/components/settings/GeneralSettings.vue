@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { parseAndImport, readFile } from '@workspace/core'
+import { parseAndImport, readFile, usePostStore } from '@workspace/core'
 import { Download, Trash2, Upload } from 'lucide-vue-next'
+import { ref } from 'vue'
 import { config } from '../../composables'
+import Dialog from '../common/Dialog.vue'
 import ImageSourceOption from './ImageSourceOption.vue'
+
+const postStore = usePostStore()
 
 const imageSourceOptions = [
   {
@@ -50,6 +54,12 @@ const THEMES = [
 async function onImportData(e: Event) {
   const data = await readFile(e)
   await parseAndImport(data)
+}
+
+const showResetDialog = ref(false)
+
+function onReset() {
+  postStore.clearDB()
 }
 </script>
 
@@ -118,11 +128,24 @@ async function onImportData(e: Event) {
         <button class="btn btn-sm btn-outline w-fit">
           <Download class="w-4 h-4 mr-2" />导出数据
         </button>
-        <button class="btn btn-sm btn-outline btn-error w-fit">
+        <button
+          class="btn btn-sm btn-outline btn-error w-fit"
+          @click="showResetDialog = true"
+        >
           <Trash2 class="w-4 h-4 mr-2" />重置所有数据
         </button>
       </div>
     </div>
+
+    <Dialog
+      v-model:open="showResetDialog"
+      title="重置所有数据"
+      message="确定要重置所有数据吗？"
+      confirm-class="btn-error text-white"
+      :show-confirm="true"
+      :close-on-outside="false"
+      @confirm="onReset"
+    />
   </div>
 </template>
 
