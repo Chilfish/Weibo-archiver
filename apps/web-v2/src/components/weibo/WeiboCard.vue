@@ -50,10 +50,12 @@ const isCommentsOpen = ref(false)
 
     <div
       v-if="post.comments.length"
-      class="collapse" :class="[isCommentsOpen ? 'collapse-open' : 'h-0']"
+      class="collapse" :class="[
+        isCommentsOpen ? 'collapse-open' : 'collapse-close',
+      ]"
     >
-      <input type="checkbox ">
-      <div class="collapse-content p-0!">
+      <input type="checkbox" class="hidden">
+      <div class="collapse-content pt-3 pb-0! px-0">
         <WeiboComments
           :comments="post.comments"
         />

@@ -3,18 +3,23 @@ import { useRouteQuery } from '@vueuse/router'
 import { usePostStore, usePublicStore } from '@workspace/core'
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useEmoji } from '../../composables'
 import ImagePreview from '../common/ImagePreview.vue'
 import Pagination from '../common/Pagination.vue'
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
+const { fetchEmojis } = useEmoji()
 
 const curPage = useRouteQuery<number>('page', 1)
 const route = useRoute()
 const router = useRouter()
 
 onBeforeMount(async () => {
-  await postStore.init()
+  await Promise.all([
+    fetchEmojis(),
+    postStore.init(),
+  ])
   await postStore.get(curPage.value).then(res => res.map(post => ({
     ...post,
     user: publicStore.curUser,

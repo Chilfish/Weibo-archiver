@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { useStorage } from '@vueuse/core'
+import { onMounted } from 'vue'
 import ImagePreview from '../components/common/ImagePreview.vue'
 import WeiboCard from '../components/weibo/Weibo.vue'
 import { weiboPosts } from './test.data'
@@ -18,6 +20,9 @@ const withLinkCard = weiboPosts[2]
 const withDeleted = weiboPosts[3]
 const withVideo = weiboPosts[4]
 const withComments = weiboPosts[5]
+const withEmoji = weiboPosts[6]
+
+const emojis = useStorage<any[]>('weibo-emojis', [])
 
 export const With9Images: Story = {
   render: () => ({
@@ -76,6 +81,11 @@ export const WithDeleted: Story = {
       </div>
     `,
     setup() {
+      onMounted(async () => {
+        const res = await fetch('http://localhost:3334/emoji.json')
+        emojis.value = await res.json()
+      })
+
       return {
         post: withDeleted,
       }
@@ -111,6 +121,26 @@ export const WithComments: Story = {
     setup() {
       return {
         post: withComments,
+      }
+    },
+  }),
+}
+
+export const WithEmoji: Story = {
+  render: () => ({
+    components: { WeiboCard },
+    template: /* html */ `
+      <div class="flex flex-col gap-4 w-168 p-4 bg-gray-100 rounded-lg">
+        <WeiboCard :post />
+      </div>
+    `,
+    setup() {
+      onMounted(async () => {
+        const res = await fetch('http://localhost:3334/emoji.json')
+        emojis.value = await res.json()
+      })
+      return {
+        post: withEmoji,
       }
     },
   }),

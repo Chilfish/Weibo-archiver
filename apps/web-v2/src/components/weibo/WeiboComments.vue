@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Comment, formatDate } from '@workspace/shared'
+import type { Comment } from '@workspace/shared'
+import { formatDate } from '@workspace/shared'
 import { Heart, MessageCircle } from 'lucide-vue-next'
 import { emitter } from '../../composables'
 import Avatar from '../common/Avatar.vue'
@@ -42,7 +43,7 @@ function previewImage(url: string) {
         </a>
 
         <WeiboText
-          class="my-1"
+          class="my-1 text-base"
           :text="comment.text"
         />
 

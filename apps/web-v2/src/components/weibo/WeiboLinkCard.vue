@@ -34,17 +34,17 @@ const desc = computed(() => {
       :src="card.img"
       :alt="card.title"
       referrerpolicy="no-referrer"
-      class="h-32"
-      skeleton-class="w-32 h-32"
+      class="h-28"
+      skeleton-class="w-28 h-28"
     />
     <div class="url-card-content">
-      <h4 class="font-medium text-gray-900">
+      <h4 class="font-medium text-gray-900 text-sm">
         {{ card.title }}
       </h4>
-      <p class="text-gray-600 text-sm line-clamp-2">
+      <p class="text-gray-600 text-xs line-clamp-2 mt-2">
         {{ desc }}
       </p>
-      <div class="text-xs text-gray-500">
+      <div class="text-xs text-gray-500 mt-auto">
         {{ shortLink }}
       </div>
     </div>
@@ -68,10 +68,7 @@ const desc = computed(() => {
 
 .url-card-content {
   padding: 12px;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 0.5rem;
 }
 </style>

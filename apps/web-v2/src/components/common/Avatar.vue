@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import LazyImage from './LazyImage.vue'
 
 const props = defineProps<{
-  src: string
+  src?: string
   alt?: string
   size?: number
 }>()
@@ -16,7 +16,7 @@ const sizeClass = computed(() => {
 <template>
   <LazyImage
     :src="src || '/placeholder.webp'"
-    :alt="alt"
+    :alt="alt || '用户头像'"
     class="rounded-full" :class="[sizeClass]"
     :skeleton-class="[sizeClass, 'rounded-full']"
   />

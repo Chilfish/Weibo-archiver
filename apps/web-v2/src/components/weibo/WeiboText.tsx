@@ -1,5 +1,6 @@
 import { Gem as DiamondIcon, Link as LinkIcon } from 'lucide-vue-next'
 import { defineComponent } from 'vue'
+import WeiboEmoji from './WeiboEmoji.vue'
 
 const Link = defineComponent({
   props: {
@@ -31,7 +32,7 @@ const Link = defineComponent({
         {isSuperGroup && <DiamondIcon class="w-4 h-4 inline-block mr-1" />}
         {showLinkIcon && <LinkIcon class="w-4 h-4 inline-block mr-1" />}
         <span>
-          {props.text || props.url}
+          {htmlDecode(props.text || props.url)}
         </span>
       </a>
     )
@@ -76,7 +77,7 @@ const Hashtag = defineComponent({
  * Segment type for parsing text into segments
  */
 interface Segment {
-  type: 'text' | 'mention' | 'hashtag' | 'url'
+  type: 'text' | 'mention' | 'hashtag' | 'url' | 'emoji'
   content: string
   link?: string
 }
@@ -90,13 +91,13 @@ function normalizeText(text: string): string {
   const reBreak = /<br ?\/>/g
   const reLink = /<a href="([^"]+)" target="_blank">([^<]+)<\/a>/g
   const reHashtag = /#([^#]+)#/g
+  const reNestedLink = /<a href="([^"]+)" target="_blank">/g
 
-  const decodedText = htmlDecode(text)
-
-  return decodedText
+  return text
     .replace(reBreak, '\n')
     .replace(reHashtag, '#$1#')
     .replace(reLink, '$2')
+    .replace(reNestedLink, '')
 }
 
 function parseText(text: string): Segment[] {
@@ -107,6 +108,7 @@ function parseText(text: string): Segment[] {
 
   const urlRegex = /<a target="_blank" href="([^"]+)">([^<]+)<\/a>/g
   const hashtagRegex = /#([^#]+)#/g
+  const emojiRegex = /(\[.*?\])/g
   const mentionRegex = /@([\w\u4E00-\u9FA5]+)/g
 
   const normalizedText = normalizeText(text)
@@ -121,12 +123,14 @@ function parseText(text: string): Segment[] {
       continue
     }
 
-    if (part.includes('http') && !urlParts[i + 1].includes('http')) {
-      const link = part
-      const text = urlParts[i + 1]
-      i += 1
-      segments.push({ type: 'url', content: text, link })
-      continue
+    const link = urlParts[i]
+    const text = urlParts[i + 1]
+    if (link && (link.startsWith('http') || link.startsWith('//'))) {
+      if (text) {
+        i += 1
+        segments.push({ type: 'url', content: text, link })
+        continue
+      }
     }
 
     const mentionParts = part.split(mentionRegex)
@@ -152,9 +156,16 @@ function parseText(text: string): Segment[] {
           continue
         }
 
-        // Add remaining text
-        if (hashtagPart) {
-          segments.push({ type: 'text', content: hashtagPart })
+        const emojiParts = hashtagPart.split(emojiRegex)
+        for (let l = 0; l < emojiParts.length; l++) {
+          const emojiPart = emojiParts[l]
+          const isEmoji = emojiRegex.test(emojiPart)
+          if (isEmoji) {
+            segments.push({ type: 'emoji', content: emojiPart })
+          }
+          else if (emojiPart) {
+            segments.push({ type: 'text', content: htmlDecode(emojiPart) })
+          }
         }
       }
     }
@@ -176,6 +187,7 @@ export const WeiboText = defineComponent({
   },
   setup(props) {
     const segments = parseText(props.text)
+    console.log(segments)
 
     return () => (
       <p class={props.class}>
@@ -195,6 +207,8 @@ export const WeiboText = defineComponent({
                   icon={true}
                 />
               )
+            case 'emoji':
+              return <WeiboEmoji emojiPhrase={segment.content} />
             default:
               return segment.content
           }
