@@ -6,7 +6,7 @@ const {
   total,
   current,
   pageSize,
-  showPageNumbers = 5,
+  showPageNumbers = 7,
   showSizeChanger = true,
   showJump = true,
   showTotal = true,

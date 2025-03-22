@@ -5,7 +5,7 @@ import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
 import WeiboLinkCard from './WeiboLinkCard.vue'
 import WeiboProfile from './WeiboProfile.vue'
-import WeiboText from './WeiboText.vue'
+import { WeiboText } from './WeiboText'
 
 const props = defineProps<{
   post: Post

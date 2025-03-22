@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import WeiboActions from './WeiboActions.vue'
 import WeiboCard from './WeiboCard.vue'
 import WeiboProfile from './WeiboProfile.vue'
-import WeiboText from './WeiboText.vue'
+import { WeiboText } from './WeiboText'
 
 const props = defineProps<{
   post: Post

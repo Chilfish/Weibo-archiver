@@ -164,7 +164,7 @@ export const weiboPosts: Post[] = [
     detail_url: 'https://weibo.com/7679065628/PeofVj5xa',
     retweeted_status: {
       id: 5134088088323522,
-      text: '抱歉，由于作者设置，你暂时没有这条微博的查看权限哦。查看帮助：<a target="_blank" href="https://t.cn/RfdBWwP">网页链接</a> ​​​',
+      text: '抱歉，由于@作者 设置，你暂时没有这条 #微博# 的查看权限哦。查看帮助：<a target="_blank" href="https://t.cn/RfdBWwP">网页链接</a>\n<a target="_blank" href="https://t.cn/RfdBWwP">网页链接111</a>​​​',
       imgs: [],
       created_at: 'Fri Feb 14 23:04:10 +0800 2025',
       // @ts-expect-error 被删除
