@@ -14,10 +14,13 @@ const sizeClass = computed(() => {
 </script>
 
 <template>
-  <LazyImage
-    :src="src || '/placeholder.webp'"
-    :alt="alt || '用户头像'"
-    class="rounded-full" :class="[sizeClass]"
-    :skeleton-class="[sizeClass, 'rounded-full']"
-  />
+  <div class="relative">
+    <LazyImage
+      :src="src || '/placeholder.webp'"
+      :alt="alt || '用户头像'"
+      class="rounded-full"
+      :class="[sizeClass]"
+      :skeleton-class="[sizeClass, 'rounded-full absolute inset-0']"
+    />
+  </div>
 </template>

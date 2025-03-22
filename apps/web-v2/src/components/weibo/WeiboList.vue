@@ -27,16 +27,15 @@ onBeforeMount(async () => {
 })
 
 function changePage(page: number, pageSize: number) {
-  console.log(page, pageSize)
-  postStore.get(page).then(res => res.map(post => ({
-    ...post,
-    user: publicStore.curUser,
-  })))
-
   window.scrollTo({
     top: 0,
     behavior: 'smooth',
   })
+
+  postStore.get(page).then(res => res.map(post => ({
+    ...post,
+    user: publicStore.curUser,
+  })))
 
   router.push({
     query: {

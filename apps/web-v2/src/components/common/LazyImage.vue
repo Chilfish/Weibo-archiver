@@ -17,9 +17,9 @@ interface Props {
   srcset?: string
   usemap?: string
   width?: Numberish
-  class?: string | Array<string>
   alt?: string
   style?: CSSProperties
+  class?: string | Array<string>
   skeletonClass?: string | Array<string>
 }
 
@@ -38,45 +38,43 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   if (isIntersecting && isLoading.value) {
     const img = new Image()
     img.src = props.src
+    imgSrc.value = props.src
     img.onload = () => {
-      imgSrc.value = props.src
       isLoading.value = false
       imgWidth.value = props.width
       imgHeight.value = props.height
     }
     img.onerror = () => {
       isLoading.value = true
-      imgSrc.value = '/placeholder.webp'
     }
   }
 })
 </script>
 
 <template>
-  <img
-    ref="imgRef"
-    :src="imgSrc"
-    v-bind="{
-      alt: props.alt,
-      crossorigin: props.crossorigin,
-      decoding: props.decoding,
-      referrerpolicy: props.referrerpolicy,
-      sizes: props.sizes,
-      srcset: props.srcset,
-      usemap: props.usemap,
-    }"
-    :class="props.class"
-    :style="{
-      width: imgWidth !== undefined ? `${imgWidth}px` : undefined,
-      height: imgHeight !== undefined ? `${imgHeight}px` : undefined,
-      ...props.style,
-    }"
-    loading="lazy"
-    @click="emit('click')"
-  >
-  <div
-    v-if="isLoading"
-    class="skeleton"
-    :class="props.skeletonClass"
-  />
+  <div class="relative">
+    <img
+      ref="imgRef"
+      :src="imgSrc"
+      v-bind="{
+        alt: props.alt,
+        crossorigin: props.crossorigin,
+        decoding: props.decoding,
+        referrerpolicy: props.referrerpolicy,
+        sizes: props.sizes,
+        srcset: props.srcset,
+        usemap: props.usemap,
+      }"
+      :class="props.class"
+      :style="props.style"
+      loading="lazy"
+      class="object-cover"
+      @click="emit('click')"
+    >
+    <div
+      v-if="isLoading"
+      class="skeleton absolute inset-0"
+      :class="props.skeletonClass"
+    />
+  </div>
 </template>

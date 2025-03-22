@@ -39,96 +39,66 @@ function handleClick(src: string, index: number) {
   })
   emits('click', src, index)
 }
+
+const imgSize = 'h-28 w-28 md:h-56 md:w-56'
+const gridClass = computed(() => {
+  const length = props.images.length
+  const grid3x3 = [3, 5, 6, 7, 8, 9]
+
+  if (grid3x3.includes(length) || length > 9)
+    return 'grid-3x3'
+  return 'grid-2x2'
+})
 </script>
 
 <template>
   <div
     v-if="images.length > 1"
-    class="image-grid image-grid-9 mb-4"
+    class="image-grid mb-4"
+    :class="gridClass"
   >
-    <div
+    <LazyImage
       v-for="(image, index) in computedImages"
       :key="image.src"
-      class="image-grid-item"
-    >
-      <LazyImage
-        :src="image.src.replace('/large/', '/orj360/')"
-        :alt="image.alt"
-        skeleton-class="h-24 md:h-48"
-        @click="handleClick(image.src, index)"
-      />
-    </div>
+      :src="image.src.replace('/large/', '/orj360/')"
+      :alt="image.alt"
+      :skeleton-class="imgSize"
+      :class="imgSize"
+      @click="handleClick(image.src, index)"
+    />
   </div>
 
   <div
     v-else-if="computedImages[0]?.src"
-    class="image-grid image-grid-1 mb-4"
+    class="mb-4"
   >
-    <div class="image-grid-item">
-      <LazyImage
-        :src="computedImages[0].src"
-        :alt="computedImages[0].alt"
-        @click="handleClick(computedImages[0].src, 0)"
-      />
-    </div>
+    <LazyImage
+      class="rounded-lg max-h-96"
+      :src="computedImages[0].src"
+      :alt="computedImages[0].alt"
+      @click="handleClick(computedImages[0].src, 0)"
+    />
   </div>
 </template>
 
 <style>
 .image-grid {
   display: grid;
-  grid-gap: 4px;
-  border-radius: 0.75rem;
-  overflow: hidden;
+  gap: 4px;
+  width: fit-content;
 }
 
-.image-grid-1 {
-  grid-template-columns: 1fr;
-}
-
-.image-grid-1 .image-grid-item img{
-  width: auto;
-}
-
-.image-grid-2,
-.image-grid-4 {
-  grid-template-columns: 1fr 1fr;
-}
-
-.image-grid-3,
-.image-grid-5,
-.image-grid-6,
-.image-grid-7,
-.image-grid-8,
-.image-grid-9 {
+.grid-3x3 {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.image-grid-item {
-  position: relative;
-  overflow: hidden;
-  min-height: 12rem;
+.grid-2x2 {
+  grid-template-columns: 1fr 1fr;
 }
 
-.image-grid-item img,
-.image-grid-item video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.image-grid img,
+.image-grid video {
   object-fit: cover;
   border-radius: 6px;
-}
-
-.image-grid-1 .image-grid-item {
-  padding-bottom: 56.25%;
-  max-height: 380px;
-}
-
-.image-grid-1 .image-grid-item img,
-.image-grid-1 .image-grid-item video {
-  object-fit: contain;
-  background-color: #f0f0f0;
 }
 </style>

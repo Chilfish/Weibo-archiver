@@ -34,8 +34,8 @@ const desc = computed(() => {
       :src="card.img"
       :alt="card.title"
       referrerpolicy="no-referrer"
-      class="h-28"
-      skeleton-class="w-28 h-28"
+      class="h-28 w-28"
+      skeleton-class="h-28 w-28"
     />
     <div class="url-card-content">
       <h4 class="font-medium text-gray-900 text-sm">

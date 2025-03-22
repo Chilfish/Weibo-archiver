@@ -187,7 +187,7 @@ export const WeiboText = defineComponent({
   },
   setup(props) {
     const segments = parseText(props.text)
-    console.log(segments)
+    // console.log(segments)
 
     return () => (
       <p class={props.class}>
