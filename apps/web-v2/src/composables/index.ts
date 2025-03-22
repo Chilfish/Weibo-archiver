@@ -1,3 +1,4 @@
+import type { ImagePreviewEvent } from '../types'
 import { useStorage } from '@vueuse/core'
 import { mitt } from '@workspace/shared'
 
@@ -8,5 +9,5 @@ export const config = useStorage('config', {
 })
 
 export const emitter = mitt<{
-  'open-image-preview': string
+  'open-image-preview': ImagePreviewEvent
 }>()

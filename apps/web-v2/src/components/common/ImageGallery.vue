@@ -26,8 +26,17 @@ const computedImages = computed(() => {
   })
 })
 
+const imageUrls = computed(() => {
+  return props.images.map((image) => {
+    return typeof image === 'string' ? image : image.src
+  })
+})
+
 function handleClick(src: string, index: number) {
-  emitter.emit('open-image-preview', src)
+  emitter.emit('open-image-preview', {
+    index,
+    imgs: imageUrls.value,
+  })
   emits('click', src, index)
 }
 </script>

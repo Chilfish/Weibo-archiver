@@ -36,3 +36,7 @@ export async function exportData(
   }
   return true
 }
+
+export async function downloadFile(url: string, name: string) {
+  fileSaver.saveAs(url, name)
+}

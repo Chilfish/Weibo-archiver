@@ -36,14 +36,16 @@ export const Default: Story = {
     setup() {
       const imagePreviewDialog = useTemplateRef<typeof ImagePreview>('imagePreviewDialog')
       function openImagePreview() {
-        imagePreviewDialog.value?.openImagePreview(url)
+        imagePreviewDialog.value?.openImagePreview({
+          imgs: [url],
+          index: 0,
+        })
       }
       return { url, imagePreviewDialog, openImagePreview }
     },
   }),
 }
 
-// 命令式
 export const Imperative: Story = {
   render: () => ({
     components: {
@@ -52,22 +54,13 @@ export const Imperative: Story = {
     },
     template: /* html */`
     <div class="h-screen w-[50vw] p-6">
-      <ImageGallery
-        @click="openImagePreview"
-        :images="images"
-      />
-      <ImagePreview ref="imagePreviewDialog" />
+      <ImageGallery :images="images"/>
+      <ImagePreview/>
     </div>
     `,
     setup() {
-      const imagePreviewDialog = useTemplateRef<typeof ImagePreview>('imagePreviewDialog')
-      function openImagePreview(src: string) {
-        imagePreviewDialog.value?.openImagePreview(src)
-      }
       return {
         images,
-        imagePreviewDialog,
-        openImagePreview,
       }
     },
   }),

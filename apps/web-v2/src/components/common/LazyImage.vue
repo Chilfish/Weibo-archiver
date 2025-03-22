@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CSSProperties } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
 
@@ -18,6 +19,7 @@ interface Props {
   width?: Numberish
   class?: string
   alt?: string
+  style?: CSSProperties
   skeletonClass?: string
 }
 
@@ -67,6 +69,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
     :style="{
       width: imgWidth !== undefined ? `${imgWidth}px` : undefined,
       height: imgHeight !== undefined ? `${imgHeight}px` : undefined,
+      ...props.style,
     }"
     loading="lazy"
     @click="emit('click')"
