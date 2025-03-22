@@ -21,14 +21,14 @@ const user = computed(() => props.user || publicStore.curUser)
     class="flex items-start gap-3 mb-4"
   >
     <LazyImage
-      :src="user.avatar"
+      :src="user.avatar || '/placeholder.webp'"
       :alt="user.name"
       class="w-10 h-10 rounded-full object-cover"
       skeleton-class="w-10 h-10"
     />
     <div>
       <h3 class="font-bold text-base-content">
-        {{ user.name }}
+        {{ user.name || '未知' }}
       </h3>
       <div class="text-xs text-base-content/80">
         {{ formatDate(meta.created_at) }}

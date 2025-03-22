@@ -33,6 +33,7 @@
 
 p {
   text-wrap: pretty;
+  white-space: pre-wrap;
 }
 
 html {

@@ -39,6 +39,10 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       imgWidth.value = props.width
       imgHeight.value = props.height
     }
+    img.onerror = () => {
+      isLoading.value = true
+      imgSrc.value = '/placeholder.webp'
+    }
   }
 })
 </script>

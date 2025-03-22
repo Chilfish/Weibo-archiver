@@ -5,8 +5,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div
+  <p
     class="mb-4"
-    v-html="text"
+    v-html="props.text"
   />
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@workspace/shared'
+import type { CardInfo, Post } from '@workspace/shared'
 import { computed } from 'vue'
 import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
@@ -9,6 +9,7 @@ import WeiboText from './WeiboText.vue'
 
 const props = defineProps<{
   post: Post
+  linkCard?: CardInfo
   isRetweet?: boolean
 }>()
 
@@ -17,6 +18,11 @@ const actions = computed(() => ({
   reposts: props.post.reposts_count,
   comments: props.post.comments_count,
 }))
+
+// 合并转发中的卡片，油猴脚本那边解析错了
+const linkCard = computed(() => {
+  return props.post.card || props.linkCard
+})
 </script>
 
 <template>
@@ -32,7 +38,7 @@ const actions = computed(() => ({
       class="pr-12"
       :images="post.imgs"
     />
-    <WeiboLinkCard v-if="post.card" :card="post.card" />
+    <WeiboLinkCard v-if="linkCard" :card="linkCard" />
     <WeiboActions v-if="!isRetweet" :actions="actions" />
   </div>
 </template>

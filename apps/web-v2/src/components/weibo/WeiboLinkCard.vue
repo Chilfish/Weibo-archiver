@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import type { CardInfo } from '@workspace/shared'
+import { computed } from 'vue'
 import LazyImage from '../common/LazyImage.vue'
 
-defineProps<{
+const props = defineProps<{
   card: CardInfo
 }>()
+
+const shortLink = computed(() => {
+  try {
+    const url = new URL(props.card.link)
+    return url.hostname
+  }
+  catch (error) {
+    return props.card.link
+  }
+})
+
+const desc = computed(() => {
+  // 油猴脚本那边解析错了
+  return props.card.desc?.replace('undefined - ', '')
+})
 </script>
 
 <template>
@@ -26,10 +42,10 @@ defineProps<{
         {{ card.title }}
       </h4>
       <p class="text-gray-600 text-xs line-clamp-2">
-        {{ card.desc }}
+        {{ desc }}
       </p>
       <div class="text-xs text-gray-500">
-        {{ card.link }}
+        {{ shortLink }}
       </div>
     </div>
   </a>

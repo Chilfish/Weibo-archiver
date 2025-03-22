@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
   fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   lazy?: boolean
   preview?: boolean
-} >(), {
+}>(), {
   fit: 'contain',
   alt: 'image',
   lazy: true,

@@ -1,8 +1,9 @@
+import type { RouteRecordRaw } from 'vue-router'
 import { defineAsyncComponent, h } from 'vue'
 import {
   createRouter,
   createWebHistory,
-  type RouteRecordRaw,
+
 } from 'vue-router'
 
 function useDefaultRoute(name = '') {

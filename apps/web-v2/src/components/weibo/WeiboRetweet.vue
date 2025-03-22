@@ -25,6 +25,7 @@ const actions = computed(() => ({
     <WeiboText :text="post.text" />
     <WeiboCard
       :post="post.retweeted_status!"
+      :link-card="post.card"
       class="bg-base-200 pb-1"
       is-retweet
     />
