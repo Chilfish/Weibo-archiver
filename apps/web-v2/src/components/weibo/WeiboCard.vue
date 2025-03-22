@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { CardInfo, Post } from '@workspace/shared'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
+import WeiboComments from './WeiboComments.vue'
 import WeiboLinkCard from './WeiboLinkCard.vue'
 import WeiboProfile from './WeiboProfile.vue'
 import { WeiboText } from './WeiboText'
@@ -23,6 +24,8 @@ const actions = computed(() => ({
 const linkCard = computed(() => {
   return props.post.card || props.linkCard
 })
+
+const isCommentsOpen = ref(false)
 </script>
 
 <template>
@@ -39,7 +42,23 @@ const linkCard = computed(() => {
       :images="post.imgs"
     />
     <WeiboLinkCard v-if="linkCard" :card="linkCard" />
-    <WeiboActions v-if="!isRetweet" :actions="actions" />
+    <WeiboActions
+      v-if="!isRetweet"
+      :actions="actions"
+      @click-comment="isCommentsOpen = !isCommentsOpen"
+    />
+
+    <div
+      v-if="post.comments.length"
+      class="collapse" :class="[isCommentsOpen ? 'collapse-open' : 'h-0']"
+    >
+      <input type="checkbox ">
+      <div class="collapse-content p-0!">
+        <WeiboComments
+          :comments="post.comments"
+        />
+      </div>
+    </div>
   </div>
 </template>
 

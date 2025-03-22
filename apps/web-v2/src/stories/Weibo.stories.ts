@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
+import ImagePreview from '../components/common/ImagePreview.vue'
 import WeiboCard from '../components/weibo/Weibo.vue'
 import { weiboPosts } from './test.data'
 
@@ -16,6 +17,7 @@ const withRetweet = weiboPosts[1]
 const withLinkCard = weiboPosts[2]
 const withDeleted = weiboPosts[3]
 const withVideo = weiboPosts[4]
+const withComments = weiboPosts[5]
 
 export const With9Images: Story = {
   render: () => ({
@@ -92,6 +94,23 @@ export const WithVideo: Story = {
     setup() {
       return {
         post: withVideo,
+      }
+    },
+  }),
+}
+
+export const WithComments: Story = {
+  render: () => ({
+    components: { WeiboCard, ImagePreview },
+    template: /* html */ `
+      <div class="flex flex-col gap-4 w-168 p-4 bg-gray-100 rounded-lg">
+        <WeiboCard :post />
+        <ImagePreview />
+      </div>
+    `,
+    setup() {
+      return {
+        post: withComments,
       }
     },
   }),

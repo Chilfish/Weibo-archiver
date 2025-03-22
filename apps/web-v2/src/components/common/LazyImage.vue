@@ -17,10 +17,10 @@ interface Props {
   srcset?: string
   usemap?: string
   width?: Numberish
-  class?: string
+  class?: string | Array<string>
   alt?: string
   style?: CSSProperties
-  skeletonClass?: string
+  skeletonClass?: string | Array<string>
 }
 
 const props = defineProps<Props>()
@@ -65,7 +65,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       srcset: props.srcset,
       usemap: props.usemap,
     }"
-    :class="[props.class]"
+    :class="props.class"
     :style="{
       width: imgWidth !== undefined ? `${imgWidth}px` : undefined,
       height: imgHeight !== undefined ? `${imgHeight}px` : undefined,
@@ -76,6 +76,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   >
   <div
     v-if="isLoading"
-    class="skeleton" :class="[props.skeletonClass]"
+    class="skeleton"
+    :class="props.skeletonClass"
   />
 </template>

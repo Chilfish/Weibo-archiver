@@ -10,19 +10,34 @@ interface Actions {
 defineProps<{
   actions: Actions
 }>()
+
+defineEmits<{
+  clickLike: []
+  clickRepost: []
+  clickComment: []
+}>()
 </script>
 
 <template>
   <div class="weibo-actions flex items-center gap-6 select-none">
-    <button class="hover:text-red-500">
+    <button
+      class="hover:text-red-500"
+      @click="$emit('clickLike')"
+    >
       <Heart class="w-4 h-4" />
       <span>{{ actions.likes }}</span>
     </button>
-    <button class="hover:text-blue-500">
+    <button
+      class="hover:text-blue-500"
+      @click="$emit('clickComment')"
+    >
       <MessageCircle class="w-4 h-4" />
       <span>{{ actions.comments }}</span>
     </button>
-    <button class="hover:text-green-500">
+    <button
+      class="hover:text-green-500"
+      @click="$emit('clickRepost')"
+    >
       <Repeat class="w-4 h-4" />
       <span>{{ actions.reposts }}</span>
     </button>

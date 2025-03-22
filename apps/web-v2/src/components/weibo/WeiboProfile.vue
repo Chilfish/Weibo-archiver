@@ -3,7 +3,7 @@ import type { Meta, User } from '@workspace/shared'
 import { usePublicStore } from '@workspace/core'
 import { formatDate } from '@workspace/shared'
 import { computed } from 'vue'
-import LazyImage from '../common/LazyImage.vue'
+import Avatar from '../common/Avatar.vue'
 
 const props = defineProps<{
   meta: Meta
@@ -20,11 +20,10 @@ const user = computed(() => props.user || publicStore.curUser)
     v-if="user"
     class="flex items-start gap-3 mb-4"
   >
-    <LazyImage
-      :src="user.avatar || '/placeholder.webp'"
+    <Avatar
+      :src="user.avatar"
       :alt="user.name"
-      class="w-10 h-10 rounded-full object-cover"
-      skeleton-class="w-10 h-10"
+      :size="10"
     />
     <div>
       <h3 class="font-bold text-base-content">

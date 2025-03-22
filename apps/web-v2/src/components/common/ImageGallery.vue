@@ -52,9 +52,9 @@ function handleClick(src: string, index: number) {
       class="image-grid-item"
     >
       <LazyImage
-        :src="image.src"
+        :src="image.src.replace('/large/', '/orj360/')"
         :alt="image.alt"
-        skeleton-class="min-h-12 md:min-h-48"
+        skeleton-class="h-24 md:h-48"
         @click="handleClick(image.src, index)"
       />
     </div>

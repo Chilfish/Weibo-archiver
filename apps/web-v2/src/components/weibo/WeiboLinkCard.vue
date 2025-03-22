@@ -34,14 +34,14 @@ const desc = computed(() => {
       :src="card.img"
       :alt="card.title"
       referrerpolicy="no-referrer"
-      class="url-card-img"
-      skeleton-class="w-40"
+      class="h-32"
+      skeleton-class="w-32 h-32"
     />
     <div class="url-card-content">
-      <h4 class="font-medium text-gray-900 text-sm">
+      <h4 class="font-medium text-gray-900">
         {{ card.title }}
       </h4>
-      <p class="text-gray-600 text-xs line-clamp-2">
+      <p class="text-gray-600 text-sm line-clamp-2">
         {{ desc }}
       </p>
       <div class="text-xs text-gray-500">
@@ -52,7 +52,6 @@ const desc = computed(() => {
 </template>
 
 <style>
-/* URL 卡片样式 */
 .url-card {
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -65,12 +64,6 @@ const desc = computed(() => {
 .url-card:hover {
   border-color: rgba(59, 130, 246, 0.3);
   background-color: #f0f7ff;
-}
-
-.url-card-img {
-  width: 10rem;
-  min-height: 100%;
-  object-fit: cover;
 }
 
 .url-card-content {

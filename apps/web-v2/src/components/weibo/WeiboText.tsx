@@ -169,12 +169,16 @@ export const WeiboText = defineComponent({
       type: String,
       required: true,
     },
+    class: {
+      type: String,
+      default: 'mb-2',
+    },
   },
   setup(props) {
     const segments = parseText(props.text)
 
     return () => (
-      <p class="mb-2">
+      <p class={props.class}>
         {segments.map((segment) => {
           switch (segment.type) {
             case 'text':
