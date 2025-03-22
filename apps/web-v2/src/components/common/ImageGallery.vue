@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { emitter } from '../../composables'
 import LazyImage from './LazyImage.vue'
 
 interface Image {
@@ -9,6 +10,9 @@ interface Image {
 
 const props = defineProps<{
   images: Image[] | string[]
+}>()
+const emits = defineEmits<{
+  click: [string, number]
 }>()
 
 const computedImages = computed(() => {
@@ -21,6 +25,11 @@ const computedImages = computed(() => {
       : image
   })
 })
+
+function handleClick(src: string, index: number) {
+  emitter.emit('open-image-preview', src)
+  emits('click', src, index)
+}
 </script>
 
 <template>
@@ -29,7 +38,7 @@ const computedImages = computed(() => {
     class="image-grid image-grid-9 mb-4"
   >
     <div
-      v-for="image in computedImages"
+      v-for="(image, index) in computedImages"
       :key="image.src"
       class="image-grid-item"
     >
@@ -37,6 +46,7 @@ const computedImages = computed(() => {
         :src="image.src"
         :alt="image.alt"
         skeleton-class="min-h-12 md:min-h-48"
+        @click="handleClick(image.src, index)"
       />
     </div>
   </div>
@@ -49,6 +59,7 @@ const computedImages = computed(() => {
       <LazyImage
         :src="computedImages[0].src"
         :alt="computedImages[0].alt"
+        @click="handleClick(computedImages[0].src, 0)"
       />
     </div>
   </div>

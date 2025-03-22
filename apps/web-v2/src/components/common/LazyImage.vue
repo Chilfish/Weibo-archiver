@@ -22,6 +22,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{
+  (e: 'click'): void
+}>()
 
 const imgRef = ref<HTMLImageElement>()
 const isLoading = ref(true)
@@ -66,6 +69,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       height: imgHeight !== undefined ? `${imgHeight}px` : undefined,
     }"
     loading="lazy"
+    @click="emit('click')"
   >
   <div
     v-if="isLoading"

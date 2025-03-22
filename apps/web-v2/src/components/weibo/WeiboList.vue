@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useRouteQuery } from '@vueuse/router'
 import { usePostStore, usePublicStore } from '@workspace/core'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { emitter } from '../../composables'
+import ImagePreview from '../common/ImagePreview.vue'
 import Pagination from '../common/Pagination.vue'
 
 const postStore = usePostStore()
@@ -40,6 +42,12 @@ function changePage(page: number, pageSize: number) {
     },
   })
 }
+
+const imagePreviewDialog = useTemplateRef<typeof ImagePreview>('imagePreviewDialog')
+
+emitter.on('open-image-preview', (src: string) => {
+  imagePreviewDialog.value?.openImagePreview(src)
+})
 </script>
 
 <template>
@@ -59,5 +67,7 @@ function changePage(page: number, pageSize: number) {
         @change="changePage"
       />
     </section>
+
+    <ImagePreview ref="imagePreviewDialog" />
   </div>
 </template>
