@@ -1,5 +1,5 @@
 import { setup } from '@storybook/vue3'
-import { usePublicStore } from '@weibo-archiver/core'
+import { usePublicStore } from '@workspace/core'
 import { createPinia } from 'pinia'
 import components from '../src/stories/components'
 import { users } from '../src/stories/test.data'

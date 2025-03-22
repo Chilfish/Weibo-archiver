@@ -1,6 +1,6 @@
-import type { Post, PostData, UserBio, UserInfo } from '@weibo-archiver/shared'
-import { parseOldPost } from '@weibo-archiver/shared'
+import type { Post, PostData, UserBio, UserInfo } from '@workspace/shared'
 import { usePostStore, usePublicStore } from '@workspace/core'
+import { parseOldPost } from '@workspace/shared'
 import destr from 'destr'
 import { toRaw } from 'vue'
 
