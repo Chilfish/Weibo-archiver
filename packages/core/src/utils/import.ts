@@ -25,7 +25,7 @@ function parseMultiLineJson(content: string) {
   return lines.map(line => destr<Post>(line, { strict: true }))
 }
 
-export async function paeseAndImport(_data: string) {
+export async function parseAndImport(_data: string) {
   const postStore = usePostStore()
   const publicStore = usePublicStore()
 

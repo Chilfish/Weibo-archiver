@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { paeseAndImport, readFile } from '@workspace/core'
-import { Download, Trash2 } from 'lucide-vue-next'
+import { parseAndImport, readFile } from '@workspace/core'
+import { Download, Trash2, Upload } from 'lucide-vue-next'
 import { config } from '../../composables'
 import ImageSourceOption from './ImageSourceOption.vue'
 
@@ -49,7 +49,7 @@ const THEMES = [
 
 async function onImportData(e: Event) {
   const data = await readFile(e)
-  await paeseAndImport(data)
+  await parseAndImport(data)
 }
 </script>
 
@@ -101,14 +101,19 @@ async function onImportData(e: Event) {
         数据管理
       </h3>
 
-      <div class="flex flex-col gap-3">
-        <input
-          type="file"
-          accept=".json"
-          class="file-input"
-          placeholder="导入数据"
-          @change="onImportData"
+      <div class="flex gap-3">
+        <button
+          class="btn btn-sm btn-primary w-fit relative"
         >
+          <input
+            type="file"
+            accept=".json"
+            class="absolute inset-0 opacity-0 w-full h-full"
+            placeholder="导入数据"
+            @change="onImportData"
+          >
+          <Upload class="w-4 h-4 mr-2" />导入数据
+        </button>
 
         <button class="btn btn-sm btn-outline w-fit">
           <Download class="w-4 h-4 mr-2" />导出数据

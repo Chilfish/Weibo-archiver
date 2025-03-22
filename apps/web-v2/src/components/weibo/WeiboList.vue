@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useEmoji } from '../../composables'
 import ImagePreview from '../common/ImagePreview.vue'
 import Pagination from '../common/Pagination.vue'
+import EmptyWeibo from '../EmptyWeibo.vue'
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
@@ -48,23 +49,26 @@ function changePage(page: number, pageSize: number) {
 </script>
 
 <template>
-  <div>
-    <section class="flex flex-col gap-4">
-      <Weibo
-        v-for="post in postStore.weibos"
-        :key="post.id"
-        :post="post"
-      />
+  <section
+    v-if="postStore.weibos.length > 0"
+    class="flex flex-col gap-4"
+  >
+    <Weibo
+      v-for="post in postStore.weibos"
+      :key="post.id"
+      :post="post"
+    />
 
-      <Pagination
-        v-model:current="postStore.curPage"
-        v-model:page-size="postStore.pageSize"
-        :total="postStore.total"
-        class="mt-4"
-        @change="changePage"
-      />
-    </section>
+    <Pagination
+      v-model:current="postStore.curPage"
+      v-model:page-size="postStore.pageSize"
+      :total="postStore.total"
+      class="mt-4"
+      @change="changePage"
+    />
+  </section>
 
-    <ImagePreview />
-  </div>
+  <EmptyWeibo v-else />
+
+  <ImagePreview />
 </template>

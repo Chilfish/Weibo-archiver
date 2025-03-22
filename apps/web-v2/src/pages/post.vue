@@ -7,14 +7,16 @@ const publicStore = usePublicStore()
 
 onBeforeMount(async () => {
   publicStore.load()
-  publicStore.curUid = publicStore.users[0].uid
+  // publicStore.curUid = publicStore.users[0].uid
 
   console.log(publicStore.curUser)
 })
 </script>
 
 <template>
-  <main class="flex flex-col pb-4 md:py-8 md:px-12 lg:px-52 bg-base-200">
+  <main
+    class="flex flex-col pb-4 md:py-8 md:px-12 lg:px-52 "
+  >
     <div class="flex gap-4 flex-col md:flex-row">
       <div class="w-full space-y-4">
         <FilterBar />
