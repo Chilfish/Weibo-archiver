@@ -66,9 +66,11 @@ function changePage(page: number, pageSize: number) {
     <EmptyWeibo v-else />
   </template>
 
-  <span
+  <div
     v-else
-    class="loading loading-spinner loading-xl"
-  />
+    class="flex flex-col items-center justify-center h-full"
+  >
+    <span class="loading w-16" />
+  </div>
   <ImagePreview />
 </template>

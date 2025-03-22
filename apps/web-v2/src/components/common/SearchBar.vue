@@ -10,7 +10,7 @@ async function onSearch() {
 
 <template>
   <label
-    class="input rounded-xl"
+    class="input rounded-xl bg-base-200 border-[1px]"
   >
     <input
       id="search-weibo"

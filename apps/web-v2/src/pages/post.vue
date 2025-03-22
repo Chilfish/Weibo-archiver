@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usePublicStore } from '@workspace/core'
 import { onBeforeMount } from 'vue'
+import BackToTop from '../components/common/BackToTop.vue'
 import WeiboList from '../components/weibo/WeiboList.vue'
 
 const publicStore = usePublicStore()
@@ -15,11 +16,13 @@ onBeforeMount(async () => {
 
 <template>
   <main
-    class="flex flex-col pb-4 md:py-8 md:px-12 lg:px-52 "
+    class="flex flex-col pb-4 md:py-8 md:px-12 lg:px-52 relative"
   >
     <div class="flex gap-4 flex-col md:flex-row">
-      <div class="w-full space-y-4">
-        <FilterBar />
+      <div class="flex flex-col gap-4">
+        <FilterBar
+          class="sticky top-0 self-start"
+        />
         <WeiboList />
       </div>
       <div class="flex flex-col gap-4 sticky top-4 self-start px-8 w-full md:w-fit">
@@ -31,5 +34,6 @@ onBeforeMount(async () => {
         <ProfilePanel :user="publicStore.curUser" />
       </div>
     </div>
+    <BackToTop />
   </main>
 </template>

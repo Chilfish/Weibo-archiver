@@ -86,7 +86,7 @@ async function onImportData(e: Event) {
               导入到 Weibo Archiver
             </h3>
             <p class="text-gray-600 mt-1">
-              点击上方的"导入数据"按钮，将导出的数据文件上传到网页端
+              点击上方的"导入数据"按钮，将导出的数据文件保存到网页端本地
             </p>
           </div>
         </li>

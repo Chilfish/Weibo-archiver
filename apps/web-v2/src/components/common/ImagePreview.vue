@@ -15,9 +15,7 @@ import LazyImage from './LazyImage.vue'
 
 const images = ref<string[]>([])
 const currentIndex = ref(0)
-const scale = ref(1)
-const isDragging = ref(false)
-const position = ref({ x: 0, y: 0 })
+const wrapperCss = ref('md:w-[80vw]')
 
 const imagePreviewDialog = useTemplateRef<HTMLDialogElement>('imagePreviewDialog')
 
@@ -27,13 +25,7 @@ const currentImage = computed(() => images.value[currentIndex.value] || '')
 function openImagePreview(event: ImagePreviewEvent) {
   images.value = event.imgs
   currentIndex.value = event.index
-  resetView()
   imagePreviewDialog.value?.showModal()
-}
-
-function resetView() {
-  scale.value = 1
-  position.value = { x: 0, y: 0 }
 }
 
 function openInNewTab() {
@@ -52,22 +44,18 @@ function downloadImage() {
 function nextImage() {
   if (currentIndex.value < images.value.length - 1) {
     currentIndex.value++
-    resetView()
   }
   else {
     currentIndex.value = 0
-    resetView()
   }
 }
 
 function prevImage() {
   if (currentIndex.value > 0) {
     currentIndex.value--
-    resetView()
   }
   else {
     currentIndex.value = images.value.length - 1
-    resetView()
   }
 }
 
@@ -82,7 +70,6 @@ useEventListener(window, 'keydown', (e) => {
 
 function closeModal() {
   imagePreviewDialog.value?.close()
-  resetView()
 }
 
 emitter.on('open-image-preview', openImagePreview)
@@ -101,19 +88,20 @@ defineExpose({
     <div class="modal-box p-0 max-w-fit relative transition-all">
       <!-- Image container with transform -->
       <div
-        class="flex justify-center items-center overflow-hidden"
+        class="flex justify-center items-center overflow-auto"
       >
         <LazyImage
           :key="currentImage"
           :src="currentImage"
-          skeleton-class="h-96 w-96"
-          :style="{
-            transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-            cursor: scale > 1 ? 'move' : 'default',
-            transition: isDragging ? 'none' : 'transform 0.2s',
-          }"
-          class="w-[90vw] md:w-auto md:h-[90vh] object-contain"
+          :wrapper-class="[
+            wrapperCss,
+            'w-[90vw]',
+            'md:h-[90vh]',
+          ]"
           alt="预览图片"
+          @load="() => {
+            wrapperCss = 'md:w-fit'
+          }"
         />
       </div>
 

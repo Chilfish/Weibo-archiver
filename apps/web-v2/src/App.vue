@@ -48,7 +48,7 @@ const config = useStorage('config', {
 <template>
   <div
     :data-theme="config.theme"
-    class="min-h-screen w-screen bg-base-200"
+    class="min-h-screen bg-base-200 overflow-x-hidden"
   >
     <router-view />
   </div>

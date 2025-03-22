@@ -2,6 +2,7 @@
 import type { CSSProperties } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
+import { replaceImg } from '../../composables'
 
 type Numberish = number | string
 type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
@@ -20,12 +21,14 @@ interface Props {
   alt?: string
   style?: CSSProperties
   class?: string | Array<string>
+  wrapperClass?: string | Array<string>
   skeletonClass?: string | Array<string>
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
-  (e: 'click'): void
+  click: []
+  load: []
 }>()
 
 const imgRef = ref<HTMLImageElement>()
@@ -37,12 +40,14 @@ const imgHeight = ref<Numberish | undefined>(0)
 useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   if (isIntersecting && isLoading.value) {
     const img = new Image()
-    img.src = props.src
-    imgSrc.value = props.src
+    img.src = replaceImg(props.src)
+    imgSrc.value = replaceImg(props.src)
     img.onload = () => {
       isLoading.value = false
       imgWidth.value = props.width
       imgHeight.value = props.height
+      emit('load')
+      img.remove()
     }
     img.onerror = () => {
       isLoading.value = true
@@ -52,7 +57,9 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
 </script>
 
 <template>
-  <div class="relative">
+  <div
+    class="relative" :class="[props.wrapperClass]"
+  >
     <img
       ref="imgRef"
       :src="imgSrc"
