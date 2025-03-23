@@ -19,7 +19,7 @@ onBeforeMount(async () => {
     class="flex flex-col pb-4 md:py-8 md:px-12 lg:px-52 relative"
   >
     <div class="flex gap-4 flex-col md:flex-row">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 w-full">
         <FilterBar
           class="sticky top-0 self-start"
         />

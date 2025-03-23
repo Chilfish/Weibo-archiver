@@ -15,6 +15,7 @@ const route = useRoute()
 const router = useRouter()
 
 onBeforeMount(async () => {
+  postStore.loading = true
   await Promise.all([
     fetchEmojis(),
     postStore.init(),

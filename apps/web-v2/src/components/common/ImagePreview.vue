@@ -100,7 +100,7 @@ defineExpose({
           ]"
           alt="预览图片"
           @load="() => {
-            wrapperCss = 'md:w-fit'
+            wrapperCss = 'w-auto'
           }"
         />
       </div>

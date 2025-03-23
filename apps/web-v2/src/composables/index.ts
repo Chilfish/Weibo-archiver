@@ -1,10 +1,10 @@
-import type { ImagePreviewEvent } from '../types'
+import type { AppConfig, ImagePreviewEvent } from '../types'
 import { useStorage } from '@vueuse/core'
 import { imgCdn } from '@workspace/core'
 import { mitt } from '@workspace/shared'
 import { computed } from 'vue'
 
-export const config = useStorage('config', {
+export const config = useStorage<AppConfig>('config', {
   theme: 'light',
   imgHost: 'cdn',
   customImageUrl: 'http://localhost:3000/images/',
@@ -61,7 +61,7 @@ export function replaceImg(src: string, forceCdn = false) {
   if (
     src.includes('data:image') // base64
     || src.startsWith(imgCdn) // 使用 ipfs cdn
-    || imgHost === 'weibo'// 使用微博官方链接
+    || imgHost === 'original' // 使用微博官方链接
   ) {
     return src
   }
@@ -72,7 +72,10 @@ export function replaceImg(src: string, forceCdn = false) {
       const { pathname } = new URL(src)
       return `${imgCdn}${pathname}`
     }
-    // 像是 b 站、网易云这种外链的图片，就保持原样
+    if (src.includes('hdslb.com')) {
+      return `https://proxy.chilfish.top/?url=${src}`
+    }
+    // 像是 网易云这种外链的图片，就保持原样
     return src
   }
 
@@ -84,10 +87,15 @@ export function replaceImg(src: string, forceCdn = false) {
   const fileName = `${prefix}-${name}`
 
   // 本地图片
-  if (imgHost === '/')
+  if (imgHost === 'local') {
     return `http://localhost:3000/images/${fileName}`
+  }
 
   // 自建图床
-  const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
-  return `${fixedBase}${fileName}`
+  if (imgHost === 'custom') {
+    const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
+    return `${fixedBase}${fileName}`
+  }
+
+  return src
 }
