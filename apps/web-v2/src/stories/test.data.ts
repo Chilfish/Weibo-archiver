@@ -215,7 +215,7 @@ export const weiboPosts: Post[] = [
   },
   {
     id: 4411046430845132,
-    text: '23333',
+    text: '23333\n「你的光芒会照亮前行之路」<br />phx<a target="_blank" href="https://weibo.com/n/小明明不要受伤">@小明明不要受伤</a>:test <br /><a href="//s.weibo.com/weibo?q=%23bangdream%23" target="_blank">#bangdream#</a> 仓田真白\n <a target="_blank" href="https://weibo.com/n/小明明不要受伤">@小明明不要受伤</a>\nnew line',
     imgs: [],
     reposts_count: 0,
     comments_count: 3,

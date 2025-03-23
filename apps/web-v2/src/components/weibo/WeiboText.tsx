@@ -19,12 +19,12 @@ const rePatterns = {
   image: /^\[img:\/\/(.*?)\]/,
   url: /^<a target="_blank" href="([^"]+)">([^<]+)<\/a>/,
   plainUrl: /^(https?:\/\/[^\s<]+)/i,
-  mention: /^@(\S+)(\s{0,2})/,
+  mention: /^@(\S+)([\n ]{0,2})/,
   hashtag: /^#([^#]+)#/,
   emoji: /^\[((?!\[img:\/\/).)*?\]/,
 
   br: /<br ?\/>/g,
-  link: /<a href="((?:https?:)?\/\/[^"]+)"( target="_blank")?>([^<]+)<\/a>/g,
+  link: /<a( target="_blank")? href="((?:https?:)?\/\/[^"]+)"( target="_blank")?>([^<]+)<\/a>/g,
   hashtagLink: /<a href="(?:https?:)?\/\/s\.weibo\.com\/weibo\?q=%23[^"]+" target="_blank">(#[^<]+#)<\/a>/g,
   nestedLink: /<a href="([^"]+)" target="_blank">/,
   imageLink: /<a target="_blank"[^>]*href="(https:\/\/wx\d\.sinaimg\.cn\/[^"]+\.(?:jpg|png|gif|jpeg))">查看图片<\/a>/,
@@ -49,11 +49,12 @@ function normalizeText(text: string): string {
     // Convert image links to [img://url] format
     .replace(rePatterns.imageLink, '[img://$1]')
     // Then handle regular links
-    .replace(rePatterns.link, '$3')
+    .replace(rePatterns.link, '$4')
     .replace(rePatterns.nestedLink, '')
 }
 
 const Link = defineComponent({
+  name: 'WeiboTextLink',
   props: {
     url: {
       type: String,
@@ -96,6 +97,7 @@ const Link = defineComponent({
 })
 
 const Mention = defineComponent({
+  name: 'WeiboTextMention',
   props: {
     username: {
       type: String,
@@ -113,6 +115,7 @@ const Mention = defineComponent({
 })
 
 const Hashtag = defineComponent({
+  name: 'WeiboTextHashtag',
   props: {
     topic: {
       type: String,
@@ -130,6 +133,7 @@ const Hashtag = defineComponent({
 })
 
 const InlineImageButton = defineComponent({
+  name: 'WeiboTextInlineImageButton',
   props: {
     imageUrl: {
       type: String,
@@ -166,7 +170,7 @@ function parseText(text: string): Segment[] {
 
   const segments: Segment[] = []
   const normalizedText = normalizeText(text)
-  console.log(normalizedText)
+  // console.log(normalizedText)
 
   let remainingText = normalizedText
 
@@ -208,7 +212,20 @@ function parseText(text: string): Segment[] {
     const mentionMatch = remainingText.match(rePatterns.mention)
     if (mentionMatch) {
       const [fullMatch, username, space] = mentionMatch
-      segments.push({ type: 'mention', content: username + (space || '') })
+      // 转发链中，用户名后会跟着一个冒号和可能没有的空格
+      // 如果不处理，@name:words 会被识别为 mention
+      // 同时用户名是不会含有 `:` 的
+      const [realName, restText] = username.split(':')
+
+      segments.push({ type: 'mention', content: realName })
+
+      // 有时候@后面会跟着换行符，这个要保留
+      // 或者是上面那种情况的 words 就当作 text 处理
+      const text = restText ? `: ${restText}${space}` : space
+      segments.push({ type: 'text', content: text })
+
+      // mention 的正则就会把 @name:words 都当作 match 了
+      // 所以需要减去这部分长度
       remainingText = remainingText.substring(fullMatch.length)
       continue
     }
@@ -271,6 +288,7 @@ function parseText(text: string): Segment[] {
 }
 
 export const WeiboText = defineComponent({
+  name: 'WeiboText',
   props: {
     text: {
       type: String,
@@ -285,12 +303,12 @@ export const WeiboText = defineComponent({
     const segments = parseText(props.text)
       .filter((segment) => {
         if (segment.type === 'text') {
-          return segment.content?.trim().length > 0
+          return segment.content !== ' '
         }
         return true
       })
 
-    console.log(segments)
+    // console.log(segments)
 
     return () => (
       <p class={[props.class, '']}>
