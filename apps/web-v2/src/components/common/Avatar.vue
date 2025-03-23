@@ -5,7 +5,8 @@ import LazyImage from './LazyImage.vue'
 const props = defineProps<{
   src?: string
   alt?: string
-  size?: number
+  size?: number | string
+  class?: string
 }>()
 
 const sizeClass = computed(() => {
@@ -19,9 +20,8 @@ const sizeClass = computed(() => {
       :src="src || '/placeholder.webp'"
       :alt="alt || '用户头像'"
       class="rounded-full"
-      :class="[sizeClass]"
+      :class="[sizeClass, props.class]"
       :skeleton-class="[sizeClass, 'rounded-full absolute inset-0']"
-      :raw-src="true"
     />
   </div>
 </template>

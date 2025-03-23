@@ -2,6 +2,7 @@
 import type { UserInfo } from '@workspace/shared'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
 import { computed } from 'vue'
+import Avatar from './common/Avatar.vue'
 
 const props = defineProps<{
   users: UserInfo[]
@@ -22,14 +23,11 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== props.c
         v-if="curUser"
         class="flex items-center gap-2"
       >
-        <div class="avatar">
-          <div class="w-8 h-8 rounded-full">
-            <img
-              :src="curUser.avatar"
-              :alt="curUser.name"
-            >
-          </div>
-        </div>
+        <Avatar
+          :src="curUser.avatar"
+          :alt="curUser.name"
+          :size="8"
+        />
         <span>{{ curUser.name }}</span>
       </div>
       <div
