@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Comment } from '@workspace/shared'
-import { formatDate } from '@workspace/shared'
+import { formatDate, formatNumber } from '@workspace/shared'
 import { Heart, MessageCircle } from 'lucide-vue-next'
 import { emitter } from '../../composables'
 import Avatar from '../common/Avatar.vue'
@@ -62,13 +62,19 @@ function previewImage(url: string) {
             {{ comment.region_name }}
           </div>
 
-          <button class="ml-1 flex items-center gap-1">
+          <button
+            :title="`点赞 ${comment.like_count}`"
+            class="ml-1 flex items-center gap-1 hover:text-red-500"
+          >
             <Heart class="w-4 h-4" />
-            {{ comment.like_count }}
+            {{ formatNumber(comment.like_count) }}
           </button>
-          <button class="flex items-center gap-1">
+          <button
+            :title="`评论 ${comment.comments_count}`"
+            class="flex items-center gap-1 hover:text-blue-500"
+          >
             <MessageCircle class="w-4 h-4" />
-            {{ comment.comments_count }}
+            {{ formatNumber(comment.comments_count) }}
           </button>
         </div>
       </div>

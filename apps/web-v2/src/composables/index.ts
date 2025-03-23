@@ -1,6 +1,6 @@
 import type { AppConfig, ImagePreviewEvent } from '../types'
 import { useStorage } from '@vueuse/core'
-import { imgCdn } from '@workspace/core'
+import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@workspace/core'
 import { mitt } from '@workspace/shared'
 import { computed } from 'vue'
 
@@ -18,8 +18,6 @@ interface Emoji {
   phrase: string[]
   path: string
 }
-
-const emojiUrl = 'https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal'
 
 export function useEmoji() {
   const emojis = useStorage<Emoji[]>('weibo-emojis', [])
@@ -56,7 +54,7 @@ export function useEmoji() {
  * 格式：域名-文件名
  */
 export function replaceImg(src: string, forceCdn = false) {
-  const imgHost = config.value.imgHost
+  const { imgHost, customImageUrl } = config.value
 
   if (
     src.includes('data:image') // base64
@@ -73,7 +71,7 @@ export function replaceImg(src: string, forceCdn = false) {
       return `${imgCdn}${pathname}`
     }
     if (src.includes('hdslb.com')) {
-      return `https://proxy.chilfish.top/?url=${src}`
+      return `${proxyImgHost}${src}`
     }
     // 像是 网易云这种外链的图片，就保持原样
     return src
@@ -88,13 +86,20 @@ export function replaceImg(src: string, forceCdn = false) {
 
   // 本地图片
   if (imgHost === 'local') {
-    return `http://localhost:3000/images/${fileName}`
+    return `${localImgHost}/${fileName}`
   }
 
   // 自建图床
   if (imgHost === 'custom') {
-    const fixedBase = imgHost.endsWith('/') ? imgHost : `${imgHost}/`
-    return `${fixedBase}${fileName}`
+    try {
+      const url = new URL(customImageUrl)
+      url.pathname = fileName
+      return url.toString()
+    }
+    catch (error) {
+      console.error(error)
+      return `${localImgHost}/${fileName}`
+    }
   }
 
   return src

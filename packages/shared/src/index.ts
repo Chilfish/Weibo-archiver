@@ -1,9 +1,11 @@
 export * from './fetch'
+export * from './format'
 export * from './mitt'
 export * from './parse'
 export * from './protocol'
 export * from './services'
 export * from './types'
+
 export const isBrowser = typeof window !== 'undefined'
 
 export function delay(ms = 2000) {
@@ -18,40 +20,6 @@ export function dayStart(date: Date | number) {
 export function dayEnd(date: Date | number) {
   date = new Date(date)
   return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59).getTime()
-}
-
-/**
- * Format the date string
- * @param time the date string
- * @param fmt the format string, e.g. `YYYY-MM-DD HH:mm:ss`
- */
-export function formatDate(
-  time: string | number | Date,
-  fmt = 'YYYY-MM-DD HH:mm:ss',
-) {
-  if (typeof time === 'number' && time < 1e12)
-    time *= 1000
-
-  const date = new Date(time)
-  if (Number.isNaN(date.getTime()))
-    return ''
-
-  const pad = (num: number) => num.toString().padStart(2, '0')
-
-  const year = date.getFullYear()
-  const month = pad(date.getMonth() + 1) // Months are zero-based
-  const day = pad(date.getDate())
-  const hours = pad(date.getHours())
-  const minutes = pad(date.getMinutes())
-  const seconds = pad(date.getSeconds())
-
-  return fmt
-    .replace('YYYY', year.toString())
-    .replace('MM', month)
-    .replace('DD', day)
-    .replace('HH', hours)
-    .replace('mm', minutes)
-    .replace('ss', seconds)
 }
 
 /**

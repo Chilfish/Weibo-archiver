@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatNumber } from '@workspace/shared'
 import { Heart, MessageCircle, Repeat } from 'lucide-vue-next'
 
 interface Actions {
@@ -22,24 +23,27 @@ defineEmits<{
   <div class="weibo-actions flex items-center gap-6 select-none">
     <button
       class="hover:text-red-500"
+      :title="`点赞 ${actions.likes}`"
       @click="$emit('clickLike')"
     >
       <Heart class="w-4 h-4" />
-      <span>{{ actions.likes }}</span>
+      <span>{{ formatNumber(actions.likes) }}</span>
     </button>
     <button
       class="hover:text-blue-500"
+      :title="`评论 ${actions.comments}`"
       @click="$emit('clickComment')"
     >
       <MessageCircle class="w-4 h-4" />
-      <span>{{ actions.comments }}</span>
+      <span>{{ formatNumber(actions.comments) }}</span>
     </button>
     <button
       class="hover:text-green-500"
+      :title="`转发 ${actions.reposts}`"
       @click="$emit('clickRepost')"
     >
       <Repeat class="w-4 h-4" />
-      <span>{{ actions.reposts }}</span>
+      <span>{{ formatNumber(actions.reposts) }}</span>
     </button>
   </div>
 </template>

@@ -7,16 +7,6 @@ const props = defineProps<{
   card: CardInfo
 }>()
 
-const shortLink = computed(() => {
-  try {
-    const url = new URL(props.card.link)
-    return url.hostname
-  }
-  catch (error) {
-    return props.card.link
-  }
-})
-
 const desc = computed(() => {
   // 油猴脚本那边解析错了
   return props.card.desc?.replace('undefined - ', '')
@@ -44,8 +34,8 @@ const desc = computed(() => {
       <p class="text-gray-600 text-xs line-clamp-2 mt-2">
         {{ desc }}
       </p>
-      <div class="text-xs text-gray-500 mt-auto">
-        {{ shortLink }}
+      <div class="text-xs text-gray-500 mt-auto line-clamp-1">
+        {{ props.card.link }}
       </div>
     </div>
   </a>

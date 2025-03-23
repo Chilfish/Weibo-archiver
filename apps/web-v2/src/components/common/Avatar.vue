@@ -21,6 +21,7 @@ const sizeClass = computed(() => {
       class="rounded-full"
       :class="[sizeClass]"
       :skeleton-class="[sizeClass, 'rounded-full absolute inset-0']"
+      :raw-src="true"
     />
   </div>
 </template>

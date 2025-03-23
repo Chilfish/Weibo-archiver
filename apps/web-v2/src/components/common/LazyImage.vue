@@ -23,6 +23,10 @@ interface Props {
   class?: string | Array<string>
   wrapperClass?: string | Array<string>
   skeletonClass?: string | Array<string>
+  /**
+   * 是否使用原始 src，默认会使用用户设置的图床链接处理
+   */
+  rawSrc?: boolean
 }
 
 const props = defineProps<Props>()
@@ -40,8 +44,9 @@ const imgHeight = ref<Numberish | undefined>(0)
 useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   if (isIntersecting && isLoading.value) {
     const img = new Image()
-    img.src = replaceImg(props.src)
-    imgSrc.value = replaceImg(props.src)
+    const src = props.rawSrc ? props.src : replaceImg(props.src)
+    img.src = src
+    imgSrc.value = src
     img.onload = () => {
       isLoading.value = false
       imgWidth.value = props.width

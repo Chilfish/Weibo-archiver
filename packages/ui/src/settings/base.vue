@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UploadCustomRequestOptions } from '@workspace/core'
 import { useStorage } from '@vueuse/core'
-import { exportData, imgCdn, paeseAndImport, useMessage, usePostStore, usePublicStore } from '@workspace/core'
+import { exportData, imgCdn, parseAndImport, useMessage, usePostStore, usePublicStore } from '@workspace/core'
 import { NButton, NForm, NFormItem, NInput, NPopconfirm, NRadio, NRadioGroup, NSwitch, NUpload } from 'naive-ui'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -33,7 +33,7 @@ function onImportData({ file }: UploadCustomRequestOptions) {
     const _data = content.replace('export const _ = ', '')
 
     try {
-      await paeseAndImport(_data)
+      await parseAndImport(_data)
     }
     catch (e) {
       message.error('导入失败，请检查文件内容是否正确')

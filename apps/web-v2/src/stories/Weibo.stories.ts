@@ -21,6 +21,7 @@ const withDeleted = weiboPosts[3]
 const withVideo = weiboPosts[4]
 const withComments = weiboPosts[5]
 const withEmoji = weiboPosts[6]
+const withInlineImage = weiboPosts[7]
 
 const emojis = useStorage<any[]>('weibo-emojis', [])
 
@@ -141,6 +142,23 @@ export const WithEmoji: Story = {
       })
       return {
         post: withEmoji,
+      }
+    },
+  }),
+}
+
+export const WithInlineImage: Story = {
+  render: () => ({
+    components: { WeiboCard, ImagePreview },
+    template: /* html */ `
+      <div class="flex flex-col gap-4 w-168 p-4 bg-gray-100 rounded-lg">
+        <WeiboCard :post />
+        <ImagePreview />
+      </div>
+    `,
+    setup() {
+      return {
+        post: withInlineImage,
       }
     },
   }),
