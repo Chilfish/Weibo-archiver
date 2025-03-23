@@ -2,7 +2,7 @@ import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
 import { watchImmediate } from '@vueuse/core'
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { EmptyIDB, IDB } from '../utils/storage'
 import { usePublicStore } from './public'
 
@@ -10,6 +10,8 @@ export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
   const followings = shallowRef<UserBio[]>([])
   const allImages: Album[] = []
+  const weibos = ref<Post[]>([])
+  const loading = ref(false)
 
   const idb = ref(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
@@ -26,27 +28,9 @@ export const usePostStore = defineStore('post', () => {
   })
 
   const route = useRoute()
-  const router = useRouter()
 
-  const curPage = computed({
-    get: () => Number(route.query.page) || 1,
-    set: (val: number) => router.push({
-      query: {
-        ...route.query,
-        page: val,
-      },
-    }),
-  })
-
-  const pageSize = computed({
-    get: () => Number(route.query.pageSize) || 10,
-    set: (val: number) => router.push({
-      query: {
-        ...route.query,
-        pageSize: val,
-      },
-    }),
-  })
+  const curPage = ref(Number(route.query.page) || 1)
+  const pageSize = ref(Number(route.query.pageSize) || 10)
 
   const searchFn = ref<(text: string) => number[]>()
 
@@ -84,6 +68,7 @@ export const usePostStore = defineStore('post', () => {
     _followings?: UserBio[],
     isReplace = false,
   ) {
+    loading.value = true
     await waitIDB()
 
     if (_followings && _followings.length) {
@@ -98,6 +83,9 @@ export const usePostStore = defineStore('post', () => {
     searchFn.value = search
 
     await idb.value.setUserInfo(user)
+    await updateTotal()
+    await get(curPage.value)
+    loading.value = false
   }
 
   async function _searchPost(
@@ -138,7 +126,7 @@ export const usePostStore = defineStore('post', () => {
 
     let result: Post[]
 
-    await waitIDB()
+    // await waitIDB()
 
     if (path === '/post') {
       result = await idb.value.getDBPosts(p, pageSize.value)
@@ -150,6 +138,7 @@ export const usePostStore = defineStore('post', () => {
       result = await idb.value.getDBPostByTime(_result)
     }
 
+    weibos.value = result
     return result
   }
 
@@ -207,6 +196,7 @@ export const usePostStore = defineStore('post', () => {
     else
       posts = await searchAndTime(query, start, end, p)
 
+    weibos.value = posts
     return posts
   }
 
@@ -255,14 +245,19 @@ export const usePostStore = defineStore('post', () => {
     pages,
     pageSize,
     curPage,
+    loading,
+    weibos,
     followings,
 
     get,
     set,
 
     clearDB: async () => {
-      await waitIDB()
+      loading.value = true
       await idb.value.clearDB()
+      publicStore.rmUser()
+      weibos.value = []
+      loading.value = false
     },
     getAll: async () => {
       await waitIDB()
@@ -273,9 +268,11 @@ export const usePostStore = defineStore('post', () => {
       return idb.value.getPostCount()
     },
 
-    init: () => Promise.all([
-      updateTotal(),
-    ]),
+    init: async () => {
+      await updateTotal()
+      await get(curPage.value)
+      loading.value = false
+    },
     updateTotal,
     getByTime,
     searchPost,

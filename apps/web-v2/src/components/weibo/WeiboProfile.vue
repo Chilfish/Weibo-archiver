@@ -1,32 +1,40 @@
 <script setup lang="ts">
 import type { Meta, User } from '@workspace/shared'
+import { usePublicStore } from '@workspace/core'
 import { formatDate } from '@workspace/shared'
-import LazyImage from '../common/LazyImage.vue'
+import { computed } from 'vue'
+import Avatar from '../common/Avatar.vue'
 
-defineProps<{
-  user: User
+const props = defineProps<{
   meta: Meta
+  user?: User
 }>()
+
+const publicStore = usePublicStore()
+
+const user = computed(() => props.user || publicStore.curUser)
 </script>
 
 <template>
-  <div class="flex items-start gap-3 mb-4">
-    <LazyImage
+  <div
+    v-if="user"
+    class="flex items-start gap-3 mb-4"
+  >
+    <Avatar
       :src="user.avatar"
       :alt="user.name"
-      class="w-10 h-10 rounded-full object-cover"
-      skeleton-class="w-10 h-10"
+      :size="10"
     />
     <div>
-      <h3 class="font-bold text-gray-900">
-        {{ user.name }}
+      <h3 class="font-bold text-base-content">
+        {{ user.name || '未知' }}
       </h3>
-      <div class="text-xs text-gray-500">
+      <div class="text-xs text-base-content/80">
         {{ formatDate(meta.created_at) }}
       </div>
     </div>
 
-    <div class="flex items-center ml-auto text-xs text-gray-500 gap-2">
+    <div class="flex items-center ml-auto text-xs text-base-content/80 gap-2">
       <a
         :href="meta.detail_url"
         target="_blank"

@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import type { Post, PostData, UserBio, UserInfo } from '@shared'
-import { imgCdn } from '@core/constants'
-import { usePostStore, usePublicStore } from '@core/stores'
-import { exportData } from '@core/utils'
-import { parseOldPost } from '@shared'
+import type { UploadCustomRequestOptions } from '@workspace/core'
 import { useStorage } from '@vueuse/core'
-import { destr } from 'destr'
-import { type UploadCustomRequestOptions, useMessage } from 'naive-ui'
-import { computed, ref, toRaw } from 'vue'
+import { exportData, imgCdn, paeseAndImport, useMessage, usePostStore, usePublicStore } from '@workspace/core'
+import { NButton, NForm, NFormItem, NInput, NPopconfirm, NRadio, NRadioGroup, NSwitch, NUpload } from 'naive-ui'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Theme from '../Theme.vue'
 
 const useLocalImage = useStorage('imgHost', '/')
 const customimgHost = useStorage('customimgHost', '')
@@ -24,81 +21,6 @@ const isExporting = ref(false)
 const isImporting = ref(false)
 
 const username = computed(() => `@${publicStore.curUser?.name || '该用户'}`)
-
-/**
- * 判断是否为多行 JSON，以\n分隔的对象
- * ```
- * {}
- * {}
- * ```
- */
-function isMutilLineJson(content: string) {
-  const lines = content.split('\n').filter(Boolean)
-
-  // 只检查第一行和最后一行
-  return lines.length > 1
-    && lines[0].startsWith('{')
-    && lines[lines.length - 1].startsWith('{')
-}
-
-function parseMultiLineJson(content: string) {
-  const lines = content.split('\n').filter(Boolean)
-  return lines.map(line => destr<Post>(line, { strict: true }))
-}
-
-async function paeseAndImport(_data: string) {
-  const data = isMutilLineJson(_data)
-    ? parseMultiLineJson(_data)
-    : destr<PostData | Post[]>(_data, { strict: true })
-
-  let user: UserInfo
-  let posts: Post[]
-  let followings: UserBio[] = []
-
-  if (Array.isArray(data)) {
-    // 来自 cli 的多行json
-    if (!data[0].user?.uid) {
-      posts = data
-      user = publicStore.curUser as UserInfo
-
-      message.warning('正在导入来自 cli 的数据，将使用当前用户信息')
-    }
-    else {
-      posts = data.map(post => parseOldPost(post))
-
-      const _user = data[0].user as any
-      // @ts-expect-error bad
-      user = publicStore.users.find(u => u.uid === _user?.id)
-      if (!user) {
-        user = {
-          uid: _user.id,
-          name: _user.screen_name,
-          avatar: _user.profile_image_url,
-          postCount: posts.length,
-          followers: 0,
-          followings: 0,
-          bio: '',
-          birthday: '',
-          createdAt: '',
-        }
-      }
-    }
-  }
-  else {
-    posts = data.weibo
-    user = data.user
-    followings = data.followings
-  }
-  user = toRaw(user)
-
-  publicStore.importUser(user)
-
-  await postStore.set(posts, user, followings, coverMode.value)
-  user.postCount = postStore.total
-
-  message.success(`导入成功，导入后共有 ${postStore.total} 条数据`)
-  router.push('/post')
-}
 
 function onImportData({ file }: UploadCustomRequestOptions) {
   const data = file.file as File
@@ -151,22 +73,22 @@ async function clearData() {
   <main
     class="flex flex-col items-start gap-4"
   >
-    <n-form>
-      <n-form-item
+    <NForm>
+      <NFormItem
         label="图片链接"
       >
-        <n-radio-group
+        <NRadioGroup
           v-model:value="useLocalImage"
           class="flex flex-col gap-2"
         >
-          <n-radio value="/">
+          <NRadio value="/">
             使用本地图片链接（需预先下载图片）
-          </n-radio>
-          <n-radio :value="imgCdn">
+          </NRadio>
+          <NRadio :value="imgCdn">
             使用默认的 CDN（{{ imgCdn }}）
-          </n-radio>
+          </NRadio>
 
-          <n-radio value="weibo">
+          <NRadio value="weibo">
             使用微博原图（需配合
             <a
               href="https://chromewebstore.google.com/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh"
@@ -176,13 +98,13 @@ async function clearData() {
               Header Editor
             </a>
             插件）
-          </n-radio>
+          </NRadio>
 
           <div>
-            <n-radio :value="customimgHost">
+            <NRadio :value="customimgHost">
               使用自建图床链接（指向图片所在的目录）
-            </n-radio>
-            <n-input
+            </NRadio>
+            <NInput
               v-model:value="customimgHost"
               class="mt-2 max-w-80%"
               placeholder="请输入"
@@ -190,17 +112,17 @@ async function clearData() {
               <template #prefix>
                 <i class="i-tabler:link icon" />
               </template>
-            </n-input>
+            </NInput>
           </div>
-        </n-radio-group>
-      </n-form-item>
+        </NRadioGroup>
+      </NFormItem>
 
-      <n-form-item
+      <NFormItem
         label="外观模式"
       >
         <Theme />
-      </n-form-item>
-    </n-form>
+      </NFormItem>
+    </NForm>
 
     <div class="w-full flex flex-col gap-3">
       <p class="settings-title">
@@ -211,13 +133,13 @@ async function clearData() {
         <span class="mr-4">
           导入方式：{{ coverMode ? '覆盖模式（将覆盖本地所有数据）' : '合并模式（只追加合并新数据）' }}
         </span>
-        <n-switch
+        <NSwitch
           v-model:value="coverMode"
         />
       </div>
 
       <div class="flex flex-wrap items-center gap-6">
-        <n-upload
+        <NUpload
           v-model:file-list="fileList"
           :custom-request="onImportData"
           :show-file-list="false"
@@ -225,39 +147,39 @@ async function clearData() {
           directory-dnd
           class="w-fit"
         >
-          <n-button
+          <NButton
             :loading="isImporting"
           >
             点击导入
-          </n-button>
-        </n-upload>
+          </NButton>
+        </NUpload>
 
-        <n-button
+        <NButton
           class="w-fit"
           :loading="isExporting"
           @click="exportDatas"
         >
           点击导出
-        </n-button>
+        </NButton>
 
-        <n-popconfirm
+        <NPopconfirm
           @positive-click="clearData"
         >
           <template #trigger>
-            <n-button
+            <NButton
               :bordered="false"
               class="w-fit text-white bg-red! hover:bg-red-500!"
               type="error"
             >
               清空本地数据
-            </n-button>
+            </NButton>
           </template>
           <p>
             确认将
             <strong> {{ username }} </strong>
             的本地数据清空？你仍可以通过导入功能恢复数据。
           </p>
-        </n-popconfirm>
+        </NPopconfirm>
       </div>
     </div>
 

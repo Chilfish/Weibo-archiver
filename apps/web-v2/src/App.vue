@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useHead, useSeoMeta } from '@unhead/vue'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useStorage } from '@vueuse/core'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
@@ -41,17 +40,16 @@ useHead({
   ],
 })
 
-const route = useRoute()
-
-const isIndex = computed(() => route.path === '/')
+const config = useStorage('config', {
+  theme: 'light',
+})
 </script>
 
 <template>
-  <main
-    :class="{
-      'pt-16': !isIndex,
-    }"
+  <div
+    :data-theme="config.theme"
+    class="min-h-screen bg-base-200 overflow-x-hidden"
   >
     <router-view />
-  </main>
+  </div>
 </template>

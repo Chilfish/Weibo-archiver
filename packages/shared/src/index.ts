@@ -1,9 +1,9 @@
 export * from './fetch'
+export * from './mitt'
 export * from './parse'
 export * from './protocol'
 export * from './services'
 export * from './types'
-
 export const isBrowser = typeof window !== 'undefined'
 
 export function delay(ms = 2000) {

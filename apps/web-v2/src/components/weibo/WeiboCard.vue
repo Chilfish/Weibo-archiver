@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type { Post } from '@workspace/shared'
-import { computed } from 'vue'
+import type { CardInfo, Post } from '@workspace/shared'
+import { computed, ref } from 'vue'
 import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
+import WeiboComments from './WeiboComments.vue'
 import WeiboLinkCard from './WeiboLinkCard.vue'
 import WeiboProfile from './WeiboProfile.vue'
-import WeiboText from './WeiboText.vue'
+import { WeiboText } from './WeiboText'
 
 const props = defineProps<{
   post: Post
+  linkCard?: CardInfo
   isRetweet?: boolean
 }>()
 
@@ -17,21 +19,48 @@ const actions = computed(() => ({
   reposts: props.post.reposts_count,
   comments: props.post.comments_count,
 }))
+
+// 合并转发中的卡片，油猴脚本那边解析错了
+const linkCard = computed(() => {
+  return props.post.card || props.linkCard
+})
+
+const isCommentsOpen = ref(false)
 </script>
 
 <template>
   <div
-    class="weibo-card bg-white rounded-2xl shadow-sm p-5 group"
+    class="weibo-card bg-base-100 rounded-2xl shadow-sm p-5 group"
   >
     <WeiboProfile
-      v-if="post.user"
-      :user="post.user"
       :meta="post"
+      :user="isRetweet ? post.user : undefined"
     />
     <WeiboText :text="post.text" />
-    <ImageGallery :images="post.imgs" />
-    <WeiboLinkCard v-if="post.card" :card="post.card" />
-    <WeiboActions v-if="!isRetweet" :actions="actions" />
+    <ImageGallery
+      class="pr-12"
+      :images="post.imgs"
+    />
+    <WeiboLinkCard v-if="linkCard" :card="linkCard" />
+    <WeiboActions
+      v-if="!isRetweet"
+      :actions="actions"
+      @click-comment="isCommentsOpen = !isCommentsOpen"
+    />
+
+    <div
+      v-if="post.comments.length"
+      class="collapse" :class="[
+        isCommentsOpen ? 'collapse-open' : 'collapse-close',
+      ]"
+    >
+      <input type="checkbox" class="hidden">
+      <div class="collapse-content pt-3 pb-0! px-0">
+        <WeiboComments
+          :comments="post.comments"
+        />
+      </div>
+    </div>
   </div>
 </template>
 

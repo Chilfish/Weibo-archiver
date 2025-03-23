@@ -1,5 +1,5 @@
-import type { Post, UserBio, UserInfo } from '@shared'
-import { imgsParser } from '@shared'
+import type { Post, UserBio, UserInfo } from '@workspace/shared'
+import { imgsParser } from '@workspace/shared'
 import fileSaver from 'file-saver'
 
 export async function exportData(
@@ -35,4 +35,8 @@ export async function exportData(
     fileSaver.saveAs(imgsDataBlob, `imgs-${name}.csv`)
   }
   return true
+}
+
+export async function downloadFile(url: string, name: string) {
+  fileSaver.saveAs(url, name)
 }

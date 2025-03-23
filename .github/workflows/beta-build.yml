@@ -6,7 +6,7 @@ on:
     branches-ignore:
       - monkey
       # 暂时忽略
-      - web-redesign
+      - web-redesign*
     tags-ignore:
       # 发 release 时不触发构建
       - '**'

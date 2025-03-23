@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import type { CardInfo } from '@workspace/shared'
+import { computed } from 'vue'
 import LazyImage from '../common/LazyImage.vue'
 
-defineProps<{
+const props = defineProps<{
   card: CardInfo
 }>()
+
+const shortLink = computed(() => {
+  try {
+    const url = new URL(props.card.link)
+    return url.hostname
+  }
+  catch (error) {
+    return props.card.link
+  }
+})
+
+const desc = computed(() => {
+  // 油猴脚本那边解析错了
+  return props.card.desc?.replace('undefined - ', '')
+})
 </script>
 
 <template>
@@ -18,25 +34,24 @@ defineProps<{
       :src="card.img"
       :alt="card.title"
       referrerpolicy="no-referrer"
-      class="url-card-img"
-      skeleton-class="w-40"
+      class="h-28 w-28"
+      skeleton-class="h-28 w-28"
     />
     <div class="url-card-content">
       <h4 class="font-medium text-gray-900 text-sm">
         {{ card.title }}
       </h4>
-      <p class="text-gray-600 text-xs line-clamp-2">
-        {{ card.desc }}
+      <p class="text-gray-600 text-xs line-clamp-2 mt-2">
+        {{ desc }}
       </p>
-      <div class="text-xs text-gray-500">
-        {{ card.link }}
+      <div class="text-xs text-gray-500 mt-auto">
+        {{ shortLink }}
       </div>
     </div>
   </a>
 </template>
 
 <style>
-/* URL 卡片样式 */
 .url-card {
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -51,18 +66,9 @@ defineProps<{
   background-color: #f0f7ff;
 }
 
-.url-card-img {
-  width: 10rem;
-  min-height: 100%;
-  object-fit: cover;
-}
-
 .url-card-content {
   padding: 12px;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 0.5rem;
 }
 </style>

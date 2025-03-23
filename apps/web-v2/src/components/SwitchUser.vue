@@ -16,7 +16,7 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== props.c
   <div class="dropdown w-fit">
     <div
       tabindex="0" role="button"
-      class="btn w-full bg-white text-gray-700 border-gray-200 hover:bg-gray-50 flex justify-between p-4 h-12"
+      class="btn w-full bg-base-100 text-gray-700 border-gray-200 hover:bg-gray-50 flex justify-between p-4 h-14 rounded-2xl"
     >
       <div
         v-if="curUser"
@@ -43,9 +43,8 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== props.c
     </div>
 
     <ul
-      v-if="restUsers.length > 0"
       tabindex="0"
-      class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-full mt-2"
+      class="dropdown-content z-[1] menu p-2 gap-1 shadow-lg glassmorphism rounded-box w-full mt-2"
     >
       <li v-for="user in restUsers" :key="user.uid">
         <a class="flex items-center gap-2">
@@ -60,7 +59,7 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== props.c
           <span>{{ user.name }}</span>
         </a>
       </li>
-      <li class="mt-2 pt-2">
+      <li>
         <button class="btn btn-primary btn-ghost">
           <UserRoundPlus class="w-4 h-4" /> 添加新用户
         </button>

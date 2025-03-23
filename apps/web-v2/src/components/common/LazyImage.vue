@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { CSSProperties } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
+import { replaceImg } from '../../composables'
 
 type Numberish = number | string
 type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
@@ -16,12 +18,18 @@ interface Props {
   srcset?: string
   usemap?: string
   width?: Numberish
-  class?: string
   alt?: string
-  skeletonClass?: string
+  style?: CSSProperties
+  class?: string | Array<string>
+  wrapperClass?: string | Array<string>
+  skeletonClass?: string | Array<string>
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{
+  click: []
+  load: []
+}>()
 
 const imgRef = ref<HTMLImageElement>()
 const isLoading = ref(true)
@@ -32,39 +40,48 @@ const imgHeight = ref<Numberish | undefined>(0)
 useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   if (isIntersecting && isLoading.value) {
     const img = new Image()
-    img.src = props.src
+    img.src = replaceImg(props.src)
+    imgSrc.value = replaceImg(props.src)
     img.onload = () => {
-      imgSrc.value = props.src
       isLoading.value = false
       imgWidth.value = props.width
       imgHeight.value = props.height
+      emit('load')
+      img.remove()
+    }
+    img.onerror = () => {
+      isLoading.value = true
     }
   }
 })
 </script>
 
 <template>
-  <img
-    ref="imgRef"
-    :src="imgSrc"
-    v-bind="{
-      alt: props.alt,
-      crossorigin: props.crossorigin,
-      decoding: props.decoding,
-      referrerpolicy: props.referrerpolicy,
-      sizes: props.sizes,
-      srcset: props.srcset,
-      usemap: props.usemap,
-    }"
-    :class="[props.class]"
-    :style="{
-      width: imgWidth !== undefined ? `${imgWidth}px` : undefined,
-      height: imgHeight !== undefined ? `${imgHeight}px` : undefined,
-    }"
-    loading="lazy"
-  >
   <div
-    v-if="isLoading"
-    class="skeleton" :class="[props.skeletonClass]"
-  />
+    class="relative" :class="[props.wrapperClass]"
+  >
+    <img
+      ref="imgRef"
+      :src="imgSrc"
+      v-bind="{
+        alt: props.alt,
+        crossorigin: props.crossorigin,
+        decoding: props.decoding,
+        referrerpolicy: props.referrerpolicy,
+        sizes: props.sizes,
+        srcset: props.srcset,
+        usemap: props.usemap,
+      }"
+      :class="props.class"
+      :style="props.style"
+      loading="lazy"
+      class="object-cover"
+      @click="emit('click')"
+    >
+    <div
+      v-if="isLoading"
+      class="skeleton absolute inset-0"
+      :class="props.skeletonClass"
+    />
+  </div>
 </template>
