@@ -38,7 +38,7 @@ const FetchArgsSchema = z.object({
     id: z.string().describe('Post mblogid'),
   }),
   postComments: z.object({
-    id: z.string().describe('Post Id'),
+    id: z.number().describe('Post Id'),
     uid: z.string(),
     is_show_bulletin: z.enum(['0', '2']),
     flow: zNumBoolean.describe('是否以热评排序'),

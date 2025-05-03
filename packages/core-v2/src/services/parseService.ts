@@ -136,7 +136,7 @@ export class PostParser {
     } = rawPost
 
     return {
-      id,
+      id: Number(id),
       region_name,
       created_at,
       source,

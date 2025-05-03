@@ -53,6 +53,8 @@ export class PostService {
       ...restArgs
     } = args
 
+    console.log(args)
+
     if (isFetchAll) {
       return this.getAllPosts({
         endAt,
@@ -164,7 +166,9 @@ export class PostService {
     return PostParser.parseText(data.longTextContent, data.url_struct)
   }
 
-  async getRangePosts(args: FetchArgs['postRange']): Promise<Post[]> {
+  async getRangePosts(args: FetchArgs['postRange'] & {
+    commentsCount?: number
+  }): Promise<Post[]> {
     const defaultArgs: Partial<FetchArgs['postRange']> = {
       hasret: '1',
       hasmuisc: '1',
@@ -187,11 +191,19 @@ export class PostService {
 
     const posts = WeiboParser.parseAll(data.list)
     this.postsCount += posts.length
+
+    if (args.commentsCount) {
+      for (const post of posts) {
+        if (post.comments_count < 1)
+          continue
+        post.comments = await this.getComments(post.id, post.is_show_bulletin, args.commentsCount).catch(() => [])
+      }
+    }
     return posts
   }
 
   async getComments(
-    postId: string,
+    postId: number,
     isShowBulletin: '0' | '2' = '2',
     count: number = 20,
   ): Promise<Comment[]> {
