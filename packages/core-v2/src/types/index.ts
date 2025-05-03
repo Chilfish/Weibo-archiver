@@ -37,7 +37,7 @@ export interface CardInfo {
 }
 
 export interface Meta {
-  id: number
+  id: string
   region_name: string
   created_at: string | number
   detail_url?: string
@@ -65,7 +65,7 @@ export interface Post extends Meta {
   /**
    * 兼容旧版本的微博API
    */
-  is_show_bulletin?: 0 | 2
+  is_show_bulletin?: '0' | '2'
 
   comments: any[]
 }

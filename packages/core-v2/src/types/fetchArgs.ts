@@ -55,6 +55,7 @@ const FetchArgsSchema = z.object({
     sinceId: z.string().optional(),
     page: z.number().optional(),
     hasRepostPic: z.boolean().default(true).optional(),
+    commentsCount: z.number().default(10),
     ...rangeOptions.shape,
   }),
 })

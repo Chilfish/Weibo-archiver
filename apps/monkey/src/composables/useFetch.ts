@@ -26,6 +26,8 @@ export async function startFetch() {
     sinceId,
     curPage,
     hasRepost,
+    hasComment,
+    commentCount,
     repostPic,
     restore,
   } = config.value
@@ -44,6 +46,7 @@ export async function startFetch() {
     page: curPage,
     hasret: hasRepost ? '1' : '0',
     hasRepostPic: repostPic,
+    commentsCount: hasComment ? commentCount : 0,
     async onFetched({ posts, page, sinceId, postsTotal }) {
       await Promise.all(
         posts

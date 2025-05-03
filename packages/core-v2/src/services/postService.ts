@@ -22,7 +22,7 @@ export class PostService {
     data: any
     postsTotal: number
     sinceId?: string
-  }): any => {}
+  }): any => data
 
   constructor(
     private userService: UserService,
@@ -48,6 +48,7 @@ export class PostService {
       sinceId = this.sinceId,
       page = 0,
       startAt,
+      commentsCount,
       onFetched,
       ...restArgs
     } = args
@@ -57,6 +58,7 @@ export class PostService {
         endAt,
         sinceId,
         page,
+        commentsCount,
         onFetched,
       })
     }
@@ -68,6 +70,7 @@ export class PostService {
       startAt,
       endAt,
       page,
+      commentsCount,
       onFetched,
       ...restArgs,
     })
@@ -75,6 +78,7 @@ export class PostService {
 
   async getAllPosts(args?: {
     endAt?: Date | string
+    commentsCount?: number
     sinceId?: string
     page?: number
     onFetched?: OnFetched
@@ -83,6 +87,7 @@ export class PostService {
     const {
       onFetched,
       sinceId,
+      commentsCount,
     } = args || {}
 
     if (sinceId) {
@@ -94,7 +99,7 @@ export class PostService {
     let lastPostDate: Date
 
     while (true) {
-      const posts = await this._getAllPosts(page)
+      const posts = await this._getAllPosts(page, commentsCount)
       for (const post of posts) {
         if (!allPosts.has(post.mblogid)) {
           allPosts.set(post.mblogid, post)
@@ -119,6 +124,7 @@ export class PostService {
     args: Omit<FetchArgs['postRange'], 'uid' | 'starttime' | 'endtime'> & {
       startAt: Date | string
       endAt: Date | string
+      commentsCount?: number
       onFetched?: OnFetched
     },
   ): Promise<Post[]> {
@@ -208,6 +214,7 @@ export class PostService {
 
   private async _getAllPosts(
     page: number,
+    commentsCount?: number,
   ): Promise<Post[]> {
     const data = await this.fetchService.postsAll({
       uid: this.uid,
@@ -224,6 +231,14 @@ export class PostService {
     try {
       const posts = WeiboParser.parseAll(data.list)
       this.postsCount += posts.length
+
+      if (commentsCount) {
+        for (const post of posts) {
+          if (post.comments_count < 1)
+            continue
+          post.comments = await this.getComments(post.id, post.is_show_bulletin, commentsCount).catch(() => [])
+        }
+      }
       return posts
     }
     catch (err) {
