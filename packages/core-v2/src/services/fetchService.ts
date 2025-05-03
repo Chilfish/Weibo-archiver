@@ -2,7 +2,9 @@ import type {
   FetchArgs,
   RawComment,
   RawComments,
+  RawFollowings,
   RawLongText,
+  RawMyFollowings,
   RawPostsTimeline,
   RawSearchUser,
   RawUserDetail,
@@ -42,6 +44,24 @@ export class FetchService {
         uid,
       },
     )
+    return data
+  }
+
+  async userFollowings(args: FetchArgs['userFollowings']): Promise<RawFollowings> {
+    const { data } = await this.fetcher<RawFollowings, FetchArgs['userFollowings']>(
+      FETCH_PATH.FOLLOWINGS,
+      args,
+    )
+
+    return data
+  }
+
+  async myFollowings(args: FetchArgs['myFollowings']): Promise<RawMyFollowings> {
+    const { data } = await this.fetcher<RawMyFollowings, FetchArgs['myFollowings']>(
+      FETCH_PATH.FOLLOWINGS,
+      args,
+    )
+
     return data
   }
 

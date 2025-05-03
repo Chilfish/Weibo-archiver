@@ -22,9 +22,14 @@ export function createFetcher(args: CreateAxiosDefaults) {
           throw new SyntaxError('Not a JSON')
         }
 
-        const { ok, data } = rawData || {}
-        if (ok !== 1 || typeof data !== 'object') {
+        const { ok, data, ...restData } = rawData || {}
+        if (ok !== 1) {
           throw new WeiboError(`成功码不为 1: ${ok}`)
+        }
+        if (!data && restData) {
+          return {
+            data: restData,
+          }
         }
         return rawData
       }

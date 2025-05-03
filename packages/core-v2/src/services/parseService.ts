@@ -3,6 +3,8 @@ import type {
   Comment,
   Meta,
   Post,
+  RawFollowingUser,
+  RawMyFollowUser,
   Retweet,
   User,
   UserBio,
@@ -49,9 +51,9 @@ export class UserParser {
     }
   }
 
-  static parseFollowing(user: any) {
+  static parseFollowing(user: RawFollowingUser | RawMyFollowUser) {
     return {
-      uid: user.id,
+      uid: user.idstr,
       name: user.screen_name,
       avatar: user.profile_image_url,
       bio: user.description,

@@ -33,34 +33,44 @@ export async function startFetch() {
     hasComment,
     commentCount,
     repostPic,
+    user,
+    weiboOnly,
+    followingsOnly,
   } = config.value
 
-  await postService.getPosts({
-    isFetchAll,
-    startAt: new Date(startAt),
-    endAt: new Date(endAt),
-    sinceId,
-    page: curPage,
-    hasret: hasRepost ? '1' : '0',
-    hasRepostPic: repostPic,
-    commentsCount: hasComment ? commentCount : 0,
-    async onFetched({ posts, page, sinceId, postsTotal }) {
-      await Promise.all(
-        posts
-          .filter((post) => {
-            if (hasRepost)
-              return true
-            return !!post.retweeted_status?.mblogid
-          })
-          .map(postStore.addPost),
-      )
-      updateConfig({
-        curPage: page,
-        sinceId,
-        total: postsTotal,
-      })
-    },
-  })
+  if (!followingsOnly) {
+    await postService.getPosts({
+      isFetchAll,
+      startAt: new Date(startAt),
+      endAt: new Date(endAt),
+      sinceId,
+      page: curPage,
+      hasret: hasRepost ? '1' : '0',
+      hasRepostPic: repostPic,
+      commentsCount: hasComment ? commentCount : 0,
+      async onFetched({ posts, page, sinceId, postsTotal }) {
+        await Promise.all(
+          posts
+            .filter((post) => {
+              if (hasRepost)
+                return true
+              return !!post.retweeted_status?.mblogid
+            })
+            .map(postStore.addPost),
+        )
+        updateConfig({
+          curPage: page,
+          sinceId,
+          total: postsTotal,
+        })
+      },
+    })
+  }
+
+  if (!weiboOnly) {
+    const followings = await userService.getFollowings(user!.uid)
+    await postStore.addFollowingUsers(followings)
+  }
 
   fetchState.isFinish = true
 }

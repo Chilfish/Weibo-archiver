@@ -18,6 +18,13 @@ const FetchArgsSchema = z.object({
   profileDetail: z.object({
     uid: z.string(),
   }),
+  userFollowings: z.object({
+    uid: z.string(),
+    page: z.number(),
+  }),
+  myFollowings: z.object({
+    page: z.number(),
+  }),
   searchUser: z.object({
     q: z.string(),
   }),
