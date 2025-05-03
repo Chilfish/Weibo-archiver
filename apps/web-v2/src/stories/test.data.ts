@@ -1,4 +1,4 @@
-import type { Post, UserInfo } from '@workspace/shared'
+import type { Post, UserInfo } from '@weibo-archiver/shared'
 
 export const users: UserInfo[] = [
   {

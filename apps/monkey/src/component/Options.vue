@@ -16,18 +16,18 @@ const options: Option[] = [
     value: 'isFetchAll',
     remark: '导出全部微博，不限制时间范围',
   },
-  {
-    label: '使用原图',
-    value: 'largePic',
-    remark: '导出微博图片列表时使用原图',
-  },
+  // {
+  //   label: '使用原图',
+  //   value: 'largePic',
+  //   remark: '导出微博图片列表时使用原图',
+  // },
   {
     label: '包含转发的微博',
     value: 'hasRepost',
     remark: '导出微博时包含转发微博',
   },
   {
-    label: '导出转发的图片',
+    label: '包含转发的图片',
     value: 'repostPic',
     remark: '包含转发微博中的图片',
   },
@@ -48,11 +48,11 @@ const options: Option[] = [
     remark: '只导出微博，不导出关注列表',
     disabled: config => config.followingsOnly,
   },
-  {
-    label: '继续上次的记录',
-    value: 'restore',
-    remark: '从上次终止的地方继续',
-  },
+  // {
+  //   label: '继续上次的记录',
+  //   value: 'restore',
+  //   remark: '从上次终止的地方继续',
+  // },
 ] as const
 </script>
 

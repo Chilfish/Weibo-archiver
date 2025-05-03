@@ -1,8 +1,8 @@
-import type { Post, PostData, UserBio, UserInfo } from '@workspace/shared'
-import { usePostStore, usePublicStore } from '@workspace/core'
-import { parseOldPost } from '@workspace/shared'
+import type { Post, PostData, UserBio, UserInfo } from '@weibo-archiver/shared'
+import { parseOldPost } from '@weibo-archiver/shared'
 import destr from 'destr'
 import { toRaw } from 'vue'
+import { usePostStore, usePublicStore } from '../stores'
 
 /**
  * 判断是否为多行 JSON，以\n分隔的对象

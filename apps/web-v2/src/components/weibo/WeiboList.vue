@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePostStore, usePublicStore } from '@workspace/core'
+import { usePostStore, usePublicStore } from '@weibo-archiver/core'
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useEmoji } from '../../composables'

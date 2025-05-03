@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Comment } from '@workspace/shared'
-import { formatDate, formatNumber } from '@workspace/shared'
+import type { Comment } from '@weibo-archiver/shared'
+import { formatDate, formatNumber } from '@weibo-archiver/shared'
 import { Heart, MessageCircle } from 'lucide-vue-next'
 import { emitter } from '../../composables'
 import Avatar from '../common/Avatar.vue'

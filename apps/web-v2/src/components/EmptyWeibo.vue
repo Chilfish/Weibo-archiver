@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseAndImport, readFile } from '@workspace/core'
+import { parseAndImport, readFile } from '@weibo-archiver/core'
 import { ExternalLink, Eye, Import } from 'lucide-vue-next'
 
 async function onImportData(e: Event) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Meta, User } from '@workspace/shared'
-import { usePublicStore } from '@workspace/core'
-import { formatDate } from '@workspace/shared'
+import type { Meta, User } from '@weibo-archiver/shared'
+import { usePublicStore } from '@weibo-archiver/core'
+import { formatDate } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 import Avatar from '../common/Avatar.vue'
 

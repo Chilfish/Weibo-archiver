@@ -7,6 +7,8 @@ import { replaceImg } from '../../composables'
 type Numberish = number | string
 type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
 
+type ClassName = string | Array<string | undefined>
+
 interface Props {
   crossorigin?: 'anonymous' | 'use-credentials' | ''
   decoding?: 'async' | 'auto' | 'sync'
@@ -20,9 +22,9 @@ interface Props {
   width?: Numberish
   alt?: string
   style?: CSSProperties
-  class?: string | Array<string>
-  wrapperClass?: string | Array<string>
-  skeletonClass?: string | Array<string>
+  class?: ClassName
+  wrapperClass?: ClassName
+  skeletonClass?: ClassName
   /**
    * 是否使用原始 src，默认会使用用户设置的图床链接处理
    */

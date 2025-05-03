@@ -8,8 +8,6 @@ import { version } from './package.json'
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
 export const core = path.resolve(packages, 'core/src')
-const ui = path.resolve(packages, 'ui/src')
-const shared = path.resolve(packages, 'shared/src')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
 const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
@@ -19,10 +17,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@core': core,
-      '@ui': ui,
-      '@shared': shared,
-      '@workspace/ui': `${packages}/ui/`,
-      '@workspace/shared': `${packages}/shared/`,
+      '@weibo-archiver/core-v1': `${packages}/core`,
+      '@weibo-archiver/core': `${packages}/core-v2`,
+      '@weibo-archiver/ui': `${packages}/ui/`,
+      '@weibo-archiver/shared': `${packages}/shared/`,
     },
   },
   build: {
@@ -50,7 +48,6 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/*',
-          'https://m.weibo.cn/*',
         ],
         version,
       },

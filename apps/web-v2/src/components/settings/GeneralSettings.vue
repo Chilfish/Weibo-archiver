@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseAndImport, readFile, usePostStore } from '@workspace/core'
+import { parseAndImport, readFile, usePostStore } from '@weibo-archiver/core'
 import { Download, Trash2, Upload } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { config } from '../../composables'

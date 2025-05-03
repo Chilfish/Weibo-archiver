@@ -1,7 +1,7 @@
 import type { AppConfig, ImagePreviewEvent } from '../types'
 import { useStorage } from '@vueuse/core'
-import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@workspace/core'
-import { mitt } from '@workspace/shared'
+import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@weibo-archiver/core'
+import { mitt } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 
 export const config = useStorage<AppConfig>('config', {
@@ -62,6 +62,12 @@ export function replaceImg(src: string, forceCdn = false) {
     || imgHost === 'original' // 使用微博官方链接
   ) {
     return src
+  }
+
+  // 头像就直接用 cdn 的了
+  if (src.includes('sinaimg.cn/crop')) {
+    const { pathname, origin } = new URL(src)
+    return `${imgCdn}/${origin}${pathname}`
   }
 
   // 使用 ipfs cdn

@@ -13,7 +13,8 @@
       "@core/*": ["packages/core/src/*"],
       "@shared": ["packages/shared/src/index.ts"],
       "@ui/*": ["packages/ui/src/*"],
-      "@workspace/*": ["packages/*"]
+      "@weibo-archiver/core": ["packages/core-v2"],
+      "@weibo-archiver/*": ["packages/*"]
     },
     "types": [
       "vite/client",

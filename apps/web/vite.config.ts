@@ -24,8 +24,8 @@ export default defineConfig({
       '@core': core,
       '@shared': shared,
       '@ui': ui,
-      '@workspace/ui': `${workspace}/ui/`,
-      '@workspace/shared': `${workspace}/shared/`,
+      '@weibo-archiver/ui': `${workspace}/ui/`,
+      '@weibo-archiver/shared': `${workspace}/shared/`,
     },
   },
   plugins: [
