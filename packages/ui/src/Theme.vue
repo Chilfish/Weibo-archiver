@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { isDark } from '@workspace/core'
+import { isDark } from '@weibo-archiver/core'
 
 function ThemeItem(props: { theme: string }) {
   const dark = props.theme === 'Dark'

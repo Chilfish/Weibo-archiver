@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { UploadCustomRequestOptions } from '@workspace/core'
+import type { UploadCustomRequestOptions } from '@weibo-archiver/core'
 import { useStorage } from '@vueuse/core'
-import { exportData, imgCdn, parseAndImport, useMessage, usePostStore, usePublicStore } from '@workspace/core'
+import { exportData, imgCdn, parseAndImport, useMessage, usePostStore, usePublicStore } from '@weibo-archiver/core'
 import { NButton, NForm, NFormItem, NInput, NPopconfirm, NRadio, NRadioGroup, NSwitch, NUpload } from 'naive-ui'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'

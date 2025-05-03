@@ -21,8 +21,10 @@ export default defineConfig({
       '@core': core,
       '@ui': ui,
       '@shared': shared,
-      '@workspace/ui': `${packages}/ui/`,
-      '@workspace/shared': `${packages}/shared/`,
+      '@weibo-archiver/core-v1': `${packages}/core`,
+      '@weibo-archiver/core': `${packages}/core-v2`,
+      '@weibo-archiver/ui': `${packages}/ui/`,
+      '@weibo-archiver/shared': `${packages}/shared/`,
     },
   },
   build: {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo } from '@workspace/shared'
+import type { CardInfo } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 import LazyImage from '../common/LazyImage.vue'
 

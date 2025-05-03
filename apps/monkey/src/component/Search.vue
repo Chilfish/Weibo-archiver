@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { UserInfo } from '@shared'
-import { searchUser as searchUserService, userDetail } from '@shared'
+import type { UserInfo } from '@weibo-archiver/core'
 import { ArrowRight, Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 import { useConfig } from '../composables/useConfig'
+import { userService } from '../composables/useFetch'
 import { usePost } from '../composables/usePost'
 import LazyImage from './LazyImage.vue'
 
@@ -15,8 +15,8 @@ const searchResult = ref<UserInfo[]>([])
 async function searchUser() {
   const isUid = /^\d+$/.test(searchText.value)
   const users = isUid
-    ? await userDetail(searchText.value).then(user => [user])
-    : await searchUserService(searchText.value)
+    ? await userService.getDetail(searchText.value).then(user => [user])
+    : await userService.searchUser(searchText.value)
   console.log(users)
   searchResult.value = users
 }

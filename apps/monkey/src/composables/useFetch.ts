@@ -1,5 +1,6 @@
 import type { FetchState } from '../types'
 import { fetchFollowings, fetchPosts } from '@shared'
+import { FetchService, UserService } from '@weibo-archiver/core'
 import { computed, reactive } from 'vue'
 import { config, useConfig } from './useConfig'
 import { usePost } from './usePost'
@@ -7,6 +8,9 @@ import { usePost } from './usePost'
 // 全局状态
 const { updateConfig } = useConfig()
 const post = usePost()
+
+const fetchService = new FetchService()
+export const userService = new UserService(fetchService)
 
 export const fetchState = reactive<FetchState>({
   isStart: false,

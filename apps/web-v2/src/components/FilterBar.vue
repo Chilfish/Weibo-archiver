@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePostStore } from '@workspace/core'
+import { usePostStore } from '@weibo-archiver/core'
 import { CalendarDays, Image } from 'lucide-vue-next'
 import DateSelect from './common/DateSelect.vue'
 import OpenSetting from './common/OpenSetting.vue'

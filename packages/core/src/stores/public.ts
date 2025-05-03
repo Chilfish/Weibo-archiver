@@ -1,6 +1,6 @@
-import type { UID, UserInfo } from '@workspace/shared'
+import type { UID, UserInfo } from '@weibo-archiver/shared'
 import { useStorage } from '@vueuse/core'
-import { parseOldPost } from '@workspace/shared'
+import { parseOldPost } from '@weibo-archiver/shared'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
 import { computed, ref, toRaw } from 'vue'

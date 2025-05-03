@@ -1,7 +1,7 @@
 import type { AppConfig, ImagePreviewEvent } from '../types'
 import { useStorage } from '@vueuse/core'
-import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@workspace/core'
-import { mitt } from '@workspace/shared'
+import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@weibo-archiver/core'
+import { mitt } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 
 export const config = useStorage<AppConfig>('config', {

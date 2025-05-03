@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ImagePreviewEvent } from '../../types'
 import { useEventListener } from '@vueuse/core'
-import { downloadFile } from '@workspace/core'
+import { downloadFile } from '@weibo-archiver/core'
 import {
   ChevronLeft,
   ChevronRight,

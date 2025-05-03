@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@workspace/shared'
+import type { Post } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 import WeiboActions from './WeiboActions.vue'
 import WeiboCard from './WeiboCard.vue'

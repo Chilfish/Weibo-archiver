@@ -1,4 +1,4 @@
-import type { UserInfo } from '@shared'
+import type { UserInfo } from '@weibo-archiver/core'
 
 export interface FetchState {
   isStart: boolean

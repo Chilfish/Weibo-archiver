@@ -1,5 +1,5 @@
-import type { Post, UserBio, UserInfo } from '@workspace/shared'
-import { imgsParser } from '@workspace/shared'
+import type { Post, UserBio, UserInfo } from '@weibo-archiver/shared'
+import { imgsParser } from '@weibo-archiver/shared'
 import fileSaver from 'file-saver'
 
 export async function exportData(

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserInfo } from '@workspace/shared'
+import type { UserInfo } from '@weibo-archiver/shared'
 import Avatar from './common/Avatar.vue'
 
 defineProps<{

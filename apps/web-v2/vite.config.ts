@@ -18,8 +18,8 @@ const { commitHash, commitDate, commitUrl, lastCommitMessage } = getGitInfo()
 export default defineConfig({
   resolve: {
     alias: {
-      '@workspace/core': `${workspace}/core/`,
-      '@workspace/shared': `${workspace}/shared/`,
+      '@weibo-archiver/core': `${workspace}/core/`,
+      '@weibo-archiver/shared': `${workspace}/shared/`,
     },
   },
   plugins: [

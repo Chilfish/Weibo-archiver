@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatNumber } from '@workspace/shared'
+import { formatNumber } from '@weibo-archiver/shared'
 import { Heart, MessageCircle, Repeat } from 'lucide-vue-next'
 
 interface Actions {

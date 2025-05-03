@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo, Post } from '@workspace/shared'
+import type { CardInfo, Post } from '@weibo-archiver/shared'
 import { computed, ref } from 'vue'
 import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'

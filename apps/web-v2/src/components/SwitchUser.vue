@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserInfo } from '@workspace/shared'
+import type { UserInfo } from '@weibo-archiver/shared'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
 import { computed } from 'vue'
 import Avatar from './common/Avatar.vue'
