@@ -19,6 +19,10 @@ export const fetchState = reactive<FetchState>({
 })
 
 export async function startFetch() {
+  fetchState.isStart = true
+  if (!config.value.restore) {
+    await postStore.resetState()
+  }
   const {
     isFetchAll,
     startAt,
@@ -29,14 +33,7 @@ export async function startFetch() {
     hasComment,
     commentCount,
     repostPic,
-    restore,
   } = config.value
-
-  fetchState.isStart = true
-
-  if (!restore) {
-    await postStore.resetState()
-  }
 
   await postService.getPosts({
     isFetchAll,

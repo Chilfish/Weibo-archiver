@@ -3,6 +3,7 @@ import type { FetchArgs } from '../types/fetchArgs'
 import type { RawPostsTimeline } from '../types/raw'
 import type { FetchService } from './fetchService'
 import type { UserService } from './userService'
+import { PQueue } from '@weibo-archiver/shared'
 import { delay } from '../utils'
 import { PostParser, WeiboParser } from './parseService'
 
@@ -17,6 +18,7 @@ export class PostService {
   private sinceId: string = ''
   private postsCount: number = 0
   private postsTotal: number = 0
+  private pqueue = new PQueue({ concurrency: 3 })
 
   onError = (data: {
     data: any
@@ -157,13 +159,19 @@ export class PostService {
   }
 
   async getLongText(postMBlogId: string): Promise<string | undefined> {
-    const data = await this.fetchService.longText(postMBlogId)
+    try {
+      const data = await this.fetchService.longText(postMBlogId)
 
-    if (!data.longTextContent) {
+      if (!data.longTextContent) {
+        return undefined
+      }
+
+      return PostParser.parseText(data.longTextContent, data.url_struct)
+    }
+    catch (e) {
+      console.error(`[get long text]: ${postMBlogId}, ${e}`)
       return undefined
     }
-
-    return PostParser.parseText(data.longTextContent, data.url_struct)
   }
 
   async getRangePosts(args: FetchArgs['postRange'] & {
@@ -179,6 +187,8 @@ export class PostService {
       uid: this.uid,
     }
 
+    // @ts-expect-error okok
+    delete args.onFetched
     const data = await this.fetchService.postsByRange({
       ...defaultArgs,
       ...args,
@@ -193,11 +203,7 @@ export class PostService {
     this.postsCount += posts.length
 
     if (args.commentsCount) {
-      for (const post of posts) {
-        if (post.comments_count < 1)
-          continue
-        post.comments = await this.getComments(post.id, post.is_show_bulletin, args.commentsCount).catch(() => [])
-      }
+      await this._setComments(posts, args.commentsCount)
     }
     return posts
   }
@@ -245,11 +251,7 @@ export class PostService {
       this.postsCount += posts.length
 
       if (commentsCount) {
-        for (const post of posts) {
-          if (post.comments_count < 1)
-            continue
-          post.comments = await this.getComments(post.id, post.is_show_bulletin, commentsCount).catch(() => [])
-        }
+        await this._setComments(posts, commentsCount)
       }
       return posts
     }
@@ -260,7 +262,7 @@ export class PostService {
     }
   }
 
-  private async _setLongText(rawData: RawPostsTimeline['list']): Promise<RawPostsTimeline['list']> {
+  private async _setLongText(rawData: RawPostsTimeline['list']) {
     for (const post of rawData) {
       if (post.isLongText) {
         const longText = await this.getLongText(post.mblogid)
@@ -273,7 +275,19 @@ export class PostService {
           post.retweeted_status.text_raw = longText
       }
     }
+  }
 
-    return rawData
+  private async _setComments(posts: Post[], commentsCount: number) {
+    posts.forEach((post) => {
+      if (post.comments_count < 1)
+        return
+      this.pqueue.add(() =>
+        this.getComments(post.id, post.is_show_bulletin, commentsCount)
+          .catch(() => [] as Comment[])
+          .then(comments => post.comments = comments),
+      )
+    })
+
+    await this.pqueue.onIdle()
   }
 }
