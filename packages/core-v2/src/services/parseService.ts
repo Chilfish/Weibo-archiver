@@ -159,8 +159,13 @@ export class PostParser {
         return Object.values(longUrl.pic_infos)[0]?.woriginal.url || match
       }
 
-      return longUrl?.ori_url || match
+      return longUrl?.long_url || match
     })
+
+    if (replacedText.startsWith('sinaweibo://')) {
+      const url = new URL(replacedText)
+      return url.searchParams.get('url') || replacedText
+    }
 
     return replacedText
   }
@@ -196,11 +201,20 @@ export class PostParser {
     }
 
     const link = rawPageInfo.page_url
-    const title = rawPageInfo.page_title
     const imgUrl = rawPageInfo.page_pic
-    const desc = rawPageInfo.content2
+    const desc = rawPageInfo.page_desc || rawPageInfo.content1 || rawPageInfo.content2
 
-    const realLink = new URL(link).searchParams.get('url') ?? link
+    let title = rawPageInfo.page_title
+    let realLink = new URL(link).searchParams.get('url') ?? link
+
+    if (rawPageInfo.media_info?.h5_url) {
+      realLink = rawPageInfo.media_info.h5_url
+    }
+
+    if (rawPageInfo.object_type === 'article') {
+      title += ' 的微博文章'
+    }
+
     return {
       link: realLink,
       title,

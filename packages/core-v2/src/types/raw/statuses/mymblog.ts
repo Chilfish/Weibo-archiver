@@ -751,7 +751,7 @@ type MediaInfo = z.infer<typeof MediaInfoSchema>
 const PageInfoSchema = z.object({
   type: z.string(),
   page_id: z.string(),
-  object_type: z.number(),
+  object_type: z.string(),
   object_id: z.string(),
   content1: z.string(),
   content2: z.string(),
