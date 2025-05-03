@@ -146,13 +146,13 @@ export class PostService {
         page,
         uid: this.uid,
       })
-      if (posts.length === 0) {
-        break
-      }
       await args.onFetched?.({ page, posts, postsTotal: this.postsTotal })
 
       allPosts.push(...posts)
       page++
+      if (posts.length === 0 || allPosts.length >= this.postsTotal) {
+        break
+      }
       await delay()
     }
     return allPosts

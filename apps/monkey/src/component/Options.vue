@@ -48,11 +48,11 @@ const options: Option[] = [
     remark: '只导出微博，不导出关注列表',
     disabled: config => config.followingsOnly,
   },
-  {
-    label: '继续上次的记录',
-    value: 'restore',
-    remark: '从上次终止的地方继续',
-  },
+  // {
+  //   label: '继续上次的记录',
+  //   value: 'restore',
+  //   remark: '从上次终止的地方继续',
+  // },
 ] as const
 </script>
 

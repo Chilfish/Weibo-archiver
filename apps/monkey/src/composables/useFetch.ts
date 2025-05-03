@@ -20,9 +20,7 @@ export const fetchState = reactive<FetchState>({
 
 export async function startFetch() {
   fetchState.isStart = true
-  if (!config.value.restore) {
-    await postStore.resetState()
-  }
+  await postStore.resetState()
   const {
     isFetchAll,
     startAt,
