@@ -1,28 +1,11 @@
-import type { UserConfig } from '../types'
+import type { UserConfig } from '@weibo-archiver/core'
 import { useStorage } from '@vueuse/core'
+import { DEFAULT_USER_CONFIG } from '@weibo-archiver/core'
 import { toRaw, watch } from 'vue'
 
 const STORAGE_KEY = 'weibo-archiver'
 
-const createInitialConfig = (): UserConfig => ({
-  isMinimize: true,
-  restore: false,
-  curPage: 0,
-  fetchedCount: 0,
-  isFetchAll: true,
-  largePic: true,
-  repostPic: true,
-  hasRepost: true,
-  hasComment: true,
-  hasFavorite: true,
-  commentCount: 5,
-  followingsOnly: false,
-  weiboOnly: false,
-  startAt: Date.now(),
-  endAt: Date.now(),
-  total: 0,
-  theme: 'winter',
-})
+const createInitialConfig = (): UserConfig => (DEFAULT_USER_CONFIG)
 
 // 全局配置状态
 export const config = useStorage<UserConfig>(

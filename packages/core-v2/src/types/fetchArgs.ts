@@ -54,6 +54,7 @@ const FetchArgsSchema = z.object({
     endAt: z.union([z.date(), z.string()]).default('2000-01-01').optional(),
     sinceId: z.string().optional(),
     page: z.number().optional(),
+    hasRepostPic: z.boolean().default(true).optional(),
     ...rangeOptions.shape,
   }),
 })

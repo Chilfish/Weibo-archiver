@@ -3,7 +3,7 @@ import type {
   UID,
   UserBio,
   UserInfo,
-} from '@shared'
+} from '@weibo-archiver/core'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
 import dayjs from 'dayjs'

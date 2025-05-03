@@ -1,9 +1,10 @@
-import type { Post, UID, UserBio } from '@shared'
+import type { Post, UID, UserBio } from '@weibo-archiver/core'
 import type { FetchProgress } from '../types'
 import { exportData } from '@core/utils'
 import { EmptyIDB, IDB } from '@core/utils/storage'
 import { computed, reactive, toRaw } from 'vue'
 import { config, useConfig } from './useConfig'
+import { userService } from './useFetch'
 
 const { updateConfig } = useConfig()
 
@@ -76,6 +77,7 @@ export function usePost() {
     const user = config.value.user
     if (!user)
       return
+    userService.uid = user.uid
     await postState.idb.setUserInfo(toRaw(user))
   }
 

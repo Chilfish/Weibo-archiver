@@ -6,18 +6,29 @@ import type { UserService } from './userService'
 import { delay } from '../utils'
 import { PostParser, WeiboParser } from './parseService'
 
-export class PostService {
-  private sinceId: string
-  private postsCount: number
+type OnFetched = (data: {
+  posts: Post[]
+  page: number
+  postsTotal: number
+  sinceId?: string
+}) => any
 
-  onError = (data: { data: any, sinceId?: string }): any => {}
+export class PostService {
+  private sinceId: string = ''
+  private postsCount: number = 0
+  private postsTotal: number = 0
+
+  onError = (data: {
+    data: any
+    postsTotal: number
+    sinceId?: string
+  }): any => {}
 
   constructor(
     private userService: UserService,
     private fetchService: FetchService,
   ) {
-    this.sinceId = ''
-    this.postsCount = 0
+
   }
 
   get uid() {
@@ -29,7 +40,7 @@ export class PostService {
   }
 
   async getPosts(args: FetchArgs['posts'] & {
-    onFetched?: (data: { posts: Post[], page: number, sinceId?: string }) => any
+    onFetched?: OnFetched
   }): Promise<Post[]> {
     const {
       isFetchAll = true,
@@ -66,7 +77,7 @@ export class PostService {
     endAt?: Date | string
     sinceId?: string
     page?: number
-    onFetched?: (data: { posts: Post[], page: number, sinceId: string }) => any
+    onFetched?: OnFetched
   }): Promise<Post[]> {
     const allPosts = new Map<string, Post>()
     const {
@@ -89,7 +100,7 @@ export class PostService {
           allPosts.set(post.mblogid, post)
         }
       }
-      await onFetched?.({ posts, page, sinceId: this.sinceId })
+      await onFetched?.({ posts, page, sinceId: this.sinceId, postsTotal: this.postsTotal })
       page++
       lastPostDate = new Date(posts.at(-1)?.created_at || Date.now())
 
@@ -108,7 +119,7 @@ export class PostService {
     args: Omit<FetchArgs['postRange'], 'uid' | 'starttime' | 'endtime'> & {
       startAt: Date | string
       endAt: Date | string
-      onFetched?: (data: { posts: Post[], page: number }) => any
+      onFetched?: OnFetched
     },
   ): Promise<Post[]> {
     const startAt = new Date(args.startAt)
@@ -128,7 +139,7 @@ export class PostService {
       if (posts.length === 0) {
         break
       }
-      await args.onFetched?.({ page, posts })
+      await args.onFetched?.({ page, posts, postsTotal: this.postsTotal })
 
       allPosts.push(...posts)
       page++
@@ -163,6 +174,10 @@ export class PostService {
       ...args,
     })
     await this._setLongText(data.list)
+
+    if (data.total) {
+      this.postsTotal = data.total
+    }
 
     const posts = WeiboParser.parseAll(data.list)
     this.postsCount += posts.length
@@ -202,6 +217,9 @@ export class PostService {
     })
     await this._setLongText(data.list)
     this.sinceId = data.since_id
+    if (data.total) {
+      this.postsTotal = data.total
+    }
 
     try {
       const posts = WeiboParser.parseAll(data.list)
@@ -210,7 +228,7 @@ export class PostService {
     }
     catch (err) {
       console.error(err)
-      await this.onError({ data, sinceId: this.sinceId }).catch()
+      await this.onError({ data, sinceId: this.sinceId, postsTotal: this.postsTotal }).catch()
       return []
     }
   }

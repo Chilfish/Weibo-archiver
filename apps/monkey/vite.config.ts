@@ -52,7 +52,7 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/*',
-          'https://m.weibo.cn/*',
+          // 'https://m.weibo.cn/*',
         ],
         version,
       },

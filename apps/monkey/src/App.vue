@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ExportButtons from './component/ExportButtons.vue'
+import ActionButtons from './component/ActionButtons.vue'
 import Header from './component/Header.vue'
 import Logo from './component/Logo.vue'
 import Options from './component/Options.vue'
@@ -20,7 +20,7 @@ const { toggleMinimize } = useConfig()
     <Search />
     <Options />
     <div class="divider m-2" />
-    <ExportButtons />
+    <ActionButtons />
   </div>
 
   <Logo

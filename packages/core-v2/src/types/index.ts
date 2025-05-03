@@ -3,6 +3,8 @@ import * as z from 'zod'
 export * from './fetchArgs'
 export * from './raw'
 
+export type UID = `uid-${number}`
+
 const user = z.object({
   uid: z.string(),
   name: z.string(),
@@ -77,3 +79,26 @@ export type Comment = Pick<Post, 'text' | 'like_count' | 'comments_count'> & {
   user: User
   floor_number: number
 } & Meta
+
+export interface FetchConfig {
+  isFetchAll: boolean
+  restore: boolean
+  hasRepost: boolean
+  hasComment: boolean
+  repostPic: boolean
+  commentCount: number
+  followingsOnly: boolean
+  weiboOnly: boolean
+  sinceId: string
+  startAt: number
+  endAt: number
+  curPage: number
+}
+
+export interface UserConfig extends FetchConfig {
+  user?: UserInfo
+  isMinimize: boolean
+  fetchedCount: number
+  total: number
+  theme: string
+}

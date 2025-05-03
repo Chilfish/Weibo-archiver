@@ -1,5 +1,5 @@
-import type { Post, UserBio, UserInfo } from '@weibo-archiver/shared'
-import { imgsParser } from '@weibo-archiver/shared'
+import type { Post, UserBio, UserInfo } from '@weibo-archiver/core'
+import { WeiboParser } from '@weibo-archiver/core'
 import fileSaver from 'file-saver'
 
 export async function exportData(
@@ -12,7 +12,6 @@ export async function exportData(
     console.warn('User info is not available')
     return false
   }
-
   const { name } = userInfo
   const data = {
     weibo: posts,
@@ -22,7 +21,7 @@ export async function exportData(
 
   const dataStr = JSON.stringify(data)
   const imgsData = Array
-    .from(imgsParser(posts))
+    .from(WeiboParser.parseImgs(posts))
     .join(',\n') // csv 格式
 
   // toast.success('导出成功，正在下载数据...请允许浏览器批量下载文件')

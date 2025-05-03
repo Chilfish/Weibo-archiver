@@ -267,4 +267,28 @@ export class WeiboParser {
 
     return posts
   }
+
+  /**
+   * 提取所有图片链接
+   */
+  static parseImgs(posts: Post[]): Set<string> {
+    const imgs = posts
+      .map((post) => {
+        // TODO
+        // const { textImg } = PostParser(post.text)
+        return [
+          post.imgs,
+          post.retweeted_status?.imgs,
+          post.comments.map(e => e.img),
+          post.card?.img,
+          // textImg,
+        ]
+          .filter((e): e is string => !!e)
+      })
+      .flat()
+      .flat()
+      .sort()
+
+    return new Set(imgs)
+  }
 }
