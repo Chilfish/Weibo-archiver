@@ -3,8 +3,7 @@ import type { FetchArgs } from '../types/fetchArgs'
 import type { RawPostsTimeline } from '../types/raw'
 import type { FetchService } from './fetchService'
 import type { UserService } from './userService'
-import { PQueue } from '@weibo-archiver/shared'
-import { delay } from '../utils'
+import { delay, PQueue } from '@weibo-archiver/shared'
 import { PostParser, WeiboParser } from './parseService'
 
 type OnFetched = (data: {

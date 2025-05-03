@@ -13,7 +13,7 @@
       "@core/*": ["packages/core/src/*"],
       "@shared": ["packages/shared/src/index.ts"],
       "@ui/*": ["packages/ui/src/*"],
-      "@weibo-archiver/core": ["packages/core-v2"],
+      "@weibo-archiver/core": ["packages/core"],
       "@weibo-archiver/*": ["packages/*"]
     },
     "types": [

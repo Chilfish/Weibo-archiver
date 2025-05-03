@@ -1,7 +1,6 @@
 import type { Post, UID, UserBio } from '@weibo-archiver/core'
 import type { FetchProgress } from '../types'
-import { exportData } from '@core/utils'
-import { EmptyIDB, IDB } from '@core/utils/storage'
+import { EmptyIDB, exportData, IDB } from '@weibo-archiver/core'
 import { computed, reactive, toRaw } from 'vue'
 import { config, useConfig } from './useConfig'
 import { userService } from './useFetch'

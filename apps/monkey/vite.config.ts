@@ -7,7 +7,6 @@ import { version } from './package.json'
 
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
-export const core = path.resolve(packages, 'core/src')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
 const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
@@ -16,9 +15,7 @@ const updateURL = downloadURL.replace('user', 'meta')
 export default defineConfig({
   resolve: {
     alias: {
-      '@core': core,
-      '@weibo-archiver/core-v1': `${packages}/core`,
-      '@weibo-archiver/core': `${packages}/core-v2`,
+      '@weibo-archiver/core': `${packages}/core`,
       '@weibo-archiver/ui': `${packages}/ui/`,
       '@weibo-archiver/shared': `${packages}/shared/`,
     },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Album, User } from '@shared'
+import type { Album, User } from '@weibo-archiver/shared'
 import { KeyUser } from '@core/constants/vueProvide'
 
 import { usePostStore, usePublicStore } from '@core/stores'
