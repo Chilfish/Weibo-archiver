@@ -2,6 +2,8 @@
 import AppSidebar from '@/components/AppSidebar.vue'
 import AppSidebarRight from '@/components/AppSidebarRight.vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
@@ -40,10 +42,15 @@ useHead({
     },
   ],
 })
+
+const route = useRoute()
+const isIndex = computed(() => route.name === 'index')
 </script>
 
 <template>
-  <SidebarProvider>
+  <RouterView v-if="isIndex" />
+
+  <SidebarProvider v-else>
     <AppSidebar
       style="--sidebar-width: 12rem; --sidebar-width-mobile: 12rem;"
     />
