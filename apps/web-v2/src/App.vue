@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue'
+import AppSidebarRight from '@/components/AppSidebarRight.vue'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { useHead, useSeoMeta } from '@unhead/vue'
 
@@ -44,14 +45,14 @@ useHead({
 
 <template>
   <SidebarProvider>
-    <AppSidebar />
-    <main class="p-4">
-      <RouterView />
-    </main>
-    <aside
-      class="w-[68rem]"
-    >
-      Side
-    </aside>
+    <AppSidebar
+      style="--sidebar-width: 12rem; --sidebar-width-mobile: 12rem;"
+    />
+    <RouterView
+      class="py-4 pr-16 overflow-auto h-[100vh]"
+    />
+    <AppSidebarRight
+      style="--sidebar-width: 16rem; --sidebar-width-mobile: 16rem;"
+    />
   </SidebarProvider>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Setting from '@/components/settings/Settings.vue'
-import { Album, Home, Search, Settings } from 'lucide-vue-next'
+import { Album, Bookmark, Home, Search, Settings } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -15,6 +15,11 @@ const items = [
     title: '相册',
     url: '/album',
     icon: Album,
+  },
+  {
+    title: '收藏',
+    url: '/bookmarks',
+    icon: Bookmark,
   },
   {
     title: '搜索',
@@ -86,7 +91,7 @@ const pathName = computed(() => route.path)
                   <DialogTrigger class="w-full">
                     <Button
                       variant="ghost"
-                      class="w-full justify-start"
+                      class="w-full justify-start p-2!"
                     >
                       <Settings />
                       <span>设置</span>
