@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CardInfo, Post } from '@weibo-archiver/shared'
+import { Card, CardContent } from '@/components/ui/card'
 import { computed, ref } from 'vue'
 import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
@@ -29,43 +30,44 @@ const isCommentsOpen = ref(false)
 </script>
 
 <template>
-  <div
-    class="weibo-card bg-base-100 rounded-2xl shadow-sm p-5 group"
+  <Card
+    as="article"
+    class="group"
   >
-    <WeiboProfile
-      :meta="post"
-      :user="isRetweet ? post.user : undefined"
-    />
-    <WeiboText :text="post.text" />
-    <ImageGallery
-      class="pr-12"
-      :images="post.imgs"
-    />
-    <WeiboLinkCard v-if="linkCard" :card="linkCard" />
-    <WeiboActions
-      v-if="!isRetweet"
-      :actions="actions"
-      @click-comment="isCommentsOpen = !isCommentsOpen"
-    />
+    <CardContent>
+      <WeiboProfile
+        :meta="post"
+        :user="isRetweet ? post.user : undefined"
+      />
+      <WeiboText :text="post.text" />
+      <ImageGallery
+        class="pr-12"
+        :images="post.imgs"
+      />
+      <WeiboLinkCard v-if="linkCard" :card="linkCard" />
+      <WeiboActions
+        v-if="!isRetweet"
+        :actions="actions"
+        @click-comment="isCommentsOpen = !isCommentsOpen"
+      />
 
-    <div
-      v-if="post.comments.length"
-      class="collapse" :class="[
-        isCommentsOpen ? 'collapse-open' : 'collapse-close',
-      ]"
-    >
-      <input type="checkbox" class="hidden">
-      <div class="collapse-content pt-3 pb-0! px-0">
-        <WeiboComments
-          :comments="post.comments"
-        />
+      <div
+        v-if="post.comments.length"
+        class="collapse" :class="[
+          isCommentsOpen ? 'collapse-open' : 'collapse-close',
+        ]"
+      >
+        <input type="checkbox" class="hidden">
+        <div class="collapse-content pt-3 pb-0! px-0">
+          <WeiboComments
+            :comments="post.comments"
+          />
+        </div>
       </div>
-    </div>
-  </div>
+    </CardContent>
+  </Card>
 </template>
 
 <style>
-.weibo-card {
-  transition: all 0.25s ease;
-}
+
 </style>

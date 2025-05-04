@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { usePublicStore } from '@weibo-archiver/core'
 import { onBeforeMount } from 'vue'
-import BackToTop from '../components/common/BackToTop.vue'
 import WeiboList from '../components/weibo/WeiboList.vue'
 
 const publicStore = usePublicStore()
@@ -34,6 +33,6 @@ onBeforeMount(async () => {
       <!--        <ProfilePanel :user="publicStore.curUser" /> -->
       <!--      </div> -->
     </div>
-    <BackToTop />
+    <!--    <BackToTop /> -->
   </main>
 </template>

@@ -1,8 +1,8 @@
+import { users } from '@/stories/test.data.js'
 import { setup } from '@storybook/vue3'
 import { usePublicStore } from '@weibo-archiver/core'
 import { createPinia } from 'pinia'
 import components from '../src/stories/components'
-import { users } from '../src/stories/test.data'
 import '../src/style.css'
 
 setup((app) => {
@@ -31,8 +31,9 @@ const preview = {
     story => ({
       components: { story },
       template: `<main
-      data-theme="winter">
-      <story />
+        class="bg-background p-6"
+      >
+         <story />
       </main>`,
     }),
   ],

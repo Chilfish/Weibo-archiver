@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Book, Github, Heart } from 'lucide-vue-next'
 import LazyImage from '../common/LazyImage.vue'
 
@@ -7,11 +9,13 @@ const APP_VERSION = 'v0.5.3'
 
 <template>
   <div class="space-y-6">
-    <div class="flex flex-col items-center text-center gap-2 mb-8">
+    <div class="flex flex-col items-center justify-center text-center gap-2 mb-8">
       <LazyImage src="/icon.webp" class="w-24 h-24" />
       <h3 class="text-2xl font-bold text-gray-800">
         Weibo Archiver
-        <span class="badge badge-primary badge-sm ml-2">{{ APP_VERSION }}</span>
+        <Badge class=" ml-2">
+          {{ APP_VERSION }}
+        </Badge>
       </h3>
     </div>
 
@@ -20,20 +24,22 @@ const APP_VERSION = 'v0.5.3'
     </p>
 
     <div class="flex justify-center gap-3 mt-4">
-      <a
+      <Button
+        as="a"
         href="https://github.com/Chilfish/Weibo-archiver"
         target="_blank"
-        class="btn btn-sm btn-outline gap-2"
+        variant="outline"
       >
         <Github class="w-4 h-4" />GitHub
-      </a>
-      <a
+      </Button>
+      <Button
+        as="a"
         href="https://docs.qq.com/doc/DTWttbXlMUGxZZnZq"
         target="_blank"
-        class="btn btn-sm btn-outline btn-info gap-2"
+        variant="outline"
       >
         <Book class="w-4 h-4" />使用文档
-      </a>
+      </Button>
       <!-- <a href="#" class="btn btn-sm btn-outline btn-success gap-2">
         <Code class="w-4 h-4" />示例数据
       </a> -->

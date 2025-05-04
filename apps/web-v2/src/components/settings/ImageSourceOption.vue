@@ -1,28 +1,27 @@
 <script setup lang="ts">
+import type { AppConfig } from '@/types'
+import { Input } from '@/components/ui/input'
+
 defineProps<{
   id: string
-  value: string
+  value: AppConfig['imgHost']
   label: string
   description: string
-  modelValue: string
   showCustomInput?: boolean
-  customUrl?: string
 }>()
 
-defineEmits<{
-  'update:modelValue': [value: string]
-  'update:customUrl': [value: string]
-}>()
+const imgHost = defineModel<AppConfig['imgHost']>('imgHost')
+const customUrl = defineModel<string>('customUrl')
 </script>
 
 <template>
   <div
     class="p-3 rounded-lg border cursor-pointer hover:bg-base-200 transition-colors"
     :class="{
-      'border-primary bg-primary/5': modelValue === value,
-      'border-base-300': modelValue !== value,
+      'border-primary bg-primary/5': imgHost === value,
+      'border-gray-200': imgHost !== value,
     }"
-    @click="$emit('update:modelValue', value)"
+    @click="() => imgHost = value"
   >
     <div class="flex items-center">
       <div class="mr-3">
@@ -33,7 +32,7 @@ defineEmits<{
               type="radio"
               name="image-source"
               class="radio radio-primary radio-sm"
-              :checked="modelValue === value"
+              :checked="imgHost === value"
             >
           </label>
         </div>
@@ -47,14 +46,12 @@ defineEmits<{
         </div>
       </div>
     </div>
-    <div v-if="showCustomInput && modelValue === value" class="mt-3 pl-8">
-      <input
-        :value="customUrl"
+    <div v-if="showCustomInput && imgHost === value" class="mt-3 pl-8">
+      <Input
+        v-model="customUrl"
         type="text"
         placeholder="请输入图床链接"
-        class="input input-bordered w-full"
-        @input="$emit('update:customUrl', ($event.target as HTMLInputElement).value)"
-      >
+      />
     </div>
   </div>
 </template>

@@ -1,15 +1,23 @@
 <script setup lang="ts">
+import type { AppConfig } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { config } from '@/composables'
 import { parseAndImport, readFile, usePostStore } from '@weibo-archiver/core'
 import { Download, Trash2, Upload } from 'lucide-vue-next'
-import { ref } from 'vue'
 import ImageSourceOption from './ImageSourceOption.vue'
 
 const postStore = usePostStore()
 
-const imageSourceOptions = [
+interface TImageSourceOption {
+  id: string
+  value: AppConfig['imgHost']
+  label: string
+  description: string
+  showCustomInput?: boolean
+}
+
+const imageSourceOptions: TImageSourceOption[] = [
   {
     id: 'local',
     value: 'local',
@@ -35,14 +43,12 @@ const imageSourceOptions = [
     description: '指向图片所在的目录',
     showCustomInput: true,
   },
-]
+] as const
 
 async function onImportData(e: Event) {
   const data = await readFile(e)
   await parseAndImport(data)
 }
-
-const showResetDialog = ref(false)
 
 function onReset() {
   postStore.clearDB()
@@ -52,7 +58,7 @@ function onReset() {
 <template>
   <div class="space-y-6">
     <section>
-      <h3 class="label">
+      <h3 class="font-bold text-xl mb-2">
         图片链接设置
       </h3>
       <div class="space-y-2">
@@ -60,7 +66,7 @@ function onReset() {
           v-for="option in imageSourceOptions"
           :id="option.id"
           :key="option.id"
-          v-model="config.imgHost"
+          v-model:img-host="config.imgHost"
           v-model:custom-url="config.customImageUrl"
           :value="option.value"
           :label="option.label"
@@ -71,7 +77,7 @@ function onReset() {
     </section>
 
     <section>
-      <h3 class="label">
+      <h3 class="font-bold text-xl mb-2">
         数据管理
       </h3>
 
