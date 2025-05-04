@@ -20,6 +20,7 @@ const routes: RouteRecordRaw[] = [
   'post',
   'album',
   'bookmarks',
+  'followings',
   'example',
   'search',
 ].map(useDefaultRoute)

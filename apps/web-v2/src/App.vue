@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue'
-import AppSidebarRight from '@/components/AppSidebarRight.vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -51,14 +50,9 @@ const isIndex = computed(() => route.name === 'index')
   <RouterView v-if="isIndex" />
 
   <SidebarProvider v-else>
-    <AppSidebar
-      style="--sidebar-width: 12rem; --sidebar-width-mobile: 12rem;"
-    />
+    <AppSidebar />
     <RouterView
-      class="py-6 md:pr-16 md:pl-5 overflow-auto h-[100vh]"
-    />
-    <AppSidebarRight
-      style="--sidebar-width: 15.5rem; --sidebar-width-mobile: 16rem;"
+      class="py-6 md:px-16 overflow-auto h-[100vh]"
     />
   </SidebarProvider>
 </template>

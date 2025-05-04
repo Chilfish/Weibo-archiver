@@ -31,7 +31,9 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== curUid.
             :alt="curUser.name"
             :size="8"
           />
-          <span>{{ curUser.name }}</span>
+          <span class="max-w-22 truncate">
+            {{ curUser.name }}
+          </span>
         </div>
         <div
           v-else
@@ -60,7 +62,9 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== curUid.
             :alt="user.name"
             :size="8"
           />
-          <span>{{ user.name }}</span>
+          <span class="max-w-22 truncate">
+            {{ user.name }}
+          </span>
         </DropdownMenuRadioItem>
 
         <Button

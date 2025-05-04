@@ -59,7 +59,8 @@ const formatter = useDateFormatter('en')
           <SelectContent class="max-h-[200px]">
             <SelectItem
               v-for="month in createYear({ dateObj: date })"
-              :key="month.toString()" :value="month.month.toString()"
+              :key="month.toString()"
+              :value="month.month.toString()"
             >
               {{ formatter.custom(toDate(month), { month: 'long' }) }}
             </SelectItem>
@@ -81,8 +82,9 @@ const formatter = useDateFormatter('en')
           </SelectTrigger>
           <SelectContent class="max-h-[200px]">
             <SelectItem
-              v-for="yearValue in createDecade({ dateObj: date, startIndex: -10, endIndex: 10 })"
-              :key="yearValue.toString()" :value="yearValue.year.toString()"
+              v-for="yearValue in createDecade({ dateObj: date, startIndex: -15, endIndex: 1 })"
+              :key="yearValue.toString()"
+              :value="yearValue.year.toString()"
             >
               {{ yearValue.year }}
             </SelectItem>
@@ -92,7 +94,10 @@ const formatter = useDateFormatter('en')
     </CalendarHeader>
 
     <div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:gap-x-4 sm:gap-y-0">
-      <CalendarGrid v-for="month in grid" :key="month.value.toString()">
+      <CalendarGrid
+        v-for="month in grid"
+        :key="month.value.toString()"
+      >
         <CalendarGridHead>
           <CalendarGridRow>
             <CalendarHeadCell
@@ -103,7 +108,11 @@ const formatter = useDateFormatter('en')
           </CalendarGridRow>
         </CalendarGridHead>
         <CalendarGridBody class="grid">
-          <CalendarGridRow v-for="(weekDates, index) in month.rows" :key="`weekDate-${index}`" class="mt-2 w-full">
+          <CalendarGridRow
+            v-for="(weekDates, index) in month.rows"
+            :key="`weekDate-${index}`"
+            class="mt-2 w-full"
+          >
             <CalendarCell
               v-for="weekDate in weekDates"
               :key="weekDate.toString()"

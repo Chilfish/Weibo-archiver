@@ -2,7 +2,14 @@
 import Setting from '@/components/settings/Settings.vue'
 import SwitchUser from '@/components/SwitchUser.vue'
 import { usePublicStore } from '@weibo-archiver/core'
-import { Album, Bookmark, Home, Search, Settings } from 'lucide-vue-next'
+import {
+  Album,
+  Bookmark,
+  Heart,
+  Home,
+  Search,
+  Settings,
+} from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -12,6 +19,11 @@ const items = [
     title: '首页',
     url: '/post',
     icon: Home,
+  },
+  {
+    title: '搜索',
+    url: '/search',
+    icon: Search,
   },
   {
     title: '相册',
@@ -24,9 +36,9 @@ const items = [
     icon: Bookmark,
   },
   {
-    title: '搜索',
-    url: '/search',
-    icon: Search,
+    title: '关注列表',
+    url: '/followings',
+    icon: Heart,
   },
 ]
 

@@ -27,7 +27,13 @@ onBeforeMount(async () => {
   ])
 })
 
-watch(() => publicStore.curUid, async () => {
+watch([
+  () => publicStore.curUid,
+  () => route.query,
+], async ([curUid, query], [oldUid, oldQuery]) => {
+  if (query.page && oldQuery.page && curUid === oldUid) {
+    return
+  }
   postStore.loading = true
 
   postStore.curPage = 1
@@ -63,7 +69,7 @@ function changePage(page: number, pageSize: number) {
   <template v-if="!postStore.loading">
     <section
       v-if="postStore.weiboArr.length > 0"
-      class="flex flex-col gap-4"
+      class="flex flex-col gap-4 lg:px-12"
     >
       <Weibo
         v-for="post in postStore.weiboArr"
