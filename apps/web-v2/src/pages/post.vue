@@ -25,7 +25,7 @@ function scrollToTop() {
 <template>
   <main
     ref="mainRef"
-    class="flex flex-col relative"
+    class="flex flex-col relative w-full"
   >
     <WeiboList
       @reload="scrollToTop"

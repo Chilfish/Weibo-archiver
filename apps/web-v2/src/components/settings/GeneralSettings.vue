@@ -3,7 +3,7 @@ import type { AppConfig } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { config } from '@/composables'
-import { parseAndImport, readFile, usePostStore } from '@weibo-archiver/core'
+import { onImportData, usePostStore } from '@weibo-archiver/core'
 import { Download, Trash2, Upload } from 'lucide-vue-next'
 import ImageSourceOption from './ImageSourceOption.vue'
 
@@ -44,11 +44,6 @@ const imageSourceOptions: TImageSourceOption[] = [
     showCustomInput: true,
   },
 ] as const
-
-async function onImportData(e: Event) {
-  const data = await readFile(e)
-  await parseAndImport(data)
-}
 
 function onReset() {
   postStore.clearDB()

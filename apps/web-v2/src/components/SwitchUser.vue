@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { UserInfo } from '@weibo-archiver/shared'
+import { onImportData } from '@weibo-archiver/core'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
 import { computed } from 'vue'
 import Avatar from './common/Avatar.vue'
@@ -63,9 +64,16 @@ const restUsers = computed(() => props.users.filter(user => user.uid !== curUid.
         </DropdownMenuRadioItem>
 
         <Button
-          class="w-full"
+          class="w-full relative"
           variant="ghost"
         >
+          <input
+            type="file"
+            accept=".json"
+            class="absolute inset-0 opacity-0 w-full h-full"
+            placeholder="导入数据"
+            @change="onImportData"
+          >
           <UserRoundPlus class="w-4 h-4" /> 添加新用户
         </Button>
       </DropdownMenuRadioGroup>

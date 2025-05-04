@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { emitter } from '@/composables'
 import { computed } from 'vue'
-import { emitter } from '../../composables'
 import LazyImage from './LazyImage.vue'
 
 interface Image {
@@ -40,7 +40,7 @@ function handleClick(src: string, index: number) {
   emits('click', src, index)
 }
 
-const imgSize = 'h-28 w-28 md:h-56 md:w-56'
+const imgSize = 'h-36 w-36'
 const gridClass = computed(() => {
   const length = props.images.length
   const grid3x3 = [3, 5, 6, 7, 8, 9]

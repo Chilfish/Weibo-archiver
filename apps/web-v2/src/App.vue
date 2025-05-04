@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue'
 import AppSidebarRight from '@/components/AppSidebarRight.vue'
-import { SidebarProvider } from '@/components/ui/sidebar'
 import { useHead, useSeoMeta } from '@unhead/vue'
 
 const appName = 'Weibo-Archiver'
@@ -49,10 +48,10 @@ useHead({
       style="--sidebar-width: 12rem; --sidebar-width-mobile: 12rem;"
     />
     <RouterView
-      class="py-4 pr-16 overflow-auto h-[100vh]"
+      class="py-6 md:pr-16 md:pl-5 overflow-auto h-[100vh]"
     />
     <AppSidebarRight
-      style="--sidebar-width: 16rem; --sidebar-width-mobile: 16rem;"
+      style="--sidebar-width: 15.5rem; --sidebar-width-mobile: 16rem;"
     />
   </SidebarProvider>
 </template>

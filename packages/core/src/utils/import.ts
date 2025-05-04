@@ -95,3 +95,8 @@ export async function readFile(e: Event) {
     reader.readAsText(file)
   })
 }
+
+export async function onImportData(e: Event) {
+  const data = await readFile(e)
+  await parseAndImport(data)
+}

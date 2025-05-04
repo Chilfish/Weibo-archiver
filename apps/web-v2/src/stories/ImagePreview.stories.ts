@@ -22,7 +22,7 @@ export const Default: Story = {
     },
     template: /* html */`
     <div class="h-screen">
-      <img 
+      <img
         width="200"
         height="200"
         :src="url"
