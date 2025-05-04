@@ -20,6 +20,7 @@ export default defineConfig({
     alias: {
       '@weibo-archiver/core': `${workspace}/core/`,
       '@weibo-archiver/shared': `${workspace}/shared/`,
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   plugins: [

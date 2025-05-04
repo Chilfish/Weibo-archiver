@@ -1,5 +1,5 @@
 {
-  "name": "@weibo-archiver/core-v1",
+  "name": "@weibo-archiver/core",
   "type": "module",
   "private": true,
   "main": "src/index.ts",

@@ -25,14 +25,14 @@ onBeforeMount(async () => {
         />
         <WeiboList />
       </div>
-      <div class="flex flex-col gap-4 sticky top-4 self-start px-8 w-full md:w-fit">
-        <SwitchUser
-          class="w-full"
-          :users="publicStore.users"
-          :cur-uid="publicStore.curUid"
-        />
-        <ProfilePanel :user="publicStore.curUser" />
-      </div>
+      <!--      <div class="flex flex-col gap-4 sticky top-4 self-start px-8 w-full md:w-fit"> -->
+      <!--        <SwitchUser -->
+      <!--          class="w-full" -->
+      <!--          :users="publicStore.users" -->
+      <!--          :cur-uid="publicStore.curUid" -->
+      <!--        /> -->
+      <!--        <ProfilePanel :user="publicStore.curUser" /> -->
+      <!--      </div> -->
     </div>
     <BackToTop />
   </main>

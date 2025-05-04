@@ -13,7 +13,7 @@ const activeTab = ref('general')
 </script>
 
 <template>
-  <div class="min-w-[90vw] lg:min-w-3xl">
+  <div class="w-[90vw] sm:w-3xl">
     <SettingsHeader @close="$emit('close')" />
 
     <div class="flex">

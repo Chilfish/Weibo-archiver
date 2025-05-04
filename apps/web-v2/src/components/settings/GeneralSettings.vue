@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { parseAndImport, readFile } from '@weibo-archiver/core'
+import { Button } from '@/components/ui/button'
+import { Dialog } from '@/components/ui/dialog'
+import { config } from '@/composables'
+import { parseAndImport, readFile, usePostStore } from '@weibo-archiver/core'
 import { Download, Trash2, Upload } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { config } from '../../composables'
-import Dialog from '../common/Dialog.vue'
 import ImageSourceOption from './ImageSourceOption.vue'
 
 const postStore = usePostStore()
@@ -36,21 +37,6 @@ const imageSourceOptions = [
   },
 ]
 
-// https://daisyui.com/docs/themes/
-const THEMES = [
-  'light',
-  'system',
-  'cupcake',
-  'dark',
-  'emerald',
-  'valentine',
-  'lofi',
-  'dracula',
-  'cmyk',
-  'business',
-  'winter',
-] as const
-
 async function onImportData(e: Event) {
   const data = await readFile(e)
   await parseAndImport(data)
@@ -65,7 +51,7 @@ function onReset() {
 
 <template>
   <div class="space-y-6">
-    <div>
+    <section>
       <h3 class="label">
         图片链接设置
       </h3>
@@ -82,38 +68,16 @@ function onReset() {
           :show-custom-input="option.showCustomInput"
         />
       </div>
-    </div>
+    </section>
 
-    <div
-      class="flex flex-col gap-2"
-    >
-      <h3
-        class="label"
-      >
-        主题
-      </h3>
-      <select
-        v-model="config.theme"
-        class="select select-bordered w-fit"
-      >
-        <option
-          v-for="theme in THEMES"
-          :key="theme"
-          :value="theme"
-        >
-          {{ theme }}
-        </option>
-      </select>
-    </div>
-
-    <div>
+    <section>
       <h3 class="label">
         数据管理
       </h3>
 
       <div class="flex gap-3">
-        <button
-          class="btn btn-sm btn-primary w-fit relative"
+        <Button
+          class="relative"
         >
           <input
             type="file"
@@ -122,30 +86,55 @@ function onReset() {
             placeholder="导入数据"
             @change="onImportData"
           >
-          <Upload class="w-4 h-4 mr-2" />导入数据
-        </button>
+          <Upload />导入数据
+        </Button>
 
-        <button class="btn btn-sm btn-outline w-fit">
-          <Download class="w-4 h-4 mr-2" />导出数据
-        </button>
-        <button
-          class="btn btn-sm btn-outline btn-error w-fit"
-          @click="showResetDialog = true"
-        >
-          <Trash2 class="w-4 h-4 mr-2" />重置所有数据
-        </button>
+        <Button>
+          <Download />导出数据
+        </Button>
+
+        <Dialog>
+          <DialogTrigger>
+            <Button
+              variant="destructive"
+            >
+              <Trash2 />重置所有数据
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                重置所有数据
+              </DialogTitle>
+            </DialogHeader>
+
+            <DialogDescription>
+              确定要重置所有数据吗？
+            </DialogDescription>
+
+            <DialogFooter>
+              <DialogClose>
+                <Button
+                  variant="ghost"
+                >
+                  取消
+                </Button>
+              </DialogClose>
+
+              <DialogClose>
+                <Button
+                  variant="destructive"
+                  @click="onReset"
+                >
+                  确认
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-    </div>
-
-    <Dialog
-      v-model:open="showResetDialog"
-      title="重置所有数据"
-      message="确定要重置所有数据吗？"
-      confirm-class="btn-error text-white"
-      :show-confirm="true"
-      :close-on-outside="false"
-      @confirm="onReset"
-    />
+    </section>
   </div>
 </template>
 
