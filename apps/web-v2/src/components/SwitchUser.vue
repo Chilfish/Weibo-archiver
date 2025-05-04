@@ -6,62 +6,69 @@ import Avatar from './common/Avatar.vue'
 
 const props = defineProps<{
   users: UserInfo[]
-  curUid?: string
 }>()
 
-const curUser = computed(() => props.users.find(user => user.uid === props.curUid))
-const restUsers = computed(() => props.users.filter(user => user.uid !== props.curUid))
+const curUid = defineModel<string>('curUid')
+
+const curUser = computed(() => props.users.find(user => user.uid === curUid.value))
+const restUsers = computed(() => props.users.filter(user => user.uid !== curUid.value))
 </script>
 
 <template>
-  <div class="dropdown w-fit">
-    <div
-      tabindex="0" role="button"
-      class="btn w-full bg-base-100 text-gray-700 border-gray-200 hover:bg-gray-50 flex justify-between p-4 h-14 rounded-2xl"
-    >
-      <div
-        v-if="curUser"
-        class="flex items-center gap-2"
+  <DropdownMenu>
+    <DropdownMenuTrigger as-child>
+      <Button
+        variant="outline"
+        class="w-fit h-10"
       >
-        <Avatar
-          :src="curUser.avatar"
-          :alt="curUser.name"
-          :size="8"
-        />
-        <span>{{ curUser.name }}</span>
-      </div>
-      <div
-        v-else
-        class="flex items-center gap-2"
-      >
-        <UserRoundPlus class="w-4 h-4" />
-        导入数据后可切换用户
-      </div>
-      <ChevronDown class="w-4 h-4" />
-    </div>
+        <div
+          v-if="curUser"
+          class="flex items-center gap-2"
+        >
+          <Avatar
+            :src="curUser.avatar"
+            :alt="curUser.name"
+            :size="8"
+          />
+          <span>{{ curUser.name }}</span>
+        </div>
+        <div
+          v-else
+          class="flex items-center gap-2"
+        >
+          <UserRoundPlus class="w-4 h-4" />
+          暂无用户
+        </div>
+        <ChevronDown class="w-4 h-4" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent class="w-48">
+      <DropdownMenuLabel>已导入的用户列表</DropdownMenuLabel>
+      <DropdownMenuSeparator />
 
-    <ul
-      tabindex="0"
-      class="dropdown-content z-[1] menu p-2 gap-1 shadow-lg glassmorphism rounded-box w-full mt-2"
-    >
-      <li v-for="user in restUsers" :key="user.uid">
-        <a class="flex items-center gap-2">
-          <div class="avatar">
-            <div class="w-8 h-8 rounded-full">
-              <img
-                :src="user.avatar"
-                :alt="user.name"
-              >
-            </div>
-          </div>
+      <DropdownMenuRadioGroup
+        v-model="curUid"
+      >
+        <DropdownMenuRadioItem
+          v-for="user in restUsers"
+          :key="user.uid"
+          :value="user.uid"
+        >
+          <Avatar
+            :src="user.avatar"
+            :alt="user.name"
+            :size="8"
+          />
           <span>{{ user.name }}</span>
-        </a>
-      </li>
-      <li>
-        <button class="btn btn-primary btn-ghost">
+        </DropdownMenuRadioItem>
+
+        <Button
+          class="w-full"
+          variant="ghost"
+        >
           <UserRoundPlus class="w-4 h-4" /> 添加新用户
-        </button>
-      </li>
-    </ul>
-  </div>
+        </Button>
+      </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
+  </DropdownMenu>
 </template>

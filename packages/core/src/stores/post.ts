@@ -1,19 +1,19 @@
-import type { Album, Post, UID, UserBio, UserInfo } from '@shared'
+import type { Album, Post, UID, UserBio, UserInfo } from '@weibo-archiver/core'
 import { watchImmediate } from '@vueuse/core'
+import { EmptyIDB, IDB } from '@weibo-archiver/core'
 import { defineStore } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
 import { useRoute } from 'vue-router'
-import { EmptyIDB, IDB } from '../utils/storage'
 import { usePublicStore } from './public'
 
 export const usePostStore = defineStore('post', () => {
   const publicStore = usePublicStore()
   const followings = shallowRef<UserBio[]>([])
   const allImages: Album[] = []
-  const weibos = ref<Post[]>([])
+  const weiboArr = ref<Post[]>([])
   const loading = ref(false)
 
-  const idb = ref(new EmptyIDB())
+  const idb = ref<IDB>(new EmptyIDB())
   watchImmediate(() => publicStore.curUid, async (uid) => {
     if (!uid)
       return
@@ -138,7 +138,7 @@ export const usePostStore = defineStore('post', () => {
       result = await idb.value.getDBPostByTime(_result)
     }
 
-    weibos.value = result
+    weiboArr.value = result
     return result
   }
 
@@ -151,7 +151,10 @@ export const usePostStore = defineStore('post', () => {
 
     const p = page || curPage.value
 
-    const { posts, count } = await idb.value.filterByTime(start, end, p, pageSize.value)
+    const {
+      posts,
+      count,
+    } = await idb.value.filterByTime(start, end, p, pageSize.value)
     total.value = count
     return posts
   }
@@ -196,7 +199,7 @@ export const usePostStore = defineStore('post', () => {
     else
       posts = await searchAndTime(query, start, end, p)
 
-    weibos.value = posts
+    weiboArr.value = posts
     return posts
   }
 
@@ -246,7 +249,7 @@ export const usePostStore = defineStore('post', () => {
     pageSize,
     curPage,
     loading,
-    weibos,
+    weiboArr,
     followings,
 
     get,
@@ -256,7 +259,7 @@ export const usePostStore = defineStore('post', () => {
       loading.value = true
       await idb.value.clearDB()
       publicStore.rmUser()
-      weibos.value = []
+      weiboArr.value = []
       loading.value = false
     },
     getAll: async () => {

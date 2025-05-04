@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useEmoji } from '@/composables'
 import { usePostStore, usePublicStore } from '@weibo-archiver/core'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ImagePreview from '../common/ImagePreview.vue'
 import Pagination from '../common/Pagination.vue'
 import EmptyWeibo from '../EmptyWeibo.vue'
 import Weibo from './Weibo.vue'
+
+const emits = defineEmits<{
+  reload: []
+}>()
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
@@ -23,11 +27,22 @@ onBeforeMount(async () => {
   ])
 })
 
-function changePage(page: number, pageSize: number) {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
+watch(() => publicStore.curUid, async () => {
+  postStore.loading = true
+
+  postStore.curPage = 1
+  await router.push({
+    query: {
+      page: 1,
+    },
   })
+  await postStore.init()
+
+  emits('reload')
+})
+
+function changePage(page: number, pageSize: number) {
+  emits('reload')
 
   postStore.get(page).then(res => res.map(post => ({
     ...post,
@@ -47,11 +62,11 @@ function changePage(page: number, pageSize: number) {
 <template>
   <template v-if="!postStore.loading">
     <section
-      v-if="postStore.weibos.length > 0"
+      v-if="postStore.weiboArr.length > 0"
       class="flex flex-col gap-4"
     >
       <Weibo
-        v-for="post in postStore.weibos"
+        v-for="post in postStore.weiboArr"
         :key="post.id"
         :post="post"
       />

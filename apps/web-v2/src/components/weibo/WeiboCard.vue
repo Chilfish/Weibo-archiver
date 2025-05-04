@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CardInfo, Post } from '@weibo-archiver/shared'
+import type { CardInfo, Post } from '@weibo-archiver/core'
 import { Card, CardContent } from '@/components/ui/card'
 import { computed, ref } from 'vue'
 import ImageGallery from '../common/ImageGallery.vue'
@@ -51,19 +51,14 @@ const isCommentsOpen = ref(false)
         @click-comment="isCommentsOpen = !isCommentsOpen"
       />
 
-      <div
-        v-if="post.comments.length"
-        class="collapse" :class="[
-          isCommentsOpen ? 'collapse-open' : 'collapse-close',
-        ]"
+      <Collapsible
+        v-if="post.comments?.length"
+        v-model:open="isCommentsOpen"
       >
-        <input type="checkbox" class="hidden">
-        <div class="collapse-content pt-3 pb-0! px-0">
-          <WeiboComments
-            :comments="post.comments"
-          />
-        </div>
-      </div>
+        <CollapsibleContent>
+          <WeiboComments :comments="post.comments" />
+        </CollapsibleContent>
+      </Collapsible>
     </CardContent>
   </Card>
 </template>

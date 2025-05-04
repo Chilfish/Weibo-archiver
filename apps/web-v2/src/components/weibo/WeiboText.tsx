@@ -1,6 +1,10 @@
-import { Gem as DiamondIcon, Image as ImageIcon, Link as LinkIcon } from 'lucide-vue-next'
+import { emitter } from '@/composables'
+import {
+  Gem as DiamondIcon,
+  Image as ImageIcon,
+  Link as LinkIcon,
+} from 'lucide-vue-next'
 import { defineComponent } from 'vue'
-import { emitter } from '../../composables'
 import WeiboEmoji from './WeiboEmoji.vue'
 
 /**

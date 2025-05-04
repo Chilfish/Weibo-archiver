@@ -68,11 +68,11 @@ export interface Post extends Meta {
   is_show_bulletin?: '0' | '2'
 
   comments: any[]
-}
 
-export type Retweet = Omit<Post, 'retweeted_status' | 'card' | 'user' | 'comments'> & {
   user?: User // 转发的微博可能被删除或是被夹
 }
+
+export type Retweet = Omit<Post, 'retweeted_status' | 'card' | 'user'>
 
 export type Comment = Pick<Post, 'text' | 'like_count' | 'comments_count'> & {
   img: string
@@ -101,4 +101,10 @@ export interface UserConfig extends FetchConfig {
   fetchedCount: number
   total: number
   theme: string
+}
+
+export interface Album {
+  url: string
+  id: string
+  date: string
 }

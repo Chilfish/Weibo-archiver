@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import Setting from '@/components/settings/Settings.vue'
+import SwitchUser from '@/components/SwitchUser.vue'
+import { usePublicStore } from '@weibo-archiver/core'
 import { Album, Bookmark, Home, Search, Settings } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -30,6 +32,8 @@ const items = [
 
 const route = useRoute()
 const pathName = computed(() => route.path)
+
+const publicStore = usePublicStore()
 </script>
 
 <template>
@@ -37,31 +41,10 @@ const pathName = computed(() => route.path)
     <SidebarHeader>
       <SidebarMenu>
         <SidebarMenuItem>
-          <Select>
-            <SelectTrigger class="w-[180px]">
-              <SelectValue placeholder="Select a fruit" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Fruits</SelectLabel>
-                <SelectItem value="apple">
-                  Apple
-                </SelectItem>
-                <SelectItem value="banana">
-                  Banana
-                </SelectItem>
-                <SelectItem value="blueberry">
-                  Blueberry
-                </SelectItem>
-                <SelectItem value="grapes">
-                  Grapes
-                </SelectItem>
-                <SelectItem value="pineapple">
-                  Pineapple
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <SwitchUser
+            v-model:cur-uid="publicStore.curUid"
+            :users="publicStore.users"
+          />
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarHeader>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Post } from '@weibo-archiver/shared'
+import type { Post } from '@weibo-archiver/core'
 import WeiboCard from './WeiboCard.vue'
 import WeiboRetweet from './WeiboRetweet.vue'
 

@@ -1,10 +1,8 @@
-import type { UID, UserInfo } from '@weibo-archiver/shared'
+import type { UserInfo } from '@weibo-archiver/shared'
 import { useStorage } from '@vueuse/core'
-import { parseOldPost } from '@weibo-archiver/shared'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
-import { computed, ref, toRaw } from 'vue'
-import { DB_VERSION, IDB } from '../utils/storage'
+import { computed, ref } from 'vue'
 
 export const usePublicStore = defineStore('public', () => {
   const globalImg = ref('')
@@ -47,49 +45,6 @@ export const usePublicStore = defineStore('public', () => {
     addUser(user)
   }
 
-  /**
-   * 从旧版中迁移 user 数据到 idb 中
-   */
-  async function migrateUser() {
-    if (DB_VERSION >= 4)
-      return
-
-    const dbName = `uid-${curUid.value || 0}` as UID
-    const idb = new IDB(dbName)
-
-    const userInDB = await idb.getUserInfo()
-
-    if (userInDB) {
-      importUser(userInDB)
-      return await idb.close()
-    }
-
-    const posts = await idb.getAllDBPosts()
-    let user = curUser.value
-    if (!user) {
-      const _user = users.value.find(u => u.uid === curUid.value) || posts[0]?.user as any
-
-      user = {
-        uid: _user.id,
-        name: _user.screen_name,
-        avatar: _user.profile_image_url,
-        postCount: posts.length,
-        followers: 0,
-        followings: 0,
-        bio: '',
-        birthday: '',
-        createdAt: '',
-      }
-      importUser(user)
-    }
-
-    const newPosts = posts.map(post => parseOldPost(post))
-    await idb.addDBPosts(newPosts, true, false)
-
-    await idb.setUserInfo(toRaw(user))
-    return await idb.close()
-  }
-
   return {
     globalImg,
     users,
@@ -98,7 +53,6 @@ export const usePublicStore = defineStore('public', () => {
     otherUsers,
     addUser,
     rmUser,
-    migrateUser,
     importUser,
     load,
   }

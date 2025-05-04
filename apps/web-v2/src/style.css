@@ -3,9 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@plugin "daisyui" {
-  themes: false;
-}
+/*@plugin "daisyui" {*/
+/*  themes: false;*/
+/*}*/
 
 :root {
   --background: oklch(1.00 0 0);
@@ -45,8 +45,8 @@
   --font-mono: JetBrains Mono, monospace;
   --radius: 0.375rem;
   --shadow-2xs: 0px 4px 8px -1px hsl(0 0.93% 20.98% / 0.05);
-  --shadow-xs: 0px 4px 8px -1px hsl(0 0.93% 20.98% / 0.05);
-  --shadow-sm: 0px 4px 8px -1px hsl(0 0.93% 20.98% / 0.10), 0px 1px 2px -2px hsl(0 0.93% 20.98% / 0.10);
+  --shadow-xs: 0px 4px 8px -1px hsla(0, 6%, 80%, 0.05);
+  --shadow-sm: 0px 4px 8px -1px hsla(0, 0%, 83%, 0.1), 0px 1px 2px -2px hsla(0, 0%, 100%, 0.1);
   --shadow: 0px 4px 8px -1px hsl(0 0.93% 20.98% / 0.10), 0px 1px 2px -2px hsl(0 0.93% 20.98% / 0.10);
   --shadow-md: 0px 4px 8px -1px hsl(0 0.93% 20.98% / 0.10), 0px 2px 4px -2px hsl(0 0.93% 20.98% / 0.10);
   --shadow-lg: 0px 4px 8px -1px hsl(0 0.93% 20.98% / 0.10), 0px 4px 6px -2px hsl(0 0.93% 20.98% / 0.10);

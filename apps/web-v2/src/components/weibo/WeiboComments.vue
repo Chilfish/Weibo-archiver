@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Comment } from '@weibo-archiver/shared'
+import type { Comment } from '@weibo-archiver/core'
+import { emitter } from '@/composables'
 import { formatDate, formatNumber } from '@weibo-archiver/shared'
 import { Heart, MessageCircle } from 'lucide-vue-next'
-import { emitter } from '../../composables'
 import Avatar from '../common/Avatar.vue'
 import LazyImage from '../common/LazyImage.vue'
 import { WeiboText } from './WeiboText'

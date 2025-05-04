@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
+import { replaceImg } from '@/composables'
 import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
-import { replaceImg } from '../../composables'
+import { ref, watch } from 'vue'
 
 type Numberish = number | string
 type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
@@ -42,6 +42,8 @@ const isLoading = ref(true)
 const imgSrc = ref('')
 const imgWidth = ref<Numberish | undefined>(0)
 const imgHeight = ref<Numberish | undefined>(0)
+
+watch(() => props.src, src => imgSrc.value = src)
 
 useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   if (isIntersecting && isLoading.value) {

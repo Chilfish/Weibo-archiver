@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useEmoji } from '@/composables'
 import { computed } from 'vue'
-import { useEmoji } from '../../composables'
 
 const props = defineProps<{
   emojiPhrase: string

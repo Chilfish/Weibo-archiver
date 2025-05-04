@@ -17,8 +17,8 @@ const sizeClass = computed(() => {
 <template>
   <div class="relative">
     <LazyImage
-      :src="src || '/placeholder.webp'"
-      :alt="alt || '用户头像'"
+      :src="props.src || '/placeholder.webp'"
+      :alt="props.alt || '用户头像'"
       class="rounded-full"
       :class="[sizeClass, props.class]"
       :skeleton-class="[sizeClass, 'rounded-full absolute inset-0']"

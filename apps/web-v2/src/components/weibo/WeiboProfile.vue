@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Meta, User } from '@weibo-archiver/shared'
+import type { Meta, User } from '@weibo-archiver/core'
 import { usePublicStore } from '@weibo-archiver/core'
 import { formatDate } from '@weibo-archiver/shared'
 import { computed } from 'vue'
