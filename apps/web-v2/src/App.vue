@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import AppSidebar from '@/components/AppSidebar.vue'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import { useHead, useSeoMeta } from '@unhead/vue'
 
 const appName = 'Weibo-Archiver'
@@ -41,9 +43,15 @@ useHead({
 </script>
 
 <template>
-  <div
-    class="min-h-screen bg-base-200 overflow-x-hidden"
-  >
-    <router-view />
-  </div>
+  <SidebarProvider>
+    <AppSidebar />
+    <main class="p-4">
+      <RouterView />
+    </main>
+    <aside
+      class="w-[68rem]"
+    >
+      Side
+    </aside>
+  </SidebarProvider>
 </template>

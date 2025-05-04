@@ -6,6 +6,7 @@
 @plugin "daisyui" {
   themes: false;
 }
+
 :root {
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.27 0 0);
@@ -13,12 +14,12 @@
   --card-foreground: oklch(0.27 0 0);
   --popover: oklch(1.00 0 0);
   --popover-foreground: oklch(0.27 0 0);
-  --primary: oklch(0.635 0.134 70.521);
+  --primary: oklch(0.77 0.16 70.08);
   --primary-foreground: oklch(1.00 0 0);
-  --secondary: oklch(0.97 0.00 264.54);
+  --secondary: oklch(0.96 0 0);
   --secondary-foreground: oklch(0.45 0.03 256.80);
-  --muted: oklch(0.98 0.00 247.84);
-  --muted-foreground: oklch(0.55 0.02 264.36);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.59 0.01 266.63);
   --accent: oklch(0.99 0.02 95.28);
   --accent-foreground: oklch(0.47 0.12 46.20);
   --destructive: oklch(0.64 0.21 25.33);

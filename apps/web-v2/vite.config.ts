@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import pkg from './package.json'
@@ -36,10 +35,7 @@ export default defineConfig({
     Components({
       dts: 'src/auto-components.d.ts',
       dirs: [
-        './src/components',
-      ],
-      resolvers: [
-        NaiveUiResolver(),
+        './src/components/ui',
       ],
     }),
   ],

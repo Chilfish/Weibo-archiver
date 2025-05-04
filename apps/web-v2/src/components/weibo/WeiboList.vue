@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { useEmoji } from '@/composables'
 import { usePostStore, usePublicStore } from '@weibo-archiver/core'
 import { onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useEmoji } from '../../composables'
 import ImagePreview from '../common/ImagePreview.vue'
 import Pagination from '../common/Pagination.vue'
 import EmptyWeibo from '../EmptyWeibo.vue'
+import Weibo from './Weibo.vue'
 
 const postStore = usePostStore()
 const publicStore = usePublicStore()
