@@ -1,5 +1,21 @@
 <script setup lang="ts">
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Ellipsis } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  Ellipsis,
+} from 'lucide-vue-next'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const {
@@ -150,21 +166,22 @@ function goToLastPage() {
 
 <template>
   <div class="flex flex-wrap items-center justify-center gap-2">
-    <div class="join">
-      <button
+    <div class="join gap-1">
+      <Button
         v-if="showEndPage"
-        class="join-item btn"
-        :class="{ 'btn-disabled': isFirstPage }"
+        class="join-item"
+        variant="outline"
         :disabled="isFirstPage"
         title="第一页"
         aria-label="第一页"
         @click="goToFirstPage"
       >
         <ChevronsLeft class="w-4 h-4" />
-      </button>
+      </Button>
 
-      <button
-        class="join-item btn"
+      <Button
+        class="join-item"
+        variant="outline"
         :class="{ 'btn-disabled': isFirstPage }"
         :disabled="isFirstPage"
         title="上一页"
@@ -172,90 +189,105 @@ function goToLastPage() {
         @click="goToPrevPage"
       >
         <ChevronLeft class="w-4 h-4" />
-      </button>
+      </Button>
     </div>
 
-    <div class="join">
-      <template v-for="(page, index) in displayedPageNumbers" :key="index">
-        <button
+    <div class="join gap-1">
+      <template
+        v-for="(page, index) in displayedPageNumbers"
+        :key="index"
+      >
+        <Button
           v-if="page !== dotBtn"
-          class="join-item btn"
-          :class="{ 'btn-active': page === current }"
+          class="join-item"
+          :variant="page === current ? 'default' : 'outline'"
           :aria-label="`跳转至第${page}页`"
           @click="changePage(Number(page))"
         >
           {{ page }}
-        </button>
-        <button
+        </Button>
+        <Button
           v-else
-          class="join-item btn btn-disabled"
+          variant="outline"
+          class="join-item"
           aria-label="更多"
         >
           <Ellipsis class="w-4 h-4" />
-        </button>
+        </Button>
       </template>
     </div>
 
-    <div class="join">
-      <button
-        class="join-item btn"
-        :class="{ 'btn-disabled': isLastPage }"
+    <div class="join gap-1">
+      <Button
+        class="join-item"
         :disabled="isLastPage"
         title="下一页"
         aria-label="下一页"
+        variant="outline"
         @click="goToNextPage"
       >
         <ChevronRight class="w-4 h-4" />
-      </button>
+      </Button>
 
-      <button
+      <Button
         v-if="showEndPage"
-        class="join-item btn"
-        :class="{ 'btn-disabled': isLastPage }"
+        class="join-item"
         :disabled="isLastPage"
         title="最后一页"
         aria-label="最后一页"
+        variant="outline"
         @click="goToLastPage"
       >
         <ChevronsRight class="w-4 h-4" />
-      </button>
+      </Button>
     </div>
 
     <div
       v-if="showJump"
-      class="text-sm text-gray-500 whitespace-nowrap flex items-center gap-1"
+      class="text-sm  whitespace-nowrap flex items-center gap-1"
     >
       跳转至第
-      <input
+      <Input
         v-model="jumpPage"
         type="number"
-        class="input input-bordered w-16 h-8"
+        class="w-16 h-8"
         min="1"
         :max="totalPages"
         aria-label="跳转页码"
         @keydown.enter="changePage(Number(jumpPage))"
-      > 页
+      />
+      页
     </div>
 
     <div
       v-if="showTotal"
-      class="text-sm text-gray-500 whitespace-nowrap"
+      class="text-sm whitespace-nowrap"
       aria-label="总条数"
     >
       共 {{ total }} 条
     </div>
 
     <!-- Page size selector -->
-    <select
+    <Select
       v-if="showSizeChanger"
-      class="select select-bordered w-fit h-8"
-      :value="pageSize"
-      aria-label="每页条数"
-      @change="changePageSize(Number(($event.target as HTMLSelectElement).value))"
+      :default-value="10"
+      @update:model-value="(e: any) => changePageSize(e)"
     >
-      <option v-for="size in pageSizeOptions" :key="size" :value="size">
-        {{ size }} 条/页
-      </option>
-    </select>
+      <SelectTrigger>
+        <SelectValue placeholder="选择分页大小" />
+      </SelectTrigger>
+
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem
+            v-for="size in pageSizeOptions"
+            :key="size"
+            :value="size"
+          >
+            {{ size }} 条/页
+          </SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   </div>
 </template>
