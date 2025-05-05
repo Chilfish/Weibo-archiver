@@ -1,19 +1,15 @@
 <script setup lang="ts">
+import type { SearchQuery } from '@/composables'
 import type { DateValue } from '@internationalized/date'
+import { useSearch } from '@/composables'
 import { cn } from '@/lib/utils'
-import { getLocalTimeZone, today } from '@internationalized/date'
 import { ChevronDown, ChevronUp, Search } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import DatePicker from './DatePicker.vue'
 
-interface SearchOpts {
-  withText: boolean
-  withImage: boolean
-  withOriginal: boolean
-  withRepost: boolean
-  dateFrom: DateValue | undefined
-  dateTo: DateValue | undefined
-}
+const emits = defineEmits<{
+  search: [query: SearchQuery]
+}>()
 
 const searchOptionsList = [
   { id: 'text-only', label: '纯文本', modelKey: 'withText' },
@@ -26,57 +22,29 @@ const dateRangeShortcut = [
   { text: '一周内', diff: 7 },
   { text: '一个月内', diff: 30 },
   { text: '半年内', diff: 366 / 2 },
-  { text: '一年内', diff: 365 },
+  { text: '一年内', diff: 366 },
 ] as const
 
-const now = today(getLocalTimeZone())
-
-const defaultSearchOpts: SearchOpts = {
-  withText: true,
-  withImage: true,
-  withOriginal: true,
-  withRepost: true,
-  dateFrom: undefined,
-  dateTo: undefined,
-}
-
-const searchOptions = ref<SearchOpts>({ ...defaultSearchOpts })
 const showMoreFilter = ref(false)
-const dateRangeShortcutDiff = ref(0)
 
-function resetOptions() {
-  searchOptions.value = { ...defaultSearchOpts }
-  resetDateRange()
-}
+const {
+  searchText,
+  searchOptions,
+  dateRangeShortcutDiff,
+  resetDateRange,
+  resetOptions,
+  setDateRangeShortcut,
+  toSearchQuery,
+} = useSearch()
 
-function setDateRangeShortcut(diff: number) {
-  dateRangeShortcutDiff.value = diff
-  searchOptions.value.dateTo = now
-  searchOptions.value.dateFrom = now.subtract({ days: diff })
-}
-
-function resetDateRange() {
-  dateRangeShortcutDiff.value = 0
-  searchOptions.value.dateFrom = undefined
-  searchOptions.value.dateTo = undefined
-}
-
-watch([
-  () => searchOptions.value.dateFrom,
-  () => searchOptions.value.dateTo,
-], ([from, to]) => {
-  if (!from || !to) {
+function onSearch() {
+  if (!searchText.value) {
     return
   }
 
-  const toDate = to.toDate('Asia/Shanghai').getTime()
-  const fromDate = from.toDate('Asia/Shanghai').getTime()
-  const diff = (toDate - fromDate) / 1000 / 60 / 60 / 24
-
-  if (diff !== dateRangeShortcutDiff.value) {
-    dateRangeShortcutDiff.value = 0
-  }
-})
+  const searchQuery = toSearchQuery()
+  emits('search', searchQuery)
+}
 </script>
 
 <template>
@@ -90,6 +58,7 @@ watch([
         <div class="relative w-full md:w-[36rem] items-center">
           <Input
             id="search"
+            v-model="searchText"
             type="text"
             placeholder="搜索微博..."
             class="pl-10 rounded-xlh-10 border-gray-200 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
@@ -98,17 +67,19 @@ watch([
             <Search class="size-6 text-muted-foreground" />
           </span>
         </div>
-        <Button>
+        <Button
+          @click="onSearch"
+        >
           搜索
         </Button>
       </div>
 
       <div
-        class="flex justify-between items-center pt-4"
+        class="flex justify-between items-center pt-2"
       >
         <Button
           variant="ghost"
-          class="p-2 text-primary hover:text-primary"
+          class="p-1 text-primary hover:text-primary"
           @click="showMoreFilter = !showMoreFilter"
         >
           高级搜索
@@ -199,8 +170,6 @@ watch([
           </div>
         </div>
       </div>
-
-      <pre>{{ searchOptions }}</pre>
     </CardContent>
   </Card>
 </template>

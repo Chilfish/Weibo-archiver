@@ -1,8 +1,10 @@
-import type { AppConfig, ImagePreviewEvent } from '../types'
+import type { AppConfig, ImagePreviewEvent } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@weibo-archiver/core'
 import { mitt } from '@weibo-archiver/shared'
 import { computed } from 'vue'
+
+export * from './useSearch'
 
 export const config = useStorage<AppConfig>('config', {
   theme: 'light',
