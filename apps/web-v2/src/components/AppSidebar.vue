@@ -6,6 +6,7 @@ import {
   Album,
   Bookmark,
   Heart,
+  History,
   Home,
   Search,
   Settings,
@@ -34,6 +35,11 @@ const items = [
     title: '收藏',
     url: '/bookmarks',
     icon: Bookmark,
+  },
+  {
+    title: '那年今日',
+    url: '/memos',
+    icon: History,
   },
   {
     title: '关注列表',

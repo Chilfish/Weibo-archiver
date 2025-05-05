@@ -31,7 +31,7 @@ const placeholder = useVModel(props, 'modelValue', emits, {
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
-const formatter = useDateFormatter('en')
+const formatter = useDateFormatter('zh-CN')
 </script>
 
 <template>
