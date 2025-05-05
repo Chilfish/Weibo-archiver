@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import type { AppConfig } from '@/types'
+import ImportData from '@/components/common/ImportData.vue'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { config } from '@/composables'
-import { onImportData, usePostStore } from '@weibo-archiver/core'
 import { Download, Trash2, Upload } from 'lucide-vue-next'
 import ImageSourceOption from './ImageSourceOption.vue'
-
-const postStore = usePostStore()
 
 interface TImageSourceOption {
   id: string
@@ -46,7 +44,7 @@ const imageSourceOptions: TImageSourceOption[] = [
 ] as const
 
 function onReset() {
-  postStore.clearDB()
+  // postStore.clearDB()
 }
 </script>
 
@@ -80,13 +78,7 @@ function onReset() {
         <Button
           class="relative"
         >
-          <input
-            type="file"
-            accept=".json"
-            class="absolute inset-0 opacity-0 w-full h-full"
-            placeholder="导入数据"
-            @change="onImportData"
-          >
+          <ImportData />
           <Upload />导入数据
         </Button>
 

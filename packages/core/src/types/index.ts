@@ -3,7 +3,7 @@ import * as z from 'zod'
 export * from './fetchArgs'
 export * from './raw'
 
-export type UID = `uid-${number}`
+export type UID = string
 
 const user = z.object({
   uid: z.string(),
@@ -107,4 +107,10 @@ export interface Album {
   url: string
   id: string
   date: string
+}
+
+export interface ImportedData {
+  weibo: Post[]
+  user: UserInfo
+  followings: UserBio[]
 }

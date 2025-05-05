@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Setting from '@/components/settings/Settings.vue'
 import SwitchUser from '@/components/SwitchUser.vue'
-import { usePublicStore } from '@weibo-archiver/core'
+import { useUserStore } from '@/stores'
 import {
   Album,
   Bookmark,
@@ -51,7 +51,7 @@ const items = [
 const route = useRoute()
 const pathName = computed(() => route.path)
 
-const publicStore = usePublicStore()
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -60,8 +60,8 @@ const publicStore = usePublicStore()
       <SidebarMenu>
         <SidebarMenuItem>
           <SwitchUser
-            v-model:cur-uid="publicStore.curUid"
-            :users="publicStore.users"
+            v-model:cur-uid="userStore.curUid"
+            :users="userStore.users"
           />
         </SidebarMenuItem>
       </SidebarMenu>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onImportData } from '@weibo-archiver/core'
+import { usePostStore } from '@/stores'
+import { readFile } from '@weibo-archiver/core'
 import {
   ArrowRight,
   Github,
@@ -10,10 +11,17 @@ import {
 } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 
+const { parseAndImport } = usePostStore()
+
 const router = useRouter()
 
 const goToData = () => {
   router.push('/post')
+}
+
+async function onImportData(e: Event) {
+  const data = await readFile(e)
+  await parseAndImport(data)
 }
 
 // 特性列表

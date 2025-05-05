@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { usePublicStore } from '@weibo-archiver/core'
+import { useUserStore } from '@/stores'
 import { onBeforeMount, useTemplateRef } from 'vue'
 import WeiboList from '../components/weibo/WeiboList.vue'
 
-const publicStore = usePublicStore()
+const userStore = useUserStore()
 
 onBeforeMount(async () => {
-  publicStore.load()
-  // publicStore.curUid = publicStore.users[0].uid
-
-  console.log(publicStore.curUser)
+  userStore.load()
+  console.log(userStore.curUser)
 })
 
 const mainRef = useTemplateRef<HTMLElement>('mainRef')

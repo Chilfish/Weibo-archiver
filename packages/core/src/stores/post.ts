@@ -6,7 +6,7 @@ import { computed, ref, shallowRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePublicStore } from './public'
 
-export const usePostStore = defineStore('post', () => {
+export const usePostStore = defineStore('post-v1', () => {
   const publicStore = usePublicStore()
   const followings = shallowRef<UserBio[]>([])
   const allImages: Album[] = []
@@ -21,7 +21,7 @@ export const usePostStore = defineStore('post', () => {
     const wrappedUid = `uid-${uid}` as UID
     console.log('Change db', wrappedUid)
 
-    idb.value = new IDB(wrappedUid)
+    idb.value = new IDB()
     await updateTotal()
 
     followings.value = await getFollowings()

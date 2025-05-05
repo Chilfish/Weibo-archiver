@@ -1,9 +1,4 @@
-import type {
-  Post,
-  UID,
-  UserBio,
-  UserInfo,
-} from '@weibo-archiver/core'
+import type { Post, UID, UserBio, UserInfo } from '@weibo-archiver/core'
 import type { FuseResult } from 'fuse.js'
 import type { DBSchema, IDBPDatabase } from 'idb'
 import dayjs from 'dayjs'
@@ -42,7 +37,7 @@ export async function deleteOld() {
  * 检测该用户的数据库是否存在
  */
 export async function checkDB(uid: number) {
-  const name = `uid-${uid}`
+  const name = `${uid}`
 
   const db = await openDB<AppDB>(name, DB_VERSION)
   const isExist = db.objectStoreNames.contains(POST_STORE)
@@ -55,11 +50,11 @@ export async function checkDB(uid: number) {
 }
 
 export class IDB {
-  idb: Promise<IDBPDatabase<AppDB>>
-  name: UID
+  idb: Promise<IDBPDatabase<AppDB>> = openDB('0')
+  name: UID = '0'
   posts: Post[] = []
 
-  constructor(
+  setup(
     name: UID,
     version = DB_VERSION,
   ) {
@@ -176,7 +171,7 @@ export class IDB {
    */
   async addDBPosts(
     posts: Post[],
-    isReplace = true,
+    isReplace = false,
     buildSearch = true,
   ) {
     const db = await this.idb
@@ -401,6 +396,11 @@ export class IDB {
 
     return result
   }
+
+  async getCount() {
+    const db = await this.idb
+    return await db.count('posts')
+  }
 }
 
 interface Album {
@@ -415,10 +415,6 @@ export type SeachResult = FuseResult<{
 }>[]
 
 export class EmptyIDB extends IDB {
-  constructor() {
-    super('uid-0')
-  }
-
   async getDBPosts(_page = 1, _limit = 10) { return [] as Post[] }
   async getDBPostByTime(_times: number[]) { return [] as Post[] }
   async getAllDBPosts() { return [] as Post[] }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Meta, User } from '@weibo-archiver/core'
-import { usePublicStore } from '@weibo-archiver/core'
+import { useUserStore } from '@/stores'
 import { formatDate } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 import Avatar from '../common/Avatar.vue'
@@ -10,9 +10,9 @@ const props = defineProps<{
   user?: User
 }>()
 
-const publicStore = usePublicStore()
+const userStore = useUserStore()
 
-const user = computed(() => props.user || publicStore.curUser)
+const user = computed(() => props.user || userStore.curUser)
 </script>
 
 <template>

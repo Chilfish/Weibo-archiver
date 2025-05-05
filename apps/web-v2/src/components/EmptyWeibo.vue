@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onImportData } from '@weibo-archiver/core'
+import ImportData from '@/components/common/ImportData.vue'
 import { Eye, Import } from 'lucide-vue-next'
 </script>
 
@@ -20,12 +20,7 @@ import { Eye, Import } from 'lucide-vue-next'
       <Button
         class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg rounded-full px-10 mb-12 relative"
       >
-        <input
-          type="file"
-          accept=".json"
-          class="absolute inset-0 opacity-0 w-full h-full"
-          @change="onImportData"
-        >
+        <ImportData />
         <Import />
         导入数据
       </Button>

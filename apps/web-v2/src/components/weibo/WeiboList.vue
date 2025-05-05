@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { Post } from '@weibo-archiver/core'
 import { useEmoji } from '@/composables'
-import { usePostStore, usePublicStore } from '@weibo-archiver/core'
-import { onBeforeMount, watch } from 'vue'
+import { usePostStore, useUserStore } from '@/stores'
+import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ImagePreview from '../common/ImagePreview.vue'
 import Pagination from '../common/Pagination.vue'
@@ -13,28 +14,36 @@ const emits = defineEmits<{
 }>()
 
 const postStore = usePostStore()
-const publicStore = usePublicStore()
+const userStore = useUserStore()
 const { fetchEmojis } = useEmoji()
 
 const route = useRoute()
 const router = useRouter()
 
+const weiboArr = ref<Post[]>([])
+
 onBeforeMount(async () => {
   postStore.loading = true
-  await Promise.all([
-    fetchEmojis(),
-    postStore.init(),
-  ])
+  await postStore.setup()
+  await fetchEmojis()
+
+  weiboArr.value = await postStore.getPosts()
+})
+
+watch(() => postStore.importing, async (importing) => {
+  if (importing === false)
+    weiboArr.value = await postStore.getPosts()
 })
 
 watch([
-  () => publicStore.curUid,
+  () => userStore.curUid,
   () => route.query,
 ], async ([curUid, query], [oldUid, oldQuery]) => {
   if (query.page && oldQuery.page && curUid === oldUid) {
     return
   }
   postStore.loading = true
+  await postStore.setup()
 
   postStore.curPage = 1
   await router.push({
@@ -42,58 +51,50 @@ watch([
       page: 1,
     },
   })
-  await postStore.init()
+
+  weiboArr.value = await postStore.getPosts()
 
   emits('reload')
 })
 
-function changePage(page: number, pageSize: number) {
+async function changePage(page: number, pageSize: number) {
   emits('reload')
 
-  postStore.get(page).then(res => res.map(post => ({
-    ...post,
-    user: publicStore.curUser,
-  })))
+  postStore.pageSize = pageSize
+  postStore.curPage = page
 
-  router.push({
+  await router.push({
     query: {
       ...route.query,
       page,
       pageSize,
     },
   })
+
+  weiboArr.value = await postStore.getPosts()
 }
 </script>
 
 <template>
-  <template v-if="!postStore.loading">
-    <section
-      v-if="postStore.weiboArr.length > 0"
-      class="flex flex-col gap-4 lg:px-12"
-    >
-      <Weibo
-        v-for="post in postStore.weiboArr"
-        :key="post.id"
-        :post="post"
-      />
-
-      <Pagination
-        v-model:current="postStore.curPage"
-        v-model:page-size="postStore.pageSize"
-        :total="postStore.total"
-        class="mt-4"
-        @change="changePage"
-      />
-    </section>
-
-    <EmptyWeibo v-else />
-  </template>
-
-  <div
-    v-else
-    class="flex flex-col items-center justify-center h-full"
+  <section
+    v-if="weiboArr.length > 0"
+    class="flex flex-col gap-4 lg:px-12"
   >
-    <span class="loading w-16" />
-  </div>
+    <Weibo
+      v-for="post in weiboArr"
+      :key="post.id"
+      :post="post"
+    />
+
+    <Pagination
+      v-model:current="postStore.curPage"
+      v-model:page-size="postStore.pageSize"
+      :total="postStore.total"
+      class="mt-4"
+      @change="changePage"
+    />
+  </section>
+
+  <EmptyWeibo v-if="!weiboArr.length && !postStore.loading" />
   <ImagePreview />
 </template>
