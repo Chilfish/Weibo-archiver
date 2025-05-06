@@ -23,6 +23,10 @@ const router = useRouter()
 const weiboArr = ref<Post[]>([])
 
 onBeforeMount(async () => {
+  if (userStore.curUid === '0') {
+    return
+  }
+
   postStore.loading = true
   await postStore.setup()
   await fetchEmojis()

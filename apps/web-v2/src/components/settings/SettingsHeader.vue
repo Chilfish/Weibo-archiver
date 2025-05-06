@@ -14,7 +14,7 @@ defineEmits<{
     >
       <X class="w-4 h-4" />
     </button>
-    <h2 class="text-lg font-medium text-gray-800">
+    <h2 class="text-lg font-medium">
       设置
     </h2>
   </div>

@@ -38,7 +38,7 @@ const customUrl = defineModel<string>('customUrl')
         </div>
       </div>
       <div>
-        <div class="font-medium text-gray-800">
+        <div class="font-medium ">
           {{ label }}
         </div>
         <div class="text-xs text-gray-500 mt-1">
