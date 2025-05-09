@@ -54,6 +54,11 @@ export class IDB {
   name: UID = '0'
   posts: Post[] = []
 
+  fuse: Fuse<{
+    time: number
+    text: string
+  }> = new Fuse([])
+
   setup(
     name: UID,
     version = DB_VERSION,
@@ -274,6 +279,7 @@ export class IDB {
       includeScore: true,
       useExtendedSearch: true,
     }, index)
+    this.fuse = fuse
 
     const searchToken = ['=', '!', '^', '\'']
 
@@ -284,7 +290,7 @@ export class IDB {
      * @param text
      * @returns 返回匹配的时间戳数组
      */
-      search: (text: string) => {
+      search: (text: string): number[] => {
         const query = decodeURIComponent(text)
           .split(' ')
           .map(t => searchToken.some(s => t.startsWith(s)) ? t : `'${t}`)
@@ -294,6 +300,8 @@ export class IDB {
           .map(r => r.item.time)
           .sort((a, b) => b - a) // 新帖子在前
       },
+
+      fuse,
     }
   }
 
@@ -409,7 +417,7 @@ interface Album {
   date: Date
 }
 
-export type SeachResult = FuseResult<{
+export type SearchResult = FuseResult<{
   time: number
   text: string
 }>[]
@@ -429,6 +437,7 @@ export class EmptyIDB extends IDB {
     }
   }
 
+  // @ts-expect-error fine
   buildSearch(_posts: Post[]) {
     return {
       search: (_text: string) => [] as number[],

@@ -87,7 +87,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       class="object-cover"
       @click="emit('click')"
     >
-    <div
+    <Skeleton
       v-if="isLoading"
       class="skeleton absolute inset-0"
       :class="props.skeletonClass"

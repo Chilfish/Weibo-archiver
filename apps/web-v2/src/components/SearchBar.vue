@@ -52,8 +52,9 @@ function onSearch() {
     class=""
   >
     <CardContent>
-      <div
+      <form
         class="flex items-center gap-2"
+        @submit.prevent="onSearch"
       >
         <div class="relative w-full md:w-[36rem] items-center">
           <Input
@@ -68,11 +69,11 @@ function onSearch() {
           </span>
         </div>
         <Button
-          @click="onSearch"
+          type="submit"
         >
           搜索
         </Button>
-      </div>
+      </form>
 
       <div
         class="flex justify-between items-center pt-2"

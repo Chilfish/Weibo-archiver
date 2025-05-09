@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue'
+import ImagePreview from '@/components/common/ImagePreview.vue'
+import { useEmoji } from '@/composables'
+import { usePostStore, useUserStore } from '@/stores'
 import { useHead, useSeoMeta } from '@unhead/vue'
-import { computed } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const appName = 'Weibo-Archiver'
@@ -44,6 +47,19 @@ useHead({
 
 const route = useRoute()
 const isIndex = computed(() => route.name === 'index')
+
+const postStore = usePostStore()
+const userStore = useUserStore()
+const { fetchEmojis } = useEmoji()
+const isLoading = ref(false)
+
+onBeforeMount(async () => {
+  isLoading.value = true
+  userStore.load()
+  await postStore.setup()
+  await fetchEmojis()
+  isLoading.value = false
+})
 </script>
 
 <template>
@@ -52,7 +68,9 @@ const isIndex = computed(() => route.name === 'index')
   <SidebarProvider v-else>
     <AppSidebar />
     <RouterView
+      v-if="!isLoading"
       class="py-6 md:px-16 overflow-auto h-[100vh]"
     />
+    <ImagePreview />
   </SidebarProvider>
 </template>

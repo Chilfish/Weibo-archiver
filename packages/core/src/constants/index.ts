@@ -56,3 +56,5 @@ export const DEFAULT_USER_CONFIG: UserConfig = {
   fetchedCount: 0,
   theme: 'winter',
 }
+
+export const DEFAULT_PAGE_SIZE = 10
