@@ -48,17 +48,26 @@ export const usePostStore = defineStore('post', () => {
     return await idb.getCount()
   }
 
-  async function searchPosts(query: SearchQuery): Promise<Post[]> {
+  async function searchPosts(
+    query: SearchQuery,
+    curPage: number,
+    pageSize: number = DEFAULT_PAGE_SIZE,
+  ): Promise<{
+      posts: Post[]
+      total: number
+    }> {
     const timeIdxs = idb.fuse
       .search(query.searchText)
       .map(res => res.item.time)
 
-    const pagedIdxs = timeIdxs.slice()
+    const pagedIdxs = timeIdxs.slice((curPage - 1) * pageSize, curPage * pageSize)
 
     const posts = await idb.getDBPostByTime(pagedIdxs)
 
-    console.log(timeIdxs, posts)
-    return posts
+    return {
+      posts,
+      total: timeIdxs.length,
+    }
   }
 
   return {

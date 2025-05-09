@@ -1,6 +1,7 @@
 import type { DateValue } from '@internationalized/date'
 import { getLocalTimeZone, today } from '@internationalized/date'
 import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 export interface SearchOpts {
   withText: boolean
@@ -31,9 +32,10 @@ export const defaultSearchOpts: SearchOpts = {
 }
 
 export function useSearch() {
+  const route = useRoute()
   const dateRangeShortcutDiff = ref(0)
   const searchOptions = ref<SearchOpts>({ ...defaultSearchOpts })
-  const searchText = ref('')
+  const searchText = ref<string>(route.query.q as string || '')
   const now = today(getLocalTimeZone())
 
   watch([
