@@ -56,25 +56,25 @@ function previewImage(url: string) {
 
         <div class=" flex items-center gap-2 mt-2 ml-auto text-xs text-gray-500">
           <time>
-            发布于 {{ formatDate(comment.created_at) }}
+            发布于 {{ formatDate(comment.createdAt) }}
           </time>
           <div>
-            {{ comment.region_name }}
+            {{ comment.regionName }}
           </div>
 
           <button
-            :title="`点赞 ${comment.like_count}`"
+            :title="`点赞 ${comment.likesCount}`"
             class="ml-1 flex items-center gap-1 hover:text-red-500"
           >
             <Heart class="w-4 h-4" />
-            {{ formatNumber(comment.like_count) }}
+            {{ formatNumber(comment.likesCount) }}
           </button>
           <button
-            :title="`评论 ${comment.comments_count}`"
+            :title="`评论 ${comment.commentsCount}`"
             class="flex items-center gap-1 hover:text-blue-500"
           >
             <MessageCircle class="w-4 h-4" />
-            {{ formatNumber(comment.comments_count) }}
+            {{ formatNumber(comment.commentsCount) }}
           </button>
         </div>
       </div>

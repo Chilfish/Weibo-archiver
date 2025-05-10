@@ -11,9 +11,9 @@ const props = defineProps<{
 }>()
 
 const actions = computed(() => ({
-  likes: props.post.like_count,
-  reposts: props.post.reposts_count,
-  comments: props.post.comments_count,
+  likes: props.post.likesCount,
+  reposts: props.post.repostsCount,
+  comments: props.post.commentsCount,
 }))
 </script>
 
@@ -28,7 +28,7 @@ const actions = computed(() => ({
       />
       <WeiboText :text="post.text" />
       <WeiboCard
-        :post="post.retweeted_status!"
+        :post="post.retweet!"
         :link-card="post.card"
         class="bg-base-200 pb-1"
         is-retweet

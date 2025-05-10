@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { CardInfo } from '@weibo-archiver/core'
+import type { LinkCard } from '@weibo-archiver/core'
 import { computed } from 'vue'
 import LazyImage from '../common/LazyImage.vue'
 
 const props = defineProps<{
-  card: CardInfo
+  card: LinkCard
 }>()
 
 const desc = computed(() => {
