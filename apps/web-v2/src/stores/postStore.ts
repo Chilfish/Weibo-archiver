@@ -43,10 +43,10 @@ export const usePostStore = defineStore('post', () => {
 
     fuse.value = new Fuse(docs, {
       keys: ['text'],
-      ignoreLocation: true,
+      // ignoreLocation: true,
       // shouldSort: false,
       includeScore: true,
-      useExtendedSearch: true,
+      // useExtendedSearch: true,
     }, index)
   }
 
@@ -89,11 +89,13 @@ export const usePostStore = defineStore('post', () => {
       posts: Post[]
       total: number
     }> {
-    const res = fuse.value.search(query.searchText).map(({ item }) => item)
+    const res = fuse.value
+      .search(query.searchText)
+      .filter(item => (item.score || 0) > 0.5)
 
     // console.log(res)
 
-    const idArr = res
+    const idArr = res.map(({ item }) => item)
       .sort((a, b) => b.id.localeCompare(a.id))
       .filter((item) => {
         let timeFilter = true

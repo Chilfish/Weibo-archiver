@@ -20,7 +20,7 @@ const actions = computed(() => ({
 <template>
   <Card
     as="article"
-    class="group"
+    class="group w-full"
   >
     <CardContent>
       <WeiboProfile

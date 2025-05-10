@@ -24,7 +24,7 @@ const rePatterns = {
   url: /^<a target="_blank" href="([^"]+)">([^<]+)<\/a>/,
   plainUrl: /^(https?:\/\/[^\s<]+)/i,
   mention: /^@(\S+)([\n ]{0,2})/,
-  hashtag: /^#([^#]+)#/,
+  hashtag: /^#([^#\n]+)#/,
   emoji: /^\[((?!\[img:\/\/).)*?\]/,
 
   br: /<br ?\/>/g,

@@ -317,7 +317,7 @@ export class WeiboParser {
   }
 
   static migrateFromOld(oldPost: any[], curUid: string): Post[] {
-    const getSource = source => domParser.parseFromString(source, 'text/html').body.textContent || ''
+    const getSource = (source: any) => domParser.parseFromString(source, 'text/html').body.textContent || ''
 
     return oldPost.map((post: any) => {
       if (post.createdAt) {
@@ -337,27 +337,37 @@ export class WeiboParser {
         likesCount: post.like_count,
         repostsCount: post.reposts_count,
         commentsCount: post.comments_count,
-        comments: post.comments,
+        comments: post.comments.map((item: any) => ({
+          id: item.id,
+          text: item.text,
+          createdAt: item.created_at,
+          likesCount: item.like_count || 0,
+          commentsCount: item.comments_count || 0,
+          img: item.img,
+          user: item.user,
+          floor: 0,
+          regionName: item.region_name,
+        } satisfies Comment)),
         source: getSource(post.source),
-        regionName: getSource(post.source),
+        regionName: post.region_name,
         isShowBulletIn: '2',
         retweet: retweet
           ? {
-              createdAt: retweet.created_at,
-              text: retweet.text,
-              id: retweet.id,
-              mblogid: retweet.mblogid,
-              likesCount: retweet.like_count,
-              repostsCount: retweet.reposts_count,
-              commentsCount: retweet.reposts_count,
-              imgs: retweet.imgs,
-              user: retweet.user,
-              source: getSource(retweet.source),
-              regionName: getSource(retweet.source),
-            } as Retweet
+            createdAt: retweet.created_at,
+            text: retweet.text,
+            id: retweet.id,
+            mblogid: retweet.mblogid,
+            likesCount: retweet.like_count,
+            repostsCount: retweet.reposts_count,
+            commentsCount: retweet.reposts_count,
+            imgs: retweet.imgs,
+            user: retweet.user,
+            source: getSource(retweet.source),
+            regionName: retweet.region_name,
+          } satisfies Retweet
           : undefined,
         card: post.card,
-      } as Post
+      } satisfies Post
     })
   }
 }

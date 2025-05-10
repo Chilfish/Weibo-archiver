@@ -27,8 +27,10 @@ onBeforeMount(async () => {
 })
 
 watch(() => postStore.importing, async (importing) => {
-  if (importing === false)
+  if (importing === false) {
     await getPosts()
+    postsTotal.value = await postStore.getAllTotal()
+  }
 })
 
 watch([
@@ -89,7 +91,7 @@ function scrollToTop() {
   >
     <section
       v-if="weiboArr.length > 0"
-      class="flex flex-col gap-4 lg:px-12"
+      class="flex flex-col items-center max-w-[90vw] md:max-w-[70vw] mx-auto gap-4 lg:px-12"
     >
       <Weibo
         v-for="post in weiboArr"

@@ -41,7 +41,7 @@ const isCommentsOpen = ref(false)
 <template>
   <Card
     as="article"
-    class="group"
+    class="group w-full"
   >
     <CardContent>
       <WeiboProfile

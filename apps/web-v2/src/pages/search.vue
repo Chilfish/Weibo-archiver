@@ -81,9 +81,9 @@ onMounted(async () => {
 
     <section
       v-if="weiboArr.length > 0"
-      class="flex flex-col gap-4 lg:px-12"
+      class="flex flex-col items-center max-w-[90vw] md:max-w-[60vw] gap-4 lg:px-12"
     >
-      <div>
+      <div class="flex w-full justify-between">
         <p
           class="font-bold text-lg"
         >
