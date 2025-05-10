@@ -15,8 +15,8 @@ const route = useRoute()
 const router = useRouter()
 
 const isLoading = ref(false)
-const curPage = ref(1)
-const pageSize = ref(DEFAULT_PAGE_SIZE)
+const curPage = ref(Number(route.query.page) || 1)
+const pageSize = ref(Number(route.query.pageSize) || DEFAULT_PAGE_SIZE)
 const postsTotal = ref(0)
 
 const weiboArr = ref<Post[]>([])
@@ -27,8 +27,10 @@ onBeforeMount(async () => {
 })
 
 watch(() => postStore.importing, async (importing) => {
-  if (importing === false)
+  if (importing === false) {
     await getPosts()
+    postsTotal.value = await postStore.getAllTotal()
+  }
 })
 
 watch([
@@ -39,7 +41,7 @@ watch([
     return
   }
   isLoading.value = true
-  await postStore.setup()
+  await userStore.setCurUid(curUid)
 
   curPage.value = 1
   await router.push({
@@ -89,7 +91,7 @@ function scrollToTop() {
   >
     <section
       v-if="weiboArr.length > 0"
-      class="flex flex-col gap-4 lg:px-12"
+      class="flex flex-col items-center max-w-[90vw] md:max-w-[70vw] mx-auto gap-4 lg:px-12"
     >
       <Weibo
         v-for="post in weiboArr"

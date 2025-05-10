@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <WeiboCard
-    v-if="!post.retweeted_status"
+    v-if="!post.retweet"
     :post="post"
   />
   <WeiboRetweet

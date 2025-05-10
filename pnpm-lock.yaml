@@ -77,7 +77,7 @@ importers:
     dependencies:
       axios:
         specifier: ^1.6.8
-        version: 1.6.8
+        version: 1.8.3
       c12:
         specifier: ^3.0.2
         version: 3.0.2(magicast@0.3.5)
@@ -89,7 +89,7 @@ importers:
         version: 3.4.0
       p-queue:
         specifier: ^8.0.1
-        version: 8.0.1
+        version: 8.1.0
     devDependencies:
       '@weibo-archiver/shared':
         specifier: workspace:^
@@ -99,7 +99,7 @@ importers:
     dependencies:
       '@weibo-archiver/core':
         specifier: workspace:^
-        version: link:../../packages/core-v2
+        version: link:../../packages/core
       '@weibo-archiver/shared':
         specifier: workspace:^
         version: link:../../packages/shared
@@ -118,7 +118,7 @@ importers:
         version: 5.2.1(vite@6.2.2(@types/node@20.11.24)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.28.1)(tsx@4.19.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))
       daisyui:
         specifier: ^5.0.3
-        version: 5.0.3
+        version: 5.0.9
       tailwindcss:
         specifier: ^4.0.14
         version: 4.0.14
@@ -151,10 +151,10 @@ importers:
         version: 13.0.0(vue-router@4.5.0(vue@3.5.13(typescript@5.8.2)))(vue@3.5.13(typescript@5.8.2))
       axios:
         specifier: ^1.6.8
-        version: 1.6.8
+        version: 1.8.3
       p-queue:
         specifier: ^8.0.1
-        version: 8.0.1
+        version: 8.1.0
       p-timeout:
         specifier: ^6.1.2
         version: 6.1.2
@@ -176,7 +176,7 @@ importers:
         version: 4.1.1(vite@6.2.2(@types/node@20.11.24)(jiti@2.4.2)(lightningcss@1.29.2)(sass@1.85.1)(terser@5.28.1)(tsx@4.19.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))
       '@weibo-archiver/core':
         specifier: workspace:^
-        version: link:../../packages/core-v2
+        version: link:../../packages/core
       '@weibo-archiver/shared':
         specifier: workspace:^
         version: link:../../packages/shared
@@ -298,6 +298,9 @@ importers:
       destr:
         specifier: ^2.0.3
         version: 2.0.3
+      dexie:
+        specifier: ^4.0.11
+        version: 4.0.11
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -339,7 +342,7 @@ importers:
     dependencies:
       '@weibo-archiver/core':
         specifier: workspace:^
-        version: link:../core-v2
+        version: link:../core
       sass:
         specifier: ^1.85.1
         version: 1.85.1
@@ -2515,9 +2518,6 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.6.8:
-    resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
-
   axios@1.8.3:
     resolution: {integrity: sha512-iP4DebzoNlP/YN2dpwCgb8zoCmhtkajzS48JvwmkSkXvPI3DHc7m+XYL5tGnSlJtR6nImXZmdCuN5aP8dh1d8A==}
 
@@ -2843,9 +2843,6 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
-  daisyui@5.0.3:
-    resolution: {integrity: sha512-27dou80uFNgxVcmQNzS8QFBoE1/01u7N0smdGqA2pHbaRPTFoHdJfXNzilpvt/0jAVu8cMEhrVPoYxpdxLwumA==}
-
   daisyui@5.0.9:
     resolution: {integrity: sha512-RsaehHh45f+0shWgZZaOY09/8eOae2voRsqJCD71j9yrnYgcke0Nj5ys0ZxrW4SPcc4+q96kWyJu0Z8P1zZdoA==}
 
@@ -2939,6 +2936,9 @@ packages:
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
+
+  dexie@4.0.11:
+    resolution: {integrity: sha512-SOKO002EqlvBYYKQSew3iymBoN2EQ4BDw/3yprjh7kAfFzjBYkaMNa/pZvcA7HSWlcKSQb9XhPe3wKyQ0x4A8A==}
 
   doctrine@3.0.0:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
@@ -4328,10 +4328,6 @@ packages:
   p-locate@5.0.0:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
-
-  p-queue@8.0.1:
-    resolution: {integrity: sha512-NXzu9aQJTAzbBqOt2hwsR63ea7yvxJc0PwN/zobNAudYfb1B7R08SzB4TsLeSbUCuG467NhnoT0oO6w1qRO+BA==}
-    engines: {node: '>=18'}
 
   p-queue@8.1.0:
     resolution: {integrity: sha512-mxLDbbGIBEXTJL0zEx8JIylaj3xQ7Z/7eEVjcF9fJX4DBiH9oqe+oahYnlKKxm0Ci9TlWTyhSHgygxMxjIB2jw==}
@@ -8174,14 +8170,6 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@1.6.8:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
   axios@1.8.3:
     dependencies:
       follow-redirects: 1.15.6
@@ -8540,8 +8528,6 @@ snapshots:
 
   csstype@3.1.3: {}
 
-  daisyui@5.0.3: {}
-
   daisyui@5.0.9: {}
 
   date-fns-tz@3.2.0(date-fns@3.6.0):
@@ -8605,6 +8591,8 @@ snapshots:
   devlop@1.1.0:
     dependencies:
       dequal: 2.0.3
+
+  dexie@4.0.11: {}
 
   doctrine@3.0.0:
     dependencies:
@@ -10281,11 +10269,6 @@ snapshots:
   p-locate@5.0.0:
     dependencies:
       p-limit: 3.1.0
-
-  p-queue@8.0.1:
-    dependencies:
-      eventemitter3: 5.0.1
-      p-timeout: 6.1.2
 
   p-queue@8.1.0:
     dependencies:

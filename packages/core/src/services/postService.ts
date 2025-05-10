@@ -110,7 +110,7 @@ export class PostService {
       }
       await onFetched?.({ posts, page, sinceId: this.sinceId, postsTotal: this.postsTotal })
       page++
-      lastPostDate = new Date(posts.at(-1)?.created_at || Date.now())
+      lastPostDate = new Date(posts.at(-1)?.createdAt || Date.now())
 
       if (lastPostDate.getTime() <= endAt.getTime()) {
         break
@@ -120,7 +120,7 @@ export class PostService {
 
     return Array
       .from(allPosts.values())
-      .filter(post => new Date(post.created_at).getTime() >= endAt.getTime())
+      .filter(post => new Date(post.createdAt).getTime() >= endAt.getTime())
   }
 
   async getAllRangePosts(
@@ -208,15 +208,15 @@ export class PostService {
   }
 
   async getComments(
-    postId: number,
-    isShowBulletin: '0' | '2' = '2',
+    postId: string,
+    isShowBulletIn: '0' | '2' = '2',
     count: number = 20,
   ): Promise<Comment[]> {
     const data = await this.fetchService.comments({
       uid: this.uid,
       id: postId,
       count,
-      is_show_bulletin: isShowBulletin,
+      is_show_bulletin: isShowBulletIn,
       flow: '0',
       fetch_level: 0,
       is_mix: '0',
@@ -278,10 +278,10 @@ export class PostService {
 
   private async _setComments(posts: Post[], commentsCount: number) {
     posts.forEach((post) => {
-      if (post.comments_count < 1)
+      if (post.commentsCount < 1)
         return
       this.pqueue.add(() =>
-        this.getComments(post.id, post.is_show_bulletin, commentsCount)
+        this.getComments(post.id, post.isShowBulletIn, commentsCount)
           .catch(() => [] as Comment[])
           .then(comments => post.comments = comments),
       )

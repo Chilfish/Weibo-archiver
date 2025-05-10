@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Meta, User } from '@weibo-archiver/core'
+import type { PostMeta, User } from '@weibo-archiver/core'
 import { useUserStore } from '@/stores'
 import { formatDate } from '@weibo-archiver/shared'
 import { computed } from 'vue'
 import Avatar from '../common/Avatar.vue'
 
 const props = defineProps<{
-  meta: Meta
+  meta: PostMeta
   user?: User
 }>()
 
@@ -30,13 +30,13 @@ const user = computed(() => props.user || userStore.curUser)
         {{ user.name || '未知' }}
       </h3>
       <div class="text-xs text-base-content/80">
-        {{ formatDate(meta.created_at) }}
+        {{ formatDate(meta.createdAt) }}
       </div>
     </div>
 
     <div class="flex items-center ml-auto text-xs text-base-content/80 gap-2">
       <a
-        :href="meta.detail_url"
+        :href="`https://weibo.com/detail/${meta.id}`"
         target="_blank"
         rel="noopener noreferrer"
         class="hover:text-primary hidden group-hover:block select-none"
@@ -45,7 +45,7 @@ const user = computed(() => props.user || userStore.curUser)
       </a>
 
       <span>
-        {{ meta.region_name }}
+        {{ meta.regionName }}
       </span>
     </div>
   </div>

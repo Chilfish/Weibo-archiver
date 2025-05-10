@@ -1,8 +1,8 @@
 import type {
-  CardInfo,
   Comment,
-  Meta,
+  LinkCard,
   Post,
+  PostMeta,
   RawFollowingUser,
   RawMyFollowUser,
   Retweet,
@@ -16,6 +16,8 @@ import type {
   RawRetweetedStatus,
   RawUrlStruct,
 } from '../types/raw'
+
+const domParser = new DOMParser()
 
 /**
  * 用户解析器类
@@ -80,21 +82,27 @@ export class PostParser {
     const text = PostParser.parseText(rawPost.text_raw, rawPost.url_struct || [])
     const imgs = PostParser.parseImage(rawPost)
     const card = PostParser.parseLinkCard(rawPost)
+    const user = UserParser.parseFromPost(rawPost)!
 
-    const detail_url = `https://weibo.com/detail/${rawPost.idstr}`
-    const { reposts_count, comments_count, attitudes_count: like_count } = rawPost
+    const {
+      reposts_count,
+      comments_count,
+      attitudes_count,
+      is_show_bulletin,
+    } = rawPost
 
     return {
       ...meta,
-      detail_url,
+      userId: user.uid,
       mblogid,
       text,
       imgs,
-      reposts_count,
-      comments_count,
-      like_count,
+      isShowBulletIn: is_show_bulletin.toString() as any,
+      repostsCount: reposts_count,
+      commentsCount: comments_count,
+      likesCount: attitudes_count,
       card,
-      retweeted_status,
+      retweet: retweeted_status,
       comments: [],
     }
   }
@@ -113,23 +121,21 @@ export class PostParser {
     const imgs = PostParser.parseImage(rawPost as any)
     const user = UserParser.parseFromPost(rawPost)
 
-    const detail_url = `https://weibo.com/detail/${rawPost.idstr}`
     const { reposts_count, comments_count, attitudes_count: like_count } = rawPost
 
     return {
       ...meta,
-      detail_url,
       mblogid,
       text,
       imgs,
-      reposts_count,
-      comments_count,
-      like_count,
+      repostsCount: reposts_count,
+      commentsCount: comments_count,
+      likesCount: like_count,
       user,
     }
   }
 
-  static parseMeta(rawPost: RawPost | RawRetweetedStatus): Meta {
+  static parseMeta(rawPost: RawPost | RawRetweetedStatus): PostMeta {
     const {
       id,
       region_name,
@@ -137,11 +143,13 @@ export class PostParser {
       source,
     } = rawPost
 
+    const sourceText = domParser.parseFromString(source, 'text/html').body.textContent
+
     return {
-      id: Number(id),
-      region_name,
-      created_at,
-      source,
+      id: id.toString(),
+      regionName: region_name,
+      createdAt: created_at,
+      source: sourceText || source,
     }
   }
 
@@ -196,7 +204,7 @@ export class PostParser {
     return imageUrls
   }
 
-  static parseLinkCard(rawPost: RawPost): CardInfo | undefined {
+  static parseLinkCard(rawPost: RawPost): LinkCard | undefined {
     const rawPageInfo = rawPost.page_info
     if (!rawPageInfo) {
       return undefined
@@ -246,14 +254,14 @@ export class PostParser {
     } = rawComment
 
     return {
-      id,
+      id: id.toString(),
       text,
       img,
-      created_at,
-      region_name,
-      floor_number,
-      comments_count,
-      like_count,
+      createdAt: created_at,
+      regionName: region_name,
+      floor: floor_number,
+      commentsCount: comments_count,
+      likesCount: like_count,
       user,
     }
   }
@@ -294,7 +302,7 @@ export class WeiboParser {
         // const { textImg } = PostParser(post.text)
         return [
           post.imgs,
-          post.retweeted_status?.imgs,
+          post.retweet?.imgs,
           post.comments.map(e => e.img),
           post.card?.img,
           // textImg,
@@ -306,5 +314,60 @@ export class WeiboParser {
       .sort()
 
     return new Set(imgs)
+  }
+
+  static migrateFromOld(oldPost: any[], curUid: string): Post[] {
+    const getSource = (source: any) => domParser.parseFromString(source, 'text/html').body.textContent || ''
+
+    return oldPost.map((post: any) => {
+      if (post.createdAt) {
+        post.curUid = curUid
+        return post
+      }
+
+      const retweet = post.retweeted_status
+
+      return {
+        id: post.id,
+        userId: curUid,
+        text: post.text,
+        createdAt: post.created_at,
+        imgs: post.imgs,
+        mblogid: post.mblogid,
+        likesCount: post.like_count,
+        repostsCount: post.reposts_count,
+        commentsCount: post.comments_count,
+        comments: post.comments.map((item: any) => ({
+          id: item.id,
+          text: item.text,
+          createdAt: item.created_at,
+          likesCount: item.like_count || 0,
+          commentsCount: item.comments_count || 0,
+          img: item.img,
+          user: item.user,
+          floor: 0,
+          regionName: item.region_name,
+        } satisfies Comment)),
+        source: getSource(post.source),
+        regionName: post.region_name,
+        isShowBulletIn: '2',
+        retweet: retweet
+          ? {
+            createdAt: retweet.created_at,
+            text: retweet.text,
+            id: retweet.id,
+            mblogid: retweet.mblogid,
+            likesCount: retweet.like_count,
+            repostsCount: retweet.reposts_count,
+            commentsCount: retweet.reposts_count,
+            imgs: retweet.imgs,
+            user: retweet.user,
+            source: getSource(retweet.source),
+            regionName: retweet.region_name,
+          } satisfies Retweet
+          : undefined,
+        card: post.card,
+      } satisfies Post
+    })
   }
 }
