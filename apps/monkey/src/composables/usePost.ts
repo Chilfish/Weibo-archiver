@@ -1,7 +1,8 @@
 import type { Post, UID, UserBio } from '@weibo-archiver/core'
 import type { FetchProgress } from '../types'
-import { EmptyIDB, exportData, IDB } from '@weibo-archiver/core'
+import { exportData } from '@weibo-archiver/core'
 import { computed, reactive, toRaw } from 'vue'
+import { IDB } from './idb'
 import { config, useConfig } from './useConfig'
 import { userService } from './useFetch'
 
@@ -9,7 +10,7 @@ const { updateConfig } = useConfig()
 
 export const postState = reactive({
   pageSize: 20,
-  idb: new EmptyIDB() as IDB,
+  idb: new IDB(),
 })
 
 // Export progress for use in other components
@@ -24,7 +25,7 @@ export function usePost() {
     if (postState.idb.name === wrappedUid)
       return
 
-    postState.idb = new IDB(wrappedUid)
+    postState.idb.setup(wrappedUid)
     await postState.idb.clearFollowings()
     await waitForDBInitialization()
     console.log('DB initialized', postState.idb, config.value)

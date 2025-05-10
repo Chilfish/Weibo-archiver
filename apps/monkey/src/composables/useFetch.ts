@@ -52,7 +52,7 @@ export async function startFetch() {
             .filter((post) => {
               if (hasRepost)
                 return true
-              return !!post.retweeted_status?.mblogid
+              return !!post.retweet?.mblogid
             })
             .map(postStore.addPost),
         )
