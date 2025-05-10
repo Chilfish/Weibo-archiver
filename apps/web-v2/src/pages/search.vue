@@ -7,6 +7,7 @@ import Weibo from '@/components/weibo/Weibo.vue'
 import { useSearch } from '@/composables/useSearch'
 import { usePostStore } from '@/stores'
 import { DEFAULT_PAGE_SIZE } from '@weibo-archiver/core'
+import { SearchIcon } from 'lucide-vue-next'
 import { onMounted, ref, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -80,6 +81,14 @@ onMounted(async () => {
       v-if="weiboArr.length > 0"
       class="flex flex-col gap-4 lg:px-12"
     >
+      <div>
+        <p
+          class="font-bold text-lg"
+        >
+          搜索结果：{{ weiboArr.length }} 条微博
+        </p>
+      </div>
+
       <Weibo
         v-for="post in weiboArr"
         :key="post.id"
@@ -95,8 +104,22 @@ onMounted(async () => {
       />
     </section>
 
-    <div v-if="!weiboArr.length && !isLoading">
+    <div v-if="!weiboArr.length && !isLoading && searchQuery.searchText">
       暂无微博
+    </div>
+    <div
+      v-else-if="!searchQuery.searchText"
+      class="flex flex-col items-center mt-12"
+    >
+      <SearchIcon class="size-16 text-accent" />
+      <p
+        class="text-xl font-bold my-4"
+      >
+        搜索您的微博
+      </p>
+      <p class="text-secondary-foreground">
+        输入关键词开始搜索您的微博内容
+      </p>
     </div>
   </main>
 </template>

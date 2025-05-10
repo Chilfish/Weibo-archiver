@@ -129,7 +129,7 @@ const Hashtag = defineComponent({
   setup(props) {
     return () => (
       <Link
-        url={`https://s.weibo.com/weibo?q=%23${props.topic}%23`}
+        url={`/search?q=%23${props.topic}%23`}
         text={`#${props.topic}#`}
       />
     )
