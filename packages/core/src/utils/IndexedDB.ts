@@ -13,9 +13,9 @@ export class IndexedDB extends Dexie {
     super('Weibo-archiver')
 
     this.version(1).stores({
-      users: '++id, &uid, createdAt',
-      posts: '++id, userId, createdAt',
-      followings: '++id, followBy',
+      users: '++pid, &uid, createdAt',
+      posts: '++pid, userId, createdAt',
+      followings: '++pid, followBy',
     })
   }
 
@@ -55,21 +55,36 @@ export class IndexedDB extends Dexie {
     return this.users.toArray()
   }
 
+  async getAllPosts(): Promise<Post[]> {
+    return this.postQuery.toArray()
+  }
+
   async getPosts(
     page: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
   ): Promise<Post[]> {
-    return this.posts
-      .where('userId')
-      .equals(this.curUser.uid)
+    return this.postQuery
       .offset((page - 1) * pageSize)
       .limit(pageSize)
       .reverse()
       .toArray()
   }
 
+  async getPostsByIds(idArr: string[]): Promise<Post[]> {
+    return this.postQuery
+      .and(post => idArr.includes(post.id.toString()))
+      .reverse()
+      .sortBy('id')
+  }
+
   async getAllPostsCount(): Promise<number> {
     return this.posts.count()
+  }
+
+  private get postQuery() {
+    return this.posts
+      .where('userId')
+      .equals(this.curUser.uid)
   }
 }
 

@@ -84,7 +84,12 @@ export class PostParser {
     const card = PostParser.parseLinkCard(rawPost)
     const user = UserParser.parseFromPost(rawPost)!
 
-    const { reposts_count, comments_count, attitudes_count, is_show_bulletin } = rawPost
+    const {
+      reposts_count,
+      comments_count,
+      attitudes_count,
+      is_show_bulletin,
+    } = rawPost
 
     return {
       ...meta,
@@ -309,5 +314,50 @@ export class WeiboParser {
       .sort()
 
     return new Set(imgs)
+  }
+
+  static migrateFromOld(oldPost: any[], curUid: string): Post[] {
+    const getSource = source => domParser.parseFromString(source, 'text/html').body.textContent || ''
+
+    return oldPost.map((post: any) => {
+      if (post.createdAt) {
+        post.curUid = curUid
+        return post
+      }
+
+      const retweet = post.retweeted_status
+
+      return {
+        id: post.id,
+        userId: curUid,
+        text: post.text,
+        createdAt: post.created_at,
+        imgs: post.imgs,
+        mblogid: post.mblogid,
+        likesCount: post.like_count,
+        repostsCount: post.reposts_count,
+        commentsCount: post.comments_count,
+        comments: post.comments,
+        source: getSource(post.source),
+        regionName: getSource(post.source),
+        isShowBulletIn: '2',
+        retweet: retweet
+          ? {
+              createdAt: retweet.created_at,
+              text: retweet.text,
+              id: retweet.id,
+              mblogid: retweet.mblogid,
+              likesCount: retweet.like_count,
+              repostsCount: retweet.reposts_count,
+              commentsCount: retweet.reposts_count,
+              imgs: retweet.imgs,
+              user: retweet.user,
+              source: getSource(retweet.source),
+              regionName: getSource(retweet.source),
+            } as Retweet
+          : undefined,
+        card: post.card,
+      } as Post
+    })
   }
 }

@@ -62,6 +62,8 @@ function scrollToTop() {
 }
 
 onMounted(async () => {
+  await postStore.setupFuse()
+
   if (route.query.q) {
     await searchPosts()
   }
