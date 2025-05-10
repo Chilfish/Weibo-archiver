@@ -34,11 +34,9 @@ export class IDB {
     this.name = name
     this.idb = openDB<AppDB>(name, version, {
       upgrade(db, _oldVer) {
-        if (!db.objectStoreNames.contains(USER_STORE))
-          db.createObjectStore(USER_STORE, { keyPath: 'uid' })
-
-        if (!db.objectStoreNames.contains(FLOWERINGS_STORE))
-          db.createObjectStore(FLOWERINGS_STORE, { keyPath: 'uid' })
+        db.createObjectStore(POST_STORE, { keyPath: 'id' })
+        db.createObjectStore(USER_STORE, { keyPath: 'uid' })
+        db.createObjectStore(FLOWERINGS_STORE, { keyPath: 'uid' })
       },
     })
   }

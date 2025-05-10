@@ -1,6 +1,6 @@
 import type { SearchQuery } from '@/composables/useSearch'
 import type { ImportedData, Post } from '@weibo-archiver/core'
-import { DEFAULT_PAGE_SIZE, IDB } from '@weibo-archiver/core'
+import { DEFAULT_PAGE_SIZE, IndexedDB } from '@weibo-archiver/core'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -11,15 +11,14 @@ export const usePostStore = defineStore('post', () => {
 
   const userStore = useUserStore()
 
-  const idb = new IDB()
+  const idb = new IndexedDB()
 
   async function setup() {
-    idb.setup(userStore.curUid)
+    if (userStore.curUid) {
+      await idb.setCurUser(userStore.curUid)
+    }
 
-    const posts = await idb.getAllDBPosts()
-    idb.buildSearch(posts)
-
-    console.log('setting up', userStore.curUid)
+    console.log('setting up', idb.curUser)
   }
 
   async function parseAndImport(jsonStr: string): Promise<void> {
@@ -28,10 +27,11 @@ export const usePostStore = defineStore('post', () => {
 
     const { user, followings, weibo } = data
     userStore.importUser(user)
+    await idb.addUser(user)
     await setup()
 
     await idb.addFollowings(followings)
-    await idb.addDBPosts(weibo)
+    await idb.addPosts(weibo)
 
     console.log(weibo.length, user, followings.length)
     importing.value = false
@@ -41,11 +41,15 @@ export const usePostStore = defineStore('post', () => {
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
   ): Promise<Post[]> {
-    return await idb.getDBPosts(curPage, pageSize)
+    if (!idb.curUid) {
+      return []
+    }
+
+    return await idb.getPosts(curPage, pageSize)
   }
 
   async function getAllTotal(): Promise<number> {
-    return await idb.getCount()
+    return await idb.getAllPostsCount()
   }
 
   async function searchPosts(
@@ -56,17 +60,9 @@ export const usePostStore = defineStore('post', () => {
       posts: Post[]
       total: number
     }> {
-    const timeIdxs = idb.fuse
-      .search(query.searchText)
-      .map(res => res.item.time)
-
-    const pagedIdxs = timeIdxs.slice((curPage - 1) * pageSize, curPage * pageSize)
-
-    const posts = await idb.getDBPostByTime(pagedIdxs)
-
     return {
-      posts,
-      total: timeIdxs.length,
+      posts: [],
+      total: 0,
     }
   }
 

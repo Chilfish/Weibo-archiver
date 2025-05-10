@@ -85,7 +85,7 @@ onMounted(async () => {
         <p
           class="font-bold text-lg"
         >
-          搜索结果：{{ weiboArr.length }} 条微博
+          搜索结果：{{ postsTotal }} 条微博
         </p>
       </div>
 

@@ -6,6 +6,7 @@ export * from './export'
 export * from './fetch'
 export * from './image'
 export * from './import'
+export * from './IndexedDB'
 export * from './message'
 export * from './storage'
 
