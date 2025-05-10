@@ -2,7 +2,7 @@
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
 import { useEmoji } from '@/composables'
-import { usePostStore, useUserStore } from '@/stores'
+import { useUserStore } from '@/stores'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -48,15 +48,13 @@ useHead({
 const route = useRoute()
 const isIndex = computed(() => route.name === 'index')
 
-const postStore = usePostStore()
 const userStore = useUserStore()
 const { fetchEmojis } = useEmoji()
 const isLoading = ref(false)
 
 onBeforeMount(async () => {
   isLoading.value = true
-  userStore.load()
-  await postStore.setup()
+  await userStore.load()
   await fetchEmojis()
   isLoading.value = false
 })

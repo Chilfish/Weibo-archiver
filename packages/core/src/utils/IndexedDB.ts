@@ -33,11 +33,14 @@ export class IndexedDB extends Dexie {
   }
 
   async addUser(user: UserInfo) {
-    await this.users.add(user)
+    await this.users.put(user).catch('ConstraintError', async () => {
+      const [key] = await this.users.where('uid').equals(user.uid).primaryKeys()
+      await this.users.update(key, user)
+    })
   }
 
   async addPosts(posts: Post[]) {
-    await this.posts.bulkAdd(posts)
+    await this.posts.bulkPut(posts)
   }
 
   async addFollowings(users: User[]) {
@@ -45,7 +48,11 @@ export class IndexedDB extends Dexie {
       (user as Followings).followBy = this.curUid
       return user as Followings
     })
-    await this.followings.bulkAdd(data)
+    await this.followings.bulkPut(data)
+  }
+
+  async getUsers(): Promise<UserInfo[]> {
+    return this.users.toArray()
   }
 
   async getPosts(
@@ -65,3 +72,5 @@ export class IndexedDB extends Dexie {
     return this.posts.count()
   }
 }
+
+export const idb = new IndexedDB()

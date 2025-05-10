@@ -15,8 +15,8 @@ const route = useRoute()
 const router = useRouter()
 
 const isLoading = ref(false)
-const curPage = ref(1)
-const pageSize = ref(DEFAULT_PAGE_SIZE)
+const curPage = ref(Number(route.query.page) || 1)
+const pageSize = ref(Number(route.query.pageSize) || DEFAULT_PAGE_SIZE)
 const postsTotal = ref(0)
 
 const weiboArr = ref<Post[]>([])
@@ -39,7 +39,7 @@ watch([
     return
   }
   isLoading.value = true
-  await postStore.setup()
+  await userStore.setCurUid(curUid)
 
   curPage.value = 1
   await router.push({

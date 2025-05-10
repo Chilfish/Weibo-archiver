@@ -1,6 +1,6 @@
 import type { SearchQuery } from '@/composables/useSearch'
 import type { ImportedData, Post } from '@weibo-archiver/core'
-import { DEFAULT_PAGE_SIZE, IndexedDB } from '@weibo-archiver/core'
+import { DEFAULT_PAGE_SIZE, idb } from '@weibo-archiver/core'
 import { destr } from 'destr'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -8,28 +8,15 @@ import { useUserStore } from './userStore'
 
 export const usePostStore = defineStore('post', () => {
   const importing = ref(true)
-
   const userStore = useUserStore()
-
-  const idb = new IndexedDB()
-
-  async function setup() {
-    if (userStore.curUid) {
-      await idb.setCurUser(userStore.curUid)
-    }
-
-    console.log('setting up', idb.curUser)
-  }
 
   async function parseAndImport(jsonStr: string): Promise<void> {
     importing.value = true
     const data = destr<ImportedData>(jsonStr, { strict: true })
 
     const { user, followings, weibo } = data
-    userStore.importUser(user)
-    await idb.addUser(user)
-    await setup()
 
+    await userStore.importUser(user)
     await idb.addFollowings(followings)
     await idb.addPosts(weibo)
 
@@ -69,7 +56,6 @@ export const usePostStore = defineStore('post', () => {
   return {
     importing,
 
-    setup,
     getPosts,
     getAllTotal,
     searchPosts,
