@@ -2,7 +2,7 @@
 import type { CSSProperties } from 'vue'
 import { replaceImg } from '@/composables'
 import { useIntersectionObserver } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 
 type Numberish = number | string
 type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'
@@ -23,8 +23,6 @@ interface Props {
   alt?: string
   style?: CSSProperties
   class?: ClassName
-  wrapperClass?: ClassName
-  skeletonClass?: ClassName
   /**
    * 是否使用原始 src，默认会使用用户设置的图床链接处理
    */
@@ -35,9 +33,10 @@ const props = defineProps<Props>()
 const emit = defineEmits<{
   click: []
   load: []
+  error: [string]
 }>()
 
-const imgRef = ref<HTMLImageElement>()
+const imgRef = useTemplateRef<HTMLElement>('imgRef')
 const isLoading = ref(true)
 const imgSrc = ref('')
 const imgWidth = ref<Numberish | undefined>(0)
@@ -57,40 +56,38 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       imgHeight.value = props.height
       emit('load')
       img.remove()
+      imgRef.value!.remove()
     }
-    img.onerror = () => {
+    img.onerror = (e: any) => {
       isLoading.value = true
+      emit('error', e)
     }
   }
 })
 </script>
 
 <template>
-  <div
-    class="relative" :class="[props.wrapperClass]"
+  <div ref="imgRef" />
+  <img
+    v-show="!isLoading"
+    :src="imgSrc"
+    v-bind="{
+      alt: props.alt,
+      crossorigin: props.crossorigin,
+      decoding: props.decoding,
+      referrerpolicy: props.referrerpolicy,
+      sizes: props.sizes,
+      srcset: props.srcset,
+      usemap: props.usemap,
+    }"
+    :class="props.class"
+    :style="props.style"
+    loading="lazy"
+    class="object-cover"
+    @click="emit('click')"
   >
-    <img
-      ref="imgRef"
-      :src="imgSrc"
-      v-bind="{
-        alt: props.alt,
-        crossorigin: props.crossorigin,
-        decoding: props.decoding,
-        referrerpolicy: props.referrerpolicy,
-        sizes: props.sizes,
-        srcset: props.srcset,
-        usemap: props.usemap,
-      }"
-      :class="props.class"
-      :style="props.style"
-      loading="lazy"
-      class="object-cover"
-      @click="emit('click')"
-    >
-    <Skeleton
-      v-if="isLoading"
-      class="skeleton absolute inset-0"
-      :class="props.skeletonClass"
-    />
-  </div>
+  <Skeleton
+    v-if="isLoading"
+    :class="props.class"
+  />
 </template>

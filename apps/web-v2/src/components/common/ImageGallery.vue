@@ -62,7 +62,6 @@ const gridClass = computed(() => {
       :key="image.src"
       :src="image.src.replace('/large/', '/orj360/')"
       :alt="image.alt"
-      :skeleton-class="imgSize"
       :class="imgSize"
       @click="handleClick(image.src, index)"
     />

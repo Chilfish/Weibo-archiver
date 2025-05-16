@@ -66,12 +66,6 @@ export function replaceImg(src: string, forceCdn = false) {
     return src
   }
 
-  // 头像就直接用 cdn 的了
-  if (src.includes('sinaimg.cn/crop')) {
-    const { pathname, origin } = new URL(src)
-    return `${imgCdn}/${origin}${pathname}`
-  }
-
   // 使用 ipfs cdn
   if (imgHost === 'cdn' || forceCdn) {
     if (src.includes('sinaimg.cn')) {

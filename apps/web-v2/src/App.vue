@@ -4,6 +4,7 @@ import ImagePreview from '@/components/common/ImagePreview.vue'
 import { useEmoji } from '@/composables'
 import { useUserStore } from '@/stores'
 import { useHead, useSeoMeta } from '@unhead/vue'
+import { useDark } from '@vueuse/core'
 import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -45,6 +46,7 @@ useHead({
   ],
 })
 
+const _isDark = useDark()
 const route = useRoute()
 const isIndex = computed(() => route.name === 'index')
 
@@ -67,7 +69,7 @@ onBeforeMount(async () => {
     <AppSidebar />
     <RouterView
       v-if="!isLoading"
-      class="py-6 md:px-16 overflow-auto h-[100vh]"
+      class="m-6 overflow-auto h-[100vh] w-full"
     />
     <ImagePreview />
   </SidebarProvider>

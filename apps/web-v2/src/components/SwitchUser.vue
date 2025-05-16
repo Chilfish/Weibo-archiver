@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserInfo } from '@weibo-archiver/shared'
+import type { UserInfo } from '@weibo-archiver/core'
 import { onImportData } from '@weibo-archiver/core'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
 import { computed } from 'vue'

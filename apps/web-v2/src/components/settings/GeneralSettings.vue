@@ -4,7 +4,17 @@ import ImportData from '@/components/common/ImportData.vue'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { config } from '@/composables'
-import { Download, Trash2, Upload } from 'lucide-vue-next'
+import { useDark, useToggle } from '@vueuse/core'
+import {
+  DatabaseBackupIcon,
+  DownloadIcon,
+  LinkIcon,
+  MoonIcon,
+  PaletteIcon,
+  SunIcon,
+  Trash2Icon,
+  UploadIcon,
+} from 'lucide-vue-next'
 import ImageSourceOption from './ImageSourceOption.vue'
 
 interface TImageSourceOption {
@@ -46,12 +56,16 @@ const imageSourceOptions: TImageSourceOption[] = [
 function onReset() {
   // postStore.clearDB()
 }
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
   <div class="space-y-6">
     <section>
-      <h3 class="font-bold text-xl mb-2">
+      <h3 class="font-bold text-xl mb-4">
+        <LinkIcon class="inline-block" />
         图片链接设置
       </h3>
       <div class="space-y-2">
@@ -70,7 +84,29 @@ function onReset() {
     </section>
 
     <section>
-      <h3 class="font-bold text-xl mb-2">
+      <h3 class="font-bold text-xl mb-4">
+        <PaletteIcon class="inline-block" />
+        主题
+      </h3>
+
+      <Button
+        class="w-fit px-2"
+        size="icon"
+        variant="outline"
+        @click="toggleDark()"
+      >
+        <template v-if="isDark">
+          <MoonIcon />  深色模式
+        </template>
+        <template v-else>
+          <SunIcon /> 浅色模式
+        </template>
+      </Button>
+    </section>
+
+    <section>
+      <h3 class="font-bold text-xl mb-4">
+        <DatabaseBackupIcon class="inline-block" />
         数据管理
       </h3>
 
@@ -79,11 +115,11 @@ function onReset() {
           class="relative"
         >
           <ImportData />
-          <Upload />导入数据
+          <UploadIcon />导入数据
         </Button>
 
         <Button>
-          <Download />导出数据
+          <DownloadIcon />导出数据
         </Button>
 
         <Dialog>
@@ -91,7 +127,7 @@ function onReset() {
             <Button
               variant="destructive"
             >
-              <Trash2 />重置所有数据
+              <Trash2Icon />重置所有数据
             </Button>
           </DialogTrigger>
 

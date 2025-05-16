@@ -94,7 +94,7 @@ function onSearch() {
           v-model="searchText"
           type="text"
           placeholder="搜索微博..."
-          class="pl-8 bg-secondary rounded-xl h-12 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
+          class="pl-8 bg-card rounded-xl h-12 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
         />
         <span
           class="absolute start-0 inset-y-0 flex items-center justify-center px-2"

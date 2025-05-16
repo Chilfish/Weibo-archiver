@@ -21,7 +21,6 @@ const sizeClass = computed(() => {
       :alt="props.alt || '用户头像'"
       class="rounded-full"
       :class="[sizeClass, props.class]"
-      :skeleton-class="[sizeClass, 'rounded-full absolute inset-0']"
     />
   </div>
 </template>
