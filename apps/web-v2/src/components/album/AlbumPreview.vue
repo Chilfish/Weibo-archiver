@@ -4,64 +4,80 @@ import type { Post } from '@weibo-archiver/core'
 import AlbumPreviewWeibo from '@/components/album/AlbumPreviewWeibo.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import { emitter } from '@/composables'
-import { usePostStore } from '@/stores'
 import { useEventListener } from '@vueuse/core'
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 
+const emits = defineEmits<{
+  nextPage: [(newPots: Post[]) => any]
+}>()
+
 const fabCss = `absolute rounded-full backdrop-blur text-white bg-[#000000aa] hover:bg-[#000000] hover:text-white`
 
-const postStore = usePostStore()
-
-const images = ref<string[]>([])
-const curIndex = ref(0)
+const posts = ref<Post[]>([])
+const curImgIdx = ref(0)
+const curPostIdx = ref(0)
 const isOpen = ref(false)
+const hasNextPost = ref(true)
 
-const curPost = ref<Post>()
-const curImage = computed(() => images.value[curIndex.value] || '')
+const curPost = computed<Post>(() => posts.value[curPostIdx.value])
+const curImagesLen = computed<number>(() => curPost.value.imgs.length)
+const curImage = computed<string>(() => curPost.value.imgs[curImgIdx.value] || '')
+const dontHasPrevPost = computed<boolean>(() => curPostIdx.value < 1)
 
 async function openImagePreview(event: AlbumPreviewEvent) {
   console.log(event)
 
-  curPost.value = await postStore.getPostById(event.postId)
-  console.log(curPost.value)
-  if (!curPost.value) {
-    return
-  }
-
-  images.value = curPost.value.imgs
-  curIndex.value = event.idxOfImg
+  curImgIdx.value = event.idxOfImg
+  curPostIdx.value = event.idxOfPost
+  posts.value = [...event.posts]
   isOpen.value = true
 }
 
 function nextImage() {
-  if (curIndex.value < images.value.length - 1) {
-    curIndex.value++
+  if (curImgIdx.value < curImagesLen.value - 1) {
+    curImgIdx.value += 1
   }
   else {
-    curIndex.value = 0
+    curImgIdx.value = 0
+    curPostIdx.value += 1
+  }
+
+  if (curPostIdx.value === posts.value.length) {
+    emits('nextPage', (newPosts) => {
+      if (newPosts.length < 1) {
+        hasNextPost.value = false
+      }
+      posts.value.push(...newPosts)
+    })
   }
 }
 
 function prevImage() {
-  if (curIndex.value > 0) {
-    curIndex.value--
+  if (curImgIdx.value > 0) {
+    curImgIdx.value -= 1
   }
   else {
-    curIndex.value = images.value.length - 1
+    curPostIdx.value -= 1
+    curImgIdx.value = curImagesLen.value - 1
   }
 }
 
 useEventListener(window, 'keydown', (e) => {
-  if (e.key === 'ArrowLeft') {
+  if (e.key === 'ArrowLeft' && !dontHasPrevPost.value) {
     prevImage()
   }
-  else if (e.key === 'ArrowRight') {
+  else if (e.key === 'ArrowRight' && hasNextPost.value) {
     nextImage()
   }
 })
 
 emitter.on('open-album-preview', openImagePreview)
+
+function closePreview() {
+  isOpen.value = false
+  posts.value = []
+}
 </script>
 
 <template>
@@ -78,18 +94,19 @@ emitter.on('open-album-preview', openImagePreview)
       >
         <div
           class="relative flex flex-col gap-4 justify-center items-center w-[70vw] h-full bg-[#0000009e] backdrop-blur"
-          @click.self="isOpen = false"
+          @click.self="closePreview"
         >
           <Button
             variant="ghost"
             size="icon"
             class="top-4 left-4"
             :class="fabCss"
-            @click="isOpen = false"
+            @click="closePreview"
           >
             <XIcon />
           </Button>
           <Button
+            v-if="!dontHasPrevPost"
             variant="ghost"
             size="icon"
             class="top-50% left-4"
@@ -99,6 +116,7 @@ emitter.on('open-album-preview', openImagePreview)
             <ArrowLeftIcon />
           </Button>
           <Button
+            v-if="hasNextPost"
             variant="ghost"
             size="icon"
             class="top-50% right-4"
@@ -115,6 +133,7 @@ emitter.on('open-album-preview', openImagePreview)
         </div>
 
         <AlbumPreviewWeibo
+          :key="curPost.mblogid"
           class="h-full w-[30vw]"
           :post="curPost"
         />

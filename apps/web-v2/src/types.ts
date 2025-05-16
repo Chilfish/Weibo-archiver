@@ -1,11 +1,14 @@
+import type { Post } from '@weibo-archiver/core'
+
 export interface ImagePreviewEvent {
   index: number
   imgs: string[]
 }
 
 export interface AlbumPreviewEvent {
-  postId: string
+  idxOfPost: number
   idxOfImg: number
+  posts: Post[]
 }
 
 export interface AppConfig {

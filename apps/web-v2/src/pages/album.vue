@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
 import AlbumPhotos from '@/components/album/AlbumPhotos.vue'
+import AlbumPreview from '@/components/album/AlbumPreview.vue'
 import { Button } from '@/components/ui/button'
 import { usePostStore } from '@/stores'
 import { useIntersectionObserver } from '@vueuse/core'
@@ -34,8 +35,10 @@ watch(() => route.query.page, async (newPage) => {
 async function getPosts() {
   isLoading.value = true
   const posts = await postStore.getPosts(curPage.value, pageSize)
+    .then(posts => posts.filter(post => post.imgs.length > 0))
   weiboArr.value.push(...posts)
   isLoading.value = false
+  return posts
 }
 
 async function loadingMore() {
@@ -45,7 +48,7 @@ async function loadingMore() {
       page: curPage.value,
     },
   }))
-  await getPosts()
+  return await getPosts()
 }
 
 const loadMoreBtn = useTemplateRef('loadMoreBtn')
@@ -73,8 +76,15 @@ useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
       class="mt-2"
     >
       <AlbumPhotos :posts="weiboArr" />
+      <AlbumPreview
+        @next-page="async (cb) => {
+          const newPosts = await loadingMore()
+          cb(newPosts)
+        }"
+      />
 
       <Button
+        v-if="!isLoading"
         ref="loadMoreBtn"
         class="mt-4 mx-auto block"
         variant="outline"

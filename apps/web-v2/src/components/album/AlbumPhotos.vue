@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { AlbumPreviewEvent } from '@/types'
 import type { Post } from '@weibo-archiver/core'
-import AlbumPreview from '@/components/album/AlbumPreview.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import { emitter } from '@/composables'
 import { computed } from 'vue'
@@ -10,11 +9,14 @@ const props = defineProps<{
   posts: Post[]
 }>()
 
-const medias = computed(() => props.posts.flatMap(post => post.imgs.map((img, idx) => ({
-  postId: post.mblogid,
-  src: img,
-  idx,
-}))))
+const medias = computed(() => props.posts.flatMap((post, postIdx) =>
+  post.imgs.map((img, idx) => ({
+    postId: post.mblogid,
+    postIdx,
+    src: img,
+    idx,
+  }))),
+)
 
 function openPreview(event: AlbumPreviewEvent) {
   emitter.emit('open-album-preview', event)
@@ -35,12 +37,11 @@ function openPreview(event: AlbumPreviewEvent) {
         alt="image"
         class="rounded-xl h-full w-full"
         @click="openPreview({
-          postId: media.postId,
+          idxOfPost: media.postIdx,
           idxOfImg: media.idx,
+          posts: props.posts,
         })"
       />
     </div>
-
-    <AlbumPreview />
   </div>
 </template>
