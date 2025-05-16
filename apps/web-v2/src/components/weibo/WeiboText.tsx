@@ -349,3 +349,5 @@ export const WeiboText = defineComponent({
     )
   },
 })
+
+export default WeiboText

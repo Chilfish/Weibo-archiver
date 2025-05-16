@@ -3,6 +3,11 @@ export interface ImagePreviewEvent {
   imgs: string[]
 }
 
+export interface AlbumPreviewEvent {
+  postId: string
+  idxOfImg: number
+}
+
 export interface AppConfig {
   theme: string
   imgHost: 'cdn' | 'original' | 'local' | 'custom'

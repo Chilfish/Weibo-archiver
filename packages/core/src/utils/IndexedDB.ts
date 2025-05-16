@@ -77,6 +77,14 @@ export class IndexedDB extends Dexie {
       .sortBy('id')
   }
 
+  async getPostById(id: string): Promise<Post | undefined> {
+    const post = await this.postQuery
+      .and(post => post.mblogid === id)
+      .toArray()
+
+    return post.length > 0 ? post[0] : undefined
+  }
+
   async getAllPostsCount(): Promise<number> {
     return this.posts.count()
   }

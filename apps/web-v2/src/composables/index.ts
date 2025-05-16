@@ -1,4 +1,4 @@
-import type { AppConfig, ImagePreviewEvent } from '@/types'
+import type { AlbumPreviewEvent, AppConfig, ImagePreviewEvent } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@weibo-archiver/core'
 import { mitt } from '@weibo-archiver/shared'
@@ -14,6 +14,7 @@ export const config = useStorage<AppConfig>('config', {
 
 export const emitter = mitt<{
   'open-image-preview': ImagePreviewEvent
+  'open-album-preview': AlbumPreviewEvent
 }>()
 
 interface Emoji {

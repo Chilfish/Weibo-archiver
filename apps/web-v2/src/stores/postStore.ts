@@ -144,11 +144,16 @@ export const usePostStore = defineStore('post', () => {
     }
   }
 
+  async function getPostById(id: string): Promise<Post | undefined> {
+    return idb.getPostById(id)
+  }
+
   return {
     importing,
 
     getPosts,
     getAllTotal,
+    getPostById,
     searchPosts,
     parseAndImport,
     setupFuse,
