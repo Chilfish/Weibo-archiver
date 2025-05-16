@@ -17,7 +17,7 @@ const isLoading = ref(false)
 const curPage = ref(Number(route.query.page) || 1)
 const postsTotal = ref(0)
 
-const pageSize = 30
+const pageSize = 40
 
 onBeforeMount(async () => {
   await getPosts()

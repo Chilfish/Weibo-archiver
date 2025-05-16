@@ -4,6 +4,7 @@ import type { Post } from '@weibo-archiver/core'
 import AlbumPreviewWeibo from '@/components/album/AlbumPreviewWeibo.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import { emitter } from '@/composables'
+import { cn } from '@/lib/utils'
 import { useEventListener } from '@vueuse/core'
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
@@ -19,6 +20,7 @@ const curImgIdx = ref(0)
 const curPostIdx = ref(0)
 const isOpen = ref(false)
 const hasNextPost = ref(true)
+const imgSize = ref(0)
 
 const curPost = computed<Post>(() => posts.value[curPostIdx.value])
 const curImagesLen = computed<number>(() => curPost.value.imgs.length)
@@ -34,6 +36,15 @@ async function openImagePreview(event: AlbumPreviewEvent) {
   isOpen.value = true
 }
 
+function loadNextPosts() {
+  emits('nextPage', (newPosts) => {
+    if (newPosts.length < 1) {
+      hasNextPost.value = false
+    }
+    posts.value.push(...newPosts)
+  })
+}
+
 function nextImage() {
   if (curImgIdx.value < curImagesLen.value - 1) {
     curImgIdx.value += 1
@@ -44,12 +55,7 @@ function nextImage() {
   }
 
   if (curPostIdx.value === posts.value.length) {
-    emits('nextPage', (newPosts) => {
-      if (newPosts.length < 1) {
-        hasNextPost.value = false
-      }
-      posts.value.push(...newPosts)
-    })
+    loadNextPosts()
   }
 }
 
@@ -69,6 +75,18 @@ useEventListener(window, 'keydown', (e) => {
   }
   else if (e.key === 'ArrowRight' && hasNextPost.value) {
     nextImage()
+  }
+  else if (e.key === 'ArrowUp' && !dontHasPrevPost.value) {
+    curPostIdx.value -= 1
+    curImgIdx.value = 0
+  }
+  else if (e.key === 'ArrowDown' && hasNextPost.value) {
+    curImgIdx.value = 0
+    curPostIdx.value += 1
+
+    if (curPostIdx.value === posts.value.length) {
+      loadNextPosts()
+    }
   }
 })
 
@@ -126,9 +144,21 @@ function closePreview() {
             <ArrowRightIcon />
           </Button>
 
+          <Badge
+            :class="fabCss"
+            class="top-4 right-4"
+          >
+            {{ curImgIdx + 1 }} / {{ curImagesLen }}
+          </Badge>
+
           <LazyImage
-            class="max-h-[85%] rounded-xl"
+            :key="curImage"
+            class="rounded-xl"
+            :class="cn({
+              'h-[85vh]': imgSize < 1.5,
+            })"
             :src="curImage"
+            @load="({ width, height }) => imgSize = width / height"
           />
         </div>
 

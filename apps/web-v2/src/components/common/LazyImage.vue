@@ -32,7 +32,7 @@ interface Props {
 const props = defineProps<Props>()
 const emit = defineEmits<{
   click: []
-  load: []
+  load: [{ width: number, height: number }]
   error: [string]
 }>()
 
@@ -54,7 +54,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       isLoading.value = false
       imgWidth.value = props.width
       imgHeight.value = props.height
-      emit('load')
+      emit('load', { width: img.width, height: img.height })
       img.remove()
       imgRef.value!.remove()
     }
