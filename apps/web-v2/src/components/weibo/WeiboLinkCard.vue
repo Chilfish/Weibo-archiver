@@ -25,7 +25,6 @@ const desc = computed(() => {
       :alt="card.title"
       referrerpolicy="no-referrer"
       class="h-28 w-30"
-      skeleton-class="h-28 w-28"
     />
     <div class="url-card-content bg-muted">
       <h4 class="font-medium text-sm">

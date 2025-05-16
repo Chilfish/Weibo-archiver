@@ -166,10 +166,9 @@ function goToLastPage() {
 
 <template>
   <div class="flex flex-wrap items-center justify-center gap-2">
-    <div class="join gap-1">
+    <div class="flex gap-1">
       <Button
         v-if="showEndPage"
-        class="join-item"
         variant="outline"
         :disabled="isFirstPage"
         title="第一页"
@@ -180,7 +179,6 @@ function goToLastPage() {
       </Button>
 
       <Button
-        class="join-item"
         variant="outline"
         :class="{ 'btn-disabled': isFirstPage }"
         :disabled="isFirstPage"
@@ -192,14 +190,13 @@ function goToLastPage() {
       </Button>
     </div>
 
-    <div class="join gap-1">
+    <div class="flex items-center gap-1">
       <template
         v-for="(page, index) in displayedPageNumbers"
         :key="index"
       >
         <Button
           v-if="page !== dotBtn"
-          class="join-item"
           :variant="page === current ? 'default' : 'outline'"
           :aria-label="`跳转至第${page}页`"
           @click="changePage(Number(page))"
@@ -209,7 +206,6 @@ function goToLastPage() {
         <Button
           v-else
           variant="outline"
-          class="join-item"
           aria-label="更多"
         >
           <Ellipsis class="w-4 h-4" />
@@ -217,9 +213,8 @@ function goToLastPage() {
       </template>
     </div>
 
-    <div class="join gap-1">
+    <div class="flex gap-1">
       <Button
-        class="join-item"
         :disabled="isLastPage"
         title="下一页"
         aria-label="下一页"
@@ -231,7 +226,6 @@ function goToLastPage() {
 
       <Button
         v-if="showEndPage"
-        class="join-item"
         :disabled="isLastPage"
         title="最后一页"
         aria-label="最后一页"
@@ -244,7 +238,7 @@ function goToLastPage() {
 
     <div
       v-if="showJump"
-      class="text-sm  whitespace-nowrap flex items-center gap-1"
+      class="text-sm whitespace-nowrap flex items-center gap-1"
     >
       跳转至第
       <Input

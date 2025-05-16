@@ -8,7 +8,7 @@ import { useSearch } from '@/composables/useSearch'
 import { usePostStore } from '@/stores'
 import { DEFAULT_PAGE_SIZE } from '@weibo-archiver/core'
 import { SearchIcon } from 'lucide-vue-next'
-import { onMounted, ref, useTemplateRef } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const postStore = usePostStore()
@@ -53,9 +53,8 @@ async function onSearch(query: SearchQuery) {
   await searchPosts()
 }
 
-const mainRef = useTemplateRef<HTMLElement>('mainRef')
 function scrollToTop() {
-  mainRef.value!.scrollTo({
+  window.scrollTo({
     top: 0,
     behavior: 'smooth',
   })
@@ -72,7 +71,6 @@ onMounted(async () => {
 
 <template>
   <main
-    ref="mainRef"
     class="flex flex-col items-center w-full gap-6"
   >
     <SearchBar

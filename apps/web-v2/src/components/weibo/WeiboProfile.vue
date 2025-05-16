@@ -2,6 +2,7 @@
 import type { PostMeta, User } from '@weibo-archiver/core'
 import { useUserStore } from '@/stores'
 import { formatDate } from '@weibo-archiver/shared'
+import { ArrowUpRightFromCircleIcon, EllipsisIcon } from 'lucide-vue-next'
 import { computed } from 'vue'
 import Avatar from '../common/Avatar.vue'
 
@@ -35,18 +36,35 @@ const user = computed(() => props.user || userStore.curUser)
     </div>
 
     <div class="flex items-center ml-auto text-xs text-base-content/80 gap-2">
-      <a
-        :href="`https://weibo.com/detail/${meta.id}`"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-primary hidden group-hover:block select-none"
-      >
-        跳转到原微博
-      </a>
-
       <span>
         {{ meta.regionName }}
       </span>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button
+            variant="ghost"
+            size="icon"
+            class="rounded-full"
+          >
+            <EllipsisIcon />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent class="p-2">
+          <DropdownMenuItem>
+            <a
+              :href="`https://weibo.com/detail/${meta.id}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="select-none"
+            >
+              跳转到原微博
+              <ArrowUpRightFromCircleIcon class="inline-block size-4" />
+            </a>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   </div>
 </template>

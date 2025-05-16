@@ -69,7 +69,7 @@ onBeforeMount(async () => {
     <AppSidebar />
     <RouterView
       v-if="!isLoading"
-      class="m-6 overflow-auto h-[100vh] w-full"
+      class="m-6  w-full"
     />
     <ImagePreview />
   </SidebarProvider>

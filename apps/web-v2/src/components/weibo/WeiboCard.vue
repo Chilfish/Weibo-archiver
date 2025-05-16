@@ -40,6 +40,7 @@ const isCommentsOpen = ref(false)
 
 <template>
   <Card
+    :id="post.mblogid"
     as="article"
     class="group w-full"
   >

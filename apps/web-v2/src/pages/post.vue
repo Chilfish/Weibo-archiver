@@ -5,7 +5,7 @@ import EmptyWeibo from '@/components/EmptyWeibo.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { usePostStore, useUserStore } from '@/stores'
 import { DEFAULT_PAGE_SIZE } from '@weibo-archiver/core'
-import { onBeforeMount, ref, useTemplateRef, watch } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const postStore = usePostStore()
@@ -75,9 +75,8 @@ async function changePage(newPage: number, newPageSize: number) {
   scrollToTop()
 }
 
-const mainRef = useTemplateRef<HTMLElement>('mainRef')
 function scrollToTop() {
-  mainRef.value!.scrollTo({
+  window.scrollTo({
     top: 0,
     behavior: 'smooth',
   })
@@ -86,7 +85,6 @@ function scrollToTop() {
 
 <template>
   <main
-    ref="mainRef"
     class="flex flex-col relative w-full"
   >
     <section

@@ -19,6 +19,7 @@ const actions = computed(() => ({
 
 <template>
   <Card
+    :id="post.mblogid"
     as="article"
     class="group w-full"
   >

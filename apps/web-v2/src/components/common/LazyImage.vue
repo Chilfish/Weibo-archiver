@@ -56,7 +56,6 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       imgHeight.value = props.height
       emit('load', { width: img.width, height: img.height })
       img.remove()
-      imgRef.value!.remove()
     }
     img.onerror = (e: any) => {
       isLoading.value = true
@@ -67,7 +66,6 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
 </script>
 
 <template>
-  <div ref="imgRef" />
   <img
     v-show="!isLoading"
     :src="imgSrc"
@@ -88,6 +86,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
   >
   <Skeleton
     v-if="isLoading"
+    ref="imgRef"
     :class="props.class"
   />
 </template>
