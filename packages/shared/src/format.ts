@@ -38,9 +38,9 @@ export function formatDate(
  * @param precision the precision
  */
 export function formatNumber(num: number, precision = 2) {
-  if (num < 1000)
-    return num
   if (num < 10000)
-    return `${(num / 1000).toFixed(precision)}k`
-  return `${(num / 10000).toFixed(precision)}w`
+    return num
+  // if (num < 10000)
+  //   return `${(num / 1000).toFixed(precision)}千`
+  return `${(num / 10000).toFixed(precision)}万`
 }

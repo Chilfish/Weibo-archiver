@@ -1,4 +1,4 @@
-import type { UserInfo } from '@weibo-archiver/core'
+import type { Following, UserInfo } from '@weibo-archiver/core'
 import { useStorage } from '@vueuse/core'
 import { idb } from '@weibo-archiver/core'
 import { defineStore } from 'pinia'
@@ -37,6 +37,10 @@ export const useUserStore = defineStore('user', () => {
     await setCurUid(user.uid)
   }
 
+  async function getFollowings(): Promise<Following[]> {
+    return idb.getFollowings()
+  }
+
   return {
     users,
     curUser,
@@ -45,5 +49,6 @@ export const useUserStore = defineStore('user', () => {
     importUser,
     load,
     setCurUid,
+    getFollowings,
   }
 })

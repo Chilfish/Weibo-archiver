@@ -2,7 +2,7 @@ import type {
   CalendarDate,
 } from '@internationalized/date'
 import type { Table } from 'dexie'
-import type { Followings, Post, User, UserInfo } from '../types'
+import type { Following, Post, User, UserInfo } from '../types'
 import { parseAbsolute, today } from '@internationalized/date'
 import Dexie from 'dexie'
 import { DEFAULT_PAGE_SIZE } from '../constants'
@@ -10,7 +10,7 @@ import { DEFAULT_PAGE_SIZE } from '../constants'
 export class IndexedDB extends Dexie {
   users!: Table<UserInfo, number>
   posts!: Table<Post, number>
-  followings!: Table<Followings, number>
+  followings!: Table<Following, number>
   curUser!: UserInfo
 
   constructor() {
@@ -48,11 +48,18 @@ export class IndexedDB extends Dexie {
   }
 
   async addFollowings(users: User[]) {
-    const data: Followings[] = users.map((user) => {
-      (user as Followings).followBy = this.curUid
-      return user as Followings
+    const data: Following[] = users.map((user) => {
+      (user as Following).followBy = this.curUid
+      return user as Following
     })
     await this.followings.bulkPut(data)
+  }
+
+  async getFollowings(): Promise<Following[]> {
+    return this.followings
+      .where('followBy')
+      .equals(this.curUid)
+      .toArray()
   }
 
   async getUsers(): Promise<UserInfo[]> {

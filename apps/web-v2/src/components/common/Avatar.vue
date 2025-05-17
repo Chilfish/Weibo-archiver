@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { computed } from 'vue'
-import LazyImage from './LazyImage.vue'
 
 const props = defineProps<{
-  src?: string
+  src: string
   alt?: string
   size?: number | string
   class?: string
@@ -15,12 +15,12 @@ const sizeClass = computed(() => {
 </script>
 
 <template>
-  <div class="relative">
-    <LazyImage
-      :src="props.src || '/placeholder.webp'"
-      :alt="props.alt || '用户头像'"
-      class="rounded-full"
-      :class="[sizeClass, props.class]"
+  <Avatar>
+    <AvatarImage
+      :src="props.src"
+      :alt="props.alt"
+      :class="sizeClass"
     />
-  </div>
+    <AvatarFallback>{{ props.alt }}</AvatarFallback>
+  </Avatar>
 </template>

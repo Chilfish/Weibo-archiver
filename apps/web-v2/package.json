@@ -18,6 +18,7 @@
     "p-timeout": "^6.1.2"
   },
   "dependencies": {
+    "@tanstack/vue-table": "^8.21.3",
     "@unhead/vue": "^1.11.20",
     "@vueuse/core": "^13.0.0",
     "@vueuse/router": "^13.0.0",

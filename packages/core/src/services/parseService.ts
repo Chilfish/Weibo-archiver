@@ -1,6 +1,6 @@
 import type {
   Comment,
-  Followings,
+  Following,
   LinkCard,
   Post,
   PostMeta,
@@ -53,7 +53,7 @@ export class UserParser {
     }
   }
 
-  static parseFollowing(user: RawFollowingUser | RawMyFollowUser): Followings {
+  static parseFollowing(user: RawFollowingUser | RawMyFollowUser): Following {
     return {
       uid: user.idstr,
       name: user.screen_name,

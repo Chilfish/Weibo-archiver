@@ -67,13 +67,14 @@ useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
       class=" flex items-center justify-between"
     >
       <h2
-        class="font-bold text-2xl"
+        class="font-bold text-2xl mb-4"
       >
-        相册
+        微博相册
       </h2>
     </header>
+
     <main
-      class="mt-2"
+      v-if="weiboArr.length > 0"
     >
       <AlbumPhotos :posts="weiboArr" />
       <AlbumPreview
@@ -92,6 +93,13 @@ useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
       >
         加载更多
       </Button>
+    </main>
+
+    <main
+      v-else
+      class="text-secondary-foreground text-center"
+    >
+      暂时还没发现微博里有图片
     </main>
   </div>
 </template>

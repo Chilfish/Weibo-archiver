@@ -22,7 +22,7 @@ const userInfoSchema = userWithBioSchema.extend({
   exportedAt: z.string().optional(),
 })
 
-const followingsSchema = userSchema.extend({
+const followingSchema = userSchema.extend({
   followBy: z.string(),
   followers: z.number(),
   followings: z.number(),
@@ -34,4 +34,4 @@ const followingsSchema = userSchema.extend({
 export type User = z.infer<typeof userSchema>
 export type UserBio = z.infer<typeof userWithBioSchema>
 export type UserInfo = z.infer<typeof userInfoSchema>
-export type Followings = z.infer<typeof followingsSchema>
+export type Following = z.infer<typeof followingSchema>
