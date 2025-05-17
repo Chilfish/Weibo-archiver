@@ -5,7 +5,6 @@ import WeiboText from '@/components/weibo/WeiboText'
 import { cn } from '@/lib/utils'
 import { formatDate, formatNumber } from '@weibo-archiver/shared'
 import { h } from 'vue'
-import DataTableDropdown from './DataTableDropdown.vue'
 import DataTableHeader from './DataTableHeader.vue'
 
 const Text = (text: string, className?: string) => (
@@ -54,7 +53,7 @@ export const columns: ColumnDef<Following>[] = [
   {
     accessorKey: 'bio',
     header: () => Text('简介', 'text-center'),
-    cell: ({ row }) => <WeiboText text={row.getValue('bio') || '暂无简介'} />,
+    cell: ({ row }) => <WeiboText text={row.getValue('bio')?.trim() || '暂无简介'} />,
   },
   {
     accessorKey: 'followers',
@@ -84,9 +83,9 @@ export const columns: ColumnDef<Following>[] = [
   },
   {
     accessorKey: 'location',
-    header: () => Text('IP位置', 'text-center w-12'),
+    header: () => Text('IP位置', 'text-center w-16'),
     cell: ({ row }) => Text(
-      row.getValue('location').split(' ')[0],
+      row.getValue('location'),
       'text-center',
     ),
   },
@@ -97,20 +96,5 @@ export const columns: ColumnDef<Following>[] = [
       formatDate(row.getValue('createdAt'), 'YYYY年MM月DD日'),
       'w-29',
     ),
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const data = row.original
-
-      return (
-        <div
-          class="relative"
-        >
-          <DataTableDropdown user={data} />
-        </div>
-      )
-    },
   },
 ]

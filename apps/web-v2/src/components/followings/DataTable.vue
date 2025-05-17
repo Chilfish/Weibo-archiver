@@ -43,8 +43,14 @@ const table = useVueTable({
 <template>
   <div>
     <div class="flex items-center py-4">
+      <p
+        class="mr-4"
+      >
+        共有{{ table.getRowCount() }}个关注
+      </p>
+
       <Input
-        class="max-w-sm bg-secondary"
+        class="max-w-sm h-10 bg-secondary ml-auto"
         placeholder="搜索用户名……"
         :model-value="table.getColumn('name')?.getFilterValue() as string"
         @update:model-value="table.getColumn('name')?.setFilterValue($event)"
@@ -84,6 +90,7 @@ const table = useVueTable({
               <TableCell
                 v-for="cell in row.getVisibleCells()"
                 :key="cell.id"
+                class="px-4 py-2.5"
               >
                 <FlexRender
                   :render="cell.column.columnDef.cell"
@@ -98,7 +105,7 @@ const table = useVueTable({
                 :colspan="columns.length"
                 class="h-24 text-center"
               >
-                No results.
+                暂无结果
               </TableCell>
             </TableRow>
           </template>

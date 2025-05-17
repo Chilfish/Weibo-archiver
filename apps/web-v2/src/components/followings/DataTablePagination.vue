@@ -14,13 +14,7 @@ defineProps<DataTablePaginationProps>()
 </script>
 
 <template>
-  <div class="flex items-center justify-end p-2">
-    <div
-      class="mr-4"
-    >
-      共{{ table.getRowCount() }}个关注数
-    </div>
-
+  <div class="flex items-center justify-end gap-4 p-2">
     <Select
       :model-value="`${table.getState().pagination.pageSize}`"
       @update:model-value="table.setPageSize as unknown as number"
@@ -39,12 +33,11 @@ defineProps<DataTablePaginationProps>()
       </SelectContent>
     </Select>
 
-    <div class="flex w-[100px] items-center justify-center text-sm font-medium">
-      Page {{ table.getState().pagination.pageIndex + 1 }} of
-      {{ table.getPageCount() }}
+    <div class="flex items-center justify-center text-sm font-medium">
+      第 {{ table.getState().pagination.pageIndex + 1 }} 页，共 {{ table.getPageCount() }} 页
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
       <Button
         variant="outline"
         class="w-8 h-8 p-0 flex"

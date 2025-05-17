@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', () => {
   const curUid = useStorage<string>('curUid', '')
   const users = ref<UserInfo[]>([])
   const curUser = ref<UserInfo>({} as unknown as UserInfo)
+  const isLoadingUser = ref(false)
 
   async function load() {
     if (curUid.value) {
@@ -19,9 +20,11 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function setCurUid(uid: string) {
+    isLoadingUser.value = true
     curUid.value = uid
     await idb.setCurUser(uid)
     curUser.value = idb.curUser
+    isLoadingUser.value = false
   }
 
   async function addUser(user: UserInfo | null | undefined) {
@@ -45,6 +48,7 @@ export const useUserStore = defineStore('user', () => {
     users,
     curUser,
     curUid,
+    isLoadingUser,
     addUser,
     importUser,
     load,

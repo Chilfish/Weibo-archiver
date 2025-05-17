@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { UserInfo } from '@weibo-archiver/core'
+import { useUserStore } from '@/stores'
 import { onImportData } from '@weibo-archiver/core'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import Avatar from './common/Avatar.vue'
 
 const props = defineProps<{
@@ -11,8 +12,12 @@ const props = defineProps<{
 
 const curUid = defineModel<string>('curUid')
 
-const curUser = computed(() => props.users.find(user => user.uid === curUid.value))
+const userStore = useUserStore()
+
+const curUser = computed<UserInfo | undefined>(() => props.users.find(user => user.uid === curUid.value))
 const restUsers = computed(() => props.users.filter(user => user.uid !== curUid.value))
+
+watch(curUid, userStore.setCurUid)
 </script>
 
 <template>

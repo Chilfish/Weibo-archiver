@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="container py-10 mx-auto">
+  <div class="container py-4 mx-auto">
     <DataTable :columns="columns" :data="data" />
   </div>
 </template>
