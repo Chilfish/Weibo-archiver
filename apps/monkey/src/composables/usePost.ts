@@ -1,8 +1,12 @@
-import type { Favorite, Post, UID, UserBio } from '@weibo-archiver/core'
+import type {
+  Favorite,
+  Following,
+  Post,
+  UserInfo,
+} from '@weibo-archiver/core'
 import type { FetchProgress } from '../types'
-import { exportData } from '@weibo-archiver/core'
+import { exportData, idb } from '@weibo-archiver/core'
 import { computed, reactive, toRaw } from 'vue'
-import { IDB } from './idb'
 import { config, useConfig } from './useConfig'
 import { userService } from './useFetch'
 
@@ -10,7 +14,6 @@ const { updateConfig } = useConfig()
 
 export const postState = reactive({
   pageSize: 20,
-  idb: new IDB(),
 })
 
 // Export progress for use in other components
@@ -21,21 +24,15 @@ export const progress = computed<FetchProgress>(() => ({
 
 export function usePost() {
   async function initializeDB() {
-    const wrappedUid = `uid-${config.value.user?.uid || ''}` as UID
-    if (postState.idb.name === wrappedUid)
+    if (!config.value.user) {
       return
-
-    postState.idb.setup(wrappedUid)
-    await postState.idb.clearFollowings()
-    await waitForDBInitialization()
-    console.log('DB initialized', postState.idb, config.value)
-  }
-
-  async function waitForDBInitialization() {
-    const dbName = `uid-${config.value.user?.uid || ''}`
-    while (postState.idb.name !== dbName) {
-      await new Promise(r => setTimeout(r, 300))
     }
+
+    await idb.setCurUser(config.value.user?.uid || '0')
+    if (!idb.curUser) {
+      await idb.addUser(toRaw(config.value.user))
+    }
+    console.log('DB initialized', idb.curUser, config.value)
   }
 
   async function resetState() {
@@ -45,16 +42,13 @@ export function usePost() {
       fetchedCount: 0,
       total: 0,
     })
-
-    await initializeDB()
-    await postState.idb.clearDB()
   }
 
-  async function addPost(newPost: Post) {
+  async function addPosts(newPosts: Post[]) {
     try {
-      await postState.idb.addDBPost(newPost)
+      await idb.addPosts(newPosts)
       updateConfig({
-        fetchedCount: config.value.fetchedCount + 1,
+        fetchedCount: config.value.fetchedCount + newPosts.length,
         curPage: Math.ceil((config.value.fetchedCount + 1) / 20),
       })
     }
@@ -65,33 +59,26 @@ export function usePost() {
   }
 
   async function getAllPosts() {
-    return await postState.idb.getAllDBPosts()
+    return await idb.getAllPosts()
   }
 
   async function updatePostCount() {
-    const count = await postState.idb.getPostCount()
+    const count = await idb.getAllPostsCount()
     updateConfig({ fetchedCount: count })
   }
 
-  async function updateUserInfo() {
-    const user = config.value.user
-    if (!user)
-      return
+  async function addUser(user: UserInfo) {
     userService.uid = user.uid
-    await postState.idb.setUserInfo(toRaw(user))
+    await idb.addUser(toRaw(user))
+    await idb.setCurUser(user.uid)
   }
 
-  async function addFollowingUsers(followings: UserBio[]) {
-    await postState.idb.addFollowings(followings)
+  async function addFollowingUsers(followings: Following[]) {
+    await idb.addFollowings(followings)
   }
 
   async function addFavorites(favorites: Favorite[]) {
-    await Promise.all(favorites.map(postState.idb.addFavorite))
-  }
-
-  async function exportFollowingUsers() {
-    const data = await postState.idb.getFollowings()
-    return await exportData([], config.value.user, data)
+    await idb.addFavorites(favorites)
   }
 
   async function exportAllData() {
@@ -100,9 +87,9 @@ export function usePost() {
 
       const followings = config.value.weiboOnly
         ? []
-        : await postState.idb.getFollowings()
+        : await idb.getFollowings()
 
-      const favorites = await postState.idb.getFavorites()
+      const favorites = await idb.getFavorites()
 
       await exportData(posts, config.value.user, followings, favorites)
     }
@@ -117,14 +104,13 @@ export function usePost() {
     state: postState,
 
     initializeDB,
-    addPost,
+    addPosts,
     resetState,
     getAllPosts,
     updatePostCount,
-    updateUserInfo,
+    addUser,
     exportAllData,
     addFollowingUsers,
-    exportFollowingUsers,
     addFavorites,
   }
 }

@@ -1,13 +1,20 @@
 <script setup lang="ts">
+import { onBeforeMount } from 'vue'
 import ActionButtons from './component/ActionButtons.vue'
 import Header from './component/Header.vue'
 import Logo from './component/Logo.vue'
 import Options from './component/Options.vue'
 import Search from './component/Search.vue'
-
 import { config, useConfig } from './composables/useConfig'
+import { usePost } from './composables/usePost'
 
 const { toggleMinimize } = useConfig()
+
+const postStore = usePost()
+
+onBeforeMount(async () => {
+  await postStore.initializeDB()
+})
 </script>
 
 <template>

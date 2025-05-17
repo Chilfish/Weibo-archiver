@@ -39,8 +39,8 @@ export async function startFetch() {
 
   if (favoritesOnly) {
     const data = await postService.getFavorites()
-    console.log(data)
     await postStore.addFavorites(data)
+    fetchState.isFinish = true
     return
   }
 
@@ -55,15 +55,13 @@ export async function startFetch() {
       hasRepostPic: repostPic,
       commentsCount: hasComment ? commentCount : 0,
       async onFetched({ posts, page, sinceId, postsTotal }) {
-        await Promise.all(
-          posts
-            .filter((post) => {
-              if (hasRepost)
-                return true
-              return !!post.retweet?.mblogid
-            })
-            .map(postStore.addPost),
-        )
+        const filtered = posts
+          .filter((post) => {
+            if (hasRepost)
+              return true
+            return !!post.retweet?.mblogid
+          })
+        await postStore.addPosts(filtered)
         updateConfig({
           curPage: page,
           sinceId,

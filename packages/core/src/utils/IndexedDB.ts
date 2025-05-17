@@ -2,7 +2,7 @@ import type {
   CalendarDate,
 } from '@internationalized/date'
 import type { Table } from 'dexie'
-import type { Following, Post, User, UserInfo } from '../types'
+import type { Favorite, Following, Post, User, UserInfo } from '../types'
 import { parseAbsolute, today } from '@internationalized/date'
 import Dexie from 'dexie'
 import { DEFAULT_PAGE_SIZE } from '../constants'
@@ -11,15 +11,18 @@ export class IndexedDB extends Dexie {
   users!: Table<UserInfo, number>
   posts!: Table<Post, number>
   followings!: Table<Following, number>
+  favorites!: Table<Favorite, number>
+
   curUser!: UserInfo
 
   constructor() {
     super('Weibo-archiver')
 
     this.version(1).stores({
-      users: '++pid, &uid, createdAt',
-      posts: '++pid, userId, createdAt',
-      followings: '++pid, &[uid+followBy], followBy',
+      users: 'uid, createdAt',
+      posts: 'id, mblogid, userId, createdAt',
+      followings: 'uid, followBy',
+      favorites: 'id, mblogid, userId',
     })
   }
 
@@ -37,27 +40,37 @@ export class IndexedDB extends Dexie {
   }
 
   async addUser(user: UserInfo) {
-    await this.users.put(user).catch('ConstraintError', async () => {
-      const [key] = await this.users.where('uid').equals(user.uid).primaryKeys()
-      await this.users.update(key, user)
-    })
+    await this.users.put(user)
   }
 
   async addPosts(posts: Post[]) {
-    await this.posts.bulkPut(posts)
+    return this.posts.bulkPut(posts)
   }
 
   async addFollowings(users: User[]) {
     const data: Following[] = users.map((user) => {
-      (user as Following).followBy = this.curUid
+      if (this.curUid) {
+        (user as Following).followBy = this.curUid
+      }
       return user as Following
     })
     await this.followings.bulkPut(data)
   }
 
+  async addFavorites(favorites: Favorite[]) {
+    return this.favorites.bulkPut(favorites)
+  }
+
   async getFollowings(): Promise<Following[]> {
     return this.followings
       .where('followBy')
+      .equals(this.curUid)
+      .toArray()
+  }
+
+  async getFavorites(): Promise<Favorite[]> {
+    return this.favorites
+      .where('userId')
       .equals(this.curUid)
       .toArray()
   }
@@ -111,6 +124,10 @@ export class IndexedDB extends Dexie {
 
   async getAllPostsCount(): Promise<number> {
     return this.posts.count()
+  }
+
+  async clearDB(): Promise<void> {
+    return this.delete({ disableAutoOpen: false })
   }
 
   private get postQuery() {

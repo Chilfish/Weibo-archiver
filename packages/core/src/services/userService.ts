@@ -1,4 +1,4 @@
-import type { UserBio, UserInfo } from '../types'
+import type { Following, UserInfo } from '../types'
 import type { FetchService } from './fetchService'
 import { WeiboError } from '../utils'
 import { UserParser } from './parseService'
@@ -53,9 +53,9 @@ export class UserService {
     return data.users.map(UserParser.parse)
   }
 
-  async getFollowings(uid: string): Promise<UserBio[]> {
+  async getFollowings(uid: string): Promise<Following[]> {
     let page = 0
-    const users: UserBio[] = []
+    const users: Following[] = []
 
     while (true) {
       const data = await this.fetchService.userFollowings({
@@ -78,7 +78,7 @@ export class UserService {
     return users
   }
 
-  async getMyFollowings(page: number): Promise<UserBio[]> {
+  async getMyFollowings(page: number): Promise<Following[]> {
     const data = await this.fetchService.myFollowings({ page })
     const users = data.follows.users
 

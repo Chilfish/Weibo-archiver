@@ -8,7 +8,7 @@ import { usePost } from '../composables/usePost'
 import LazyImage from './LazyImage.vue'
 
 const { config } = useConfig()
-const post = usePost()
+const postStore = usePost()
 const searchText = ref(config.value.user?.name || '')
 const searchResult = ref<UserInfo[]>([])
 
@@ -26,8 +26,7 @@ async function setUser(user: UserInfo) {
   searchResult.value = []
   config.value.user = user
 
-  await post.updateUserInfo()
-  await post.initializeDB()
+  await postStore.addUser(user)
 }
 
 function formatNumber(num: number) {
