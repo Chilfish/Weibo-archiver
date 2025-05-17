@@ -1,5 +1,9 @@
+import type {
+  CalendarDate,
+} from '@internationalized/date'
 import type { Table } from 'dexie'
 import type { Followings, Post, User, UserInfo } from '../types'
+import { parseAbsolute, today } from '@internationalized/date'
 import Dexie from 'dexie'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 
@@ -83,6 +87,19 @@ export class IndexedDB extends Dexie {
       .toArray()
 
     return post.length > 0 ? post[0] : undefined
+  }
+
+  async getPostsByDay(day: CalendarDate = today('Asia/Shanghai')): Promise<Post[]> {
+    const monthDay = `${day.month}-${day.day}`
+    return this.postQuery
+      .and((post) => {
+        const date = parseAbsolute(new Date(post.createdAt).toISOString(), 'Asia/Shanghai')
+
+        const postMonthDay = `${date.month}-${date.day}`
+        return monthDay === postMonthDay
+      })
+      .reverse()
+      .toArray()
   }
 
   async getAllPostsCount(): Promise<number> {

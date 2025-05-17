@@ -148,6 +148,10 @@ export const usePostStore = defineStore('post', () => {
     return idb.getPostById(id)
   }
 
+  async function getTodayInLastYears(): Promise<Post[]> {
+    return idb.getPostsByDay()
+  }
+
   return {
     importing,
 
@@ -156,6 +160,7 @@ export const usePostStore = defineStore('post', () => {
     getPostById,
     searchPosts,
     parseAndImport,
+    getTodayInLastYears,
     setupFuse,
   }
 })
