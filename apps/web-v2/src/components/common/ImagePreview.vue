@@ -2,37 +2,43 @@
 import type { ImagePreviewEvent } from '@/types'
 import { emitter } from '@/composables'
 import { useEventListener } from '@vueuse/core'
+import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import LazyImage from './LazyImage.vue'
 
 const images = ref<string[]>([])
-const currentIndex = ref(0)
+const curImgIdx = ref(0)
 const isOpen = ref(false)
 
-const currentImage = computed(() => images.value[currentIndex.value] || '')
+const fabCss = `absolute rounded-full backdrop-blur text-white bg-[#000000aa] hover:bg-[#000000] hover:text-white`
+const curImage = computed(() => images.value[curImgIdx.value] || '')
 
 function openImagePreview(event: ImagePreviewEvent) {
   images.value = event.imgs
-  currentIndex.value = event.index
+  curImgIdx.value = event.index
   isOpen.value = true
 }
 
 function nextImage() {
-  if (currentIndex.value < images.value.length - 1) {
-    currentIndex.value++
+  if (curImgIdx.value < images.value.length - 1) {
+    curImgIdx.value++
   }
   else {
-    currentIndex.value = 0
+    curImgIdx.value = 0
   }
 }
 
 function prevImage() {
-  if (currentIndex.value > 0) {
-    currentIndex.value--
+  if (curImgIdx.value > 0) {
+    curImgIdx.value--
   }
   else {
-    currentIndex.value = images.value.length - 1
+    curImgIdx.value = images.value.length - 1
   }
+}
+
+function closePreview() {
+  isOpen.value = false
 }
 
 useEventListener(window, 'keydown', (e) => {
@@ -55,16 +61,61 @@ defineExpose({
   <Dialog
     v-model:open="isOpen"
   >
-    <DialogScrollContent
-      class="p-0 border-none w-[90vw]"
+    <DialogContent
+      class="p-0 bg-transparent border-none w-auto! max-w-fit! focus-visible:outline-0"
       :show-close="false"
     >
-      <LazyImage
-        :key="currentImage"
-        :src="currentImage"
-        alt="预览图片"
-        class="rounded"
-      />
-    </DialogScrollContent>
+      <div
+        class="relative flex flex-col gap-4 justify-center items-center mx-auto w-[70vw] h-[96vh] "
+        @click.self="closePreview"
+      >
+        <Button
+          variant="ghost"
+          size="icon"
+          class="top-4 left-4"
+          :class="fabCss"
+          @click="closePreview"
+        >
+          <XIcon />
+        </Button>
+        <Button
+          v-if="curImgIdx > 0"
+          variant="ghost"
+          size="icon"
+          class="top-50% left-4"
+          :class="[fabCss]"
+          @click="prevImage"
+        >
+          <ArrowLeftIcon />
+        </Button>
+        <Button
+          v-if="curImgIdx < images.length - 1"
+          variant="ghost"
+          size="icon"
+          class="top-50% right-4"
+          :class="[fabCss]"
+          @click="nextImage"
+        >
+          <ArrowRightIcon />
+        </Button>
+
+        <Badge
+          :class="fabCss"
+          class="top-4 right-4"
+        >
+          {{ curImgIdx + 1 }} / {{ images.length }}
+        </Badge>
+
+        <div
+          class="overflow-auto py-2"
+        >
+          <LazyImage
+            :key="curImage"
+            class="rounded-xl w-[60vw]"
+            :src="curImage"
+          />
+        </div>
+      </div>
+    </DialogContent>
   </Dialog>
 </template>

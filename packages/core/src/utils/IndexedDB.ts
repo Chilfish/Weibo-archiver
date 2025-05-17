@@ -19,7 +19,7 @@ export class IndexedDB extends Dexie {
     this.version(1).stores({
       users: '++pid, &uid, createdAt',
       posts: '++pid, userId, createdAt',
-      followings: '++pid, followBy',
+      followings: '++pid, &[uid+followBy], followBy',
     })
   }
 

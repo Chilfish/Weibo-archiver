@@ -72,7 +72,7 @@ const gridClass = computed(() => {
     class="mb-4"
   >
     <LazyImage
-      class="rounded-lg max-h-96"
+      class="rounded-lg max-h-96 min-h-46 min-w-46"
       :src="computedImages[0].src"
       :alt="computedImages[0].alt"
       @click="handleClick(computedImages[0].src, 0)"

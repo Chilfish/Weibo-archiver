@@ -4,7 +4,6 @@ import type { Post } from '@weibo-archiver/core'
 import AlbumPreviewWeibo from '@/components/album/AlbumPreviewWeibo.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import { emitter } from '@/composables'
-import { cn } from '@/lib/utils'
 import { useEventListener } from '@vueuse/core'
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
@@ -20,7 +19,6 @@ const curImgIdx = ref(0)
 const curPostIdx = ref(0)
 const isOpen = ref(false)
 const hasNextPost = ref(true)
-const imgSize = ref(0)
 
 const curPost = computed<Post>(() => posts.value[curPostIdx.value])
 const curImagesLen = computed<number>(() => curPost.value.imgs.length)
@@ -151,15 +149,15 @@ function closePreview() {
             {{ curImgIdx + 1 }} / {{ curImagesLen }}
           </Badge>
 
-          <LazyImage
-            :key="curImage"
-            class="rounded-xl"
-            :class="cn({
-              'h-[85vh]': imgSize < 1.5,
-            })"
-            :src="curImage"
-            @load="({ width, height }) => imgSize = width / height"
-          />
+          <div
+            class="overflow-auto py-2"
+          >
+            <LazyImage
+              :key="curImage"
+              class="rounded-xl w-[60vw]"
+              :src="curImage"
+            />
+          </div>
         </div>
 
         <AlbumPreviewWeibo

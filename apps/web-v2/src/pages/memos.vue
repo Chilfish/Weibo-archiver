@@ -47,16 +47,4 @@ onBeforeMount(async () => {
       暂时未发现过往在这一天发过的微博哦
     </div>
   </main>
-
-  <main
-    v-else
-  >
-    <Skeleton
-      class="w-30 h-8"
-    />
-  </main>
 </template>
-
-<style scoped>
-
-</style>

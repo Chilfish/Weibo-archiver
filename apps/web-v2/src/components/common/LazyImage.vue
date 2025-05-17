@@ -58,7 +58,7 @@ useIntersectionObserver(imgRef, ([{ isIntersecting }]) => {
       img.remove()
     }
     img.onerror = (e: any) => {
-      isLoading.value = false
+      // isLoading.value = false
       emit('error', e)
     }
   }
