@@ -65,6 +65,11 @@ const FetchArgsSchema = z.object({
     commentsCount: z.number().default(10),
     ...rangeOptions.shape,
   }),
+  favorites: z.object({
+    uid: z.string(),
+    page: z.number(),
+    with_total: z.boolean(),
+  }),
 })
 
 export type FetchArgs = z.infer<typeof FetchArgsSchema>

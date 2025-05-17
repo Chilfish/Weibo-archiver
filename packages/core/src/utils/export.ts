@@ -6,6 +6,7 @@ export async function exportData(
   posts: Post[],
   userInfo?: UserInfo | null,
   followings?: UserBio[],
+  favorites?: any[],
 ) {
   console.log('Exporting posts count:', posts.length)
   if (!userInfo?.name) {
@@ -17,6 +18,7 @@ export async function exportData(
     weibo: posts,
     user: userInfo || {},
     followings: followings || [],
+    favorites: favorites || [],
   }
 
   const dataStr = JSON.stringify(data)

@@ -54,3 +54,4 @@ export type PostMeta = z.infer<typeof postMetaSchema>
 export type Post = z.infer<typeof postSchema>
 export type Retweet = z.infer<typeof retweetSchema>
 export type Comment = z.infer<typeof commentSchema>
+export type Favorite = Post

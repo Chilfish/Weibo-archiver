@@ -20,9 +20,9 @@ export interface UserConfig {
   repostPic: boolean
   hasRepost: boolean
   hasComment: boolean
-  hasFavorite: boolean
   commentCount: number
   followingsOnly: boolean
+  favoritesOnly: boolean
   weiboOnly: boolean
   startAt: number
   endAt: number

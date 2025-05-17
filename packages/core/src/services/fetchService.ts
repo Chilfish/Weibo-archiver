@@ -2,6 +2,7 @@ import type {
   FetchArgs,
   RawComment,
   RawComments,
+  RawFavorite,
   RawFollowings,
   RawLongText,
   RawMyFollowings,
@@ -115,5 +116,14 @@ export class FetchService {
     )
 
     return data
+  }
+
+  async favorites(args: FetchArgs['favorites']): Promise<RawFavorite['status']> {
+    const { data } = await this.fetcher<RawFavorite, FetchArgs['favorites']>(
+      FETCH_PATH.FAVORITES,
+      args,
+    )
+
+    return data.status
   }
 }

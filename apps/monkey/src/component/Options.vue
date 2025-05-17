@@ -48,6 +48,12 @@ const options: Option[] = [
     remark: '只导出微博，不导出关注列表',
     disabled: config => config.followingsOnly,
   },
+  {
+    label: '只导出收藏',
+    value: 'favoritesOnly',
+    remark: '只导出收藏夹的微博',
+    disabled: config => config.followingsOnly || config.weiboOnly,
+  },
   // {
   //   label: '继续上次的记录',
   //   value: 'restore',

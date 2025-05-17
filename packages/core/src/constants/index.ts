@@ -32,6 +32,8 @@ export const FETCH_PATH = {
   POSTS_RANGE: '/statuses/searchProfile',
   POST_LONGTEXT: '/statuses/longtext',
   POST_COMMENTS: '/statuses/buildComments',
+
+  FAVORITES: '/favorites/all_fav',
 } as const
 
 export const DEFAULT_FETCH_CONFIG: FetchConfig = {
@@ -43,6 +45,7 @@ export const DEFAULT_FETCH_CONFIG: FetchConfig = {
   hasComment: true,
   commentCount: 5,
   followingsOnly: false,
+  favoritesOnly: false,
   weiboOnly: false,
   sinceId: '',
   startAt: Date.now(),

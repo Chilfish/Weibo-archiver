@@ -14,6 +14,7 @@ export interface FetchConfig {
   repostPic: boolean
   commentCount: number
   followingsOnly: boolean
+  favoritesOnly: boolean
   weiboOnly: boolean
   sinceId: string
   startAt: number

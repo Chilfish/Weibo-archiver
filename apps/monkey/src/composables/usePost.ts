@@ -1,4 +1,4 @@
-import type { Post, UID, UserBio } from '@weibo-archiver/core'
+import type { Favorite, Post, UID, UserBio } from '@weibo-archiver/core'
 import type { FetchProgress } from '../types'
 import { exportData } from '@weibo-archiver/core'
 import { computed, reactive, toRaw } from 'vue'
@@ -85,6 +85,10 @@ export function usePost() {
     await postState.idb.addFollowings(followings)
   }
 
+  async function addFavorites(favorites: Favorite[]) {
+    await Promise.all(favorites.map(postState.idb.addFavorite))
+  }
+
   async function exportFollowingUsers() {
     const data = await postState.idb.getFollowings()
     return await exportData([], config.value.user, data)
@@ -98,7 +102,9 @@ export function usePost() {
         ? []
         : await postState.idb.getFollowings()
 
-      await exportData(posts, config.value.user, followings)
+      const favorites = await postState.idb.getFavorites()
+
+      await exportData(posts, config.value.user, followings, favorites)
     }
     catch (error) {
       console.error('Failed to export data:', error)
@@ -119,5 +125,6 @@ export function usePost() {
     exportAllData,
     addFollowingUsers,
     exportFollowingUsers,
+    addFavorites,
   }
 }

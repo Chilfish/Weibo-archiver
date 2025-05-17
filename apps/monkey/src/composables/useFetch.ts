@@ -34,7 +34,15 @@ export async function startFetch() {
     user,
     weiboOnly,
     followingsOnly,
+    favoritesOnly,
   } = config.value
+
+  if (favoritesOnly) {
+    const data = await postService.getFavorites()
+    console.log(data)
+    await postStore.addFavorites(data)
+    return
+  }
 
   if (!followingsOnly) {
     await postService.getPosts({
