@@ -56,7 +56,7 @@ const table = useVueTable({
         @update:model-value="table.getColumn('name')?.setFilterValue($event)"
       />
     </div>
-    <div class="border rounded-2xl">
+    <div class="border rounded-xl">
       <Table>
         <TableHeader
           class="bg-card"
@@ -85,7 +85,7 @@ const table = useVueTable({
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
-              class="bg-secondary"
+              class=""
             >
               <TableCell
                 v-for="cell in row.getVisibleCells()"
@@ -116,3 +116,9 @@ const table = useVueTable({
     <DataTablePagination :table="table" />
   </div>
 </template>
+
+<style>
+[data-slot="table-container"] {
+  border-radius: 0.5rem;
+}
+</style>

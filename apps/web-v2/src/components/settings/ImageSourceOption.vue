@@ -19,7 +19,7 @@ const customUrl = defineModel<string>('customUrl')
     class="p-3 rounded-lg border cursor-pointer hover:bg-base-200 transition-colors"
     :class="{
       'border-primary bg-primary/5': imgHost === value,
-      'border-gray-200': imgHost !== value,
+      'border-gray': imgHost !== value,
     }"
     @click="() => imgHost = value"
   >

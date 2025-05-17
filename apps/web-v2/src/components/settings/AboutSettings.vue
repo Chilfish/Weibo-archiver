@@ -11,7 +11,7 @@ const APP_VERSION = 'v0.5.3'
   <div class="space-y-6">
     <div class="flex flex-col items-center justify-center text-center gap-2 mb-8">
       <LazyImage src="/icon.webp" class="w-24 h-24" />
-      <h3 class="text-2xl font-bold text-gray-800">
+      <h3 class="text-2xl font-bold ">
         Weibo Archiver
         <Badge class=" ml-2">
           {{ APP_VERSION }}
@@ -19,7 +19,7 @@ const APP_VERSION = 'v0.5.3'
       </h3>
     </div>
 
-    <p class="text-center text-gray-600">
+    <p class="text-center 0">
       微博备份工具，为账号被完全夹没前未雨绸缪 😭
     </p>
 
@@ -46,7 +46,7 @@ const APP_VERSION = 'v0.5.3'
     </div>
 
     <div class="border-t border-gray-200 my-6 pt-6 text-center">
-      <p class="text-gray-600 mb-4">
+      <p class="mb-4">
         如果觉得这个项目对你有帮助，可以考虑赞助我 😇<br>这将给我更多的动力来维护这个项目
       </p>
       <a
@@ -58,8 +58,8 @@ const APP_VERSION = 'v0.5.3'
       </a>
     </div>
 
-    <div class="mt-6 text-xs text-center text-gray-400">
-      <p>© 2023 Weibo Archiver · 开源项目 · MIT License</p>
+    <div class="mt-6 text-xs text-center ">
+      <p>© {{ new Date().getFullYear() }} Weibo Archiver</p>
     </div>
   </div>
 </template>
