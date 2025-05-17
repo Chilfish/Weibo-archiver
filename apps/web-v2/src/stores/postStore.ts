@@ -1,5 +1,5 @@
 import type { SearchQuery } from '@/composables/useSearch'
-import type { ImportedData, Post } from '@weibo-archiver/core'
+import type { Favorite, ImportedData, Post } from '@weibo-archiver/core'
 import { DEFAULT_PAGE_SIZE, idb, WeiboParser } from '@weibo-archiver/core'
 import { destr } from 'destr'
 import Fuse from 'fuse.js'
@@ -54,11 +54,12 @@ export const usePostStore = defineStore('post', () => {
     importing.value = true
     const data = destr<ImportedData>(jsonStr, { strict: true })
 
-    const { user, followings, weibo } = data
+    const { user, followings, weibo, favorites } = data
 
     await userStore.importUser(user)
     await idb.addFollowings(followings)
     await idb.addPosts(WeiboParser.migrateFromOld(weibo, user.uid))
+    await idb.addFavorites(favorites)
 
     await setupFuse()
 
@@ -79,6 +80,10 @@ export const usePostStore = defineStore('post', () => {
 
   async function getAllTotal(): Promise<number> {
     return await idb.getAllPostsCount()
+  }
+
+  async function getFavorites(): Promise<Favorite[]> {
+    return await idb.getFavorites()
   }
 
   async function searchPosts(
@@ -158,6 +163,7 @@ export const usePostStore = defineStore('post', () => {
     getPosts,
     getAllTotal,
     getPostById,
+    getFavorites,
     searchPosts,
     parseAndImport,
     getTodayInLastYears,
