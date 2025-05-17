@@ -62,7 +62,11 @@ export class UserService {
         page,
         uid,
       })
-      const _users = data.users.map(UserParser.parseFollowing)
+      const _users = data.users.map(user => ({
+        ...UserParser.parseFollowing(user),
+        followBy: uid,
+      }))
+
       users.push(..._users)
       page += 1
 

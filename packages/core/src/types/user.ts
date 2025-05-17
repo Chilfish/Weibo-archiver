@@ -24,6 +24,11 @@ const userInfoSchema = userWithBioSchema.extend({
 
 const followingsSchema = userSchema.extend({
   followBy: z.string(),
+  followers: z.number(),
+  followings: z.number(),
+  bio: z.string(),
+  location: z.string(),
+  createdAt: z.string(),
 })
 
 export type User = z.infer<typeof userSchema>

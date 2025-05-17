@@ -1,5 +1,6 @@
 import type {
   Comment,
+  Followings,
   LinkCard,
   Post,
   PostMeta,
@@ -7,7 +8,6 @@ import type {
   RawMyFollowUser,
   Retweet,
   User,
-  UserBio,
   UserInfo,
 } from '../types'
 import type {
@@ -53,14 +53,19 @@ export class UserParser {
     }
   }
 
-  static parseFollowing(user: RawFollowingUser | RawMyFollowUser) {
+  static parseFollowing(user: RawFollowingUser | RawMyFollowUser): Followings {
     return {
       uid: user.idstr,
       name: user.screen_name,
       avatar: user.profile_image_url,
       bio: user.description,
       remark: user.remark || undefined,
-    } as UserBio
+      followings: user.friends_count,
+      followers: user.followers_count,
+      followBy: '',
+      createdAt: user.created_at,
+      location: user.location,
+    }
   }
 }
 
