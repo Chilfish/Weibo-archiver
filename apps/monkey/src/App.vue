@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { CircleAlertIcon, SettingsIcon } from 'lucide-vue-next'
 import { onBeforeMount, ref } from 'vue'
-import ActionButtons from './component/ActionButtons.vue'
+import Options from './component/configs/Options.vue'
+import SearchUser from './component/configs/SearchUser.vue'
+import StartButton from './component/configs/StartButton.vue'
 import Header from './component/Header.vue'
 import Logo from './component/Logo.vue'
-import Options from './component/Options.vue'
-import Search from './component/Search.vue'
 import { config, useConfig } from './composables/useConfig'
 import { usePost } from './composables/usePost'
 
@@ -44,9 +44,9 @@ const curTab = ref<typeof tabs[keyof typeof tabs]>('tabs:config')
         导出配置
       </label>
       <div class="tab-content bg-base-100 border-base-300 p-4 space-y-2">
-        <Search />
+        <SearchUser />
         <Options />
-        <ActionButtons
+        <StartButton
           @start="curTab = tabs.status"
         />
       </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { UserConfig } from '../types'
-import { config } from '../composables/useConfig'
-import DateRange from './DateRange.vue'
+import type { UserConfig } from '../../types'
+import { config } from '../../composables/useConfig'
+import DateRange from '../DateRange.vue'
 
 interface Option {
   label: string

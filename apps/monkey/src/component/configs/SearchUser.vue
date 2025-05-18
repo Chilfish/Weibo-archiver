@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { UserInfo } from '@weibo-archiver/core'
+import type { UserInfo } from '@core/index'
 import { Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
-import { useConfig } from '../composables/useConfig'
-import { userService } from '../composables/useFetch'
-import { usePost } from '../composables/usePost'
-import LazyImage from './LazyImage.vue'
+import { useConfig } from '../../composables/useConfig'
+import { userService } from '../../composables/useFetch'
+import { usePost } from '../../composables/usePost'
+import LazyImage from '../LazyImage.vue'
 
 const { config } = useConfig()
 const postStore = usePost()
