@@ -68,11 +68,25 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
-  async getFavorites(): Promise<Favorite[]> {
-    return this.favorites
-      .where('userId')
-      .equals(this.curUid)
+  async getAllFavorites(): Promise<Favorite[]> {
+    return this.favoriteQuery
       .toArray()
+  }
+
+  async getFavorites(
+    page: number,
+    pageSize: number = DEFAULT_PAGE_SIZE,
+  ): Promise<Favorite[]> {
+    return this.favoriteQuery
+      .offset((page - 1) * pageSize)
+      .limit(pageSize)
+      .reverse()
+      .toArray()
+  }
+
+  async getAllFavoritesCount(): Promise<number> {
+    return this.favoriteQuery
+      .count()
   }
 
   async getUsers(): Promise<UserInfo[]> {
@@ -123,7 +137,7 @@ export class IndexedDB extends Dexie {
   }
 
   async getAllPostsCount(): Promise<number> {
-    return this.posts.count()
+    return this.postQuery.count()
   }
 
   async clearDB(): Promise<void> {
@@ -134,6 +148,12 @@ export class IndexedDB extends Dexie {
     return this.posts
       .where('userId')
       .equals(this.curUser.uid)
+  }
+
+  private get favoriteQuery() {
+    return this.favorites
+      .where('userId')
+      .equals(this.curUid)
   }
 }
 

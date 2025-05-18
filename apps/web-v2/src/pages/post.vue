@@ -4,7 +4,7 @@ import Pagination from '@/components/common/Pagination.vue'
 import EmptyWeibo from '@/components/EmptyWeibo.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { usePostStore, useUserStore } from '@/stores'
-import { DEFAULT_PAGE_SIZE } from '@weibo-archiver/core'
+import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -23,13 +23,13 @@ const weiboArr = ref<Post[]>([])
 
 onBeforeMount(async () => {
   await getPosts()
-  postsTotal.value = await postStore.getAllTotal()
+  postsTotal.value = await postStore.getAllPostsTotal()
 })
 
 watch(() => postStore.importing, async (importing) => {
   if (importing === false) {
     await getPosts()
-    postsTotal.value = await postStore.getAllTotal()
+    postsTotal.value = await postStore.getAllPostsTotal()
   }
 })
 
@@ -73,13 +73,6 @@ async function changePage(newPage: number, newPageSize: number) {
   })
   await getPosts()
   scrollToTop()
-}
-
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  })
 }
 </script>
 

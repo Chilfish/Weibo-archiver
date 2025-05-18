@@ -78,12 +78,19 @@ export const usePostStore = defineStore('post', () => {
     return await idb.getPosts(curPage, pageSize)
   }
 
-  async function getAllTotal(): Promise<number> {
-    return await idb.getAllPostsCount()
+  async function getAllPostsTotal(): Promise<number> {
+    return idb.getAllPostsCount()
   }
 
-  async function getFavorites(): Promise<Favorite[]> {
-    return await idb.getFavorites()
+  async function getAllFavoritesTotal(): Promise<number> {
+    return idb.getAllFavoritesCount()
+  }
+
+  async function getFavorites(
+    curPage: number,
+    pageSize: number = DEFAULT_PAGE_SIZE,
+  ): Promise<Favorite[]> {
+    return await idb.getFavorites(curPage, pageSize)
   }
 
   async function searchPosts(
@@ -161,9 +168,10 @@ export const usePostStore = defineStore('post', () => {
     importing,
 
     getPosts,
-    getAllTotal,
+    getAllPostsTotal,
     getPostById,
     getFavorites,
+    getAllFavoritesTotal,
     searchPosts,
     parseAndImport,
     getTodayInLastYears,

@@ -12,16 +12,17 @@ const postStore = usePostStore()
 const route = useRoute()
 const router = useRouter()
 
+const pageSize = 40
+
 const weiboArr = ref<Post[]>([])
 const isLoading = ref(false)
+const noMore = ref(false)
 const curPage = ref(Number(route.query.page) || 1)
 const postsTotal = ref(0)
 
-const pageSize = 40
-
 onBeforeMount(async () => {
   await getPosts()
-  postsTotal.value = await postStore.getAllTotal()
+  postsTotal.value = await postStore.getAllPostsTotal()
 })
 
 watch(() => route.query.page, async (newPage) => {
@@ -36,6 +37,9 @@ async function getPosts() {
   isLoading.value = true
   const posts = await postStore.getPosts(curPage.value, pageSize)
     .then(posts => posts.filter(post => post.imgs.length > 0))
+
+  noMore.value = posts.length < 1
+
   weiboArr.value.push(...posts)
   isLoading.value = false
   return posts
@@ -53,7 +57,7 @@ async function loadingMore() {
 
 const loadMoreBtn = useTemplateRef('loadMoreBtn')
 useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
-  if (isIntersecting && !isLoading.value) {
+  if (isIntersecting && !isLoading.value && !noMore.value) {
     loadingMore()
   }
 })
@@ -85,7 +89,7 @@ useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
       />
 
       <Button
-        v-if="!isLoading"
+        v-if="!isLoading && !noMore"
         ref="loadMoreBtn"
         class="mt-4 mx-auto block"
         variant="outline"
