@@ -1,5 +1,6 @@
 import type {
   Comment,
+  Favorite,
   Following,
   LinkCard,
   Post,
@@ -300,7 +301,7 @@ export class WeiboParser {
   /**
    * 提取所有图片链接
    */
-  static parseImgs(posts: Post[]): Set<string> {
+  static parseImgs(posts: Post[] | Favorite[]): string[] {
     const imgs = posts
       .map((post) => {
         // TODO
@@ -318,7 +319,7 @@ export class WeiboParser {
       .flat()
       .sort()
 
-    return new Set(imgs)
+    return Array.from(new Set(imgs))
   }
 
   static migrateFromOld(oldPost: any[], curUid: string): Post[] {

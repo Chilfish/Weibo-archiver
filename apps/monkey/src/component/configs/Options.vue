@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { UserConfig } from '../../types'
-import { config } from '../../composables/useConfig'
+import type { UserConfig } from '@/types'
+import { config } from '@/composables/useConfig'
 import DateRange from '../DateRange.vue'
 
 interface Option {
@@ -37,6 +37,11 @@ const options: Option[] = [
     remark: '导出微博时包含部分一级评论',
   },
   {
+    label: '继续上次的记录',
+    value: 'restore',
+    remark: '从上次终止的地方继续，不清除本地缓存',
+  },
+  {
     label: '导出收藏',
     value: 'hasFavorites',
     remark: '导出收藏的微博',
@@ -51,18 +56,19 @@ const options: Option[] = [
     value: 'hasFollowings',
     remark: '',
   },
-  // {
-  //   label: '继续上次的记录',
-  //   value: 'restore',
-  //   remark: '从上次终止的地方继续',
-  // },
+
 ] as const
 </script>
 
 <template>
+  <label
+    class="block mb-2"
+  >
+    爬取设置
+  </label>
   <div
     tabindex="0"
-    class="bg-base-100 border-base-300 text-base-content! m-0!"
+    class="bg-base-100 px-4 py-2 rounded-xl border-base-300 text-base-content! m-0!"
   >
     <div
       v-for="option in options"

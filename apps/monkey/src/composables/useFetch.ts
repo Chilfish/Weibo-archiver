@@ -1,6 +1,6 @@
-import type { FetchState } from '../types'
+import type { FetchState } from '@/types'
 import { FetchService, PostService, UserService } from '@weibo-archiver/core'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { config, useConfig } from './useConfig'
 import { usePost } from './usePost'
 
@@ -13,14 +13,18 @@ export const userService = new UserService(fetchService, config.value.user?.uid)
 export const postService = new PostService(userService, fetchService)
 
 export const fetchState = reactive<FetchState>({
-  isStart: false,
-  isFinish: false,
+  status: 'idle',
   fetchType: 'weibo',
 })
 
+export const fetchCount = ref({
+  posts: 0,
+  followings: 0,
+  favorites: 0,
+})
+
 export async function startFetch() {
-  fetchState.isStart = true
-  await postStore.resetState()
+  fetchState.status = 'running'
   const {
     isFetchAll,
     startAt,
@@ -35,7 +39,12 @@ export async function startFetch() {
     hasWeibo,
     hasFollowings,
     hasFavorites,
+    restore,
   } = config.value
+
+  if (!restore) {
+    await postStore.resetState()
+  }
 
   if (hasWeibo) {
     fetchState.fetchType = 'weibo'
@@ -48,7 +57,7 @@ export async function startFetch() {
       hasret: hasRepost ? '1' : '0',
       hasRepostPic: repostPic,
       commentsCount: hasComment ? commentCount : 0,
-      async onFetched({ posts, page, sinceId, postsTotal }) {
+      async onFetched({ posts, page, sinceId }) {
         const filtered = posts
           .filter((post) => {
             if (hasRepost)
@@ -59,7 +68,6 @@ export async function startFetch() {
         updateConfig({
           curPage: page,
           sinceId,
-          total: postsTotal,
         })
       },
     })
@@ -77,5 +85,5 @@ export async function startFetch() {
     await postStore.addFavorites(data)
   }
 
-  fetchState.isFinish = true
+  fetchState.status = 'finish'
 }

@@ -62,9 +62,7 @@ export class IndexedDB extends Dexie {
   }
 
   async getFollowings(): Promise<Following[]> {
-    return this.followings
-      .where('followBy')
-      .equals(this.curUid)
+    return this.followingQuery
       .toArray()
   }
 
@@ -140,8 +138,17 @@ export class IndexedDB extends Dexie {
     return this.postQuery.count()
   }
 
+  async getAllFollowingsCount(): Promise<number> {
+    return this.followingQuery
+      .count()
+  }
+
   async clearDB(): Promise<void> {
-    return this.delete({ disableAutoOpen: false })
+    await Promise.all([
+      this.followingQuery.delete,
+      this.postQuery.delete,
+      this.favoriteQuery.delete,
+    ])
   }
 
   private get postQuery() {
@@ -153,6 +160,12 @@ export class IndexedDB extends Dexie {
   private get favoriteQuery() {
     return this.favorites
       .where('userId')
+      .equals(this.curUid)
+  }
+
+  private get followingQuery() {
+    return this.followings
+      .where('followBy')
       .equals(this.curUid)
   }
 }

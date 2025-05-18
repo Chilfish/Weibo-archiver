@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
@@ -18,6 +19,7 @@ export default defineConfig({
       '@weibo-archiver/core': `${packages}/core`,
       '@weibo-archiver/ui': `${packages}/ui/`,
       '@weibo-archiver/shared': `${packages}/shared/`,
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   build: {
