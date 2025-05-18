@@ -1,5 +1,17 @@
 <script setup lang="ts">
+import type { Post } from '@weibo-archiver/core'
 import { fetchCount } from '@/composables/useFetch'
+import { usePost } from '@/composables/usePost'
+import { formatDate } from '@weibo-archiver/shared'
+import { onBeforeMount, ref } from 'vue'
+
+const postStore = usePost()
+
+const post = ref<Post>()
+
+onBeforeMount(async () => {
+  post.value = await postStore.getLastPost()
+})
 </script>
 
 <template>
@@ -8,8 +20,8 @@ import { fetchCount } from '@/composables/useFetch'
   >
     已爬取数量
   </label>
-  <div class="stats shadow items-center flex justify-center py-2 bg-base-100">
-    <div class="stat place-items-center p-0">
+  <div class="stats rounded-xl items-center flex justify-between px-4 py-2 bg-base-100">
+    <div class="stat place-items-center">
       <div class="stat-title">
         微博
       </div>
@@ -18,7 +30,7 @@ import { fetchCount } from '@/composables/useFetch'
       </div>
     </div>
 
-    <div class="stat place-items-center p-0">
+    <div class="stat place-items-center">
       <div class="stat-title">
         关注
       </div>
@@ -27,7 +39,7 @@ import { fetchCount } from '@/composables/useFetch'
       </div>
     </div>
 
-    <div class="stat place-items-center p-0">
+    <div class="stat place-items-center">
       <div class="stat-title">
         收藏
       </div>
@@ -35,5 +47,22 @@ import { fetchCount } from '@/composables/useFetch'
         {{ fetchCount.favorites }}
       </div>
     </div>
+
+    <div class="stat place-items-center">
+      <div class="stat-title">
+        上次停止爬取的时间
+      </div>
+      <div class="stat-value">
+        {{ post?.createdAt ? formatDate(post.createdAt, 'YYYY年MM月DD日') : '暂无' }}
+      </div>
+    </div>
   </div>
 </template>
+
+<style>
+.stats .stat {
+  padding-block: 0;
+  padding-inline: 0;
+  width: fit-content;
+}
+</style>

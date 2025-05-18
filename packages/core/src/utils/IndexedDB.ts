@@ -134,6 +134,14 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
+  async getLatestPost(): Promise<Post> {
+    const post = await this.postQuery
+      .limit(1)
+      .toArray()
+
+    return post[0]
+  }
+
   async getAllPostsCount(): Promise<number> {
     return this.postQuery.count()
   }

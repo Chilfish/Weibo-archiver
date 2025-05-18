@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import FetchStats from '@/component/configs/FetchStats.vue'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import Options from './component/configs/Options.vue'
 import SearchUser from './component/configs/SearchUser.vue'
 import StartButton from './component/configs/StartButton.vue'
@@ -12,15 +12,19 @@ import { usePost } from './composables/usePost'
 const { toggleMinimize } = useConfig()
 
 const postStore = usePost()
+const isLoading = ref(false)
 
 onBeforeMount(async () => {
+  isLoading.value = true
   await postStore.initializeDB()
+  isLoading.value = false
 })
 </script>
 
 <template>
   <div
     v-show="!config.isMinimize"
+    v-if="!isLoading"
     class="fixed-card bg-base-200 text-base-content max-h-[80vh] w-96 gap-2 overflow-x-hidden overflow-y-auto border-2 border-gray-200 rounded-lg p-4 shadow-2xl space-y-2"
     :data-theme="config.theme"
   >

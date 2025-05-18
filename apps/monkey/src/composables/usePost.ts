@@ -32,6 +32,7 @@ export function usePost() {
   }
 
   async function resetState() {
+    await idb.clearDB()
     fetchCount.value = {
       posts: 0,
       favorites: 0,
@@ -40,7 +41,6 @@ export function usePost() {
     updateConfig({
       curPage: 0,
     })
-    await idb.clearDB()
   }
 
   async function addPosts(newPosts: Post[]) {
@@ -55,6 +55,10 @@ export function usePost() {
       console.error('Failed to add post:', error)
       throw new Error('Failed to add post to database')
     }
+  }
+
+  async function getLastPost() {
+    return idb.getLatestPost()
   }
 
   async function getAllPosts() {
@@ -103,6 +107,7 @@ export function usePost() {
     addPosts,
     resetState,
     getAllPosts,
+    getLastPost,
     addUser,
     exportAllData,
     addFollowingUsers,
