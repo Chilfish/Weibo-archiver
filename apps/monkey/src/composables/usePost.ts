@@ -89,7 +89,7 @@ export function usePost() {
         ? []
         : await idb.getFollowings()
 
-      const favorites = await idb.getFavorites()
+      const favorites = await idb.getAllFavorites()
 
       await exportData(posts, config.value.user, followings, favorites)
     }

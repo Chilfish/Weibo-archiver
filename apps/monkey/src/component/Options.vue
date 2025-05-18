@@ -37,22 +37,19 @@ const options: Option[] = [
     remark: '导出微博时包含部分一级评论',
   },
   {
-    label: '只导出关注列表',
-    value: 'followingsOnly',
-    remark: '只导出关注列表，不爬取微博',
-    disabled: config => config.weiboOnly,
+    label: '导出收藏',
+    value: 'hasFavorites',
+    remark: '导出收藏的微博',
   },
   {
-    label: '只导出微博',
-    value: 'weiboOnly',
-    remark: '只导出微博，不导出关注列表',
-    disabled: config => config.followingsOnly,
+    label: '导出微博',
+    value: 'hasWeibo',
+    remark: '',
   },
   {
-    label: '只导出收藏',
-    value: 'favoritesOnly',
-    remark: '只导出收藏夹的微博',
-    disabled: config => config.followingsOnly || config.weiboOnly,
+    label: '导出关注列表',
+    value: 'hasFollowings',
+    remark: '',
   },
   // {
   //   label: '继续上次的记录',
@@ -65,88 +62,78 @@ const options: Option[] = [
 <template>
   <div
     tabindex="0"
-    class="collapse collapse-arrow bg-base-100 border-base-300 text-base-content! border m-0!"
+    class="bg-base-100 border-base-300 text-base-content! m-0!"
   >
-    <input type="checkbox" checked>
-
-    <div class="collapse-title flex py-3 pr-8 font-semibold">
-      <label class="label">
-        导出选项
+    <div
+      v-for="option in options"
+      :key="option.value"
+      class="flex items-center py-2"
+    >
+      <label :for="option.value">
+        <span>
+          {{ option.label }}
+        </span>
+        <span
+          v-if="option.remark"
+          class="block text-[0.8rem] text-gray-500"
+        >
+          {{ option.remark }}
+        </span>
       </label>
+
+      <input
+        :id="option.value"
+        v-model="config[option.value]"
+        type="checkbox"
+        class="toggle toggle-primary ml-auto"
+        :disabled="option.disabled?.(config)"
+      >
     </div>
 
-    <div class="collapse-content">
-      <div
-        v-for="option in options"
-        :key="option.value"
-        class="flex items-center py-2"
+    <label
+      for="commentCount"
+      class="label my-2 font-semibold"
+    >
+      评论获取数量
+    </label>
+
+    <select
+      id="commentCount"
+      v-model="config.commentCount"
+      class="select w-full px-4"
+      :disabled="!config.hasComment"
+    >
+      <option
+        disabled
+        selected
       >
-        <label :for="option.value">
-          <span>
-            {{ option.label }}
-          </span>
-          <span
-            v-if="option.remark"
-            class="block text-[0.8rem] text-gray-500"
-          >
-            {{ option.remark }}
-          </span>
-        </label>
-
-        <input
-          :id="option.value"
-          v-model="config[option.value]"
-          type="checkbox"
-          class="toggle toggle-primary ml-auto"
-          :disabled="option.disabled?.(config)"
-        >
-      </div>
-
-      <label
-        for="commentCount"
-        class="label my-2 font-semibold"
+        请选择
+      </option>
+      <option
+        v-for="i in 4"
+        :key="i"
+        :value="i * 5"
       >
-        评论获取数量
-      </label>
+        {{ i * 5 }} 条
+      </option>
+    </select>
 
-      <select
-        id="commentCount"
-        v-model="config.commentCount"
-        class="select w-full px-4"
-        :disabled="!config.hasComment"
-      >
-        <option
-          disabled
-          selected
-        >
-          请选择
-        </option>
-        <option
-          v-for="i in 4"
-          :key="i"
-          :value="i * 5"
-        >
-          {{ i * 5 }} 条
-        </option>
-      </select>
+    <label
+      for="timeRange"
+      class="label my-2 font-semibold"
+    >
+      导出的时间范围
+    </label>
 
-      <label
-        for="timeRange"
-        class="label my-2 font-semibold"
-      >
-        导出的时间范围
-      </label>
-
-      <DateRange
-        :disabled="config.isFetchAll"
-        :start="config.startAt"
-        :end="config.endAt"
-        @change="(start, end) => {
-          config.startAt = start
-          config.endAt = end
-        }"
-        @error="console.log"
-      />
-    </div>
+    <DateRange
+      :disabled="config.isFetchAll"
+      :start="config.startAt"
+      :end="config.endAt"
+      @change="(start, end) => {
+        config.startAt = start
+        config.endAt = end
+      }"
+      @error="console.log"
+    />
   </div>
 </template>

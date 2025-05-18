@@ -13,9 +13,11 @@ export interface FetchConfig {
   hasComment: boolean
   repostPic: boolean
   commentCount: number
-  followingsOnly: boolean
-  favoritesOnly: boolean
-  weiboOnly: boolean
+
+  hasFollowings: boolean
+  hasFavorites: boolean
+  hasWeibo: boolean
+
   sinceId: string
   startAt: number
   endAt: number

@@ -44,9 +44,11 @@ export const DEFAULT_FETCH_CONFIG: FetchConfig = {
   hasRepost: true,
   hasComment: true,
   commentCount: 5,
-  followingsOnly: false,
-  favoritesOnly: false,
-  weiboOnly: false,
+
+  hasFollowings: true,
+  hasFavorites: true,
+  hasWeibo: true,
+
   sinceId: '',
   startAt: Date.now(),
   endAt: Date.now(),

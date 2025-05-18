@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
+import { CircleAlertIcon, SettingsIcon } from 'lucide-vue-next'
+import { onBeforeMount, ref } from 'vue'
 import ActionButtons from './component/ActionButtons.vue'
 import Header from './component/Header.vue'
 import Logo from './component/Logo.vue'
@@ -15,6 +16,12 @@ const postStore = usePost()
 onBeforeMount(async () => {
   await postStore.initializeDB()
 })
+
+const tabs = {
+  config: 'tabs:config',
+  status: 'tabs:status',
+} as const
+const curTab = ref<typeof tabs[keyof typeof tabs]>('tabs:config')
 </script>
 
 <template>
@@ -24,10 +31,38 @@ onBeforeMount(async () => {
     :data-theme="config.theme"
   >
     <Header />
-    <Search />
-    <Options />
-    <div class="divider m-2" />
-    <ActionButtons />
+
+    <div class="tabs tabs-lift">
+      <label class="tab">
+        <input
+          type="radio"
+          :name="tabs.config"
+          :checked="curTab === tabs.config"
+          @input="curTab = tabs.config"
+        >
+        <SettingsIcon class="size-4 mr-2" />
+        导出配置
+      </label>
+      <div class="tab-content bg-base-100 border-base-300 p-4 space-y-2">
+        <Search />
+        <Options />
+        <ActionButtons
+          @start="curTab = tabs.status"
+        />
+      </div>
+
+      <label class="tab">
+        <input
+          type="radio"
+          :name="tabs.status"
+          :checked="curTab === tabs.status"
+          @input="curTab = tabs.status"
+        >
+        <CircleAlertIcon class="size-4 mr-2" />
+        系统状态
+      </label>
+      <div class="tab-content bg-base-100 border-base-300 p-6" />
+    </div>
   </div>
 
   <Logo

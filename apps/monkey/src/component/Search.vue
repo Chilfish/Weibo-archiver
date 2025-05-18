@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { UserInfo } from '@weibo-archiver/core'
-import { ArrowRight, Search } from 'lucide-vue-next'
+import { Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 import { useConfig } from '../composables/useConfig'
 import { userService } from '../composables/useFetch'
@@ -45,6 +45,11 @@ watch(searchText, (value) => {
 
 <template>
   <div class="flex flex-col gap-2">
+    <label
+      class=""
+    >
+      搜索用户
+    </label>
     <label class="input w-full">
       <span class="label">
         当前用户
@@ -72,13 +77,18 @@ watch(searchText, (value) => {
         :key="user.uid"
         class="hover:bg-base-300 flex cursor-pointer items-center gap-2 rounded-lg p-2" @click="setUser(user)"
       >
-        <div class="avatar">
+        <a
+          :href="`https://weibo.com/u/${user.uid}`"
+          target="_blank"
+          class="avatar"
+          @click.stop
+        >
           <LazyImage
             :src="user.avatar"
             :alt="user.name"
             class="h-8 w-8 rounded-full"
           />
-        </div>
+        </a>
         <div class="flex flex-col">
           <div class="text-sm font-bold">
             {{ user.name }}
@@ -87,14 +97,6 @@ watch(searchText, (value) => {
             uid: {{ user.uid }}；粉丝：{{ formatNumber(user.followers) }}
           </div>
         </div>
-
-        <a
-          :href="`https://weibo.com/u/${user.uid}`"
-          target="_blank"
-          class="btn-link ml-auto btn"
-        >
-          <ArrowRight class="h-4 w-4" />
-        </a>
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@ export const postService = new PostService(userService, fetchService)
 export const fetchState = reactive<FetchState>({
   isStart: false,
   isFinish: false,
-  isFetchingFollowings: false,
+  fetchType: 'weibo',
 })
 
 export async function startFetch() {
@@ -32,19 +32,13 @@ export async function startFetch() {
     commentCount,
     repostPic,
     user,
-    weiboOnly,
-    followingsOnly,
-    favoritesOnly,
+    hasWeibo,
+    hasFollowings,
+    hasFavorites,
   } = config.value
 
-  if (favoritesOnly) {
-    const data = await postService.getFavorites()
-    await postStore.addFavorites(data)
-    fetchState.isFinish = true
-    return
-  }
-
-  if (!followingsOnly) {
+  if (hasWeibo) {
+    fetchState.fetchType = 'weibo'
     await postService.getPosts({
       isFetchAll,
       startAt: new Date(startAt),
@@ -71,9 +65,16 @@ export async function startFetch() {
     })
   }
 
-  if (!weiboOnly) {
+  if (hasFollowings) {
+    fetchState.fetchType = 'followings'
     const followings = await userService.getFollowings(user!.uid)
     await postStore.addFollowingUsers(followings)
+  }
+
+  if (hasFavorites) {
+    fetchState.fetchType = 'favorites'
+    const data = await postService.getFavorites()
+    await postStore.addFavorites(data)
   }
 
   fetchState.isFinish = true
