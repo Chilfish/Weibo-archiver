@@ -62,7 +62,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver.user.js
-          path: dist/weibo-archiver.user.js
+          path: apps/monkey/weibo-archiver.user.js
+
+      - name: upload Web App
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-web.zip
+          path: apps/web-v2/dist
 
       - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4
