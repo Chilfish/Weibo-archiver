@@ -5,7 +5,7 @@ import { imgCdn } from '@weibo-archiver/core'
 import {
   DatabaseBackupIcon,
   DownloadIcon,
-  LinkIcon,
+  ImageIcon,
   MoonIcon,
   PaletteIcon,
   SunIcon,
@@ -68,7 +68,7 @@ const toggleDark = useToggle(isDark)
   <div class="space-y-6">
     <section>
       <h3 class="font-bold text-xl mb-4">
-        <LinkIcon class="inline-block" />
+        <ImageIcon class="inline-block text-5 text-primary" />
         图片链接设置
       </h3>
       <div class="space-y-2">
@@ -88,7 +88,7 @@ const toggleDark = useToggle(isDark)
 
     <section>
       <h3 class="font-bold text-xl mb-4">
-        <PaletteIcon class="inline-block" />
+        <PaletteIcon class="inline-block size-5 text-primary" />
         主题
       </h3>
 
@@ -109,7 +109,7 @@ const toggleDark = useToggle(isDark)
 
     <section>
       <h3 class="font-bold text-xl mb-4">
-        <DatabaseBackupIcon class="inline-block" />
+        <DatabaseBackupIcon class="inline-block text-5 text-primary" />
         数据管理
       </h3>
 

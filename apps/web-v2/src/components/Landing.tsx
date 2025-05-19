@@ -165,7 +165,7 @@ const FaqItem = (props: FaqItemProps) => (
 // Data for components
 const featuresData: FeatureSectionItemProps[] = [
   {
-    title: '智能搜索',
+    title: '微博搜索',
     description: '通过关键词、日期或标签快速查找历史微博，无论您发布了多少内容，都能在几秒内定位到您需要的信息。支持高级搜索语法，让查找更加精准。',
     imageUrl: 'https://images.unsplash.com/photo-1555952494-efd681c7e3f9?q=80&w=2574&auto=format&fit=crop',
     imageAlt: '智能搜索功能',
@@ -191,27 +191,45 @@ const featuresData: FeatureSectionItemProps[] = [
     listItems: ['时间线视图，按年份对比', '每日提醒，不错过回忆', '一键分享到当前微博'],
     imageOnLeft: true,
   },
+  {
+    title: '微博收藏',
+    description: '导出您收藏的微博，让它们不再过期',
+    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2668&auto=format&fit=crop',
+    imageAlt: '微博收藏功能',
+    IconComponent: Calendar,
+    listItems: [],
+    imageOnLeft: true,
+  },
+  {
+    title: '关注列表',
+    description: '管理您的关注列表',
+    imageUrl: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2668&auto=format&fit=crop',
+    imageAlt: '关注列表功能',
+    IconComponent: Calendar,
+    listItems: ['排序、搜索'],
+    imageOnLeft: true,
+  },
 ]
 
 const howItWorksStepsData: HowItWorksStepProps[] = [
   {
     stepNumber: '1',
     title: '安装油猴脚本',
-    description: '下载并安装 Tampermonkey 浏览器扩展，然后添加 Weibo-archiver 脚本。这个过程只需几分钟，我们提供详细的安装指南。',
+    description: '下载并安装 Tampermonkey 浏览器扩展，然后添加 Weibo-archiver.user.js 脚本。',
     imageUrl: 'https://images.unsplash.com/photo-1607798748738-b15c40d33d57?q=80&w=2670&auto=format&fit=crop',
     imageAlt: '安装油猴脚本',
   },
   {
     stepNumber: '2',
     title: '导入微博数据',
-    description: '登录微博账号，脚本将自动收集并保存您的微博内容到本地。您可以选择备份的内容类型和时间范围，完全自定义备份过程。',
+    description: '登录微博账号并点击开始，脚本将收集并保存您的微博内容到本地。您可以选择备份的内容类型和时间范围，完全自定义备份过程。',
     imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop',
     imageAlt: '导入微博数据',
   },
   {
     stepNumber: '3',
     title: '浏览备份内容',
-    description: '打开 Weibo-archiver 网页应用，开始浏览和管理您的微博备份。所有数据都存储在本地，确保您的隐私安全，随时可以访问。',
+    description: '打开 Weibo-archiver 网页，开始浏览和管理您的微博备份。所有数据都存储在本地，确保您的隐私安全，随时可以访问。',
     imageUrl: 'https://images.unsplash.com/photo-1512075135822-67cdd9dd7314?q=80&w=2574&auto=format&fit=crop',
     imageAlt: '浏览备份内容',
   },
@@ -256,7 +274,7 @@ export const Landing = () => (
     <header
       class="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md"
     >
-      <div class="px-12 flex h-16 items-center justify-between">
+      <div class="px-4 sm:px-12 flex h-16 items-center justify-between">
         <div class="flex items-center gap-2">
           <div
             class="rounded-full bg-gradient-to-r from-[#FF8200] to-[#FF5500] p-1.5"

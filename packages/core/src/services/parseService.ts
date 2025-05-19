@@ -344,7 +344,7 @@ export class WeiboParser {
         repostsCount: post.reposts_count,
         commentsCount: post.comments_count,
         comments: post.comments.map((item: any) => ({
-          id: item.id.toString(),
+          id: item.id?.toString(),
           text: item.text,
           createdAt: item.created_at,
           likesCount: item.like_count || 0,
@@ -361,7 +361,7 @@ export class WeiboParser {
           ? {
             createdAt: retweet.created_at,
             text: retweet.text,
-            id: retweet.id.toString(),
+            id: retweet.id?.toString(),
             mblogid: retweet.mblogid,
             likesCount: retweet.like_count,
             repostsCount: retweet.reposts_count,
