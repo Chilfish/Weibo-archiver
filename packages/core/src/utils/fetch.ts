@@ -17,7 +17,7 @@ export function createFetcher(args: CreateAxiosDefaults) {
     params?: R,
   ): Promise<{ data: T }> {
     return _fetcher(path, { params }).then(({ data: rawData, request }) => {
-      const url = request.res.responseUrl
+      const url = request.res?.responseUrl || path
       try {
         if (typeof rawData !== 'object') {
           throw new SyntaxError('Not a JSON')

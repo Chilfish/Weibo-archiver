@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import type { UserInfo } from '@core/index'
+import type { UserInfo } from '@weibo-archiver/core'
 import { Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
-import { useConfig } from '../../composables/useConfig'
-import { userService } from '../../composables/useFetch'
-import { usePost } from '../../composables/usePost'
+import { useConfig } from '@/composables/useConfig'
+import { userService } from '@/composables/useFetch'
+import { usePost } from '@/composables/usePost'
 import LazyImage from '../LazyImage.vue'
 
 const { config } = useConfig()
 const postStore = usePost()
 const searchText = ref(config.value.user?.name || '')
 const searchResult = ref<UserInfo[]>([])
+const isFinish = ref(false)
 
 async function searchUser() {
+  isFinish.value = false
   const isUid = /^\d+$/.test(searchText.value)
   const users = isUid
     ? await userService.getDetail(searchText.value).then(user => [user])
     : await userService.searchUser(searchText.value)
   console.log(users)
   searchResult.value = users
+  isFinish.value = true
 }
 
 async function setUser(user: UserInfo) {
   searchText.value = user.name
   searchResult.value = []
   config.value.user = user
+  isFinish.value = false
 
   await postStore.addUser(user)
 }
@@ -69,9 +73,16 @@ watch(searchText, (value) => {
     </label>
 
     <div
-      v-if="searchResult.length"
+      v-if="isFinish"
       class="bg-base-100 max-h-56 flex flex-col gap-1 overflow-y-auto rounded-lg p-2"
     >
+      <div
+        v-if="searchResult.length < 1"
+        class="text-sm text-center"
+      >
+        暂无结果，可以试试搜索用户的数字 id
+      </div>
+
       <div
         v-for="user in searchResult"
         :key="user.uid"

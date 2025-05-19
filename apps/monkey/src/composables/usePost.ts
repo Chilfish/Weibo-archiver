@@ -22,13 +22,17 @@ export function usePost() {
       await idb.addUser(toRaw(config.value.user))
     }
 
+    await getFetchCount()
+
+    console.log('DB initialized', idb.curUser, config.value)
+  }
+
+  async function getFetchCount() {
     fetchCount.value = {
       posts: await idb.getAllPostsCount(),
       favorites: await idb.getAllFavoritesCount(),
       followings: await idb.getAllFollowingsCount(),
     }
-
-    console.log('DB initialized', idb.curUser, config.value)
   }
 
   async function resetState() {
@@ -69,6 +73,7 @@ export function usePost() {
     userService.uid = user.uid
     await idb.addUser(toRaw(user))
     await idb.setCurUser(user.uid)
+    await getFetchCount()
   }
 
   async function addFollowingUsers(followings: Following[]) {
@@ -85,12 +90,12 @@ export function usePost() {
     try {
       const { hasFavorites, hasFollowings, hasWeibo } = config.value
 
-      const posts = hasWeibo ? await idb.getAllPosts() : []
+      const weibo = hasWeibo ? await idb.getAllPosts() : []
       const followings = hasFollowings ? await idb.getFollowings() : []
       const favorites = hasFavorites ? await idb.getAllFavorites() : []
 
       await exportData({
-        posts,
+        weibo,
         favorites,
         followings,
         user: idb.curUser,

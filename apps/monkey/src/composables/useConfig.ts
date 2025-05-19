@@ -1,7 +1,7 @@
 import type { UserConfig } from '@weibo-archiver/core'
 import { useStorage } from '@vueuse/core'
 import { DEFAULT_USER_CONFIG } from '@weibo-archiver/core'
-import { toRaw, watch } from 'vue'
+import { watch } from 'vue'
 
 const STORAGE_KEY = 'weibo-archiver'
 
@@ -17,13 +17,10 @@ export const config = useStorage<UserConfig>(
 
 export function useConfig() {
   function updateConfig(newConfig: Partial<UserConfig>) {
-    Object.assign(config.value, newConfig)
-    updateGlobalFetchOptions()
-  }
-
-  function updateGlobalFetchOptions() {
-    const fetchOptions = toRaw(config.value)
-    ;(globalThis as any).fetchOptions = fetchOptions
+    config.value = {
+      ...config.value,
+      ...newConfig,
+    }
   }
 
   function toggleMinimize() {
@@ -33,7 +30,6 @@ export function useConfig() {
   function resetConfig() {
     const { user, isMinimize } = config.value
     config.value = { ...createInitialConfig(), user, isMinimize }
-    updateGlobalFetchOptions()
   }
 
   watch(config, (newConfig) => {

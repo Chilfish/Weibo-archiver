@@ -25,6 +25,10 @@ export const fetchCount = ref({
 
 export async function startFetch() {
   fetchState.status = 'running'
+  if (!config.value.restore) {
+    await postStore.resetState()
+  }
+
   const {
     isFetchAll,
     startAt,
@@ -39,12 +43,7 @@ export async function startFetch() {
     hasWeibo,
     hasFollowings,
     hasFavorites,
-    restore,
   } = config.value
-
-  if (!restore) {
-    await postStore.resetState()
-  }
 
   if (hasWeibo) {
     fetchState.fetchType = 'weibo'

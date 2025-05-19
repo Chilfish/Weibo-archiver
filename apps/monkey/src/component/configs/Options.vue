@@ -44,7 +44,7 @@ const options: Option[] = [
   {
     label: '导出收藏',
     value: 'hasFavorites',
-    remark: '导出收藏的微博',
+    remark: '导出自己收藏的微博，对其他人无效',
   },
   {
     label: '导出微博',

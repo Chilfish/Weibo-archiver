@@ -3,12 +3,12 @@ import { WeiboParser } from '@weibo-archiver/core'
 import fileSaver from 'file-saver'
 
 export async function exportData(data: {
-  posts: Post[]
+  weibo: Post[]
   user: UserInfo | null
   followings: UserBio[]
   favorites: Favorite[]
 }) {
-  console.log('Exporting posts count:', data.posts.length)
+  console.log('Exporting posts count:', data.weibo.length)
   if (!data.user?.name) {
     console.warn('User info is not available')
     return false
@@ -20,7 +20,7 @@ export async function exportData(data: {
   const dataBlob = new Blob([dataStr], { type: 'application/json' })
   fileSaver.saveAs(dataBlob, `weibo-data-${username}.json`)
 
-  const imgsData = [data.posts, data.favorites]
+  const imgsData = [data.weibo, data.favorites]
     .flatMap(WeiboParser.parseImgs)
     .join(',\n') // csv 格式
 

@@ -141,7 +141,7 @@ export class FetchService {
   setFetcher(cookies: string) {
     this.fetcher = createFetcher({
       headers: {
-        Cookie: cookies,
+        Cookie: cookies || undefined,
       },
     })
     return this.fetcher
