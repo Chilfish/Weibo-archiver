@@ -14,6 +14,7 @@ import {
 } from 'lucide-vue-next'
 import ImportData from '@/components/common/ImportData.vue'
 import { config } from '@/composables'
+import { usePostStore, useUserStore } from '@/stores'
 import ImageSourceOption from './ImageSourceOption.vue'
 
 interface TImageSourceOption {
@@ -52,8 +53,11 @@ const imageSourceOptions: TImageSourceOption[] = [
   },
 ] as const
 
-function onReset() {
-  // postStore.clearDB()
+const userStore = useUserStore()
+const postStore = usePostStore()
+async function onReset() {
+  const count = await postStore.clearDB()
+  console.log(count)
 }
 
 const isDark = useDark()
@@ -117,7 +121,10 @@ const toggleDark = useToggle(isDark)
           <UploadIcon />导入数据
         </Button>
 
-        <Button>
+        <Button
+          variant="secondary"
+          @click="postStore.exportAllData()"
+        >
           <DownloadIcon />导出数据
         </Button>
 
@@ -138,7 +145,7 @@ const toggleDark = useToggle(isDark)
             </DialogHeader>
 
             <DialogDescription>
-              确定要重置所有数据吗？
+              确定要重置 {{ `@${userStore.curUser.name}` }} 的所有数据吗？
             </DialogDescription>
 
             <DialogFooter>

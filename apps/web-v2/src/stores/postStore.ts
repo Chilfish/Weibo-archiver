@@ -1,6 +1,6 @@
 import type { Favorite, ImportedData, Post } from '@weibo-archiver/core'
 import type { SearchQuery } from '@/composables/useSearch'
-import { DEFAULT_PAGE_SIZE, idb, readFile, WeiboParser } from '@weibo-archiver/core'
+import { DEFAULT_PAGE_SIZE, exportData, idb, readFile, WeiboParser } from '@weibo-archiver/core'
 import { destr } from 'destr'
 import Fuse from 'fuse.js'
 import { defineStore } from 'pinia'
@@ -166,6 +166,23 @@ export const usePostStore = defineStore('post', () => {
     return idb.getPostsByDay()
   }
 
+  async function clearDB() {
+    return idb.clearDB()
+  }
+
+  async function exportAllData(): Promise<void> {
+    const weibo = await idb.getAllPosts()
+    const followings = await idb.getFollowings()
+    const favorites = await idb.getAllFavorites()
+
+    await exportData({
+      weibo,
+      favorites,
+      followings,
+      user: idb.curUser,
+    })
+  }
+
   return {
     importing,
 
@@ -178,5 +195,7 @@ export const usePostStore = defineStore('post', () => {
     parseAndImport,
     getTodayInLastYears,
     setupFuse,
+    clearDB,
+    exportAllData,
   }
 })

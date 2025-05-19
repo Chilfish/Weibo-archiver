@@ -151,12 +151,18 @@ export class IndexedDB extends Dexie {
       .count()
   }
 
-  async clearDB(): Promise<void> {
-    await Promise.all([
-      this.followingQuery.delete,
-      this.postQuery.delete,
-      this.favoriteQuery.delete,
-    ])
+  async clearDB() {
+    const postsCount = await this.postQuery.delete()
+    const followingsCount = await this.followingQuery.delete()
+    const favoritesCount = await this.favoriteQuery.delete()
+    const usersCount = await this.users.where('uid').equals(this.curUid).delete()
+
+    return {
+      postsCount,
+      followingsCount,
+      favoritesCount,
+      usersCount,
+    }
   }
 
   private get postQuery() {
