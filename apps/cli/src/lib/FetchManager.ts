@@ -78,7 +78,7 @@ export class FetchManager {
 
     if (hasWeibo) {
       this.fetchState.fetchType = 'weibo'
-      await this.postService.getPosts({
+      await this.postService.getAllPosts({
         isFetchAll,
         startAt: new Date(startAt),
         endAt: new Date(endAt),

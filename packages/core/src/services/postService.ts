@@ -10,12 +10,13 @@ type OnFetched = (data: {
   posts: Post[]
   page: number
   postsTotal: number
+  fetchedCount: number
   sinceId?: string
 }) => any
 
 export class PostService {
   private sinceId: string = ''
-  private postsCount: number = 0
+  private fetchedCount: number = 0
   private postsTotal: number = 0
   private pqueue = new PQueue({ concurrency: 3 })
 
@@ -37,12 +38,12 @@ export class PostService {
   }
 
   get total() {
-    return this.postsCount
+    return this.fetchedCount
   }
 
-  async getPosts(args: FetchArgs['posts'] & {
-    onFetched?: OnFetched
-  }): Promise<Post[]> {
+  async getAllPosts(args: FetchArgs['posts'] & {
+    onFetched: OnFetched
+  }): Promise<void> {
     const {
       isFetchAll = true,
       endAt = '2000-01-01',
@@ -57,19 +58,31 @@ export class PostService {
     console.log(args)
 
     if (isFetchAll) {
-      return this.getAllPosts({
-        endAt,
-        sinceId,
+      // 这种方法在第60页就返回空了，需要转到下一个窗口
+      // 但实际上微博官方返回的接口不全，漏了非常多
+
+      // return this.getAllRangePosts({
+      //   startAt: new Date('2000-01-01'),
+      //   endAt: new Date(),
+      //   page,
+      //   commentsCount,
+      //   onFetched,
+      //   ...restArgs,
+      // })
+
+      return this.getAllPostsBySinceId({
+        since_id: sinceId,
         page,
         commentsCount,
         onFetched,
+        ...restArgs,
       })
     }
 
     if (!startAt) {
       throw new Error('startAt is required when isFetchAll is false')
     }
-    return this.getAllRangePosts({
+    return this.getAllPostsByDate({
       startAt,
       endAt,
       page,
@@ -79,82 +92,85 @@ export class PostService {
     })
   }
 
-  async getAllPosts(args?: {
-    endAt?: Date | string
-    commentsCount?: number
-    sinceId?: string
-    page?: number
-    onFetched?: OnFetched
-  }): Promise<Post[]> {
-    const allPosts = new Map<string, Post>()
-    const {
-      onFetched,
-      sinceId,
-      commentsCount,
-    } = args || {}
-
-    if (sinceId) {
-      this.sinceId = sinceId
-    }
-
-    const endAt = new Date(args?.endAt || '2000-01-01')
-    let page = args?.page || 0
-    let lastPostDate: Date
+  async getAllPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature' | 'uid'> & {
+    commentsCount: number
+    onFetched: OnFetched
+  }): Promise<void> {
+    let page = args?.page || 1
 
     while (true) {
-      const posts = await this._getAllPosts(page, commentsCount)
-      for (const post of posts) {
-        if (!allPosts.has(post.mblogid)) {
-          allPosts.set(post.mblogid, post)
-        }
-      }
-      await onFetched?.({ posts, page, sinceId: this.sinceId, postsTotal: this.postsTotal })
-      page++
-      lastPostDate = new Date(posts.at(-1)?.createdAt || Date.now())
+      const posts = await this.getPostsBySinceId({
+        ...args,
+        page,
+      })
 
-      if (lastPostDate.getTime() <= endAt.getTime()) {
+      await args.onFetched({
+        posts,
+        page: args.page,
+        sinceId: this.sinceId,
+        fetchedCount: this.fetchedCount,
+        postsTotal: this.postsTotal,
+      })
+      await new Promise(r => setTimeout(r, 1000))
+
+      page++
+      if (this.fetchedCount >= this.postsTotal || posts.length === 0) {
         break
       }
     }
-
-    return Array
-      .from(allPosts.values())
-      .filter(post => new Date(post.createdAt).getTime() >= endAt.getTime())
   }
 
-  async getAllRangePosts(
+  async getAllPostsByDate(
     args: Omit<FetchArgs['postRange'], 'uid' | 'starttime' | 'endtime'> & {
       startAt: Date | string
       endAt: Date | string
       commentsCount?: number
       onFetched?: OnFetched
     },
-  ): Promise<Post[]> {
+  ): Promise<void> {
     const startAt = new Date(args.startAt)
     const endAt = new Date(args.endAt)
     startAt.setHours(0, 0, 0, 0)
     endAt.setHours(23, 59, 0, 0)
 
-    const allPosts: Post[] = []
-    let page = args.page || 0
+    const starttime = startAt.getTime() / 1000
+    let endtime = endAt.getTime() / 1000
+
+    let page = args.page || 1
+    let lastPostDate = new Date()
 
     while (true) {
-      const posts = await this.getRangePosts({
+      const posts = await this.getPostsByDate({
         ...args,
-        starttime: startAt.getTime() / 1000,
-        endtime: endAt.getTime() / 1000,
+        starttime,
+        endtime,
         page,
         uid: this.uid,
       })
-      await args.onFetched?.({ page, posts, postsTotal: this.postsTotal })
 
-      allPosts.push(...posts)
+      await args.onFetched?.({
+        page,
+        posts,
+        fetchedCount: this.fetchedCount,
+        postsTotal: this.postsTotal,
+      })
+
+      await new Promise(r => setTimeout(r, 1000))
+
       page++
-      if (posts.length === 0 || allPosts.length >= this.postsTotal) {
-        break
+      if (posts.at(-1)?.createdAt)
+        lastPostDate = new Date(posts.at(-1)!.createdAt)
+
+      if (posts.length === 0) {
+        if (this.fetchedCount >= this.postsTotal)
+          break
+
+        // 还没获取完，转到下一个窗口
+        page = 1
+        lastPostDate.setHours(23, 59, 0, 0)
+        endtime = lastPostDate.getTime() / 1000
       }
     }
-    return allPosts
   }
 
   async getLongText(postMBlogId: string): Promise<string | undefined> {
@@ -173,10 +189,10 @@ export class PostService {
     }
   }
 
-  async getRangePosts(args: FetchArgs['postRange'] & {
+  async getPostsByDate(args: FetchArgs['postRange'] & {
     commentsCount?: number
   }): Promise<Post[]> {
-    const data = await this.fetchService.postsByRange({
+    const data = await this.fetchService.postsByDate({
       uid: this.uid,
       hasmuisc: args.hasmuisc || '1',
       haspic: args.haspic || '1',
@@ -190,12 +206,12 @@ export class PostService {
     })
     await this._setLongText(data.list)
 
-    if (data.total) {
+    if (data.total && !this.postsTotal) {
       this.postsTotal = data.total
     }
 
     const posts = WeiboParser.parseAll(data.list)
-    this.postsCount += posts.length
+    this.fetchedCount += posts.length
 
     if (args.commentsCount) {
       await this._setComments(posts, args.commentsCount)
@@ -250,34 +266,42 @@ export class PostService {
     return result
   }
 
-  private async _getAllPosts(
-    page: number,
-    commentsCount?: number,
-  ): Promise<Post[]> {
-    const data = await this.fetchService.postsAll({
+  async getPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature' | 'uid'> & {
+    commentsCount: number
+  }): Promise<Post[]> {
+    const data = await this.fetchService.postsBySinceId({
       uid: this.uid,
       since_id: this.sinceId,
-      page,
+      page: args.page || 1,
       feature: 0,
+      hasmuisc: args.hasmuisc || '1',
+      haspic: args.haspic || '1',
+      hastext: args.hastext || '1',
+      hasvideo: args.hasvideo || '1',
+      hasori: args.hasori || '1',
+      hasret: args.hasret || '1',
     })
     await this._setLongText(data.list)
-    this.sinceId = data.since_id
+    if (data.since_id) {
+      this.sinceId = data.since_id
+    }
     if (data.total) {
       this.postsTotal = data.total
     }
 
     try {
       const posts = WeiboParser.parseAll(data.list)
-      this.postsCount += posts.length
+      this.fetchedCount += posts.length
 
-      if (commentsCount) {
-        await this._setComments(posts, commentsCount)
+      if (args.commentsCount) {
+        await this._setComments(posts, args.commentsCount)
       }
+
       return posts
     }
     catch (err) {
       console.error(err)
-      await this.onError({ data, sinceId: this.sinceId, postsTotal: this.postsTotal }).catch()
+      // await this.onError({ data, sinceId: this.sinceId, postsTotal: this.postsTotal }).catch()
       return []
     }
   }

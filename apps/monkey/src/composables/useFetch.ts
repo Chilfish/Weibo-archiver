@@ -47,7 +47,7 @@ export async function startFetch() {
 
   if (hasWeibo) {
     fetchState.fetchType = 'weibo'
-    await postService.getPosts({
+    await postService.getAllPosts({
       isFetchAll,
       startAt: new Date(startAt),
       endAt: new Date(endAt),

@@ -97,7 +97,7 @@ export class FetchService {
     return data
   }
 
-  async postsByRange(args: FetchArgs['postRange']): Promise<RawPostsTimeline> {
+  async postsByDate(args: FetchArgs['postRange']): Promise<RawPostsTimeline> {
     const { data } = await this.fetcher<RawPostsTimeline, FetchArgs['postRange']>(
       FETCH_PATH.POSTS_RANGE,
       args,
@@ -107,7 +107,7 @@ export class FetchService {
     return data
   }
 
-  async postsAll(args: FetchArgs['postAll']): Promise<RawPostsTimeline> {
+  async postsBySinceId(args: FetchArgs['postAll']): Promise<RawPostsTimeline> {
     const { data } = await this.fetcher<RawPostsTimeline, FetchArgs['postAll']>(
       FETCH_PATH.POSTS_ALL,
       args,

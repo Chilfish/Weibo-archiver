@@ -101,7 +101,7 @@ export class PostParser {
       mblogid,
       text,
       imgs,
-      isShowBulletIn: is_show_bulletin.toString() as any,
+      isShowBulletIn: is_show_bulletin?.toString() || '2' as any,
       repostsCount: reposts_count,
       commentsCount: comments_count,
       likesCount: attitudes_count,
@@ -324,13 +324,17 @@ export class WeiboParser {
     return oldPost.map((post: any) => {
       if (post.createdAt) {
         post.curUid = curUid
+        post.id = post.id.toString()
+        if (post.retweet) {
+          post.retweet.id = post.retweet.id.toString()
+        }
         return post
       }
 
       const retweet = post.retweeted_status
 
       return {
-        id: post.id,
+        id: post.id.toString(),
         userId: curUid,
         text: post.text,
         createdAt: post.created_at,
@@ -340,7 +344,7 @@ export class WeiboParser {
         repostsCount: post.reposts_count,
         commentsCount: post.comments_count,
         comments: post.comments.map((item: any) => ({
-          id: item.id,
+          id: item.id.toString(),
           text: item.text,
           createdAt: item.created_at,
           likesCount: item.like_count || 0,
@@ -357,7 +361,7 @@ export class WeiboParser {
           ? {
             createdAt: retweet.created_at,
             text: retweet.text,
-            id: retweet.id,
+            id: retweet.id.toString(),
             mblogid: retweet.mblogid,
             likesCount: retweet.like_count,
             repostsCount: retweet.reposts_count,

@@ -33,6 +33,7 @@ const FetchArgsSchema = z.object({
     page: z.number(),
     since_id: z.string().optional(),
     feature: z.number().default(0).optional(),
+    ...rangeOptions.shape,
   }),
   postRange: z.object({
     uid: z.string(),

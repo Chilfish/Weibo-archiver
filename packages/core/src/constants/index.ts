@@ -38,7 +38,7 @@ export const FETCH_PATH = {
 
 export const DEFAULT_FETCH_CONFIG: FetchConfig = {
   restore: false,
-  curPage: 0,
+  curPage: 1,
   isFetchAll: true,
   repostPic: true,
   hasRepost: true,

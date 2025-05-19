@@ -50,7 +50,7 @@ export function usePost() {
   async function addPosts(newPosts: Post[]) {
     try {
       await idb.addPosts(newPosts)
-      fetchCount.value.posts += newPosts.length
+      fetchCount.value.posts = await idb.getAllPostsCount()
       updateConfig({
         curPage: Math.ceil((fetchCount.value.posts + 1) / 20),
       })

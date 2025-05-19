@@ -168,7 +168,7 @@ export class IndexedDB extends Dexie {
   private get postQuery() {
     return this.posts
       .where('userId')
-      .equals(this.curUser.uid)
+      .equals(this.curUid)
   }
 
   private get favoriteQuery() {
