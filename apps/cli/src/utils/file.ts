@@ -1,50 +1,49 @@
 import { createReadStream, existsSync } from 'node:fs'
-import { rename, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import path from 'node:path'
 import readline from 'node:readline'
 
-export async function saveJson(
-  savePath: string,
-  filename: string,
-  data: object,
-  intend = 0,
-) {
-  const path = join(savePath, filename)
-  return await writeFile(path, JSON.stringify(data, null, intend), 'utf-8')
+export async function saveJson(args: {
+  savePath: string
+  filename: string
+  data: unknown
+  intend: number
+}) {
+  if (!existsSync(args.savePath)) {
+    await mkdir(args.savePath, { recursive: true })
+  }
+
+  const filePath = path.join(args.savePath, args.filename)
+  return await writeFile(filePath, JSON.stringify(args.data, null, args.intend || 2), 'utf-8')
+}
+
+export async function readJson<T = any>(file: string) {
+  const filePath = path.resolve(file)
+
+  const data = await readFile(filePath, 'utf-8')
+  try {
+    return JSON.parse(data) as T
+  }
+  catch (e) {
+    console.error(`Error parsing JSON from ${file}:`, e)
+    return data as T
+  }
 }
 
 /**
  * 流式地追加保存 JSON 文件，'\n' 分隔
  */
-export async function appendJson(
-  savePath: string,
-  name: string,
-  data: object,
-) {
-  const path = join(savePath, name)
+export async function appendJson(args: {
+  savePath: string
+  name: string
+  data: object
+}) {
+  const filePath = path.join(args.savePath, args.name)
   return await writeFile(
-    path,
-    `${JSON.stringify(data, null, 0)}\n`,
+    filePath,
+    `${JSON.stringify(args.data, null, 0)}\n`,
     { flag: 'a', encoding: 'utf-8' },
   )
-}
-
-/**
- * 重命名文件，时间戳后缀
- */
-export async function renameFile(
-  savePath: string,
-  name: string,
-) {
-  const path = join(savePath, name)
-  if (!existsSync(path))
-    return
-
-  const [_name, ext] = name.split('.')
-
-  const date = new Date().getTime()
-
-  return await rename(path, join(savePath, `${_name}-${date}.${ext}`))
 }
 
 /**
@@ -54,11 +53,11 @@ export async function getLastLine(
   savePath: string,
   name: string,
 ) {
-  const path = join(savePath, name)
-  if (!existsSync(path))
+  const filePath = path.join(savePath, name)
+  if (!existsSync(filePath))
     return null
 
-  const stream = createReadStream(path)
+  const stream = createReadStream(filePath)
 
   const rl = readline.createInterface({
     input: stream,

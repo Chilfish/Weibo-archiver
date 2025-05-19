@@ -1,11 +1,19 @@
 {
+  "$schema": "http://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ESNext",
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "paths": {
+      "@weibo-archiver/core": ["packages/core"]
+    },
+    "allowJs": true,
     "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
     "esModuleInterop": true,
     "skipLibCheck": true
-  },
-  "include": ["src"]
+  }
 }

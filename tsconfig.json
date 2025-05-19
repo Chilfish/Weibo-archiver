@@ -10,15 +10,10 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@core/*": ["packages/core/src/*"],
-      "@shared": ["packages/shared/src/index.ts"],
-      "@ui/*": ["packages/ui/src/*"],
-      "@weibo-archiver/core": ["packages/core"],
-      "@weibo-archiver/*": ["packages/*"]
+      "@weibo-archiver/core": ["packages/core"]
     },
     "types": [
-      "vite/client",
-      "naive-ui/volar"
+      "vite/client"
     ],
     "allowJs": true,
     "strict": true,
