@@ -62,28 +62,28 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver.user.js
-          path: apps/monkey/weibo-archiver.user.js
+          path: apps/monkey/dist/weibo-archiver.user.js
 
       - name: upload Web App
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-web.zip
+          name: weibo-archiver-web
           path: apps/web-v2/dist
 
       - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-server-windows-amd64.zip
-          path: server/dist/weibo-archiver-windows-amd64.zip
+          name: weibo-archiver-server-windows-amd64
+          path: server/dist/weibo-archiver-windows-amd64
 
       - name: upload go binaries (Linux)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-server-linux-amd64.tar.gz
-          path: server/dist/weibo-archiver-linux-amd64.tar.gz
+          name: weibo-archiver-server-linux-amd64
+          path: server/dist/weibo-archiver-linux-amd64
 
       - name: upload go binaries (macOS)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-server-macos-amd64.tar.gz
-          path: server/dist/weibo-archiver-darwin-amd64.tar.gz
+          name: weibo-archiver-server-macos-amd64
+          path: server/dist/weibo-archiver-darwin-amd64
