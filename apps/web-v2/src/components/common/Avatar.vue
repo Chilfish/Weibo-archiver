@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { imgCdn } from '@weibo-archiver/core'
 import { computed } from 'vue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
@@ -17,7 +18,7 @@ const sizeClass = computed(() => {
 <template>
   <Avatar>
     <AvatarImage
-      :src="props.src"
+      :src="`${imgCdn}${props.src}`"
       :alt="props.alt"
       :class="sizeClass"
     />

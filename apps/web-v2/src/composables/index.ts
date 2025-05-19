@@ -5,7 +5,6 @@ import {
   emojiUrl,
   imgCdn,
   localImgHost,
-  proxyImgHost,
 } from '@weibo-archiver/core'
 import { computed } from 'vue'
 
@@ -66,23 +65,15 @@ export function replaceImg(src: string, forceCdn = false) {
 
   if (
     src.includes('data:image') // base64
-    || src.startsWith(imgCdn) // 使用 ipfs cdn
+    || src.startsWith(imgCdn) // 使用反代 cdn
     || imgHost === 'original' // 使用微博官方链接
   ) {
     return src
   }
 
-  // 使用 ipfs cdn
+  // 使用反代 cdn
   if (imgHost === 'cdn' || forceCdn) {
-    if (src.includes('sinaimg.cn')) {
-      const { pathname } = new URL(src)
-      return `${imgCdn}${pathname}`
-    }
-    if (src.includes('hdslb.com')) {
-      return `${proxyImgHost}${src}`
-    }
-    // 像是 网易云这种外链的图片，就保持原样
-    return src
+    return `${imgCdn}${src}`
   }
 
   const name = src.split('/').pop()?.replace(/\?.+/, '') // 同时去除 params
