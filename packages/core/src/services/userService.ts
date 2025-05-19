@@ -61,7 +61,14 @@ export class UserService {
       const data = await this.fetchService.userFollowings({
         page,
         uid,
+      }).catch((err) => {
+        console.error(err)
+        return {
+          users: [],
+          next_cursor: undefined,
+        }
       })
+
       const _users = data.users.map(user => ({
         ...UserParser.parseFollowing(user),
         followBy: uid,

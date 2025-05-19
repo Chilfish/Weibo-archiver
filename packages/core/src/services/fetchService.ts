@@ -50,6 +50,9 @@ export class FetchService {
     return data
   }
 
+  /**
+   * 有可能报错提示：博主设置仅针对粉丝展示全部关注
+   */
   async userFollowings(args: FetchArgs['userFollowings']): Promise<RawFollowings> {
     const { data } = await this.fetcher<RawFollowings, FetchArgs['userFollowings']>(
       FETCH_PATH.FOLLOWINGS,
