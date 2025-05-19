@@ -38,18 +38,13 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.1",
-    "@unocss/eslint-config": "^66.1.2",
-    "@unocss/eslint-plugin": "^66.1.2",
     "eslint": "^9.27.0",
     "eslint-plugin-format": "^1.0.1",
-    "jszip": "3.9.1",
     "lint-staged": "^16.0.0",
     "pnpm": "^10.11.0",
     "simple-git-hooks": "^2.13.0",
-    "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "unbuild": "^3.5.0",
-    "unocss": "^66.1.2",
     "unocss-preset-animations": "^1.2.1",
     "unplugin-vue-components": "^28.5.0",
     "vue-tsc": "^2.2.10"
