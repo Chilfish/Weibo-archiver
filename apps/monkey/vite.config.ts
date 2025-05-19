@@ -23,6 +23,7 @@ export default defineConfig({
   },
   build: {
     minify: true,
+    outDir: path.join(root, 'dist/monkey'),
     emptyOutDir: true,
   },
   plugins: [

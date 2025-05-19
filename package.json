@@ -26,7 +26,6 @@
     "build:cli": "pnpm -F shared build && pnpm -F weibo-archiver build",
     "preview:web": "pnpm -F web-v2 preview",
     "typecheck:web": "pnpm -F web-v2 typecheck",
-    "release": "tsx release.ts",
     "lint": "eslint .",
     "postinstall": "simple-git-hooks"
   },
