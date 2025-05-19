@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuContentEmits, DropdownMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import {
   DropdownMenuContent,
 
@@ -9,6 +8,7 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { computed } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = withDefaults(
   defineProps<DropdownMenuContentProps & { class?: HTMLAttributes['class'] }>(),

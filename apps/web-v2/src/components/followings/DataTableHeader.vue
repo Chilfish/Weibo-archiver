@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Column } from '@tanstack/vue-table'
-import { cn } from '@/lib/utils'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -8,6 +7,7 @@ import {
   SortAscIcon,
   SortDescIcon,
 } from 'lucide-vue-next'
+import { cn } from '@/lib/utils'
 
 interface DataTableColumnHeaderProps {
   column: Column<any, unknown>

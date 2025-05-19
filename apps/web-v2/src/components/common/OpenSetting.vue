@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { Settings } from 'lucide-vue-next'
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Settings } from 'lucide-vue-next'
 import Setting from '../settings/Settings.vue'
 </script>
 

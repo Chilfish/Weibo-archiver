@@ -1,4 +1,4 @@
-import type { Post, UserInfo } from '@weibo-archiver/shared'
+import type { Post, UserInfo } from '@weibo-archiver/core'
 
 export const users: UserInfo[] = [
   {
@@ -77,15 +77,16 @@ export const images = [
   },
 ]
 
+// TODO: fix types
 export const weiboPosts: Post[] = [
   {
-    id: 5146055725552649,
+    id: '5146055725552649',
     text: '<a href="//s.weibo.com/weibo?q=%23%E8%8B%A5%E5%8F%B6%E7%9D%A6%23" target="_blank">#若叶睦#</a><a href="//s.weibo.com/weibo?q=%23avemujica%23" target="_blank">#avemujica#</a> ​​​',
     imgs: images.map(image => image.src),
-    reposts_count: 14,
-    comments_count: 9,
-    like_count: 113,
-    created_at: 'Wed Mar 19 23:39:17 +0800 2025',
+    repostsCount: 14,
+    commentsCount: 9,
+    likesCount: 113,
+    createdAt: 'Wed Mar 19 23:39:17 +0800 2025',
     user: users[0],
     source: '<a target="_blank" href="https://app.weibo.com/t/feed/5ovRO0" rel="nofollow">Redmi Note 12 Turbo</a>',
     region_name: '发布于 浙江',
@@ -309,5 +310,33 @@ export const weiboPosts: Post[] = [
     },
     comments: [],
   },
-  { id: 5133291714511620, text: '[二哈]//<a href="https://weibo.com/n/盐渍海蛞蝓">@盐渍海蛞蝓</a>:草//<a href="https://weibo.com/n/沙皮买">@沙皮买</a> :.//<a href="https://weibo.com/n/戒猫中心">@戒猫中心</a> ://<a href="https://weibo.com/n/天秀bot">@天秀bot</a> :？真有啊//<a href="https://weibo.com/n/人再倒霉也得有个度吧老天">@人再倒霉也得有个度吧老天</a> :网图照进现实[老师好] [img://https://wx2.sinaimg.cn/large/7b97023bgy1hbvywsn92jj20u0140dqr.jpg] //<a href="https://weibo.com/n/暴躁小羊肉串">@暴躁小羊肉串</a> :图片评论 <a target="_blank" data-pid=0079lFWTgy1hbvxy1amhwj30qo0quq6i  href="https://wx2.sinaimg.cn/large/0079lFWTgy1hbvxy1amhwj30qo0quq6i.jpg">查看图片</a>', imgs: ['https://wx3.sinaimg.cn/large/006bFxfAgy1hyh2pqoiuaj31h20u0aef.jpg'], reposts_count: 0, comments_count: 0, like_count: 0, created_at: 1739355578000, source: '微博网页版', region_name: '发布于 广东', mblogid: 'PdY4jiVG4', detail_url: 'https://weibo.com/7679065628/PdY4jiVG4', retweeted_status: { id: 5132908753326701, text: '谁？ ​​​', imgs: ['https://wx3.sinaimg.cn/large/007Y7SRMly1hygrjdztycj30it0hgaad.jpg'], reposts_count: 153, comments_count: 81, like_count: 1269, created_at: 'Tue Feb 11 16:57:54 +0800 2025', user: { uid: '7301389190', name: '米浴厨', avatar: 'https://tvax3.sinaimg.cn/crop.0.0.600.600.50/007Y7SRMly8hn674f0uz9j30go0go403.jpg?KID=imgbed,tva&Expires=1741957523&ssig=viUgYo727s' }, source: '微博网页版', region_name: '发布于 北京', mblogid: 'PdO6DdXqt', detail_url: 'https://weibo.com/7301389190/PdO6DdXqt', comments: [] }, comments: [] },
+  {
+    id: 5133291714511620,
+    text: '[二哈]//<a href="https://weibo.com/n/盐渍海蛞蝓">@盐渍海蛞蝓</a>:草//<a href="https://weibo.com/n/沙皮买">@沙皮买</a> :.//<a href="https://weibo.com/n/戒猫中心">@戒猫中心</a> ://<a href="https://weibo.com/n/天秀bot">@天秀bot</a> :？真有啊//<a href="https://weibo.com/n/人再倒霉也得有个度吧老天">@人再倒霉也得有个度吧老天</a> :网图照进现实[老师好] [img://https://wx2.sinaimg.cn/large/7b97023bgy1hbvywsn92jj20u0140dqr.jpg] //<a href="https://weibo.com/n/暴躁小羊肉串">@暴躁小羊肉串</a> :图片评论 <a target="_blank" data-pid=0079lFWTgy1hbvxy1amhwj30qo0quq6i  href="https://wx2.sinaimg.cn/large/0079lFWTgy1hbvxy1amhwj30qo0quq6i.jpg">查看图片</a>',
+    imgs: ['https://wx3.sinaimg.cn/large/006bFxfAgy1hyh2pqoiuaj31h20u0aef.jpg'],
+    reposts_count: 0,
+    comments_count: 0,
+    like_count: 0,
+    created_at: 1739355578000,
+    source: '微博网页版',
+    region_name: '发布于 广东',
+    mblogid: 'PdY4jiVG4',
+    detail_url: 'https://weibo.com/7679065628/PdY4jiVG4',
+    retweeted_status: {
+      id: 5132908753326701,
+      text: '谁？ ​​​',
+      imgs: ['https://wx3.sinaimg.cn/large/007Y7SRMly1hygrjdztycj30it0hgaad.jpg'],
+      reposts_count: 153,
+      comments_count: 81,
+      like_count: 1269,
+      created_at: 'Tue Feb 11 16:57:54 +0800 2025',
+      user: { uid: '7301389190', name: '米浴厨', avatar: 'https://tvax3.sinaimg.cn/crop.0.0.600.600.50/007Y7SRMly8hn674f0uz9j30go0go403.jpg?KID=imgbed,tva&Expires=1741957523&ssig=viUgYo727s' },
+      source: '微博网页版',
+      region_name: '发布于 北京',
+      mblogid: 'PdO6DdXqt',
+      detail_url: 'https://weibo.com/7301389190/PdO6DdXqt',
+      comments: [],
+    },
+    comments: [],
+  },
 ]

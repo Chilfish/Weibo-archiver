@@ -5,11 +5,6 @@ export interface FetchState {
   fetchType: 'weibo' | 'followings' | 'favorites'
 }
 
-export interface FetchProgress {
-  percentage: number
-  fetchedCount: number
-}
-
 export interface UserConfig {
   user?: UserInfo
   isMinimize: boolean

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { AccordionTriggerProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-vue-next'
 import {
   AccordionHeader,
@@ -9,6 +8,7 @@ import {
 
 } from 'reka-ui'
 import { computed } from 'vue'
+import { cn } from '@/lib/utils'
 
 const props = defineProps<AccordionTriggerProps & { class?: HTMLAttributes['class'] }>()
 

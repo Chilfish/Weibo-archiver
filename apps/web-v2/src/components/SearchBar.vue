@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { SearchQuery } from '@/composables'
 import type { DateValue } from '@internationalized/date'
-import { useSearch } from '@/composables'
-import { cn } from '@/lib/utils'
+import type { SearchQuery } from '@/composables'
 import {
   CheckIcon,
   FileText,
@@ -14,6 +12,8 @@ import {
   XIcon,
 } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { useSearch } from '@/composables'
+import { cn } from '@/lib/utils'
 import DatePicker from './DatePicker.vue'
 
 const emits = defineEmits<{

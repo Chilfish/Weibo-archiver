@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
+import { onBeforeMount, ref } from 'vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { usePostStore } from '@/stores'
-import { onBeforeMount, ref } from 'vue'
 
 const postStore = usePostStore()
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PostMeta, User } from '@weibo-archiver/core'
-import { useUserStore } from '@/stores'
-import { formatDate } from '@weibo-archiver/shared'
+import { formatDate } from '@weibo-archiver/core'
 import { ArrowUpRightFromCircleIcon, EllipsisIcon } from 'lucide-vue-next'
 import { computed } from 'vue'
+import { useUserStore } from '@/stores'
 import Avatar from '../common/Avatar.vue'
 
 const props = defineProps<{

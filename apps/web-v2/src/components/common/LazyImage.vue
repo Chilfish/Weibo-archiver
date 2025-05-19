@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { replaceImg } from '@/composables'
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref, useTemplateRef, watch } from 'vue'
+import { replaceImg } from '@/composables'
 
 type Numberish = number | string
 type HTMLAttributeReferrerPolicy = '' | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url'

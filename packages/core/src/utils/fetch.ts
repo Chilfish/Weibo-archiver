@@ -16,7 +16,8 @@ export function createFetcher(args: CreateAxiosDefaults) {
     path: string,
     params?: R,
   ): Promise<{ data: T }> {
-    return _fetcher(path, { params }).then(({ data: rawData }) => {
+    return _fetcher(path, { params }).then(({ data: rawData, request }) => {
+      const url = request.res.responseUrl
       try {
         if (typeof rawData !== 'object') {
           throw new SyntaxError('Not a JSON')
@@ -35,9 +36,9 @@ export function createFetcher(args: CreateAxiosDefaults) {
       }
       catch (err: any) {
         if (err.name === `SyntaxError`) {
-          throw new WeiboError(`未获取到 JSON，Cookie 可能已过期 [${path}]`)
+          throw new WeiboError(`未获取到 JSON，Cookie 可能已过期 [${url}]`)
         }
-        throw new WeiboError(`获取失败：${err} [${path}]`)
+        throw new WeiboError(`获取失败：${err.message} [${url}]`)
       }
     })
   }

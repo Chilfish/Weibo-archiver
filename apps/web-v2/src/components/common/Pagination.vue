@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  Ellipsis,
+} from 'lucide-vue-next'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -9,14 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-  Ellipsis,
-} from 'lucide-vue-next'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const {
   total,

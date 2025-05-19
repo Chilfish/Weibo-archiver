@@ -1,10 +1,10 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { Following } from '@weibo-archiver/core'
+import { formatDate, formatNumber } from '@weibo-archiver/core'
+import { h } from 'vue'
 import Avatar from '@/components/common/Avatar.vue'
 import WeiboText from '@/components/weibo/WeiboText'
 import { cn } from '@/lib/utils'
-import { formatDate, formatNumber } from '@weibo-archiver/shared'
-import { h } from 'vue'
 import DataTableHeader from './DataTableHeader.vue'
 
 const Text = (text: string, className?: string) => (

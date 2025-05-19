@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { AlbumPreviewEvent } from '@/types'
 import type { Post } from '@weibo-archiver/core'
-import AlbumPreviewWeibo from '@/components/album/AlbumPreviewWeibo.vue'
-import LazyImage from '@/components/common/LazyImage.vue'
-import { emitter } from '@/composables'
+import type { AlbumPreviewEvent } from '@/types'
 import { useEventListener } from '@vueuse/core'
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
+import AlbumPreviewWeibo from '@/components/album/AlbumPreviewWeibo.vue'
+import LazyImage from '@/components/common/LazyImage.vue'
+import { emitter } from '@/composables'
 
 const emits = defineEmits<{
   nextPage: [(newPots: Post[]) => any]

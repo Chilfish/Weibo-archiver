@@ -4,7 +4,6 @@ import type {
   ColumnFiltersState,
   SortingState,
 } from '@tanstack/vue-table'
-import { valueUpdater } from '@/lib/utils'
 import {
   FlexRender,
   getCoreRowModel,
@@ -14,6 +13,7 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 import { ref } from 'vue'
+import { valueUpdater } from '@/lib/utils'
 import DataTablePagination from './DataTablePagination.vue'
 
 const props = defineProps<{

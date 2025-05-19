@@ -18,7 +18,6 @@ export default defineConfig({
     alias: {
       '@weibo-archiver/core': `${packages}/core`,
       '@weibo-archiver/ui': `${packages}/ui/`,
-      '@weibo-archiver/shared': `${packages}/shared/`,
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },

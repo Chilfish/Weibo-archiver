@@ -1,6 +1,6 @@
-import type { SearchQuery } from '@/composables/useSearch'
 import type { Favorite, ImportedData, Post } from '@weibo-archiver/core'
-import { DEFAULT_PAGE_SIZE, idb, WeiboParser } from '@weibo-archiver/core'
+import type { SearchQuery } from '@/composables/useSearch'
+import { DEFAULT_PAGE_SIZE, idb, readFile, WeiboParser } from '@weibo-archiver/core'
 import { destr } from 'destr'
 import Fuse from 'fuse.js'
 import { defineStore } from 'pinia'
@@ -50,8 +50,10 @@ export const usePostStore = defineStore('post', () => {
     }, index)
   }
 
-  async function parseAndImport(jsonStr: string): Promise<void> {
+  async function parseAndImport(e: Event): Promise<void> {
     importing.value = true
+
+    const jsonStr = await readFile(e)
     const data = destr<ImportedData>(jsonStr, { strict: true })
 
     const { user, followings, weibo, favorites } = data

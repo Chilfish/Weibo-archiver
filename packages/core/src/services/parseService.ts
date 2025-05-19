@@ -17,8 +17,14 @@ import type {
   RawRetweetedStatus,
   RawUrlStruct,
 } from '../types/raw'
+import { Window } from 'happy-dom'
 
-const domParser = new DOMParser()
+function getHTMLText(source: any) {
+  const window = new Window()
+  const document = window.document
+  document.body.innerHTML = source
+  return document.body.textContent.trim() || ''
+}
 
 /**
  * 用户解析器类
@@ -149,7 +155,7 @@ export class PostParser {
       source,
     } = rawPost
 
-    const sourceText = domParser.parseFromString(source, 'text/html').body.textContent
+    const sourceText = getHTMLText(source)
 
     return {
       id: id.toString(),
@@ -323,8 +329,6 @@ export class WeiboParser {
   }
 
   static migrateFromOld(oldPost: any[], curUid: string): Post[] {
-    const getSource = (source: any) => domParser.parseFromString(source, 'text/html').body.textContent || ''
-
     return oldPost.map((post: any) => {
       if (post.createdAt) {
         post.curUid = curUid
@@ -354,7 +358,7 @@ export class WeiboParser {
           floor: 0,
           regionName: item.region_name,
         } satisfies Comment)),
-        source: getSource(post.source),
+        source: getHTMLText(post.source),
         regionName: post.region_name,
         isShowBulletIn: '2',
         retweet: retweet
@@ -368,7 +372,7 @@ export class WeiboParser {
             commentsCount: retweet.reposts_count,
             imgs: retweet.imgs,
             user: retweet.user,
-            source: getSource(retweet.source),
+            source: getHTMLText(retweet.source),
             regionName: retweet.region_name,
           } satisfies Retweet
           : undefined,

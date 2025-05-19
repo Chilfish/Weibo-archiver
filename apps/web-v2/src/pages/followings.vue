@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Following } from '@weibo-archiver/core'
+import { ref, watch } from 'vue'
 import FollowingsTable from '@/components/followings/FollowingsTable.vue'
 import { useUserStore } from '@/stores'
-import { ref, watch } from 'vue'
 
 const userStore = useUserStore()
 const followings = ref<Following[]>([])

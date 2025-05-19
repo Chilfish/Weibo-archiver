@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { AlbumPreviewEvent } from '@/types'
 import type { Post } from '@weibo-archiver/core'
+import type { AlbumPreviewEvent } from '@/types'
+import { computed } from 'vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import { emitter } from '@/composables'
-import { computed } from 'vue'
 
 const props = defineProps<{
   posts: Post[]

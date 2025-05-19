@@ -33,27 +33,27 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-vue-next": "^0.476.0",
-    "reka-ui": "^2.0.2",
-    "tailwind-merge": "^3.0.2"
+    "lucide-vue-next": "^0.511.0",
+    "reka-ui": "^2.2.1",
+    "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.10.1",
-    "@unocss/eslint-config": "^66.1.0-beta.5",
-    "@unocss/eslint-plugin": "^66.1.0-beta.5",
-    "eslint": "^9.22.0",
+    "@antfu/eslint-config": "^4.13.1",
+    "@unocss/eslint-config": "^66.1.2",
+    "@unocss/eslint-plugin": "^66.1.2",
+    "eslint": "^9.27.0",
     "eslint-plugin-format": "^1.0.1",
     "jszip": "3.9.1",
-    "lint-staged": "^15.5.0",
-    "pnpm": "^10.6.3",
-    "simple-git-hooks": "^2.11.1",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.2",
+    "lint-staged": "^16.0.0",
+    "pnpm": "^10.11.0",
+    "simple-git-hooks": "^2.13.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
     "unbuild": "^3.5.0",
-    "unocss": "^66.1.0-beta.5",
-    "unocss-preset-animations": "^1.1.1",
-    "unplugin-vue-components": "^28.4.1",
-    "vue-tsc": "^2.2.8"
+    "unocss": "^66.1.2",
+    "unocss-preset-animations": "^1.2.1",
+    "unplugin-vue-components": "^28.5.0",
+    "vue-tsc": "^2.2.10"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

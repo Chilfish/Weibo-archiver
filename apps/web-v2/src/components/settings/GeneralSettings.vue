@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import type { AppConfig } from '@/types'
-import ImportData from '@/components/common/ImportData.vue'
-import { Button } from '@/components/ui/button'
-import { Dialog } from '@/components/ui/dialog'
-import { config } from '@/composables'
 import { useDark, useToggle } from '@vueuse/core'
 import {
   DatabaseBackupIcon,
@@ -15,6 +11,10 @@ import {
   Trash2Icon,
   UploadIcon,
 } from 'lucide-vue-next'
+import ImportData from '@/components/common/ImportData.vue'
+import { Button } from '@/components/ui/button'
+import { Dialog } from '@/components/ui/dialog'
+import { config } from '@/composables'
 import ImageSourceOption from './ImageSourceOption.vue'
 
 interface TImageSourceOption {

@@ -1,11 +1,4 @@
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
-import {
   ArrowRight,
   Calendar,
   Database,
@@ -13,6 +6,13 @@ import {
   Grid,
 } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
 
 const currentYear = new Date().getFullYear()
 

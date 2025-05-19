@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { emitter } from '@/composables'
 import { computed } from 'vue'
+import { emitter } from '@/composables'
 import LazyImage from './LazyImage.vue'
 
 interface Image {

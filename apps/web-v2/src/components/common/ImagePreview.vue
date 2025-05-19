@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { ImagePreviewEvent } from '@/types'
-import { emitter } from '@/composables'
 import { useEventListener } from '@vueuse/core'
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
+import { emitter } from '@/composables'
 import LazyImage from './LazyImage.vue'
 
 const images = ref<string[]>([])

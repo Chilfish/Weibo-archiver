@@ -1,7 +1,12 @@
 import type { AlbumPreviewEvent, AppConfig, ImagePreviewEvent } from '@/types'
 import { useStorage } from '@vueuse/core'
-import { emojiUrl, imgCdn, localImgHost, proxyImgHost } from '@weibo-archiver/core'
-import { mitt } from '@weibo-archiver/shared'
+import {
+  emitter as _emitter,
+  emojiUrl,
+  imgCdn,
+  localImgHost,
+  proxyImgHost,
+} from '@weibo-archiver/core'
 import { computed } from 'vue'
 
 export * from './useSearch'
@@ -12,7 +17,7 @@ export const config = useStorage<AppConfig>('config', {
   customImageUrl: 'http://localhost:3000/images/',
 })
 
-export const emitter = mitt<{
+export const emitter = _emitter<{
   'open-image-preview': ImagePreviewEvent
   'open-album-preview': AlbumPreviewEvent
 }>()

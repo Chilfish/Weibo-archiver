@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Book, Github, Heart } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Book, Github, Heart } from 'lucide-vue-next'
 import LazyImage from '../common/LazyImage.vue'
 
 const APP_VERSION = 'v0.5.3'

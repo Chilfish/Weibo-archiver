@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
+import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
+import { onBeforeMount, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyWeibo from '@/components/EmptyWeibo.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { usePostStore, useUserStore } from '@/stores'
-import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
-import { onBeforeMount, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const postStore = usePostStore()
 const userStore = useUserStore()

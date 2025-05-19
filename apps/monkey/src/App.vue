@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import FetchStats from '@/component/configs/FetchStats.vue'
 import { onBeforeMount, ref } from 'vue'
+import FetchStats from '@/component/configs/FetchStats.vue'
 import Options from './component/configs/Options.vue'
 import SearchUser from './component/configs/SearchUser.vue'
 import StartButton from './component/configs/StartButton.vue'

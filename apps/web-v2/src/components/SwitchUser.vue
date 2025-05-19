@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { UserInfo } from '@weibo-archiver/core'
-import { useUserStore } from '@/stores'
-import { onImportData } from '@weibo-archiver/core'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
 import { computed, watch } from 'vue'
+import ImportData from '@/components/common/ImportData.vue'
+import { useUserStore } from '@/stores'
 import Avatar from './common/Avatar.vue'
 
 const props = defineProps<{
@@ -17,7 +17,10 @@ const userStore = useUserStore()
 const curUser = computed<UserInfo | undefined>(() => props.users.find(user => user.uid === curUid.value))
 const restUsers = computed(() => props.users.filter(user => user.uid !== curUid.value))
 
-watch(curUid, userStore.setCurUid)
+watch(curUid, (newUid) => {
+  if (newUid)
+    userStore.setCurUid(newUid)
+})
 </script>
 
 <template>
@@ -76,13 +79,7 @@ watch(curUid, userStore.setCurUid)
           class="w-full relative"
           variant="ghost"
         >
-          <input
-            type="file"
-            accept=".json"
-            class="absolute inset-0 opacity-0 w-full h-full"
-            placeholder="导入数据"
-            @change="onImportData"
-          >
+          <ImportData />
           <UserRoundPlus class="w-4 h-4" /> 添加新用户
         </Button>
       </DropdownMenuRadioGroup>

@@ -1,24 +1,13 @@
-import { destr } from 'destr'
-
 export * from './dom'
+export * from './emitter'
 export * from './error'
 export * from './export'
 export * from './fetch'
-export * from './image'
-export * from './import'
+export * from './format'
 export * from './IndexedDB'
-export * from './message'
-export * from './storage'
+export * from './pqueue'
 
-export const isInMonkey = typeof document !== 'undefined' ? document.URL.includes('weibo.com') : false
-
-export const referrerPolicy = isInMonkey ? 'origin' : 'no-referrer'
-
-export function storage<T>(key: string, defaultVal: T) {
-  const str = localStorage.getItem(key)
-  if (str === null) {
-    localStorage.setItem(key, JSON.stringify(defaultVal))
-    return defaultVal
-  }
-  return destr<T>(str)
+export function delay(ms = 2000) {
+  const randomMs = Math.random() * ms
+  return new Promise(resolve => setTimeout(resolve, randomMs))
 }

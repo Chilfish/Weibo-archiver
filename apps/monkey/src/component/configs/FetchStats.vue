@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
+import { formatDate } from '@weibo-archiver/core'
+import { onBeforeMount, ref } from 'vue'
 import { fetchCount } from '@/composables/useFetch'
 import { usePost } from '@/composables/usePost'
-import { formatDate } from '@weibo-archiver/shared'
-import { onBeforeMount, ref } from 'vue'
 
 const postStore = usePost()
 

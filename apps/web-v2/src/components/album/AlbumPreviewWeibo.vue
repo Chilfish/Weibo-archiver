@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
+import { computed } from 'vue'
 import WeiboActions from '@/components/weibo/WeiboActions.vue'
 import WeiboComments from '@/components/weibo/WeiboComments.vue'
 import WeiboProfile from '@/components/weibo/WeiboProfile.vue'
 import WeiboText from '@/components/weibo/WeiboText'
-import { computed } from 'vue'
 
 const props = defineProps<{
   post: Post

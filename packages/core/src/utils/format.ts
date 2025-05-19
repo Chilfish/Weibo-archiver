@@ -39,7 +39,7 @@ export function formatDate(
  */
 export function formatNumber(num: number, precision = 2) {
   if (num < 10000)
-    return num
+    return `${num}`
   // if (num < 10000)
   //   return `${(num / 1000).toFixed(precision)}千`
   return `${(num / 10000).toFixed(precision)}万`

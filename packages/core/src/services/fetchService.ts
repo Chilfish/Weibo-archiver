@@ -21,11 +21,7 @@ export class FetchService {
   constructor(
     cookies?: string,
   ) {
-    this.fetcher = createFetcher({
-      headers: {
-        Cookie: cookies,
-      },
-    })
+    this.fetcher = this.setFetcher(cookies || '')
   }
 
   async userInfo(uid: string): Promise<RawUserInfo> {
@@ -125,5 +121,14 @@ export class FetchService {
     )
 
     return data.status
+  }
+
+  setFetcher(cookies: string) {
+    this.fetcher = createFetcher({
+      headers: {
+        Cookie: cookies,
+      },
+    })
+    return this.fetcher
   }
 }

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { SearchQuery } from '@/composables/useSearch'
 import type { Post } from '@weibo-archiver/core'
+import type { SearchQuery } from '@/composables/useSearch'
+import { DEFAULT_PAGE_SIZE } from '@weibo-archiver/core'
+import { SearchIcon } from 'lucide-vue-next'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Pagination from '@/components/common/Pagination.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { useSearch } from '@/composables/useSearch'
 import { usePostStore } from '@/stores'
-import { DEFAULT_PAGE_SIZE } from '@weibo-archiver/core'
-import { SearchIcon } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const postStore = usePostStore()
 const route = useRoute()

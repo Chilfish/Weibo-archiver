@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import Setting from '@/components/settings/Settings.vue'
-import SwitchUser from '@/components/SwitchUser.vue'
-import { useUserStore } from '@/stores'
 import {
   Album,
   Bookmark,
@@ -13,6 +10,9 @@ import {
 } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import Setting from '@/components/settings/Settings.vue'
+import SwitchUser from '@/components/SwitchUser.vue'
+import { useUserStore } from '@/stores'
 
 // Menu items.
 const items = [

@@ -46,10 +46,10 @@ export interface Emitter<Events extends Record<EventType, unknown>> {
 
 /**
  * Mitt: Tiny (~200b) functional event emitter / pubsub.
- * @name mitt
+ * @name emitter
  * @returns {Mitt}
  */
-export function mitt<Events extends Record<EventType, unknown>>(
+export function emitter<Events extends Record<EventType, unknown>>(
   all?: EventHandlerMap<Events>,
 ): Emitter<Events> {
   type GenericEventHandler =
@@ -67,7 +67,7 @@ export function mitt<Events extends Record<EventType, unknown>>(
      * Register an event handler for the given type.
      * @param {string|symbol} type Type of event to listen for, or `'*'` for all events
      * @param {Function} handler Function to call in response to given event
-     * @memberOf mitt
+     * @memberOf emitter
      */
     // @ts-expect-error okok
     on<Key extends keyof Events>(type: Key, handler: GenericEventHandler) {
@@ -85,7 +85,7 @@ export function mitt<Events extends Record<EventType, unknown>>(
      * If `handler` is omitted, all handlers of the given type are removed.
      * @param {string|symbol} type Type of event to unregister `handler` from (`'*'` to remove a wildcard handler)
      * @param {Function} [handler] Handler function to remove
-     * @memberOf mitt
+     * @memberOf emitter
      */
     // @ts-expect-error okok
     off<Key extends keyof Events>(type: Key, handler?: GenericEventHandler) {
@@ -108,7 +108,7 @@ export function mitt<Events extends Record<EventType, unknown>>(
      *
      * @param {string|symbol} type The event type to invoke
      * @param {Any} [evt] Any value (object is recommended and powerful), passed to each handler
-     * @memberOf mitt
+     * @memberOf emitter
      */
     emit<Key extends keyof Events>(type: Key, evt?: Events[Key]) {
       let handlers = all!.get(type)
@@ -132,4 +132,4 @@ export function mitt<Events extends Record<EventType, unknown>>(
   }
 }
 
-export default mitt
+export default emitter

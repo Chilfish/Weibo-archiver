@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
+import { useIntersectionObserver } from '@vueuse/core'
+import { onBeforeMount, ref, useTemplateRef, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import AlbumPhotos from '@/components/album/AlbumPhotos.vue'
 import AlbumPreview from '@/components/album/AlbumPreview.vue'
 import { Button } from '@/components/ui/button'
 import { usePostStore } from '@/stores'
-import { useIntersectionObserver } from '@vueuse/core'
-import { onBeforeMount, ref, useTemplateRef, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 
 const postStore = usePostStore()
 const route = useRoute()

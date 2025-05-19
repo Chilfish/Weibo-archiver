@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import AppSidebar from '@/components/AppSidebar.vue'
-import ImagePreview from '@/components/common/ImagePreview.vue'
-import { useEmoji } from '@/composables'
-import { useUserStore } from '@/stores'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { useDark } from '@vueuse/core'
 import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import AppSidebar from '@/components/AppSidebar.vue'
+import ImagePreview from '@/components/common/ImagePreview.vue'
+import { useEmoji } from '@/composables'
+import { useUserStore } from '@/stores'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
