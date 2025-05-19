@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { AppConfig } from '@/types'
 import { useDark, useToggle } from '@vueuse/core'
+import { imgCdn } from '@weibo-archiver/core'
 import {
   DatabaseBackupIcon,
   DownloadIcon,
@@ -12,8 +13,6 @@ import {
   UploadIcon,
 } from 'lucide-vue-next'
 import ImportData from '@/components/common/ImportData.vue'
-import { Button } from '@/components/ui/button'
-import { Dialog } from '@/components/ui/dialog'
 import { config } from '@/composables'
 import ImageSourceOption from './ImageSourceOption.vue'
 
@@ -36,7 +35,7 @@ const imageSourceOptions: TImageSourceOption[] = [
     id: 'cdn',
     value: 'cdn',
     label: '使用默认的CDN',
-    description: 'https://cdn.ipfsscan.io/weibo',
+    description: imgCdn,
   },
   {
     id: 'original',
