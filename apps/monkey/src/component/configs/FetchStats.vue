@@ -65,4 +65,8 @@ onBeforeMount(async () => {
   padding-inline: 0;
   width: fit-content;
 }
+
+.stat-value {
+  font-size: 1rem;
+}
 </style>
