@@ -18,6 +18,8 @@ import { createFetcher } from '../utils/fetch'
 export class FetchService {
   fetcher: Fetcher
 
+  onRawFetch: (args: { data: any, type: string }) => any = () => {}
+
   constructor(
     cookies?: string,
   ) {
@@ -31,6 +33,8 @@ export class FetchService {
         uid,
       },
     )
+
+    await this.onRawFetch({ data, type: FETCH_PATH.PROFILE })
     return data
   }
 
@@ -41,6 +45,8 @@ export class FetchService {
         uid,
       },
     )
+
+    await this.onRawFetch({ data, type: FETCH_PATH.PROFILE_DETAIL })
     return data
   }
 
@@ -50,6 +56,7 @@ export class FetchService {
       args,
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.FOLLOWINGS })
     return data
   }
 
@@ -59,6 +66,7 @@ export class FetchService {
       args,
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.FOLLOWINGS })
     return data
   }
 
@@ -69,6 +77,8 @@ export class FetchService {
         q: keyword,
       },
     )
+
+    await this.onRawFetch({ data, type: FETCH_PATH.SEARCH })
     return data
   }
 
@@ -80,6 +90,7 @@ export class FetchService {
       },
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.POST_LONGTEXT })
     return data
   }
 
@@ -89,6 +100,7 @@ export class FetchService {
       args,
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.POSTS_RANGE })
     return data
   }
 
@@ -98,6 +110,7 @@ export class FetchService {
       args,
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.POSTS_ALL })
     return data
   }
 
@@ -111,6 +124,7 @@ export class FetchService {
       args,
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.POST_COMMENTS })
     return data
   }
 
@@ -120,6 +134,7 @@ export class FetchService {
       args,
     )
 
+    await this.onRawFetch({ data, type: FETCH_PATH.FAVORITES })
     return data.status
   }
 

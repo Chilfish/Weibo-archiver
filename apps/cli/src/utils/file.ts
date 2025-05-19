@@ -5,7 +5,7 @@ import readline from 'node:readline'
 
 export async function saveJson(args: {
   savePath: string
-  filename: string
+  filename: (() => string) | string
   data: unknown
   intend: number
 }) {
@@ -13,7 +13,11 @@ export async function saveJson(args: {
     await mkdir(args.savePath, { recursive: true })
   }
 
-  const filePath = path.join(args.savePath, args.filename)
+  const filename = typeof args.filename === 'function'
+    ? args.filename()
+    : args.filename
+
+  const filePath = path.join(args.savePath, filename)
   return await writeFile(filePath, JSON.stringify(args.data, null, args.intend || 2), 'utf-8')
 }
 

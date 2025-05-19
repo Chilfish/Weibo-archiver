@@ -59,6 +59,15 @@ export class FetchManager {
 
     this.filenameSuffix = Date.now()
 
+    this.fetchService.onRawFetch = async ({ data, type }) => {
+      await saveJson({
+        filename: () => `${Date.now()}.json`,
+        savePath: path.join(savePath, 'raw', type),
+        data,
+        intend: 2,
+      })
+    }
+
     const user = await this.userService.getDetail(uid)
     await saveJson({
       savePath,
