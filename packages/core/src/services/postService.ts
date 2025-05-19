@@ -131,8 +131,10 @@ export class PostService {
     },
   ): Promise<Post[]> {
     const startAt = new Date(args.startAt)
-
     const endAt = new Date(args.endAt)
+    startAt.setHours(0, 0, 0, 0)
+    endAt.setHours(23, 59, 0, 0)
+
     const allPosts: Post[] = []
     let page = args.page || 0
 
@@ -174,21 +176,17 @@ export class PostService {
   async getRangePosts(args: FetchArgs['postRange'] & {
     commentsCount?: number
   }): Promise<Post[]> {
-    const defaultArgs: Partial<FetchArgs['postRange']> = {
-      hasret: '1',
-      hasmuisc: '1',
-      hasori: '1',
-      haspic: '1',
-      hastext: '1',
-      hasvideo: '1',
-      uid: this.uid,
-    }
-
-    // @ts-expect-error okok
-    delete args.onFetched
     const data = await this.fetchService.postsByRange({
-      ...defaultArgs,
-      ...args,
+      uid: this.uid,
+      hasmuisc: args.hasmuisc || '1',
+      haspic: args.haspic || '1',
+      hastext: args.hastext || '1',
+      hasvideo: args.hasvideo || '1',
+      hasori: args.hasori || '1',
+      hasret: args.hasret || '1',
+      starttime: args.starttime,
+      endtime: args.endtime,
+      page: args.page || 1,
     })
     await this._setLongText(data.list)
 

@@ -38,9 +38,13 @@ export function formatDate(
  * @param precision the precision
  */
 export function formatNumber(num: number, precision = 2) {
-  if (num < 10000)
+  const wan = 1_0000
+  const yi = 1_0000_0000
+
+  if (num < wan)
     return `${num}`
-  // if (num < 10000)
-  //   return `${(num / 1000).toFixed(precision)}千`
-  return `${(num / 10000).toFixed(precision)}万`
+  else if (num < yi)
+    return `${(num / wan).toFixed(precision)}万`
+  else
+    return `${(num / yi).toFixed(precision)}亿`
 }

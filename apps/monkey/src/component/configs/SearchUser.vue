@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { UserInfo } from '@weibo-archiver/core'
+import { formatNumber } from '@weibo-archiver/core'
 import { Search } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 import { useConfig } from '@/composables/useConfig'
@@ -31,13 +32,6 @@ async function setUser(user: UserInfo) {
   isFinish.value = false
 
   await postStore.addUser(user)
-}
-
-function formatNumber(num: number) {
-  if (num > 10000) {
-    return `${(num / 10000).toFixed(1)}万`
-  }
-  return num
 }
 
 watch(searchText, (value) => {

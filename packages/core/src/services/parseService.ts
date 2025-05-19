@@ -177,8 +177,8 @@ export class PostParser {
     })
 
     if (replacedText.startsWith('sinaweibo://')) {
-      const url = new URL(replacedText)
-      return url.searchParams.get('url') || replacedText
+      const url = safeUrl(replacedText)
+      return url?.searchParams.get('url') || replacedText
     }
 
     return replacedText
@@ -219,7 +219,7 @@ export class PostParser {
     const desc = rawPageInfo.page_desc || rawPageInfo.content1 || rawPageInfo.content2
 
     let title = rawPageInfo.page_title
-    let realLink = new URL(link).searchParams.get('url') ?? link
+    let realLink = safeUrl(link)?.searchParams.get('url') ?? link
 
     if (rawPageInfo.media_info?.h5_url) {
       realLink = rawPageInfo.media_info.h5_url
@@ -390,4 +390,14 @@ function parseXmlText(xmlString: string): string {
   return decodedContent
     .replace(/\s+/g, ' ')
     .trim()
+}
+
+function safeUrl(url: string): URL | null {
+  try {
+    return new URL(url)
+  }
+  catch (error) {
+    console.error({ error, url })
+    return null
+  }
 }

@@ -22,8 +22,7 @@ export default defineConfig({
     },
   },
   build: {
-    minify: true,
-    outDir: path.join(root, 'dist/monkey'),
+    minify: false,
     emptyOutDir: true,
   },
   plugins: [
@@ -65,15 +64,15 @@ export default defineConfig({
           ],
           'axios': [
             'axios',
-            'https://unpkg.com/axios@latest/dist/axios.min.js',
-          ],
-          'dayjs': [
-            'dayjs',
-            'https://unpkg.com/dayjs@latest/dayjs.min.js',
+            'https://unpkg.com/axios@1.9.0/dist/axios.min.js',
           ],
           'fuse.js': [
             'Fuse',
-            'https://unpkg.com/fuse.js@latest/dist/fuse.min.js',
+            'https://unpkg.com/fuse.js@7.1.0/dist/fuse.min.js',
+          ],
+          'dexie': [
+            'Dexie',
+            'https://unpkg.com/dexie@4.0.11/dist/dexie.min.js',
           ],
         },
         fileName: 'weibo-archiver.user.js',

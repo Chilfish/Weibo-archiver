@@ -8,15 +8,9 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.8.0",
-    "@vueuse/core": "^13.2.0",
     "axios": "^1.9.0",
-    "dayjs": "^1.11.13",
-    "destr": "^2.0.5",
     "dexie": "^4.0.11",
     "file-saver": "^2.0.5",
-    "fuse.js": "^7.1.0",
-    "happy-dom": "^17.4.7",
-    "vue": "^3.5.14",
-    "vue-router": "^4.5.1"
+    "fuse.js": "^7.1.0"
   }
 }
