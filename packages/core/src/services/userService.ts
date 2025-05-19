@@ -1,6 +1,6 @@
 import type { Following, UserInfo } from '../types'
 import type { FetchService } from './fetchService'
-import { WeiboError } from '../utils'
+import { WeiboError } from '../utils/error'
 import { UserParser } from './parseService'
 
 export class UserService {

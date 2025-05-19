@@ -11,9 +11,9 @@ import type {
   RawUserDetail,
   RawUserInfo,
 } from '../types'
-import type { Fetcher } from '../utils'
+import type { Fetcher } from '../utils/fetch'
 import { FETCH_PATH } from '../constants'
-import { createFetcher } from '../utils'
+import { createFetcher } from '../utils/fetch'
 
 export class FetchService {
   fetcher: Fetcher

@@ -17,14 +17,6 @@ import type {
   RawRetweetedStatus,
   RawUrlStruct,
 } from '../types/raw'
-import { Window } from 'happy-dom'
-
-function getHTMLText(source: any) {
-  const window = new Window()
-  const document = window.document
-  document.body.innerHTML = source
-  return document.body.textContent.trim() || ''
-}
 
 /**
  * 用户解析器类
@@ -155,7 +147,7 @@ export class PostParser {
       source,
     } = rawPost
 
-    const sourceText = getHTMLText(source)
+    const sourceText = parseXmlText(source)
 
     return {
       id: id.toString(),
@@ -358,7 +350,7 @@ export class WeiboParser {
           floor: 0,
           regionName: item.region_name,
         } satisfies Comment)),
-        source: getHTMLText(post.source),
+        source: parseXmlText(post.source),
         regionName: post.region_name,
         isShowBulletIn: '2',
         retweet: retweet
@@ -372,7 +364,7 @@ export class WeiboParser {
             commentsCount: retweet.reposts_count,
             imgs: retweet.imgs,
             user: retweet.user,
-            source: getHTMLText(retweet.source),
+            source: parseXmlText(retweet.source),
             regionName: retweet.region_name,
           } satisfies Retweet
           : undefined,
@@ -380,4 +372,22 @@ export class WeiboParser {
       } satisfies Post
     })
   }
+}
+
+function parseXmlText(xmlString: string): string {
+  const decodedContent = xmlString
+    .replace(/<[^>]*>/g, '')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, '\'')
+    .replace(/&nbsp;/g, ' ')
+    // 处理数字形式的HTML实体
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(Number.parseInt(hex, 16)))
+
+  return decodedContent
+    .replace(/\s+/g, ' ')
+    .trim()
 }

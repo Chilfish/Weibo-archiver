@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs'
 import { mkdir } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import path from 'node:path'
-import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
+import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core/src/constants'
 import { readJson, saveJson } from '../utils'
 
 export type Config = Omit<FetchConfig, 'startAt' | 'endAt' | 'restore'> & {

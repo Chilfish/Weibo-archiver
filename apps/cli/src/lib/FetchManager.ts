@@ -1,7 +1,7 @@
 import type { ConfigManager } from './ConfigManager'
 import { readFile, rm } from 'node:fs/promises'
 import path from 'node:path'
-import { FetchService, PostService, UserService } from '@weibo-archiver/core'
+import { FetchService, PostService, UserService } from '@weibo-archiver/core/src/services'
 import { appendJson, readJson, saveJson } from '../utils'
 
 interface FetchState {

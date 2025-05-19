@@ -3,7 +3,7 @@ import type { FetchArgs } from '../types/fetchArgs'
 import type { RawPostsTimeline } from '../types/raw'
 import type { FetchService } from './fetchService'
 import type { UserService } from './userService'
-import { delay, PQueue } from '@weibo-archiver/core'
+import { PQueue } from '../utils/pqueue'
 import { PostParser, WeiboParser } from './parseService'
 
 type OnFetched = (data: {
@@ -115,7 +115,6 @@ export class PostService {
       if (lastPostDate.getTime() <= endAt.getTime()) {
         break
       }
-      await delay()
     }
 
     return Array
@@ -152,7 +151,6 @@ export class PostService {
       if (posts.length === 0 || allPosts.length >= this.postsTotal) {
         break
       }
-      await delay()
     }
     return allPosts
   }
