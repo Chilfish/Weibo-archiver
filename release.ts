@@ -30,23 +30,21 @@ async function compressFolder(folderPath: string, outputPath: string) {
   fs.writeFileSync(outputPath, content)
 }
 
-const root = path.resolve()
-const cliDist = path.join(root, 'apps/cli/dist')
-
 const appName = 'weibo-archiver'
+
+const root = path.resolve()
+const webDist = path.join(root, 'apps/web-v2/dist')
+const monkeyDist = path.join(root, `apps/monkey/dist/${appName}.user.js`)
+const cliDist = path.join(root, `apps/cli/dist/${appName}.mjs`)
+
+fs.mkdirSync(path.join(root, 'dist'), { recursive: true })
 
 // 构建
 execSync('pnpm build:web', { stdio: 'inherit' })
+await compressFolder(webDist, path.join(root, `dist/${appName}-web.zip`))
+
 execSync('pnpm build:monkey', { stdio: 'inherit' })
+fs.copyFileSync(monkeyDist, path.join(root, `dist/${appName}-user.js`))
+
 execSync('pnpm build:cli', { stdio: 'inherit' })
-
-console.log('构建完成')
-
-// 打包
-await compressFolder(cliDist, path.join(root, `dist/${appName}-cli.zip`))
-
-console.log('打包完成')
-
-// copy file
-const monkey = path.join(root, `dist/monkey/${appName}.user.js`)
-fs.copyFileSync(monkey, path.join(root, `dist/${appName}.user.js`))
+fs.copyFileSync(cliDist, path.join(root, `dist/${appName}.mjs`))
