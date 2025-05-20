@@ -5,6 +5,7 @@ import { destr } from 'destr'
 import Fuse from 'fuse.js'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from './userStore'
 
 interface FuseObj {
@@ -20,6 +21,7 @@ interface FuseObj {
 export const usePostStore = defineStore('post', () => {
   const importing = ref(true)
   const userStore = useUserStore()
+  const router = useRouter()
 
   const fuse = ref<Fuse<FuseObj>>(new Fuse<FuseObj>([]))
 
@@ -67,6 +69,9 @@ export const usePostStore = defineStore('post', () => {
 
     console.log(weibo.length, user, followings.length)
     importing.value = false
+    await router.push({
+      path: '/post',
+    })
   }
 
   async function getPosts(
