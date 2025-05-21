@@ -49,6 +49,10 @@ export default defineConfig({
         text: 'FAQ 及使用经验',
         link: '/faq',
       },
+      {
+        text: '路线图',
+        link: '/roadmap',
+      },
     ],
 
     socialLinks: [
