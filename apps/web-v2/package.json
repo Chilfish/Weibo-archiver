@@ -21,6 +21,7 @@
     "p-timeout": "^6.1.2"
   },
   "dependencies": {
+    "@giscus/vue": "^3.1.1",
     "@tanstack/vue-table": "^8.21.3",
     "@unhead/vue": "^2.0.9",
     "@vueuse/core": "^13.2.0",
