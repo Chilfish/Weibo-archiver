@@ -170,7 +170,8 @@ export class PostParser {
       const longUrl = urlStruct.find(url => url.short_url === match)
 
       if (longUrl?.pic_infos) {
-        return Object.values(longUrl.pic_infos)[0]?.woriginal.url || match
+        const imgsUrl = Object.values(longUrl.pic_infos)[0]?.woriginal.url || match
+        return `[img://${imgsUrl}]`
       }
 
       return longUrl?.long_url || match
@@ -302,14 +303,20 @@ export class WeiboParser {
   static parseImgs(posts: Post[] | Favorite[]): string[] {
     const imgs = posts
       .map((post) => {
-        // TODO
-        // const { textImg } = PostParser(post.text)
+        const imageLinks: string[] = []
+        const regex = /\[img:\/\/(.*?)\]/g
+        let match
+        // eslint-disable-next-line no-cond-assign
+        while ((match = regex.exec(post.text)) !== null) {
+          imageLinks.push(match[1])
+        }
+
         return [
           post.imgs,
           post.retweet?.imgs,
           post.comments.map(e => e.img),
           post.card?.img,
-          // textImg,
+          imageLinks,
         ]
           .filter((e): e is string => !!e)
       })
