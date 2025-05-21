@@ -23,6 +23,8 @@
 
 可以详见 [在线文档] 说明
 
+> 旧版本可见 [v0.5 分支](https://github.com/Chilfish/Weibo-archiver/tree/v0.5) 或是 https://weibo.chilfish.top/ ，可见 [文档：从旧版本迁移](https://weibo-archiver.chilfish.top/docs/intro.html#从旧版本迁移) 部分说明
+
 ### 对开发者
 
 项目采用 monorepo 的结构，使用 pnpm 管理，因此需要先安装 pnpm：`npm i -g pnpm`
@@ -45,9 +47,9 @@
 
 - 感谢 [speechless] 提供的基本思路
 - [vite-plugin-monkey] 提供了打包成油猴脚本的工具
-- [naive-ui] 提供的漂亮 UI 组件库
+- Shadcn/ui 提供的漂亮 UI 组件库
 - [vercel] 提供的在线云平台部署😚
-- Github Copilot 😇
+- Github Copilot & v0.dev 😇
 
 ### 赞助
 
@@ -68,4 +70,4 @@
 [使用教程]: https://docs.qq.com/doc/DTWttbXlMUGxZZnZq
 [actions]: https://github.com/Chilfish/Weibo-archiver/actions/workflows/beta-build.yml?query=branch:main+event:push+is:success
 [微博网页版]: https://weibo.com
-[在线文档]: https://weivo-archiver.chilfish.top/docs/
+[在线文档]: https://weibo-archiver.chilfish.top/docs/
