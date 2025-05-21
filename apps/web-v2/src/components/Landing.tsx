@@ -87,6 +87,27 @@ const Feature = (props: {
   </div>
 )
 
+const DocsLink = () => {
+  function toDocs(e: Event) {
+    e.preventDefault()
+    window.location.href = `${window.location.href}docs/`
+  }
+
+  return (
+    <Button
+      asChild
+      variant="outline"
+    >
+      <a
+        onClick={toDocs}
+        href="/docs/"
+      >
+        查看文档
+      </a>
+    </Button>
+  )
+}
+
 const features = [
   {
     title: '微博搜索',
@@ -210,14 +231,7 @@ export default function LandingPage() {
             </a>
           </nav>
           <div class="flex items-center gap-4">
-            <Button
-              asChild
-              variant="outline"
-            >
-              <RouterLink to="/docs/">
-                查看文档
-              </RouterLink>
-            </Button>
+            <DocsLink />
             <Button
               class="bg-gradient-to-r from-[#FF8200] to-[#FF5500] hover:from-[#FF7000] hover:to-[#FF4500]"
               asChild
@@ -256,23 +270,12 @@ export default function LandingPage() {
                     size="lg"
                     asChild
                     class="relative text-white bg-gradient-to-r from-[#FF8200] to-[#FF5500] hover:from-[#FF7000] hover:to-[#FF4500]"
-
                   >
-                    <RouterLink
-                      to="/post"
-                    >
+                    <RouterLink to="/post">
                       开始查看已有数据
                     </RouterLink>
                   </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                  >
-                    <RouterLink to="/docs/">
-
-                      查看文档
-                    </RouterLink>
-                  </Button>
+                  <DocsLink />
                 </div>
               </div>
               <div class="relative">
