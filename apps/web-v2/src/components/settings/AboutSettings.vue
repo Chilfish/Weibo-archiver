@@ -4,13 +4,13 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import LazyImage from '../common/LazyImage.vue'
 
-const APP_VERSION = 'v0.5.3'
+const APP_VERSION = window.__VERSION__
 </script>
 
 <template>
   <div class="space-y-6">
     <div class="flex flex-col items-center justify-center text-center gap-2 mb-8">
-      <LazyImage src="/icon.webp" class="w-24 h-24" />
+      <LazyImage src="/icon.webp" class="w-24 h-24" raw-src />
       <h3 class="text-2xl font-bold ">
         Weibo Archiver
         <Badge class=" ml-2">
@@ -34,15 +34,12 @@ const APP_VERSION = 'v0.5.3'
       </Button>
       <Button
         as="a"
-        href="https://docs.qq.com/doc/DTWttbXlMUGxZZnZq"
+        href="/docs/"
         target="_blank"
         variant="outline"
       >
         <Book class="w-4 h-4" />使用文档
       </Button>
-      <!-- <a href="#" class="btn btn-sm btn-outline btn-success gap-2">
-        <Code class="w-4 h-4" />示例数据
-      </a> -->
     </div>
 
     <div class="border-t border-gray-200 my-6 pt-6 text-center">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, Import } from 'lucide-vue-next'
+import { Import } from 'lucide-vue-next'
 import ImportData from '@/components/common/ImportData.vue'
 </script>
 
@@ -23,19 +23,6 @@ import ImportData from '@/components/common/ImportData.vue'
         <ImportData />
         <Import />
         导入数据
-      </Button>
-
-      <Button
-        as-child
-        variant="outline"
-      >
-        <RouterLink
-          class="rounded-full btn-secondary"
-          to="/example"
-        >
-          <Eye />
-          查看示例数据
-        </RouterLink>
       </Button>
     </div>
   </div>

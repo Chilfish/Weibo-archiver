@@ -22,7 +22,6 @@ const routes: RouteRecordRaw[] = [
   'bookmarks',
   'memos',
   'followings',
-  'example',
   'search',
 ].map(useDefaultRoute)
 
