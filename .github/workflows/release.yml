@@ -26,11 +26,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      - name: Install Deps
+      - name: Install pnpm Deps
         run: pnpm install
 
-      - name: build and zip
-        run: pnpm release
+      - name: build monkey script
+        run: pnpm run build:monkey
+
+      - name: build Web App
+        run: pnpm run build:web
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -41,7 +44,6 @@ jobs:
 
       - name: Build Go binaries
         run: |
-          sudo apt-get update && sudo apt-get install -y zip
           cd server
           chmod +x build.sh
           ./build.sh
@@ -50,31 +52,31 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver.user.js
-          path: dist/weibo-archiver.user.js
+          path: apps/monkey/dist/weibo-archiver.user.js
 
-      - name: upload cli
+      - name: upload Web App
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-cli
-          path: dist/weibo-archiver-cli.zip
+          name: weibo-archiver-web
+          path: apps/web-v2/dist
 
       - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-windows-amd64.zip
-          path: server/dist/weibo-archiver-windows-amd64.zip
+          name: weibo-archiver-server-windows-amd64
+          path: server/dist/weibo-archiver-windows-amd64
 
       - name: upload go binaries (Linux)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-linux-amd64.tar.gz
-          path: server/dist/weibo-archiver-linux-amd64.tar.gz
+          name: weibo-archiver-server-linux-amd64
+          path: server/dist/weibo-archiver-linux-amd64
 
       - name: upload go binaries (macOS)
         uses: actions/upload-artifact@v4
         with:
-          name: weibo-archiver-macos-amd64.tar.gz
-          path: server/dist/weibo-archiver-darwin-amd64.tar.gz
+          name: weibo-archiver-server-macos-amd64
+          path: server/dist/weibo-archiver-darwin-amd64
 
   darft-release:
     runs-on: ubuntu-latest

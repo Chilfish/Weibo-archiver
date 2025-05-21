@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/monkey",
+      "destination": "https://p.chilfish.top/weibo/weibo-archiver.user.js",
+      "statusCode": 301
+    }
+  ]
+}

@@ -24,7 +24,7 @@ const settingsDialog = useTemplateRef<HTMLDialogElement>('settingsDialog')
         Weibo archiver
       </span>
       <a
-        href="https://weibo.chilfish.top"
+        href="https://weibo-archiver.chilfish.top"
         target="_blank"
         class="text-[0.7rem] text-gray-500!"
       >

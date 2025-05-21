@@ -1,97 +1,88 @@
-import type { FetchState } from '../types'
-import { fetchFollowings, fetchPosts } from '@shared'
-import { computed, reactive } from 'vue'
+import type { FetchState } from '@/types'
+import { FetchService, PostService, UserService } from '@weibo-archiver/core'
+import { reactive, ref } from 'vue'
 import { config, useConfig } from './useConfig'
 import { usePost } from './usePost'
 
 // 全局状态
 const { updateConfig } = useConfig()
-const post = usePost()
+const postStore = usePost()
+
+const fetchService = new FetchService()
+export const userService = new UserService(fetchService, config.value.user?.uid)
+export const postService = new PostService(userService, fetchService)
 
 export const fetchState = reactive<FetchState>({
-  isStart: false,
-  isStop: false,
-  isFinish: false,
-  isFetchingFollowings: false,
+  status: 'idle',
+  fetchType: 'weibo',
 })
 
-export function useFetch() {
-  const { pause, start } = fetchPosts({
-    fetchOptions: () => ({
-      ...config.value,
-      uid: config.value.user?.uid || '',
-      savePost: newPost => post.addPost(newPost),
-    }),
-    setTotal: (total) => {
-      updateConfig({ total })
-    },
-    onFinish: async () => {
-      if (!config.value.weiboOnly) {
-        fetchState.isFetchingFollowings = true
-        await fetchFollowings(
-          config.value.user?.uid || '',
-          async data => post.addFollowingUsers(data),
-        )
-      }
+export const fetchCount = ref({
+  posts: 0,
+  followings: 0,
+  favorites: 0,
+})
 
-      fetchState.isStart = false
-      fetchState.isFinish = true
-      updateConfig({ curPage: config.value.curPage - 1 })
-    },
-  })
-
-  async function startFetch() {
-    fetchState.isStart = true
-    fetchState.isFinish = false
-    fetchState.isStop = false
-    fetchState.isFetchingFollowings = false
-
-    // 如果只获取关注列表
-    if (config.value.followingsOnly) {
-      fetchState.isFetchingFollowings = true
-      await fetchFollowings(
-        config.value.user?.uid || '',
-        async data => post.addFollowingUsers(data),
-      )
-      await post.exportFollowingUsers()
-      fetchState.isStart = false
-      fetchState.isFinish = true
-      return
-    }
-
-    // 如果是重新开始，不保留上次 fetch 的状态
-    if (!config.value.restore)
-      await post.resetState()
-
-    await post.updatePostCount()
-    await post.updateUserInfo()
-
-    await start()
+export async function startFetch() {
+  fetchState.status = 'running'
+  if (!config.value.restore) {
+    await postStore.resetState()
   }
 
-  function toggleStop() {
-    fetchState.isStop = !fetchState.isStop
-    if (fetchState.isStop)
-      pause()
-    else
-      start()
+  const {
+    isFetchAll,
+    startAt,
+    endAt,
+    sinceId,
+    curPage,
+    hasRepost,
+    hasComment,
+    commentCount,
+    repostPic,
+    user,
+    hasWeibo,
+    hasFollowings,
+    hasFavorites,
+  } = config.value
+
+  if (hasWeibo) {
+    fetchState.fetchType = 'weibo'
+    await postService.getAllPosts({
+      isFetchAll,
+      startAt: new Date(startAt),
+      endAt: new Date(endAt),
+      sinceId,
+      page: curPage,
+      hasret: hasRepost ? '1' : '0',
+      hasRepostPic: repostPic,
+      commentsCount: hasComment ? commentCount : 0,
+      async onFetched({ posts, page, sinceId }) {
+        const filtered = posts
+          .filter((post) => {
+            if (hasRepost)
+              return true
+            return !!post.retweet?.mblogid
+          })
+        await postStore.addPosts(filtered)
+        updateConfig({
+          curPage: page,
+          sinceId,
+        })
+      },
+    })
   }
 
-  const startButtonText = computed(() => {
-    const user = config.value?.user?.name || '【未设置用户】'
-    if (config.value.followingsOnly)
-      return `获取 ${user} 的关注列表`
-
-    if (fetchState.isStop)
-      return `重新开始获取 @${user} 的${config.value.isFetchAll ? '全部' : '部分'}微博`
-
-    return `开始获取 @${user} 的${config.value.isFetchAll ? '全部' : '部分'}微博`
-  })
-
-  return {
-    state: fetchState,
-    startButtonText,
-    startFetch,
-    toggleStop,
+  if (hasFollowings) {
+    fetchState.fetchType = 'followings'
+    const followings = await userService.getFollowings(user!.uid)
+    await postStore.addFollowingUsers(followings)
   }
+
+  if (hasFavorites) {
+    fetchState.fetchType = 'favorites'
+    const data = await postService.getFavorites()
+    await postStore.addFavorites(data)
+  }
+
+  fetchState.status = 'finish'
 }

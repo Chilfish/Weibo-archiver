@@ -10,20 +10,15 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@weibo-archiver/core": "workspace:^",
-    "@weibo-archiver/shared": "workspace:^",
-    "@weibo-archiver/ui": "workspace:^"
+    "@weibo-archiver/core": "workspace:^"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.0.14",
+    "@tailwindcss/vite": "^4.1.7",
     "@types/file-saver": "^2.0.7",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "daisyui": "^5.0.3",
-    "tailwindcss": "^4.0.14",
-    "unplugin-auto-import": "^19.1.1",
-    "unplugin-vue-components": "^28.4.1",
-    "unplugin-vue-macros": "^2.14.5",
-    "vite": "^6.2.2",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "daisyui": "^5.0.35",
+    "tailwindcss": "^4.1.7",
+    "vite": "^6.3.5",
     "vite-plugin-monkey": "^5.0.8"
   }
 }

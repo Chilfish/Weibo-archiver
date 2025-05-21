@@ -1,15 +1,8 @@
-import type { UserInfo } from '@shared'
+import type { UserInfo } from '@weibo-archiver/core'
 
 export interface FetchState {
-  isStart: boolean
-  isStop: boolean
-  isFinish: boolean
-  isFetchingFollowings: boolean
-}
-
-export interface FetchProgress {
-  percentage: number
-  fetchedCount: number
+  status: 'idle' | 'running' | 'finish'
+  fetchType: 'weibo' | 'followings' | 'favorites'
 }
 
 export interface UserConfig {
@@ -21,10 +14,12 @@ export interface UserConfig {
   repostPic: boolean
   hasRepost: boolean
   hasComment: boolean
-  hasFavorite: boolean
   commentCount: number
-  followingsOnly: boolean
-  weiboOnly: boolean
+
+  hasFollowings: boolean
+  hasFavorites: boolean
+  hasWeibo: boolean
+
   startAt: number
   endAt: number
   curPage: number

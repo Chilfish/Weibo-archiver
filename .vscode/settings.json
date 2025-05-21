@@ -1,6 +1,6 @@
 {
   "files.associations": {
-    "*.css": "css"
+    "*.css": "tailwindcss"
   },
 
   // Enable the ESlint flat config support

@@ -1,60 +1,58 @@
-import type { Post, UID, UserBio } from '@shared'
-import type { FetchProgress } from '../types'
-import { exportData } from '@core/utils'
-import { EmptyIDB, IDB } from '@core/utils/storage'
-import { computed, reactive, toRaw } from 'vue'
+import type {
+  Favorite,
+  Following,
+  Post,
+  UserInfo,
+} from '@weibo-archiver/core'
+import { exportData, idb } from '@weibo-archiver/core'
+import { toRaw } from 'vue'
 import { config, useConfig } from './useConfig'
+import { fetchCount, userService } from './useFetch'
 
 const { updateConfig } = useConfig()
 
-export const postState = reactive({
-  pageSize: 20,
-  idb: new EmptyIDB() as IDB,
-})
-
-// Export progress for use in other components
-export const progress = computed<FetchProgress>(() => ({
-  percentage: (config.value.fetchedCount / config.value.total) * 100 || 0,
-  fetchedCount: config.value.fetchedCount,
-}))
-
 export function usePost() {
   async function initializeDB() {
-    const wrappedUid = `uid-${config.value.user?.uid || ''}` as UID
-    if (postState.idb.name === wrappedUid)
+    if (!config.value.user) {
       return
+    }
 
-    postState.idb = new IDB(wrappedUid)
-    await postState.idb.clearFollowings()
-    await waitForDBInitialization()
-    console.log('DB initialized', postState.idb, config.value)
+    await idb.setCurUser(config.value.user?.uid || '0')
+    if (!idb.curUser) {
+      await idb.addUser(toRaw(config.value.user))
+    }
+
+    await getFetchCount()
+
+    console.log('DB initialized', idb.curUser, config.value)
   }
 
-  async function waitForDBInitialization() {
-    const dbName = `uid-${config.value.user?.uid || ''}`
-    while (postState.idb.name !== dbName) {
-      await new Promise(r => setTimeout(r, 300))
+  async function getFetchCount() {
+    fetchCount.value = {
+      posts: await idb.getAllPostsCount(),
+      favorites: await idb.getAllFavoritesCount(),
+      followings: await idb.getAllFollowingsCount(),
     }
   }
 
   async function resetState() {
-    postState.pageSize = 20
+    await idb.clearDB()
+    fetchCount.value = {
+      posts: 0,
+      favorites: 0,
+      followings: 0,
+    }
     updateConfig({
       curPage: 0,
-      fetchedCount: 0,
-      total: 0,
     })
-
-    await initializeDB()
-    await postState.idb.clearDB()
   }
 
-  async function addPost(newPost: Post) {
+  async function addPosts(newPosts: Post[]) {
     try {
-      await postState.idb.addDBPost(newPost)
+      await idb.addPosts(newPosts)
+      fetchCount.value.posts = await idb.getAllPostsCount()
       updateConfig({
-        fetchedCount: config.value.fetchedCount + 1,
-        curPage: Math.ceil((config.value.fetchedCount + 1) / 20),
+        curPage: Math.ceil((fetchCount.value.posts + 1) / 20),
       })
     }
     catch (error) {
@@ -63,40 +61,45 @@ export function usePost() {
     }
   }
 
+  async function getLastPost() {
+    return idb.getLatestPost()
+  }
+
   async function getAllPosts() {
-    return await postState.idb.getAllDBPosts()
+    return await idb.getAllPosts()
   }
 
-  async function updatePostCount() {
-    const count = await postState.idb.getPostCount()
-    updateConfig({ fetchedCount: count })
+  async function addUser(user: UserInfo) {
+    userService.uid = user.uid
+    await idb.addUser(toRaw(user))
+    await idb.setCurUser(user.uid)
+    await getFetchCount()
   }
 
-  async function updateUserInfo() {
-    const user = config.value.user
-    if (!user)
-      return
-    await postState.idb.setUserInfo(toRaw(user))
+  async function addFollowingUsers(followings: Following[]) {
+    fetchCount.value.followings = followings.length
+    await idb.addFollowings(followings)
   }
 
-  async function addFollowingUsers(followings: UserBio[]) {
-    await postState.idb.addFollowings(followings)
-  }
-
-  async function exportFollowingUsers() {
-    const data = await postState.idb.getFollowings()
-    return await exportData([], config.value.user, data)
+  async function addFavorites(favorites: Favorite[]) {
+    fetchCount.value.favorites = favorites.length
+    await idb.addFavorites(favorites)
   }
 
   async function exportAllData() {
     try {
-      const posts = await getAllPosts()
+      const { hasFavorites, hasFollowings, hasWeibo } = config.value
 
-      const followings = config.value.weiboOnly
-        ? []
-        : await postState.idb.getFollowings()
+      const weibo = hasWeibo ? await idb.getAllPosts() : []
+      const followings = hasFollowings ? await idb.getFollowings() : []
+      const favorites = hasFavorites ? await idb.getAllFavorites() : []
 
-      await exportData(posts, config.value.user, followings)
+      await exportData({
+        weibo,
+        favorites,
+        followings,
+        user: idb.curUser,
+      })
     }
     catch (error) {
       console.error('Failed to export data:', error)
@@ -105,17 +108,14 @@ export function usePost() {
   }
 
   return {
-    progress,
-    state: postState,
-
     initializeDB,
-    addPost,
+    addPosts,
     resetState,
     getAllPosts,
-    updatePostCount,
-    updateUserInfo,
+    getLastPost,
+    addUser,
     exportAllData,
     addFollowingUsers,
-    exportFollowingUsers,
+    addFavorites,
   }
 }

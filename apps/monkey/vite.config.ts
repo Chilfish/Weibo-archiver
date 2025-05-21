@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
@@ -7,9 +8,6 @@ import { version } from './package.json'
 
 export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
-export const core = path.resolve(packages, 'core/src')
-const ui = path.resolve(packages, 'ui/src')
-const shared = path.resolve(packages, 'shared/src')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
 const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
@@ -18,16 +16,13 @@ const updateURL = downloadURL.replace('user', 'meta')
 export default defineConfig({
   resolve: {
     alias: {
-      '@core': core,
-      '@ui': ui,
-      '@shared': shared,
-      '@workspace/ui': `${packages}/ui/`,
-      '@workspace/shared': `${packages}/shared/`,
+      '@weibo-archiver/core': `${packages}/core`,
+      '@weibo-archiver/ui': `${packages}/ui/`,
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   build: {
-    minify: true,
-    outDir: path.join(root, 'dist/monkey'),
+    minify: false,
     emptyOutDir: true,
   },
   plugins: [
@@ -50,7 +45,6 @@ export default defineConfig({
         namespace: 'chilfish/monkey',
         match: [
           'https://weibo.com/*',
-          'https://m.weibo.cn/*',
         ],
         version,
       },
@@ -70,15 +64,15 @@ export default defineConfig({
           ],
           'axios': [
             'axios',
-            'https://unpkg.com/axios@latest/dist/axios.min.js',
-          ],
-          'dayjs': [
-            'dayjs',
-            'https://unpkg.com/dayjs@latest/dayjs.min.js',
+            'https://unpkg.com/axios@1.9.0/dist/axios.min.js',
           ],
           'fuse.js': [
             'Fuse',
-            'https://unpkg.com/fuse.js@latest/dist/fuse.min.js',
+            'https://unpkg.com/fuse.js@7.1.0/dist/fuse.min.js',
+          ],
+          'dexie': [
+            'Dexie',
+            'https://unpkg.com/dexie@4.0.11/dist/dexie.min.js',
           ],
         },
         fileName: 'weibo-archiver.user.js',
