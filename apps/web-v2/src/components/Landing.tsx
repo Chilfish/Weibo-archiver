@@ -87,7 +87,7 @@ const Feature = (props: {
   </div>
 )
 
-const DocsLink = () => {
+const DocsLink = (className?: string) => {
   function toDocs(e: Event) {
     e.preventDefault()
     window.location.href = `${window.location.href}docs/`
@@ -95,6 +95,7 @@ const DocsLink = () => {
 
   return (
     <Button
+      class={className}
       asChild
       variant="outline"
     >
@@ -231,7 +232,7 @@ export default function LandingPage() {
             </a>
           </nav>
           <div class="flex items-center gap-4">
-            <DocsLink />
+            <DocsLink class="hidden sm:block" />
             <Button
               class="bg-gradient-to-r from-[#FF8200] to-[#FF5500] hover:from-[#FF7000] hover:to-[#FF4500]"
               asChild
@@ -246,7 +247,7 @@ export default function LandingPage() {
 
       <main class="flex-1">
         {/* Hero Section */}
-        <section class="relative overflow-hidden py-20 md:py-28 px-6 sm:px-12">
+        <section class="relative overflow-hidden py-12 sm:py-20 md:py-28 px-6 sm:px-12">
           <div class="absolute inset-0 bg-gradient-to-b from-[#FFF8F0] to-[#F5F7FA] -z-10"></div>
           <div class=" relative z-10">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -295,8 +296,8 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section id="features" class="py-20">
-          <div class=" px-12">
+        <section id="features" class="sm:py-20">
+          <div class="px-6 sm:px-12">
 
             <div class="mx-auto max-w-2xl text-center">
               <div class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-[#FF8200] mb-6">
@@ -324,7 +325,7 @@ export default function LandingPage() {
           id="tools"
           class="py-20 bg-gradient-to-b from-white to-[#F5F7FA]"
         >
-          <div class=" px-12">
+          <div class="px-6 sm:px-12">
             <div class="mx-auto max-w-2xl text-center">
               <div class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-[#FF8200] mb-6">
                 <span class="flex h-2 w-2 rounded-full bg-[#FF8200] mr-2"></span>
@@ -336,7 +337,7 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div class="mt-12">
+            <div class="">
               <Tabs
                 defaultValue="exporter"
                 class="w-full"
@@ -434,7 +435,7 @@ export default function LandingPage() {
         </section>
 
         {/* FAQ Section */}
-        <section id="faq" class="py-20 bg-gradient-to-b from-[#F5F7FA] to-white">
+        <section id="faq" class="sm:py-20 bg-gradient-to-b from-[#F5F7FA] to-white">
           <div class="px-6">
             <div class="mx-auto max-w-2xl text-center">
               <div class="inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-[#FF8200] mb-6">

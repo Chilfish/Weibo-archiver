@@ -26,6 +26,12 @@ const routes: RouteRecordRaw[] = [
   'search',
 ].map(useDefaultRoute)
 
+routes.push({
+  name: '404',
+  path: '/:pathMatch(.*)*',
+  redirect: '/',
+})
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
