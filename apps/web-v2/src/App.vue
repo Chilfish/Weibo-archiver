@@ -21,16 +21,16 @@ useSeoMeta({
   ogImageAlt: appName,
   ogSiteName: appName,
   ogType: 'website',
-  ogUrl: 'https://weibo.chilfish.top',
+  ogUrl: 'https://weibo-archiver.chilfish.top',
   ogLocale: 'zh_CN',
   ogTitle: title,
   twitterCard: 'summary_large_image',
   twitterTitle: title,
   twitterDescription: description,
-  twitterCreator: 'chilllish',
+  twitterCreator: 'chilfish_',
   twitterImage: ogImage,
   twitterImageAlt: appName,
-  twitterSite: '@chilllish',
+  twitterSite: '@chilfish_',
   keywords: '微博,备份,工具,微博备份,微博备份工具,备份微博,存档,油猴脚本,backup',
 })
 
@@ -46,7 +46,7 @@ useHead({
   ],
 })
 
-const _isDark = useDark()
+const isDark = useDark()
 const route = useRoute()
 const isIndex = computed(() => route.name === 'index')
 
@@ -55,6 +55,7 @@ const { fetchEmojis } = useEmoji()
 const isLoading = ref(false)
 
 onBeforeMount(async () => {
+  isDark.value = false
   isLoading.value = true
   await userStore.load()
   await fetchEmojis()
