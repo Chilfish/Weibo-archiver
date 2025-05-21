@@ -8,7 +8,8 @@ import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import pkg from './package.json'
 
-const root = fileURLToPath(new URL('../../', import.meta.url))
+const base = path.dirname(fileURLToPath(import.meta.url))
+const root = path.resolve(base, '../../')
 const workspace = path.join(root, 'packages/')
 
 const { commitHash, commitDate, commitUrl, lastCommitMessage } = getGitInfo()

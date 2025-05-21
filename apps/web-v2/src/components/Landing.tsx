@@ -1,6 +1,5 @@
 import type { FunctionalComponent } from 'vue'
 import {
-  ArrowRight,
   Calendar,
   Download,
   FileSearch,
@@ -12,7 +11,6 @@ import {
   Users,
 } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
-import ImportData from '@/components/common/ImportData.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
@@ -212,9 +210,14 @@ export default function LandingPage() {
             </a>
           </nav>
           <div class="flex items-center gap-4">
-            {/* <Button variant="outline" class="hidden md:flex"> */}
-            {/*  查看文档 */}
-            {/* </Button> */}
+            <Button
+              asChild
+              variant="outline"
+            >
+              <RouterLink to="/docs/">
+                查看文档
+              </RouterLink>
+            </Button>
             <Button
               class="bg-gradient-to-r from-[#FF8200] to-[#FF5500] hover:from-[#FF7000] hover:to-[#FF4500]"
               asChild
@@ -248,23 +251,26 @@ export default function LandingPage() {
                   是一个专为新浪微博用户设计的备份工具，帮助您在账号可能被限制或删除前保存个人微博内容，包括文字和图片。
                 </p>
                 <div class="mt-10 flex items-start gap-4">
+
                   <Button
                     size="lg"
-                    class="relative bg-gradient-to-r from-[#FF8200] to-[#FF5500] hover:from-[#FF7000] hover:to-[#FF4500]"
-                  >
-                    <ImportData />
-                    开始导入数据
-                    <ArrowRight class="ml-2 h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
                     asChild
+                    class="relative text-white bg-gradient-to-r from-[#FF8200] to-[#FF5500] hover:from-[#FF7000] hover:to-[#FF4500]"
+
                   >
                     <RouterLink
                       to="/post"
                     >
-                      查看已有数据
+                      开始查看已有数据
+                    </RouterLink>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                  >
+                    <RouterLink to="/docs/">
+
+                      查看文档
                     </RouterLink>
                   </Button>
                 </div>

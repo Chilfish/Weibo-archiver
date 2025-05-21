@@ -7,8 +7,8 @@
   ],
   "redirects": [
     {
-      "source": "/docs",
-      "destination": "https://docs.qq.com/doc/DTWttbXlMUGxZZnZq",
+      "source": "/monkey",
+      "destination": "https://p.chilfish.top/weibo/weibo-archiver.user.js",
       "statusCode": 301
     }
   ]
