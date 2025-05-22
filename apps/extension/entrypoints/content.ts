@@ -1,3 +1,5 @@
+import { message } from '@weibo-archiver/core'
+
 export default defineContentScript({
   matches: [
     // '*://*.google.com/*',
@@ -10,19 +12,10 @@ export default defineContentScript({
     const ping = await sendMessage('ping', undefined)
     console.log({ ping })
 
-    ctx.addEventListener(window, 'message', async ({ data }) => {
-      if (!data.type?.startsWith('fetch:')) {
-        return
-      }
+    message.onMessage('fetch:user', async (uid) => {
+      const user = await sendMessage('fetchUser', uid)
 
-      if (data.type === 'fetch:user') {
-        const user = await sendMessage('fetchUser', data.data.uid)
-
-        window.postMessage({
-          type: 'result:user',
-          data: user,
-        }, window.origin)
-      }
-    })
+      message.sendMessage('result:user', user)
+    }, window)
   },
 })

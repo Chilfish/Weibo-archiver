@@ -5,6 +5,7 @@ export * from './export'
 export * from './fetch'
 export * from './format'
 export * from './IndexedDB'
+export * from './message'
 export * from './pqueue'
 
 export function delay(ms = 2000) {

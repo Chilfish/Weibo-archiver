@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
+import { message } from '@weibo-archiver/core'
 import { ref } from 'vue'
 
 const searchText = ref('')
@@ -11,21 +11,10 @@ async function startFetch() {
   }
 
   result.value = 'loading'
-  window.postMessage({
-    type: 'fetch:user',
-    data: {
-      uid: searchText.value.trim(),
-    },
-  }, window.origin)
+  message.sendMessage('fetch:user', searchText.value)
 }
 
-useEventListener(window, 'message', ({ data }) => {
-  if (!data.type?.startsWith('result:')) {
-    return
-  }
-
-  result.value = data.data
-})
+message.onMessage('result:user', user => result.value = user)
 </script>
 
 <template>
