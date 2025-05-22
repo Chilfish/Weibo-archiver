@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "@webext-core/messaging": "^2.2.0",
-    "alien-signals": "^2.0.5"
+    "@webext-core/storage": "^1.2.0",
+    "alien-signals": "^2.0.5",
+    "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
     "@weibo-archiver/core": "workspace:^",
