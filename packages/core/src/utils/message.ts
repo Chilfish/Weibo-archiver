@@ -1,4 +1,4 @@
-import type { UserInfo } from '../types'
+import type { Post, UserInfo } from '../types'
 
 export function createWindowMessage<T extends Record<string, (...args: any[]) => any>>() {
   const handlers = new Map<keyof T, T[keyof T]>()
@@ -29,9 +29,12 @@ export function createWindowMessage<T extends Record<string, (...args: any[]) =>
   }
 }
 
-interface ProtocolMap {
-  'fetch:user': (uid: string) => any
+export interface ProtocolMap {
+  'fetch:user': (uid: string) => Promise<UserInfo>
   'result:user': (user: UserInfo) => void
+
+  'fetch:posts': (uid: string) => any
+  'result:posts': (posts: Post[]) => any
 
   [key: string]: (...args: any[]) => any
 }

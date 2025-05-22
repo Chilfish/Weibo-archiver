@@ -25,7 +25,12 @@ async function main() {
 
   fetchManager.setCookie(cookie)
 
-  onMessage('fetchUser', ({ data: uid }) => fetchManager.fetchUser(uid))
+  onMessage('fetch:user', ({ data: uid }) => fetchManager.fetchUser(uid))
+  onMessage('fetch:posts', ({ data: uid }) => fetchManager.postService.getPostsBySinceId({
+    commentsCount: 5,
+    page: 0,
+    uid,
+  }))
 }
 
 async function onTabLoaded() {

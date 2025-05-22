@@ -15,9 +15,9 @@ interface Config extends FetchConfig {
 }
 
 export class FetchManager {
-  private fetchService = new FetchService()
-  private userService = new UserService(this.fetchService)
-  private postService = new PostService(this.userService, this.fetchService)
+  fetchService = new FetchService()
+  userService = new UserService(this.fetchService)
+  postService = new PostService(this.userService, this.fetchService)
 
   fetchState: FetchState = {
     status: 'idle',

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { message } from '@weibo-archiver/core'
 import { ref } from 'vue'
+import Weibo from '@/components/weibo/Weibo.vue'
 
 const searchText = ref('')
 const result = ref<any>({})
@@ -11,10 +12,10 @@ async function startFetch() {
   }
 
   result.value = 'loading'
-  message.sendMessage('fetch:user', searchText.value)
+  message.sendMessage('fetch:posts', searchText.value)
 }
 
-message.onMessage('result:user', user => result.value = user)
+message.onMessage('result:posts', user => result.value = user)
 </script>
 
 <template>
@@ -29,7 +30,14 @@ message.onMessage('result:user', user => result.value = user)
     <Input
       v-model="searchText"
     />
-
-    <pre>{{ JSON.stringify(result, null, 2) }}</pre>
+    <div
+      v-if="Array.isArray(result)"
+    >
+      <Weibo
+        v-for="post in result"
+        :key="post.id"
+        :post="post"
+      />
+    </div>
   </main>
 </template>
