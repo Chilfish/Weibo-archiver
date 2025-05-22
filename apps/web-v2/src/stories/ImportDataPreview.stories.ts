@@ -1,14 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { ImportedData } from '@weibo-archiver/core'
+import { onBeforeMount } from 'vue'
 import ImportDataPreview from '@/components/common/ImportDataPreview'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogScrollContent,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { useUserStore } from '@/stores'
 import { users } from './test.data'
 
 const meta: Meta<typeof LazyImage> = {
@@ -35,12 +37,12 @@ export const Default: Story = {
       DialogHeader,
       DialogTitle,
       DialogFooter,
-      DialogContent,
+      DialogScrollContent,
       Button,
     },
     template: /* html */ `
       <Dialog open>
-        <DialogContent>
+        <DialogScrollContent>
           <DialogHeader>
             <DialogTitle>
               确认导入数据
@@ -61,10 +63,17 @@ export const Default: Story = {
               确认导入
             </Button>
           </DialogFooter>
-        </DialogContent>
+        </DialogScrollContent>
       </Dialog>
     `,
     setup() {
+      const userStore = useUserStore()
+      onBeforeMount(async () => {
+        for (const user of users) {
+          await userStore.addUser(user)
+        }
+      })
+
       return {
         data: importedData,
       }

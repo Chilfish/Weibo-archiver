@@ -1,8 +1,10 @@
 import { setup } from '@storybook/vue3'
+import { createPinia } from 'pinia'
 import components from '../src/stories/components'
 import '../src/style.css'
 
 setup((app) => {
+  app.use(createPinia())
   components.forEach((component) => {
     app.component(component.name, component)
   })

@@ -32,7 +32,7 @@ async function loadImportedData(e: Event) {
     v-if="openDialog"
     :open="openDialog"
   >
-    <DialogContent>
+    <DialogScrollContent>
       <DialogHeader>
         <DialogTitle>
           确认导入数据
@@ -58,6 +58,6 @@ async function loadImportedData(e: Event) {
           }}
         </Button>
       </DialogFooter>
-    </DialogContent>
+    </DialogScrollContent>
   </Dialog>
 </template>

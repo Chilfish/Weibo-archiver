@@ -14,7 +14,8 @@
       "@/*": ["./src/*"]
     },
     "types": [
-      "vite/client"
+      "vite/client",
+      "vue-macros/macros-global"
     ],
     "allowJs": true,
     "strict": true,
