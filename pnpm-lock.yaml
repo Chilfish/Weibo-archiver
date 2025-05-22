@@ -70,16 +70,6 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
 
-  apps/docs:
-    dependencies:
-      '@giscus/vue':
-        specifier: ^3.1.1
-        version: 3.1.1(vue@3.5.14(typescript@5.8.3))
-    devDependencies:
-      vitepress:
-        specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.25.0)(@types/node@20.11.24)(axios@1.9.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.3)(sass@1.85.1)(search-insights@2.17.3)(terser@5.28.1)(typescript@5.8.3)
-
   apps/monkey:
     dependencies:
       '@weibo-archiver/core':
@@ -110,6 +100,9 @@ importers:
 
   apps/web-v2:
     dependencies:
+      '@giscus/vue':
+        specifier: ^3.1.1
+        version: 3.1.1(vue@3.5.14(typescript@5.8.2))
       '@tanstack/vue-table':
         specifier: ^8.21.3
         version: 8.21.3(vue@3.5.14(typescript@5.8.2))
@@ -122,6 +115,15 @@ importers:
       '@vueuse/router':
         specifier: ^13.2.0
         version: 13.2.0(vue-router@4.5.1(vue@3.5.14(typescript@5.8.2)))(vue@3.5.14(typescript@5.8.2))
+      axios:
+        specifier: ^1.6.8
+        version: 1.9.0
+      p-queue:
+        specifier: ^8.0.1
+        version: 8.1.0
+      p-timeout:
+        specifier: ^6.1.2
+        version: 6.1.2
       pinia:
         specifier: ^3.0.2
         version: 3.0.2(typescript@5.8.2)(vue@3.5.14(typescript@5.8.2))
@@ -189,6 +191,9 @@ importers:
       vite:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@20.11.24)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1)(tsx@4.19.4)(yaml@2.8.0)
+      vitepress:
+        specifier: ^1.6.3
+        version: 1.6.3(@algolia/client-search@5.25.0)(@types/node@20.11.24)(@types/react@19.0.12)(axios@1.9.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.85.1)(search-insights@2.17.3)(terser@5.28.1)(typescript@5.8.2)
       vitest:
         specifier: ^3.1.3
         version: 3.1.3(@types/debug@4.1.12)(@types/node@20.11.24)(@vitest/browser@3.1.3)(happy-dom@17.4.7)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.7.3(@types/node@20.11.24)(typescript@5.8.2))(sass@1.85.1)(terser@5.28.1)(tsx@4.19.4)(yaml@2.8.0)
@@ -4423,6 +4428,14 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
+  p-queue@8.1.0:
+    resolution: {integrity: sha512-mxLDbbGIBEXTJL0zEx8JIylaj3xQ7Z/7eEVjcF9fJX4DBiH9oqe+oahYnlKKxm0Ci9TlWTyhSHgygxMxjIB2jw==}
+    engines: {node: '>=18'}
+
+  p-timeout@6.1.2:
+    resolution: {integrity: sha512-UbD77BuZ9Bc9aABo74gfXhNvzC9Tx7SxtHSh1fxvx3jTLLYvmVhiQZZrJzqqU0jKbN32kb5VOKiLEQI/3bIjgQ==}
+    engines: {node: '>=14.16'}
+
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
@@ -6195,9 +6208,9 @@ snapshots:
 
   '@docsearch/css@3.8.2': {}
 
-  '@docsearch/js@3.8.2(@algolia/client-search@5.25.0)(search-insights@2.17.3)':
+  '@docsearch/js@3.8.2(@algolia/client-search@5.25.0)(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(search-insights@2.17.3)':
     dependencies:
-      '@docsearch/react': 3.8.2(@algolia/client-search@5.25.0)(search-insights@2.17.3)
+      '@docsearch/react': 3.8.2(@algolia/client-search@5.25.0)(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(search-insights@2.17.3)
       preact: 10.26.6
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -6206,13 +6219,16 @@ snapshots:
       - react-dom
       - search-insights
 
-  '@docsearch/react@3.8.2(@algolia/client-search@5.25.0)(search-insights@2.17.3)':
+  '@docsearch/react@3.8.2(@algolia/client-search@5.25.0)(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(search-insights@2.17.3)':
     dependencies:
       '@algolia/autocomplete-core': 1.17.7(@algolia/client-search@5.25.0)(algoliasearch@5.25.0)(search-insights@2.17.3)
       '@algolia/autocomplete-preset-algolia': 1.17.7(@algolia/client-search@5.25.0)(algoliasearch@5.25.0)
       '@docsearch/css': 3.8.2
       algoliasearch: 5.25.0
     optionalDependencies:
+      '@types/react': 19.0.12
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
       search-insights: 2.17.3
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -6580,10 +6596,10 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@giscus/vue@3.1.1(vue@3.5.14(typescript@5.8.3))':
+  '@giscus/vue@3.1.1(vue@3.5.14(typescript@5.8.2))':
     dependencies:
       giscus: 1.6.0
-      vue: 3.5.14(typescript@5.8.3)
+      vue: 3.5.14(typescript@5.8.2)
 
   '@humanfs/core@0.19.1': {}
 
@@ -7851,10 +7867,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@5.2.4(vite@5.4.19(@types/node@20.11.24)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1))(vue@3.5.14(typescript@5.8.3))':
+  '@vitejs/plugin-vue@5.2.4(vite@5.4.19(@types/node@20.11.24)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1))(vue@3.5.14(typescript@5.8.2))':
     dependencies:
       vite: 5.4.19(@types/node@20.11.24)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1)
-      vue: 3.5.14(typescript@5.8.3)
+      vue: 3.5.14(typescript@5.8.2)
 
   '@vitejs/plugin-vue@5.2.4(vite@6.3.5(@types/node@20.11.24)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1)(tsx@4.19.4)(yaml@2.8.0))(vue@3.5.14(typescript@5.8.2))':
     dependencies:
@@ -8203,6 +8219,15 @@ snapshots:
 
   '@vue/shared@3.5.14': {}
 
+  '@vueuse/core@12.7.0(typescript@5.8.2)':
+    dependencies:
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 12.7.0
+      '@vueuse/shared': 12.7.0(typescript@5.8.2)
+      vue: 3.5.14(typescript@5.8.2)
+    transitivePeerDependencies:
+      - typescript
+
   '@vueuse/core@12.7.0(typescript@5.8.3)':
     dependencies:
       '@types/web-bluetooth': 0.0.20
@@ -8212,12 +8237,12 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/core@12.8.2(typescript@5.8.3)':
+  '@vueuse/core@12.8.2(typescript@5.8.2)':
     dependencies:
       '@types/web-bluetooth': 0.0.21
       '@vueuse/metadata': 12.8.2
-      '@vueuse/shared': 12.8.2(typescript@5.8.3)
-      vue: 3.5.14(typescript@5.8.3)
+      '@vueuse/shared': 12.8.2(typescript@5.8.2)
+      vue: 3.5.14(typescript@5.8.2)
     transitivePeerDependencies:
       - typescript
 
@@ -8228,11 +8253,11 @@ snapshots:
       '@vueuse/shared': 13.2.0(vue@3.5.14(typescript@5.8.2))
       vue: 3.5.14(typescript@5.8.2)
 
-  '@vueuse/integrations@12.8.2(axios@1.9.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.3)':
+  '@vueuse/integrations@12.8.2(axios@1.9.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.2)':
     dependencies:
-      '@vueuse/core': 12.8.2(typescript@5.8.3)
-      '@vueuse/shared': 12.8.2(typescript@5.8.3)
-      vue: 3.5.14(typescript@5.8.3)
+      '@vueuse/core': 12.8.2(typescript@5.8.2)
+      '@vueuse/shared': 12.8.2(typescript@5.8.2)
+      vue: 3.5.14(typescript@5.8.2)
     optionalDependencies:
       axios: 1.9.0
       focus-trap: 7.6.4
@@ -8252,15 +8277,21 @@ snapshots:
       vue: 3.5.14(typescript@5.8.2)
       vue-router: 4.5.1(vue@3.5.14(typescript@5.8.2))
 
+  '@vueuse/shared@12.7.0(typescript@5.8.2)':
+    dependencies:
+      vue: 3.5.14(typescript@5.8.2)
+    transitivePeerDependencies:
+      - typescript
+
   '@vueuse/shared@12.7.0(typescript@5.8.3)':
     dependencies:
       vue: 3.5.14(typescript@5.8.3)
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/shared@12.8.2(typescript@5.8.3)':
+  '@vueuse/shared@12.8.2(typescript@5.8.2)':
     dependencies:
-      vue: 3.5.14(typescript@5.8.3)
+      vue: 3.5.14(typescript@5.8.2)
     transitivePeerDependencies:
       - typescript
 
@@ -10463,6 +10494,13 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
+  p-queue@8.1.0:
+    dependencies:
+      eventemitter3: 5.0.1
+      p-timeout: 6.1.2
+
+  p-timeout@6.1.2: {}
+
   package-json-from-dist@1.0.1: {}
 
   package-manager-detector@1.3.0: {}
@@ -11699,26 +11737,26 @@ snapshots:
       tsx: 4.19.4
       yaml: 2.8.0
 
-  vitepress@1.6.3(@algolia/client-search@5.25.0)(@types/node@20.11.24)(axios@1.9.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.3)(sass@1.85.1)(search-insights@2.17.3)(terser@5.28.1)(typescript@5.8.3):
+  vitepress@1.6.3(@algolia/client-search@5.25.0)(@types/node@20.11.24)(@types/react@19.0.12)(axios@1.9.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.85.1)(search-insights@2.17.3)(terser@5.28.1)(typescript@5.8.2):
     dependencies:
       '@docsearch/css': 3.8.2
-      '@docsearch/js': 3.8.2(@algolia/client-search@5.25.0)(search-insights@2.17.3)
+      '@docsearch/js': 3.8.2(@algolia/client-search@5.25.0)(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(search-insights@2.17.3)
       '@iconify-json/simple-icons': 1.2.35
       '@shikijs/core': 2.5.0
       '@shikijs/transformers': 2.5.0
       '@shikijs/types': 2.5.0
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 5.2.4(vite@5.4.19(@types/node@20.11.24)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1))(vue@3.5.14(typescript@5.8.3))
+      '@vitejs/plugin-vue': 5.2.4(vite@5.4.19(@types/node@20.11.24)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1))(vue@3.5.14(typescript@5.8.2))
       '@vue/devtools-api': 7.7.2
       '@vue/shared': 3.5.14
-      '@vueuse/core': 12.8.2(typescript@5.8.3)
-      '@vueuse/integrations': 12.8.2(axios@1.9.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.3)
+      '@vueuse/core': 12.7.0(typescript@5.8.2)
+      '@vueuse/integrations': 12.8.2(axios@1.9.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.2)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.2
       shiki: 2.5.0
       vite: 5.4.19(@types/node@20.11.24)(lightningcss@1.30.1)(sass@1.85.1)(terser@5.28.1)
-      vue: 3.5.14(typescript@5.8.3)
+      vue: 3.5.14(typescript@5.8.2)
     optionalDependencies:
       postcss: 8.5.3
     transitivePeerDependencies:

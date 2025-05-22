@@ -7,12 +7,21 @@
   "author": "Chilfish",
   "scripts": {
     "dev": "vite --port=3334",
-    "build": "vite build",
+    "build": "vite build && pnpm docs:build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "peerDependencies": {
+    "axios": "^1.6.8",
+    "p-queue": "^8.0.1",
+    "p-timeout": "^6.1.2"
   },
   "dependencies": {
+    "@giscus/vue": "^3.1.1",
     "@tanstack/vue-table": "^8.21.3",
     "@unhead/vue": "^2.0.9",
     "@vueuse/core": "^13.2.0",
@@ -41,6 +50,7 @@
     "tailwindcss": "^4.1.7",
     "tw-animate-css": "^1.3.0",
     "vite": "^6.3.5",
+    "vitepress": "^1.6.3",
     "vitest": "^3.1.3"
   }
 }

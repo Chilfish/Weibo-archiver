@@ -7,8 +7,7 @@ export default defineConfig({
   title: 'Weibo archiver 文档',
   description: 'Weibo Archiver 一个微博备份工具，在账号被完全夹没前未雨绸缪 😭。',
   base: '/docs/',
-  srcDir: './src',
-  outDir: '../web-v2/dist/docs',
+  outDir: '../dist/docs',
   head: [
     ['link', { rel: 'icon', href: `${baseUrl}/icon.webp` }],
     ['meta', { name: 'og:title', content: 'Weibo archiver 文档' }],
