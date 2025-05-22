@@ -44,6 +44,10 @@ export const useUserStore = defineStore('user', () => {
     return idb.getFollowings()
   }
 
+  async function getAllUsers(): Promise<UserInfo[]> {
+    return idb.getUsers()
+  }
+
   return {
     users,
     curUser,
@@ -54,5 +58,6 @@ export const useUserStore = defineStore('user', () => {
     load,
     setCurUid,
     getFollowings,
+    getAllUsers,
   }
 })

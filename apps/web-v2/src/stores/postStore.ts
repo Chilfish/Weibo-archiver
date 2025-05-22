@@ -52,12 +52,13 @@ export const usePostStore = defineStore('post', () => {
     }, index)
   }
 
-  async function parseAndImport(e: Event): Promise<void> {
-    importing.value = true
-
+  async function parseImport(e: Event): Promise<ImportedData> {
     const jsonStr = await readFile(e)
-    const data = destr<ImportedData>(jsonStr, { strict: true })
+    return destr<ImportedData>(jsonStr, { strict: true })
+  }
 
+  async function saveImportedData(data: ImportedData): Promise<void> {
+    importing.value = true
     const { user, followings, weibo, favorites } = data
 
     await userStore.importUser(user)
@@ -197,7 +198,8 @@ export const usePostStore = defineStore('post', () => {
     getFavorites,
     getAllFavoritesTotal,
     searchPosts,
-    parseAndImport,
+    saveImportedData,
+    parseImport,
     getTodayInLastYears,
     setupFuse,
     clearDB,

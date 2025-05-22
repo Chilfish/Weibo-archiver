@@ -37,7 +37,7 @@ watch(curUid, (newUid) => {
           <Avatar
             :src="curUser.avatar"
             :alt="curUser.name"
-            :size="8"
+            size="size-8"
           />
           <span class="max-w-22 truncate">
             {{ curUser.name }}

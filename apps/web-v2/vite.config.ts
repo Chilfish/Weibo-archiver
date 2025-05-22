@@ -30,6 +30,7 @@ export default defineConfig({
       },
     }),
     VueJsx(),
+
     tailwindcss(),
     // https://github.com/antfu/vite-plugin-components
     Components({

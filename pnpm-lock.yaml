@@ -118,6 +118,9 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.9.0
+      destr:
+        specifier: ^2.0.5
+        version: 2.0.5
       p-queue:
         specifier: ^8.0.1
         version: 8.1.0
@@ -4825,6 +4828,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  quansync@0.2.10:
+    resolution: {integrity: sha512-t41VRkMYbkHyCYmOvx/6URnN80H7k4X0lLdBMGsz+maAwrJQYB1djpV6vHrQIBE0WBSGqhtEHrK9U3DWWH8v7A==}
+
   quansync@0.2.8:
     resolution: {integrity: sha512-4+saucphJMazjt7iOM27mbFCk+D9dd/zmgMDCzRZ8MEoBfYp7lAvoN38et/phRQF6wOPMy/OROBGgoWeSKyluA==}
 
@@ -6877,7 +6883,7 @@ snapshots:
 
   '@quansync/fs@0.1.1':
     dependencies:
-      quansync: 0.2.8
+      quansync: 0.2.10
 
   '@rollup/plugin-alias@5.1.1(rollup@4.34.8)':
     optionalDependencies:
@@ -10877,6 +10883,8 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  quansync@0.2.10: {}
+
   quansync@0.2.8: {}
 
   querystringify@2.2.0:
@@ -11446,7 +11454,7 @@ snapshots:
       '@quansync/fs': 0.1.1
       defu: 6.1.4
       jiti: 2.4.2
-      quansync: 0.2.8
+      quansync: 0.2.10
 
   uncrypto@0.1.3:
     optional: true
