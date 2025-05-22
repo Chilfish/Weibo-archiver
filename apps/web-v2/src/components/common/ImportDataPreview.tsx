@@ -114,7 +114,8 @@ const SelectImportedUser = defineComponent({
 
         <div class="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 mb-2">
           <RadioGroup
-            v-model={selectedUid.value}
+            modelValue={selectedUid.value}
+            onUpdate:modelValue={(uid: string) => selectedUid.value = uid}
           >
             <Label
               for="new-user"
@@ -136,13 +137,14 @@ const SelectImportedUser = defineComponent({
               </div>
             </Label>
 
-            <div
-              v-if={matchingUser.value}
-              class="font-medium text-zinc-500 text-sm"
-            >
-              <Separator class="my-2" />
-              合并到现有用户
-            </div>
+            {matchingUser.value && (
+              <div
+                class="font-medium text-zinc-500 text-sm"
+              >
+                <Separator class="my-2" />
+                合并到现有用户
+              </div>
+            )}
 
             {existingUsers.map(existingUser => (
               <Label

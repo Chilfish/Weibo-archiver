@@ -6,7 +6,6 @@ import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
-import VueMacros from 'vue-macros/vite'
 import pkg from './package.json'
 
 const base = path.dirname(fileURLToPath(import.meta.url))
@@ -24,17 +23,13 @@ export default defineConfig({
     },
   },
   plugins: [
-    VueMacros({
-      plugins: {
-        vue: Vue({
-          script: {
-            propsDestructure: true,
-            defineModel: true,
-          },
-        }),
-        vueJsx: VueJsx(),
+    Vue({
+      script: {
+        propsDestructure: true,
+        defineModel: true,
       },
     }),
+    VueJsx(),
 
     tailwindcss(),
     // https://github.com/antfu/vite-plugin-components

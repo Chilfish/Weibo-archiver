@@ -27,6 +27,8 @@ async function processImport() {
     return
   }
 
+  console.log('[import data] selected uid', selectedUid.value)
+
   isProcessing.value = true
   if (!selectedUid.value) {
     await saveImportedData(toRaw(data.value))
