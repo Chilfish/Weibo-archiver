@@ -24,7 +24,7 @@ const user = computed(() => props.user || userStore.curUser)
     <Avatar
       :src="user.avatar"
       :alt="user.name"
-      :size="10"
+      size="size-10"
     />
     <div>
       <h3 class="font-bold text-base-content">

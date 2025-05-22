@@ -1,26 +1,23 @@
 <script setup lang="ts">
 import { imgCdn } from '@weibo-archiver/core'
-import { computed } from 'vue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 const props = defineProps<{
   src: string
   alt?: string
-  size?: number | string
+  size?: string
   class?: string
 }>()
-
-const sizeClass = computed(() => {
-  return props.size ? `w-${props.size} h-${props.size}` : 'w-10 h-10'
-})
 </script>
 
 <template>
-  <Avatar>
+  <Avatar
+    :class="`${props.size}`"
+  >
     <AvatarImage
       :src="`${imgCdn}${props.src}`"
       :alt="props.alt"
-      :class="sizeClass"
+      :class="props.class"
     />
     <AvatarFallback>{{ props.alt }}</AvatarFallback>
   </Avatar>
