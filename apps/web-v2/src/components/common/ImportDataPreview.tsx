@@ -137,7 +137,7 @@ const SelectImportedUser = defineComponent({
               </div>
             </Label>
 
-            {matchingUser.value && (
+            {existingUsers.length > 0 && (
               <div
                 class="font-medium text-zinc-500 text-sm"
               >
