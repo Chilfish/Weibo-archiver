@@ -80,17 +80,17 @@ const SelectImportedUser = defineComponent({
       type: Object as () => UserInfo,
       required: true,
     },
+    existingUsers: {
+      type: Object as () => Array<UserInfo>,
+      required: true,
+    },
   },
   emits: ['selectedUid'],
-  setup({ user }, { emit }) {
-    const userStore = useUserStore()
-
-    const existingUsers = ref<UserInfo[]>([])
-    const matchingUser = computed(() => existingUsers.value.findIndex(localUser => localUser.uid === user.uid) !== -1)
+  setup({ user, existingUsers }, { emit }) {
+    const matchingUser = computed(() => existingUsers.findIndex(localUser => localUser.uid === user.uid) !== -1)
     const selectedUid = ref<string>(user.uid)
 
     onBeforeMount(async () => {
-      existingUsers.value = await userStore.getAllUsers()
       if (!matchingUser.value) {
         selectedUid.value = ''
       }
@@ -144,7 +144,7 @@ const SelectImportedUser = defineComponent({
               合并到现有用户
             </div>
 
-            {existingUsers.value.map(existingUser => (
+            {existingUsers.map(existingUser => (
               <Label
                 key={existingUser.uid}
                 class={cn(
@@ -227,8 +227,15 @@ export const ImportDataPreview = defineComponent({
       required: true,
     },
   },
-  setup({ data }) {
-    const selectedUid = ref('')
+  emits: ['selectedUid'],
+  setup({ data }, { emit }) {
+    const userStore = useUserStore()
+
+    const existingUsers = ref<UserInfo[]>([])
+
+    onBeforeMount(async () => {
+      existingUsers.value = await userStore.getAllUsers()
+    })
 
     return () => (
       <main
@@ -241,8 +248,10 @@ export const ImportDataPreview = defineComponent({
           favorites={data.favorites.length}
         />
         <SelectImportedUser
+          key={existingUsers.value.length}
           user={data.user}
-          onSelectedUid={(uid: string) => selectedUid.value = uid}
+          existingUsers={existingUsers.value}
+          onSelectedUid={(uid: string) => emit('selectedUid', uid)}
         />
       </main>
     )

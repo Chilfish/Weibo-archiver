@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import type { ImportedData } from '@weibo-archiver/core'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import ImportDataPreview from '@/components/common/ImportDataPreview'
 import { Button } from '@/components/ui/button'
 import {
@@ -13,7 +13,7 @@ import {
 import { useUserStore } from '@/stores'
 import { users } from './test.data'
 
-const meta: Meta<typeof LazyImage> = {
+const meta: Meta<typeof ImportDataPreview> = {
   title: 'Components/ImportDataPreview',
   component: ImportDataPreview,
 }
@@ -59,7 +59,7 @@ export const Default: Story = {
             <Button variant="outline">
               取消
             </Button>
-            <Button>
+            <Button @click="processImport">
               确认导入
             </Button>
           </DialogFooter>
@@ -74,8 +74,20 @@ export const Default: Story = {
         }
       })
 
+      const isProcessing = ref(false)
+
+      async function processImport() {
+        isProcessing.value = true
+
+        await new Promise(resolve => setTimeout(resolve, 100))
+
+        isProcessing.value = false
+      }
+
       return {
         data: importedData,
+        isProcessing,
+        processImport,
       }
     },
   }),

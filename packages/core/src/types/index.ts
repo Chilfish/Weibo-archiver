@@ -1,5 +1,5 @@
 import type { Favorite, Post } from './post'
-import type { UserBio, UserInfo } from './user'
+import type { Following, UserInfo } from './user'
 
 export * from './fetchArgs'
 export * from './post'
@@ -41,6 +41,6 @@ export interface Album {
 export interface ImportedData {
   weibo: Post[]
   user: UserInfo
-  followings: UserBio[]
+  followings: Following[]
   favorites: Favorite[]
 }
