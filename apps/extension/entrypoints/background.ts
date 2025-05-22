@@ -25,7 +25,7 @@ async function main() {
 
   fetchManager.setCookie(cookie)
 
-  await fetchManager.fetchUser('5734325998')
+  onMessage('fetchUser', ({ data: uid }) => fetchManager.fetchUser(uid))
 }
 
 async function onTabLoaded() {

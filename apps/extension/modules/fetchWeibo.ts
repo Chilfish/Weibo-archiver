@@ -1,5 +1,9 @@
-import type { FetchConfig } from '@weibo-archiver/core'
-import { FetchService, PostService, UserService } from '@weibo-archiver/core/src/services'
+import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
+import {
+  FetchService,
+  PostService,
+  UserService,
+} from '@weibo-archiver/core/src/services'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'
@@ -36,15 +40,11 @@ export class FetchManager {
     this.fetchService.setFetcher(cookie)
   }
 
-  async fetchUser(uid: string) {
-    const user = await this.userService.getDetail(uid)
-    console.log({ user })
+  async fetchUser(uid: string): Promise<UserInfo> {
+    return await this.userService.getDetail(uid)
   }
 
-  async startFetch(uid: string) {
-    this.fetchState.status = 'running'
-
-    this.userService.uid = uid
+  async fetchAllWeibo(uid: string) {
     const {
       isFetchAll,
       startAt,
@@ -55,42 +55,58 @@ export class FetchManager {
       hasComment,
       commentCount,
       repostPic,
+    } = this.config
+
+    this.fetchState.fetchType = 'weibo'
+    await this.postService.getAllPosts({
+      isFetchAll,
+      startAt: new Date(startAt),
+      endAt: new Date(endAt),
+      sinceId,
+      page: curPage,
+      hasret: hasRepost ? '1' : '0',
+      hasRepostPic: repostPic,
+      commentsCount: hasComment ? commentCount : 0,
+      onFetched: async ({ posts, page, sinceId }) => {
+        const filtered = posts
+          .filter((post) => {
+            if (hasRepost)
+              return true
+            return !!post.retweet?.mblogid
+          })
+        this.fetchCount.posts += filtered.length
+      },
+    })
+  }
+
+  async fetchFollowings(uid: string) {
+    this.fetchState.fetchType = 'followings'
+    const followings = await this.userService.getFollowings(uid)
+  }
+
+  async fetchFavorites() {
+    this.fetchState.fetchType = 'favorites'
+    const favorites = await this.postService.getFavorites()
+  }
+
+  async startFetch(uid: string) {
+    this.fetchState.status = 'running'
+    this.userService.uid = uid
+
+    const {
       hasWeibo,
       hasFollowings,
       hasFavorites,
     } = this.config
 
     if (hasWeibo) {
-      this.fetchState.fetchType = 'weibo'
-      await this.postService.getAllPosts({
-        isFetchAll,
-        startAt: new Date(startAt),
-        endAt: new Date(endAt),
-        sinceId,
-        page: curPage,
-        hasret: hasRepost ? '1' : '0',
-        hasRepostPic: repostPic,
-        commentsCount: hasComment ? commentCount : 0,
-        onFetched: async ({ posts, page, sinceId }) => {
-          const filtered = posts
-            .filter((post) => {
-              if (hasRepost)
-                return true
-              return !!post.retweet?.mblogid
-            })
-          this.fetchCount.posts += filtered.length
-        },
-      })
+      await this.fetchAllWeibo(uid)
     }
-
     if (hasFollowings) {
-      this.fetchState.fetchType = 'followings'
-      const followings = await this.userService.getFollowings(uid)
+      await this.fetchFollowings(uid)
     }
-
     if (hasFavorites) {
-      this.fetchState.fetchType = 'favorites'
-      const favorites = await this.postService.getFavorites()
+      await this.fetchFavorites()
     }
 
     this.fetchState.status = 'finish'

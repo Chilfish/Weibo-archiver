@@ -1,9 +1,9 @@
+import type { UserInfo } from '@weibo-archiver/core'
 import { defineExtensionMessaging } from '@webext-core/messaging'
 
 interface ProtocolMap {
-  todoData: (data: object) => object
   ping: () => boolean
-  fetchData: () => void
+  fetchUser: (uid: string) => Promise<UserInfo>
 }
 
 export const { sendMessage, onMessage }

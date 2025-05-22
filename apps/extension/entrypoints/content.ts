@@ -1,5 +1,3 @@
-import type { ContentScriptContext } from 'wxt/utils/content-script-context'
-
 export default defineContentScript({
   matches: [
     // '*://*.google.com/*',
@@ -12,14 +10,19 @@ export default defineContentScript({
     const ping = await sendMessage('ping', undefined)
     console.log({ ping })
 
-    if (document.location.hostname === 'weibo.com') {
-      return await weiboContent(ctx)
-    }
+    ctx.addEventListener(window, 'message', async ({ data }) => {
+      if (!data.type?.startsWith('fetch:')) {
+        return
+      }
+
+      if (data.type === 'fetch:user') {
+        const user = await sendMessage('fetchUser', data.data.uid)
+
+        window.postMessage({
+          type: 'result:user',
+          data: user,
+        }, window.origin)
+      }
+    })
   },
 })
-
-async function weiboContent(ctx: ContentScriptContext) {
-  const cookies = browser.cookies
-
-  console.log({ cookies })
-}
