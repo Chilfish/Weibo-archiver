@@ -3,6 +3,7 @@ import { signal } from 'alien-signals'
 import { onMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
 import { FetchManager } from '../modules/fetchWeibo'
+import { extensionStorage } from '../utils/storage'
 
 export default defineBackground(async () => {
   await main()
@@ -21,8 +22,10 @@ async function main() {
     cookie = await getCookies()
     await extensionStorage.setItem('cookies', cookie)
   }
-
   fetchManager.setCookie(cookie)
+
+  const curUid = await fetchManager.getCurCookieUid()
+  await extensionStorage.setItem('curUid', curUid)
 }
 
 async function setupMessage() {
@@ -43,10 +46,7 @@ async function setupMessage() {
       return []
     }
 
-    return fetchManager.userService.getFollowings({
-      page,
-      uid,
-    })
+    return fetchManager.fetchFollowings(uid)
   })
 }
 

@@ -53,19 +53,7 @@ const searchText = computed<string>({
 <template>
   <div class="container py-4 mx-auto">
     <div class="flex items-center py-4">
-      <p
-        class="mr-4"
-      >
-        共有{{ table.getRowCount() }}个关注
-      </p>
-
-      <Button
-        variant="outline"
-        size="sm"
-        @click="emits('sync')"
-      >
-        同步
-      </Button>
+      <slot />
 
       <Input
         v-model="searchText"
