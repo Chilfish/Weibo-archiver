@@ -53,9 +53,15 @@ export class UserService {
     return data.users.map(UserParser.parse)
   }
 
-  async getFollowings(uid: string): Promise<Following[]> {
+  async getFollowings(args: {
+    uid: string
+    onFetch?: (args: { data: Following[], page: number }) => any
+  }): Promise<Following[]> {
     let page = 0
     const users: Following[] = []
+    const {
+      uid,
+    } = args
 
     while (true) {
       const data = await this.fetchService.userFollowings({
@@ -73,6 +79,8 @@ export class UserService {
         ...UserParser.parseFollowing(user),
         followBy: uid,
       }))
+
+      await args.onFetch?.({ data: _users, page })
 
       users.push(..._users)
       page += 1

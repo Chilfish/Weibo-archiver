@@ -14,9 +14,6 @@ const fetchManager = new FetchManager({
 })
 
 async function main() {
-  onMessage('ping', () => true)
-  console.log('Hello background!', { id: browser.runtime.id })
-
   let cookie = await extensionStorage.getItem('cookies')
   if (!cookie) {
     cookie = await getCookies()
@@ -31,6 +28,7 @@ async function main() {
     page: 0,
     uid,
   }))
+  onMessage('fetch:followings', ({ data: uid }) => fetchManager.fetchFollowings(uid))
 }
 
 async function onTabLoaded() {

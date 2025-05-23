@@ -1,4 +1,5 @@
 import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
+import { messageWithVue } from '@weibo-archiver/core'
 import {
   FetchService,
   PostService,
@@ -81,7 +82,12 @@ export class FetchManager {
 
   async fetchFollowings(uid: string) {
     this.fetchState.fetchType = 'followings'
-    const followings = await this.userService.getFollowings(uid)
+    await this.userService.getFollowings({
+      uid,
+      onFetch({ data }) {
+        messageWithVue.sendMessage('result:followings', data)
+      },
+    })
   }
 
   async fetchFavorites() {

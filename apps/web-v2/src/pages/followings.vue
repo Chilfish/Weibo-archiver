@@ -15,6 +15,10 @@ watch(() => userStore.isLoadingUser, async (loading) => {
   followings.value = await userStore.getFollowings()
   isLoading.value = false
 }, { immediate: true })
+
+async function syncData() {
+  console.log('sync')
+}
 </script>
 
 <template>
@@ -24,6 +28,9 @@ watch(() => userStore.isLoadingUser, async (loading) => {
     >
       关注列表管理
     </h2>
-    <FollowingsTable :data="followings" />
+    <FollowingsTable
+      :data="followings"
+      @sync="syncData"
+    />
   </main>
 </template>

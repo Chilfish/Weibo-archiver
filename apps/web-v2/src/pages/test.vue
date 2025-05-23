@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { message } from '@weibo-archiver/core'
+import { messageWithVue } from '@weibo-archiver/core'
 import { ref } from 'vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 
@@ -12,10 +12,10 @@ async function startFetch() {
   }
 
   result.value = 'loading'
-  message.sendMessage('fetch:posts', searchText.value)
+  messageWithVue.sendMessage('fetch:posts', searchText.value)
 }
 
-message.onMessage('result:posts', user => result.value = user)
+messageWithVue.onMessage('result:posts', user => result.value = user)
 </script>
 
 <template>

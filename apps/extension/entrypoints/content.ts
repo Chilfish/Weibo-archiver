@@ -1,4 +1,5 @@
-import { message } from '@weibo-archiver/core'
+import { messageWithVue } from '@weibo-archiver/core'
+import { sendMessage } from '../utils/message'
 
 export default defineContentScript({
   matches: [
@@ -7,18 +8,22 @@ export default defineContentScript({
     'https://weibo.com/*',
   ],
   async main() {
-    message.onMessage('fetch:user', async (uid) => {
+    messageWithVue.onMessage('fetch:user', async (uid) => {
       const user = await sendMessage('fetch:user', uid)
-      message.sendMessage('result:user', user)
+      messageWithVue.sendMessage('result:user', user)
 
       return user
     }, window)
 
-    message.onMessage('fetch:posts', async (uid) => {
+    messageWithVue.onMessage('fetch:posts', async (uid) => {
       const data = await sendMessage('fetch:posts', uid)
-      message.sendMessage('result:posts', data)
+      messageWithVue.sendMessage('result:posts', data)
 
       return data
     }, window)
+
+    messageWithVue.onMessage('fetch:followings', async (uid) => {
+      return sendMessage('fetch:followings', uid)
+    })
   },
 })
