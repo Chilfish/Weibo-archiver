@@ -1,10 +1,12 @@
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
 import { signal } from 'alien-signals'
+import { onMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
 import { FetchManager } from '../modules/fetchWeibo'
 
 export default defineBackground(async () => {
   await main()
+  await setupMessage()
 })
 
 const curTabId = signal(0)
@@ -21,14 +23,31 @@ async function main() {
   }
 
   fetchManager.setCookie(cookie)
+}
 
-  onMessage('fetch:user', ({ data: uid }) => fetchManager.fetchUser(uid))
-  onMessage('fetch:posts', ({ data: uid }) => fetchManager.postService.getPostsBySinceId({
-    commentsCount: 5,
-    page: 0,
-    uid,
-  }))
-  onMessage('fetch:followings', ({ data: uid }) => fetchManager.fetchFollowings(uid))
+async function setupMessage() {
+  onMessage('fetch:posts', async ({ data }) => {
+    return fetchManager.postService.getPostsBySinceId({
+      commentsCount: 5,
+      page: 0,
+      uid: data as string,
+    })
+  })
+
+  onMessage('fetch:followings', async ({ data }) => {
+    const { uid, page } = (data || {}) as {
+      uid: string
+      page: number
+    }
+    if (!uid) {
+      return []
+    }
+
+    return fetchManager.userService.getFollowings({
+      page,
+      uid,
+    })
+  })
 }
 
 async function onTabLoaded() {
