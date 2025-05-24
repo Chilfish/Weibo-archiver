@@ -23,6 +23,7 @@ const routes: RouteRecordRaw[] = [
   'memos',
   'followings',
   'search',
+  'test',
 ].map(useDefaultRoute)
 
 routes.push({

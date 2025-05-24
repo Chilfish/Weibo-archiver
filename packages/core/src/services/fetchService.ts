@@ -63,14 +63,14 @@ export class FetchService {
     return data
   }
 
-  async myFollowings(args: FetchArgs['myFollowings']): Promise<RawMyFollowings> {
+  async myFollowings(args: FetchArgs['myFollowings']): Promise<RawMyFollowings['follows']> {
     const { data } = await this.fetcher<RawMyFollowings, FetchArgs['myFollowings']>(
-      FETCH_PATH.FOLLOWINGS,
+      FETCH_PATH.FOLLOWINGS_MINE,
       args,
     )
 
     await this.onRawFetch({ data, type: FETCH_PATH.FOLLOWINGS })
-    return data
+    return data.follows
   }
 
   async searchUser(keyword: string): Promise<RawSearchUser> {

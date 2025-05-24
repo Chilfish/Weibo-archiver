@@ -34,7 +34,8 @@
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.511.0",
     "reka-ui": "^2.2.1",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "webext-bridge": "^6.0.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.1",

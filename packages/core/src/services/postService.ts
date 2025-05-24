@@ -266,11 +266,13 @@ export class PostService {
     return result
   }
 
-  async getPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature' | 'uid'> & {
+  async getPostsBySinceId(args: Omit<Partial<FetchArgs['postAll']>, 'feature'> & {
     commentsCount: number
   }): Promise<Post[]> {
+    console.log(args)
+
     const data = await this.fetchService.postsBySinceId({
-      uid: this.uid,
+      uid: args.uid || this.uid,
       since_id: this.sinceId,
       page: args.page || 1,
       feature: 0,
