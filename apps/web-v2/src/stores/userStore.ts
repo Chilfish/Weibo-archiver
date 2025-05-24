@@ -48,6 +48,11 @@ export const useUserStore = defineStore('user', () => {
     return idb.getUsers()
   }
 
+  async function updateFollowings(addFollowings: Following[], removeFollowings: Following[]) {
+    await idb.addFollowings(addFollowings)
+    await idb.removeFollowings(removeFollowings)
+  }
+
   return {
     users,
     curUser,
@@ -59,5 +64,6 @@ export const useUserStore = defineStore('user', () => {
     setCurUid,
     getFollowings,
     getAllUsers,
+    updateFollowings,
   }
 })

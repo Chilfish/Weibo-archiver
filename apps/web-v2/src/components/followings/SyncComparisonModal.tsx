@@ -1,6 +1,6 @@
 import type { Following } from '@weibo-archiver/core'
 import { ArrowRightLeft, Check, Minus, Plus, X } from 'lucide-vue-next'
-import { defineComponent, ref, toRefs } from 'vue'
+import { defineComponent, ref, toRaw, toRefs } from 'vue'
 import Avatar from '@/components/common/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -31,7 +31,7 @@ export const SyncComparisonModal = defineComponent({
       required: true,
     },
   },
-  emits: ['close', 'confirm'],
+  emits: ['update:isOpen', 'confirm'],
   setup(props, { emit }) {
     const { isOpen, removedFollowings, newFollowings } = toRefs(props)
     const selectedNewFollowings = ref<Following[]>([...newFollowings.value])
@@ -71,8 +71,17 @@ export const SyncComparisonModal = defineComponent({
       selectedRemovedFollowings.value = ([])
     }
 
+    const closeDialog = () => {
+      isOpen.value = false
+      emit('update:isOpen', false)
+    }
+
     const handleConfirm = () => {
-      emit('confirm', selectedNewFollowings.value, selectedRemovedFollowings.value)
+      emit('confirm', [
+        selectedNewFollowings.value.map(toRaw),
+        selectedRemovedFollowings.value.map(toRaw),
+      ])
+      closeDialog()
     }
 
     const SelectUser = ({
@@ -111,7 +120,10 @@ export const SyncComparisonModal = defineComponent({
     )
 
     return () => (
-      <Dialog open={isOpen.value}>
+      <Dialog
+        onUpdate:open={closeDialog}
+        open={isOpen.value}
+      >
         <DialogContent
           class="max-w-5xl max-h-[90vh] overflow-hidden flex flex-col"
         >
@@ -264,7 +276,7 @@ export const SyncComparisonModal = defineComponent({
             <div class="flex gap-2">
               <Button
                 variant="outline"
-                onClick={isOpen.value = false}
+                onClick={closeDialog}
               >
                 <X class="h-4 w-4 mr-1" />
                 取消

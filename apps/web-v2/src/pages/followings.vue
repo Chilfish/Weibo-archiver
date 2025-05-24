@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Following } from '@weibo-archiver/core'
+import { Loader2Icon } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { sendMessage } from 'webext-bridge/window'
 import FollowingsTable from '@/components/followings/FollowingsTable.vue'
@@ -8,7 +9,7 @@ import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()
 const followings = ref<Following[]>([])
-const isLoading = ref(false)
+const isSyncLoading = ref(false)
 const fetchedFollowings = ref<Following[]>([])
 const openDialog = ref(false)
 
@@ -31,15 +32,22 @@ const removedFollowings = computed(() => {
 watch(() => userStore.isLoadingUser, async (loading) => {
   if (loading)
     return
-  isLoading.value = true
   followings.value = await userStore.getFollowings()
-  isLoading.value = false
 }, { immediate: true })
 
 async function syncData() {
   console.log('sync')
+  isSyncLoading.value = true
   fetchedFollowings.value = await sendMessage<Following[]>('fetch:followings', { uid: userStore.curUid })
   openDialog.value = true
+}
+
+async function onConfirm([selectedAdd, selectedRemove]: [Following[], Following[]]) {
+  followings.value = [...followings.value, ...selectedAdd]
+  followings.value = followings.value.filter(user => !selectedRemove.some(seletedUser => seletedUser.uid === user.uid))
+
+  await userStore.updateFollowings(selectedAdd, selectedRemove)
+  isSyncLoading.value = false
 }
 </script>
 
@@ -64,14 +72,19 @@ async function syncData() {
         size="sm"
         @click="syncData"
       >
+        <Loader2Icon
+          v-if="isSyncLoading"
+          class="w-4 h-4 mr-2 animate-spin"
+        />
         同步
       </Button>
     </FollowingsTable>
 
     <SyncComparisonModal
-      :is-open="openDialog"
+      v-model:is-open="openDialog"
       :removed-followings="removedFollowings"
       :new-followings="newFollowings"
+      @confirm="onConfirm"
     />
   </main>
 </template>
