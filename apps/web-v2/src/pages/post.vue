@@ -5,6 +5,7 @@ import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyWeibo from '@/components/EmptyWeibo.vue'
+import HomeHeader from '@/components/home/HomeHeader.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { usePostStore, useUserStore } from '@/stores'
 
@@ -22,6 +23,14 @@ const postsTotal = ref(0)
 const weiboArr = ref<Post[]>([])
 
 onBeforeMount(async () => {
+  if (!route.query.page) {
+    await router.push({
+      query: {
+        page: 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+      },
+    })
+  }
   await getPosts()
   postsTotal.value = await postStore.getAllPostsTotal()
 })
@@ -47,6 +56,7 @@ watch([
   await router.push({
     query: {
       page: 1,
+      pageSize: pageSize.value,
     },
   })
 
@@ -66,7 +76,6 @@ async function changePage(newPage: number, newPageSize: number) {
 
   await router.push({
     query: {
-      ...route.query,
       page: newPage,
       pageSize: newPageSize,
     },
@@ -74,12 +83,24 @@ async function changePage(newPage: number, newPageSize: number) {
   await getPosts()
   scrollToTop()
 }
+
+async function onManualSync() {
+  await getPosts()
+}
 </script>
 
 <template>
   <main
-    class="flex flex-col relative w-full"
+    class="flex flex-col gap-4 items-center relative w-full"
   >
+    <HomeHeader
+      :last-sync-time="new Date()"
+      :is-loading="isLoading"
+      :total-posts="postsTotal"
+      @sort-change="console.log"
+      @manual-sync="onManualSync"
+    />
+
     <section
       v-if="weiboArr.length > 0"
       class="flex flex-col items-center max-w-[90vw] md:max-w-[70vw] mx-auto gap-4 lg:px-12"
