@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
 import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
-import { RefreshCwIcon } from 'lucide-vue-next'
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { onMessage, sendMessage } from 'webext-bridge/window'
 import Pagination from '@/components/common/Pagination.vue'
-import EmptyWeibo from '@/components/EmptyWeibo.vue'
+import DialogSyncedCount from '@/components/home/DialogSyncedCount.vue'
+import EmptyWeibo from '@/components/home/EmptyWeibo.vue'
 import HomeHeader from '@/components/home/HomeHeader.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { config } from '@/composables'
@@ -118,48 +118,18 @@ onMessage<number>('state:fetch-count', async ({ data }) => {
 </script>
 
 <template>
+  <DialogSyncedCount
+    v-model:open-dialog="openDialog"
+    :synced-count="syncedCount"
+    :new-posts-cont="newPostsCount"
+    :is-loading="isLoading"
+  />
+
   <main
     class="flex flex-col gap-4 items-center relative w-full"
   >
-    <Dialog
-      v-model:open="openDialog"
-    >
-      <DialogContent
-        class="sm:w-72"
-      >
-        <DialogHeader>
-          <DialogTitle
-            class="flex items-center gap-2"
-          >
-            {{ isLoading ? '同步微博中' : '已完成同步' }}
-            <RefreshCwIcon
-              v-if="isLoading"
-              class="h-4 w-4 animate-spin"
-            />
-          </DialogTitle>
-        </DialogHeader>
-        <main>
-          <p>
-            已获取了 {{ syncedCount }} 条微博
-          </p>
-          <p v-if="!isLoading">
-            新增了 {{ newPostsCount }} 条微博
-          </p>
-        </main>
-
-        <DialogFooter v-if="!isLoading">
-          <DialogClose
-            as-child
-          >
-            <Button>
-              好的
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-
     <HomeHeader
+      v-if="postsTotal > 1"
       :last-sync-time="new Date(config.syncTime.weibo)"
       :is-loading="isLoading"
       :total-posts="postsTotal"

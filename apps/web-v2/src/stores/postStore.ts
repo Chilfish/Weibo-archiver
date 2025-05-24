@@ -96,6 +96,9 @@ export const usePostStore = defineStore('post', () => {
 
   async function getNewestPostDate(): Promise<number> {
     const post = await idb.getLatestPost()
+    if (!post) {
+      return 0
+    }
     return new Date(post.createdAt).getTime()
   }
 
