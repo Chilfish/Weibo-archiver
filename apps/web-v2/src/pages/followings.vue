@@ -36,7 +36,6 @@ watch(() => userStore.isLoadingUser, async (loading) => {
 }, { immediate: true })
 
 async function syncData() {
-  console.log('sync')
   isSyncLoading.value = true
   fetchedFollowings.value = await sendMessage<Following[]>('fetch:followings', { uid: userStore.curUid })
   openDialog.value = true
@@ -47,6 +46,11 @@ async function onConfirm([selectedAdd, selectedRemove]: [Following[], Following[
   followings.value = followings.value.filter(user => !selectedRemove.some(seletedUser => seletedUser.uid === user.uid))
 
   await userStore.updateFollowings(selectedAdd, selectedRemove)
+  isSyncLoading.value = false
+}
+
+async function onCloseDialog() {
+  openDialog.value = false
   isSyncLoading.value = false
 }
 </script>
@@ -64,12 +68,19 @@ async function onConfirm([selectedAdd, selectedRemove]: [Following[], Following[
       <p
         class="mr-4"
       >
-        共有{{ followings.length }} 个关注
+        共有
+        <span
+          class="text-primary font-bold"
+        >
+          {{ followings.length }}
+        </span>
+        个关注
       </p>
 
       <Button
         variant="outline"
         size="sm"
+        :disabled="isSyncLoading"
         @click="syncData"
       >
         <Loader2Icon
@@ -81,10 +92,11 @@ async function onConfirm([selectedAdd, selectedRemove]: [Following[], Following[
     </FollowingsTable>
 
     <SyncComparisonModal
-      v-model:is-open="openDialog"
+      :is-open="openDialog"
       :removed-followings="removedFollowings"
       :new-followings="newFollowings"
       @confirm="onConfirm"
+      @update:is-open="onCloseDialog"
     />
   </main>
 </template>
