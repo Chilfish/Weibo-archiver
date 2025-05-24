@@ -1,4 +1,4 @@
-import type { FetchConfig, Following, UserInfo } from '@weibo-archiver/core'
+import type { FetchConfig, Following, Post, UserInfo } from '@weibo-archiver/core'
 import {
   FetchService,
   PostService,
@@ -95,6 +95,7 @@ export class FetchManager {
 
   async fetchFollowings(uid: string) {
     this.fetchState.fetchType = 'followings'
+    this.userService.uid = uid
 
     let page = 1
     const data = new Set<Following>()
@@ -116,6 +117,44 @@ export class FetchManager {
   async fetchFavorites() {
     this.fetchState.fetchType = 'favorites'
     const favorites = await this.postService.getFavorites()
+  }
+
+  async fetchNewPosts(args: {
+    uid: string
+    newestPostDate: number
+    onFetch: (count: number) => any
+  }): Promise<Post[]> {
+    let page = 0
+    let isOutDate = false
+    const allPosts: Post[] = []
+    this.postService.sinceId = ''
+    this.userService.uid = args.uid
+
+    while (true) {
+      const posts = (await this.postService.getPostsBySinceId({
+        uid: args.uid,
+        page,
+        commentsCount: 20,
+      }))
+        .filter((post) => {
+          if (page < 1) {
+            return true
+          }
+          isOutDate = new Date(post.createdAt).getTime() <= args.newestPostDate
+          return !isOutDate
+        })
+
+      allPosts.push(...posts)
+      page += 1
+
+      await args.onFetch(allPosts.length)
+
+      if (posts.length < 1 || isOutDate) {
+        break
+      }
+    }
+
+    return allPosts
   }
 
   async startFetch(uid: string) {

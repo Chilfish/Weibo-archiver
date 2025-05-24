@@ -145,6 +145,8 @@ export class IndexedDB extends Dexie {
   async getLatestPost(): Promise<Post> {
     const post = await this.postQuery
       .limit(1)
+      .offset(0)
+      .reverse()
       .toArray()
 
     return post[0]

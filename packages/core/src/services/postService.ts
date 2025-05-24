@@ -3,7 +3,6 @@ import type { FetchArgs } from '../types/fetchArgs'
 import type { RawPostsTimeline } from '../types/raw'
 import type { FetchService } from './fetchService'
 import type { UserService } from './userService'
-import { PQueue } from '../utils/pqueue'
 import { PostParser, WeiboParser } from './parseService'
 
 type OnFetched = (data: {
@@ -15,10 +14,9 @@ type OnFetched = (data: {
 }) => any
 
 export class PostService {
-  private sinceId: string = ''
+  sinceId: string = ''
   private fetchedCount: number = 0
   private postsTotal: number = 0
-  private pqueue = new PQueue({ concurrency: 3 })
 
   onError = (data: {
     data: any
@@ -269,11 +267,9 @@ export class PostService {
   async getPostsBySinceId(args: Omit<Partial<FetchArgs['postAll']>, 'feature'> & {
     commentsCount: number
   }): Promise<Post[]> {
-    console.log(args)
-
     const data = await this.fetchService.postsBySinceId({
       uid: args.uid || this.uid,
-      since_id: this.sinceId,
+      since_id: args.since_id || this.sinceId,
       page: args.page || 1,
       feature: 0,
       hasmuisc: args.hasmuisc || '1',
@@ -324,16 +320,16 @@ export class PostService {
   }
 
   private async _setComments(posts: Post[], commentsCount: number) {
-    posts.forEach((post) => {
-      if (post.commentsCount < 1)
-        return
-      this.pqueue.add(() =>
-        this.getComments(post.id, post.isShowBulletIn, commentsCount)
-          .catch(() => [] as Comment[])
-          .then(comments => post.comments = comments),
-      )
-    })
+    for (const post of posts) {
+      if (post.commentsCount < 1) {
+        continue
+      }
 
-    await this.pqueue.onIdle()
+      post.comments = await this.getComments(post.id, post.isShowBulletIn, commentsCount)
+        .catch((e) => {
+          console.error(`get comments ${post.id}`, e)
+          return [] as Comment[]
+        })
+    }
   }
 }

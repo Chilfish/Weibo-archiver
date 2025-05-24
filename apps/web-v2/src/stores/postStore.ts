@@ -75,6 +75,10 @@ export const usePostStore = defineStore('post', () => {
     })
   }
 
+  async function saveWeibo(posts: Post[]) {
+    return idb.addPosts(posts)
+  }
+
   async function getPosts(
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
@@ -88,6 +92,11 @@ export const usePostStore = defineStore('post', () => {
 
   async function getAllPostsTotal(): Promise<number> {
     return idb.getAllPostsCount()
+  }
+
+  async function getNewestPostDate(): Promise<number> {
+    const post = await idb.getLatestPost()
+    return new Date(post.createdAt).getTime()
   }
 
   async function getAllFavoritesTotal(): Promise<number> {
@@ -192,6 +201,7 @@ export const usePostStore = defineStore('post', () => {
   return {
     importing,
 
+    saveWeibo,
     getPosts,
     getAllPostsTotal,
     getPostById,
@@ -200,6 +210,7 @@ export const usePostStore = defineStore('post', () => {
     searchPosts,
     saveImportedData,
     parseImport,
+    getNewestPostDate,
     getTodayInLastYears,
     setupFuse,
     clearDB,

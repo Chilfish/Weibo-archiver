@@ -1,4 +1,5 @@
 import { allowWindowMessaging } from 'webext-bridge/content-script'
+import { defineContentScript } from 'wxt/utils/define-content-script'
 
 export default defineContentScript({
   matches: [

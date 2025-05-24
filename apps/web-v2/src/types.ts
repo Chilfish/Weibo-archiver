@@ -15,4 +15,9 @@ export interface AppConfig {
   theme: string
   imgHost: 'cdn' | 'original' | 'local' | 'custom'
   customImageUrl: string
+  syncTime: {
+    weibo: number
+    followings: number
+    bookmarks: number
+  }
 }
