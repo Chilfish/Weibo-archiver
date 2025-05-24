@@ -57,6 +57,14 @@ export class IndexedDB extends Dexie {
     await this.followings.bulkPut(data)
   }
 
+  async removeFollowings(users: Following[]): Promise<void> {
+    const keys = await this.followingQuery
+      .and(dbUser => users.some(user => user.uid === dbUser.uid))
+      .primaryKeys()
+
+    await this.followings.bulkDelete(keys)
+  }
+
   async addFavorites(favorites: Favorite[]) {
     return this.favorites.bulkPut(favorites)
   }

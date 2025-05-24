@@ -3,6 +3,7 @@ import browser from 'webextension-polyfill'
 
 export interface ExtensionStorageSchema {
   cookies: string
+  curUid: string
 }
 
 export const extensionStorage = defineExtensionStorage<ExtensionStorageSchema>(

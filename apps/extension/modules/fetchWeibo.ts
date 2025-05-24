@@ -1,4 +1,4 @@
-import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
+import type { FetchConfig, Following, UserInfo } from '@weibo-archiver/core'
 import {
   FetchService,
   PostService,
@@ -30,6 +30,8 @@ export class FetchManager {
     favorites: 0,
   }
 
+  curUid = ''
+
   constructor(
     private config: Config,
   ) {
@@ -38,6 +40,18 @@ export class FetchManager {
 
   setCookie(cookie: string) {
     this.fetchService.setFetcher(cookie)
+  }
+
+  async getCurCookieUid() {
+    const data = await this.fetchService.userDetail('')
+    const re = /uid=(\d+)/
+    const [_, result] = data.verified_url.match(re) || []
+
+    if (result) {
+      this.curUid = result
+    }
+    console.log('curUid', result)
+    return this.curUid
   }
 
   async fetchUser(uid: string): Promise<UserInfo> {
@@ -81,7 +95,22 @@ export class FetchManager {
 
   async fetchFollowings(uid: string) {
     this.fetchState.fetchType = 'followings'
-    const followings = await this.userService.getFollowings(uid)
+
+    let page = 1
+    const data = new Set<Following>()
+    while (true) {
+      const followings = await this.userService.getFollowings({
+        page,
+        uid,
+        isMe: uid === this.curUid,
+      })
+      page += 1
+      followings.forEach(user => data.add(user))
+      if (followings.length < 1) {
+        break
+      }
+    }
+    return Array.from(data)
   }
 
   async fetchFavorites() {

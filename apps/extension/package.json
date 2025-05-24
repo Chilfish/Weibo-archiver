@@ -17,7 +17,6 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@webext-core/messaging": "^2.2.0",
     "@webext-core/storage": "^1.2.0",
     "alien-signals": "^2.0.5",
     "webextension-polyfill": "^0.12.0"

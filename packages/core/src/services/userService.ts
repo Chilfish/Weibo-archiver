@@ -53,31 +53,60 @@ export class UserService {
     return data.users.map(UserParser.parse)
   }
 
-  async getFollowings(uid: string): Promise<Following[]> {
+  async getFollowings(args: {
+    uid: string
+    page: number
+    isMe?: boolean
+    onFetch?: (args: { data: Following[], page: number }) => any
+  }): Promise<Following[]> {
+    const { page, uid, isMe } = args
+
+    const fetchFn = isMe
+      ? this.fetchService.myFollowings.bind(this.fetchService)
+      : this.fetchService.userFollowings.bind(this.fetchService)
+
+    const data = await fetchFn({
+      page,
+      uid,
+    }).catch((err) => {
+      console.error(err)
+      return {
+        users: [],
+        next_cursor: undefined,
+      }
+    })
+
+    if (!data?.next_cursor) {
+      return []
+    }
+
+    const users = data.users.map(user => ({
+      ...UserParser.parseFollowing(user),
+      followBy: uid,
+    }))
+
+    await args.onFetch?.({ data: users, page })
+
+    return users
+  }
+
+  async getAllFollowings(args: {
+    uid: string
+    onFetch?: (args: { data: Following[], page: number }) => any
+  }): Promise<Following[]> {
     let page = 0
     const users: Following[] = []
 
     while (true) {
-      const data = await this.fetchService.userFollowings({
+      const _users = await this.getFollowings({
+        ...args,
         page,
-        uid,
-      }).catch((err) => {
-        console.error(err)
-        return {
-          users: [],
-          next_cursor: undefined,
-        }
       })
-
-      const _users = data.users.map(user => ({
-        ...UserParser.parseFollowing(user),
-        followBy: uid,
-      }))
 
       users.push(..._users)
       page += 1
 
-      if (_users.length === 0 || !data.next_cursor) {
+      if (_users.length === 0) {
         break
       }
     }
@@ -87,7 +116,7 @@ export class UserService {
 
   async getMyFollowings(page: number): Promise<Following[]> {
     const data = await this.fetchService.myFollowings({ page })
-    const users = data.follows.users
+    const users = data.users
 
     return users.map(UserParser.parseFollowing)
   }

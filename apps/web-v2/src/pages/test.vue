@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { message } from '@weibo-archiver/core'
 import { ref } from 'vue'
+import { sendMessage } from 'webext-bridge/window'
 import Weibo from '@/components/weibo/Weibo.vue'
 
 const searchText = ref('')
@@ -12,10 +12,8 @@ async function startFetch() {
   }
 
   result.value = 'loading'
-  message.sendMessage('fetch:posts', searchText.value)
+  result.value = await sendMessage('fetch:posts', searchText.value)
 }
-
-message.onMessage('result:posts', user => result.value = user)
 </script>
 
 <template>

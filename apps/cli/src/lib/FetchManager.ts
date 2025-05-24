@@ -110,7 +110,7 @@ export class FetchManager {
 
     if (hasFollowings) {
       this.fetchState.fetchType = 'followings'
-      const followings = await this.userService.getFollowings(uid)
+      const followings = await this.userService.getAllFollowings({ uid })
       await saveJson({
         savePath,
         filename: `data-followings-${this.filenameSuffix}.json`,
