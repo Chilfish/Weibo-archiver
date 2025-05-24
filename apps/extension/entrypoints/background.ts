@@ -1,16 +1,14 @@
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
 import { signal } from 'alien-signals'
-import { onMessage } from 'webext-bridge/background'
+import { onMessage, sendMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
-import { FetchManager } from '../modules/fetchWeibo'
+import { defineBackground } from 'wxt/utils/define-background'
+import { getCookies } from '../utils/cookie'
 import { extensionStorage } from '../utils/storage'
-
-export default defineBackground(async () => {
-  await main()
-  await setupMessage()
-})
+import { FetchManager } from './libs/fetchWeibo'
 
 const curTabId = signal(0)
+const tabActiveTime = signal(0)
 const fetchManager = new FetchManager({
   ...DEFAULT_FETCH_CONFIG,
   cookie: '',
@@ -28,38 +26,69 @@ async function main() {
   await extensionStorage.setItem('curUid', curUid)
 }
 
-async function setupMessage() {
-  onMessage('fetch:posts', async ({ data }) => {
+function setupMessage() {
+  onMessage<string>('fetch:posts', async ({ data }) => {
     return fetchManager.postService.getPostsBySinceId({
       commentsCount: 5,
       page: 0,
-      uid: data as string,
+      uid: data,
     })
   })
 
-  onMessage('fetch:followings', async ({ data }) => {
-    const { uid, page } = (data || {}) as {
-      uid: string
-      page: number
-    }
+  onMessage<{ uid: string }>('fetch:followings', async ({ data }) => {
+    const { uid } = (data || {})
     if (!uid) {
       return []
     }
 
     return fetchManager.fetchFollowings(uid)
   })
+
+  onMessage<{
+    uid: string
+    newestPostDate: number
+  }>('fetch:posts', async ({ data }) => {
+    const { uid, newestPostDate } = (data || {})
+
+    if (!uid) {
+      return []
+    }
+
+    return fetchManager.fetchNewPosts({
+      uid,
+      newestPostDate,
+      async onFetch(count) {
+        await sendMessage('state:fetch-count', count, {
+          tabId: curTabId(),
+          context: 'window',
+        })
+      },
+    })
+  })
 }
 
-async function onTabLoaded() {
+function onTabLoaded() {
 }
 
 browser.tabs.onActivated.addListener(({ tabId }) => {
   curTabId(tabId)
 })
 
-browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete') {
     curTabId(tabId)
-    await onTabLoaded()
+    tabActiveTime(Date.now())
+    onTabLoaded()
   }
+})
+
+export default defineBackground(async () => {
+  await main()
+  setupMessage()
+  // effect(async () => {
+  //   if (tabActiveTime() === 0) {
+  //     return
+  //   }
+  // console.log(tabActiveTime())
+  // })
 })

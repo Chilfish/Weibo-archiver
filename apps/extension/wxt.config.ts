@@ -6,4 +6,5 @@ export default defineConfig({
     name: 'Weibo Archiver - 备份你的微博',
     permissions: ['cookies', 'storage'],
   },
+  imports: false,
 })

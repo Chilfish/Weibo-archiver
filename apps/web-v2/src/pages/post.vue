@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
 import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
+import { RefreshCwIcon } from 'lucide-vue-next'
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { onMessage, sendMessage } from 'webext-bridge/window'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyWeibo from '@/components/EmptyWeibo.vue'
 import HomeHeader from '@/components/home/HomeHeader.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
+import { config } from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 
 const postStore = usePostStore()
@@ -19,6 +22,7 @@ const isLoading = ref(false)
 const curPage = ref(Number(route.query.page) || 1)
 const pageSize = ref(Number(route.query.pageSize) || DEFAULT_PAGE_SIZE)
 const postsTotal = ref(0)
+const newestPostDate = ref(Date.now())
 
 const weiboArr = ref<Post[]>([])
 
@@ -33,12 +37,14 @@ onBeforeMount(async () => {
   }
   await getPosts()
   postsTotal.value = await postStore.getAllPostsTotal()
+  newestPostDate.value = await postStore.getNewestPostDate()
 })
 
 watch(() => postStore.importing, async (importing) => {
   if (importing === false) {
     await getPosts()
     postsTotal.value = await postStore.getAllPostsTotal()
+    newestPostDate.value = await postStore.getNewestPostDate()
   }
 })
 
@@ -84,17 +90,77 @@ async function changePage(newPage: number, newPageSize: number) {
   scrollToTop()
 }
 
+const syncedCount = ref(0)
+const newPostsCount = ref(0)
+const openDialog = ref(false)
 async function onManualSync() {
+  isLoading.value = true
+  openDialog.value = true
+  const posts = await sendMessage<Post[]>('fetch:posts', {
+    uid: userStore.curUid,
+    newestPostDate: newestPostDate.value,
+  })
+
+  const firstPagePosts = await postStore.getPosts(1, 20)
+  const newPosts = posts.filter(fetchedPost => !firstPagePosts.some(post => post.id === fetchedPost.id))
+  newPostsCount.value = newPosts.length
+
+  await postStore.saveWeibo(posts)
   await getPosts()
+
+  config.value.syncTime.weibo = Date.now()
+  isLoading.value = false
 }
+
+onMessage<number>('state:fetch-count', async ({ data }) => {
+  syncedCount.value = data || 0
+})
 </script>
 
 <template>
   <main
     class="flex flex-col gap-4 items-center relative w-full"
   >
+    <Dialog
+      v-model:open="openDialog"
+    >
+      <DialogContent
+        class="sm:w-72"
+      >
+        <DialogHeader>
+          <DialogTitle
+            class="flex items-center gap-2"
+          >
+            {{ isLoading ? '同步微博中' : '已完成同步' }}
+            <RefreshCwIcon
+              v-if="isLoading"
+              class="h-4 w-4 animate-spin"
+            />
+          </DialogTitle>
+        </DialogHeader>
+        <main>
+          <p>
+            已获取了 {{ syncedCount }} 条微博
+          </p>
+          <p v-if="!isLoading">
+            新增了 {{ newPostsCount }} 条微博
+          </p>
+        </main>
+
+        <DialogFooter v-if="!isLoading">
+          <DialogClose
+            as-child
+          >
+            <Button>
+              好的
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
     <HomeHeader
-      :last-sync-time="new Date()"
+      :last-sync-time="new Date(config.syncTime.weibo)"
       :is-loading="isLoading"
       :total-posts="postsTotal"
       @sort-change="console.log"
