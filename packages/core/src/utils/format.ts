@@ -1,3 +1,6 @@
+import type { DateValue } from '@internationalized/date'
+import { parseAbsolute } from '@internationalized/date'
+
 /**
  * Format the date string
  * @param time the date string
@@ -47,4 +50,8 @@ export function formatNumber(num: number, precision = 2) {
     return `${(num / wan).toFixed(precision)}万`
   else
     return `${(num / yi).toFixed(precision)}亿`
+}
+
+export function toDateValue(date: string | number | Date): DateValue {
+  return parseAbsolute(new Date(date).toISOString(), 'Asia/Shanghai')
 }

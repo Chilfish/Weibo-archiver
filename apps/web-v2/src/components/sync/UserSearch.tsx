@@ -89,7 +89,7 @@ const selectedUid = ref('')
 
 export const UserSearch = defineComponent({
   name: 'UserSearch',
-  emits: ['selectUser'],
+  emits: ['selectUser', 'nextStep'],
   setup(props, { emit }) {
     const isSearching = ref(false)
     const searchText = ref('')
@@ -171,6 +171,15 @@ export const UserSearch = defineComponent({
           >
             若无搜索结果，可尝试使用用户的数字 uid
           </div>
+        )}
+
+        {selectedUid.value && (
+          <Button
+            class="ml-auto mt-4 block"
+            onClick={() => emit('nextStep')}
+          >
+            下一步
+          </Button>
         )}
       </div>
     )
