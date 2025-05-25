@@ -157,26 +157,11 @@ export class FetchManager {
     return allPosts
   }
 
-  async startFetch(uid: string) {
-    this.fetchState.status = 'running'
-    this.userService.uid = uid
+  async searchUser(keyword: string): Promise<UserInfo[]> {
+    const isUid = /^\d+$/.test(keyword)
 
-    const {
-      hasWeibo,
-      hasFollowings,
-      hasFavorites,
-    } = this.config
-
-    if (hasWeibo) {
-      await this.fetchAllWeibo(uid)
-    }
-    if (hasFollowings) {
-      await this.fetchFollowings(uid)
-    }
-    if (hasFavorites) {
-      await this.fetchFavorites()
-    }
-
-    this.fetchState.status = 'finish'
+    return isUid
+      ? await this.userService.getDetail(keyword).then(user => [user])
+      : await this.userService.searchUser(keyword)
   }
 }

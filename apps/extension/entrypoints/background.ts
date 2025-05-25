@@ -27,6 +27,10 @@ async function main() {
 }
 
 function setupMessage() {
+  onMessage<string>('fetch:search-user', async ({ data }) => {
+    return fetchManager.searchUser(data)
+  })
+
   onMessage<string>('fetch:posts', async ({ data }) => {
     return fetchManager.postService.getPostsBySinceId({
       commentsCount: 5,
