@@ -1,4 +1,10 @@
-import type { FetchConfig, Following, UserInfo } from '@weibo-archiver/core'
+import type {
+  Favorite,
+  FetchConfig,
+  Following,
+  Post,
+  UserInfo,
+} from '@weibo-archiver/core'
 import {
   FetchService,
   PostService,
@@ -33,7 +39,7 @@ export class FetchManager {
   curUid = ''
 
   constructor(
-    private config: Config,
+    public config: Config,
   ) {
     this.setCookie(config.cookie)
   }
@@ -58,7 +64,14 @@ export class FetchManager {
     return await this.userService.getDetail(uid)
   }
 
-  async fetchAllWeibo(uid: string) {
+  async fetchAllWeibo(args: {
+    uid: string
+    onFetch: (args: {
+      posts: Post[]
+      page: number
+      sinceId: string
+    }) => any
+  }) {
     const {
       isFetchAll,
       startAt,
@@ -72,6 +85,7 @@ export class FetchManager {
     } = this.config
 
     this.fetchState.fetchType = 'weibo'
+    this.userService.uid = args.uid
     await this.postService.getAllPosts({
       isFetchAll,
       startAt: new Date(startAt),
@@ -89,12 +103,18 @@ export class FetchManager {
             return !!post.retweet?.mblogid
           })
         this.fetchCount.posts += filtered.length
+        await args.onFetch({
+          posts: filtered,
+          page,
+          sinceId: sinceId || '',
+        })
       },
     })
   }
 
   async fetchFollowings(uid: string) {
     this.fetchState.fetchType = 'followings'
+    this.userService.uid = uid
 
     let page = 1
     const data = new Set<Following>()
@@ -113,31 +133,60 @@ export class FetchManager {
     return Array.from(data)
   }
 
-  async fetchFavorites() {
+  async fetchFavorites(args: {
+    onFetch: (posts: Favorite[]) => any
+  }) {
+    if (this.userService.uid !== this.curUid) {
+      return []
+    }
+
     this.fetchState.fetchType = 'favorites'
-    const favorites = await this.postService.getFavorites()
+    return await this.postService.getFavorites(args)
   }
 
-  async startFetch(uid: string) {
-    this.fetchState.status = 'running'
-    this.userService.uid = uid
+  async fetchNewPosts(args: {
+    uid: string
+    newestPostDate: number
+    onFetch: (count: number) => any
+  }): Promise<Post[]> {
+    let page = 0
+    let isOutDate = false
+    const allPosts: Post[] = []
+    this.postService.sinceId = ''
+    this.userService.uid = args.uid
 
-    const {
-      hasWeibo,
-      hasFollowings,
-      hasFavorites,
-    } = this.config
+    while (true) {
+      const posts = (await this.postService.getPostsBySinceId({
+        uid: args.uid,
+        page,
+        commentsCount: 20,
+      }))
+        .filter((post) => {
+          if (page < 1) {
+            return true
+          }
+          isOutDate = new Date(post.createdAt).getTime() <= args.newestPostDate
+          return !isOutDate
+        })
 
-    if (hasWeibo) {
-      await this.fetchAllWeibo(uid)
-    }
-    if (hasFollowings) {
-      await this.fetchFollowings(uid)
-    }
-    if (hasFavorites) {
-      await this.fetchFavorites()
+      allPosts.push(...posts)
+      page += 1
+
+      await args.onFetch(allPosts.length)
+
+      if (posts.length < 1 || isOutDate) {
+        break
+      }
     }
 
-    this.fetchState.status = 'finish'
+    return allPosts
+  }
+
+  async searchUser(keyword: string): Promise<UserInfo[]> {
+    const isUid = /^\d+$/.test(keyword)
+
+    return isUid
+      ? await this.userService.getDetail(keyword).then(user => [user])
+      : await this.userService.searchUser(keyword)
   }
 }

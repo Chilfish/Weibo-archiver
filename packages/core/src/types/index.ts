@@ -32,10 +32,9 @@ export interface UserConfig extends FetchConfig {
   theme: string
 }
 
-export interface Album {
-  url: string
-  id: string
-  date: string
+export interface SortOption {
+  field: 'time' | 'likes' | 'comments' | 'reposts'
+  order: 'asc' | 'desc'
 }
 
 export interface ImportedData {

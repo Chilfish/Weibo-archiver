@@ -1,4 +1,5 @@
 import { allowWindowMessaging } from 'webext-bridge/content-script'
+import { defineContentScript } from 'wxt/utils/define-content-script'
 
 export default defineContentScript({
   matches: [
@@ -7,6 +8,7 @@ export default defineContentScript({
     'https://weibo.com/*',
     'https://weibo-archiver-preview.vercel.app/*',
     'https://weibo-archiver.chilfish.top/*',
+    'https://weibo-archiver-v2-git-feat-sync-weibo-chilfishes.vercel.app/*',
   ],
   async main() {
     allowWindowMessaging(window.origin)

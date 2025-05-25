@@ -74,6 +74,10 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
+  async getFollowingsCount(): Promise<number> {
+    return this.followingQuery.count()
+  }
+
   async getAllFavorites(): Promise<Favorite[]> {
     return this.favoriteQuery
       .toArray()
@@ -142,9 +146,11 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
-  async getLatestPost(): Promise<Post> {
+  async getLatestPost(): Promise<Post | undefined> {
     const post = await this.postQuery
       .limit(1)
+      .offset(0)
+      .reverse()
       .toArray()
 
     return post[0]
