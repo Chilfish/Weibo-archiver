@@ -44,12 +44,16 @@ export const useUserStore = defineStore('user', () => {
     return idb.getFollowings()
   }
 
+  async function getFollowingsCount(): Promise<number> {
+    return idb.getFollowingsCount()
+  }
+
   async function getAllUsers(): Promise<UserInfo[]> {
     return idb.getUsers()
   }
 
   async function updateFollowings(addFollowings: Following[], removeFollowings: Following[]) {
-    await idb.addFollowings(addFollowings)
+    await idb.addFollowings(toRaw(addFollowings))
     await idb.removeFollowings(removeFollowings)
   }
 
@@ -65,5 +69,6 @@ export const useUserStore = defineStore('user', () => {
     getFollowings,
     getAllUsers,
     updateFollowings,
+    getFollowingsCount,
   }
 })

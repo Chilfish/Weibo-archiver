@@ -74,6 +74,10 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
+  async getFollowingsCount(): Promise<number> {
+    return this.followingQuery.count()
+  }
+
   async getAllFavorites(): Promise<Favorite[]> {
     return this.favoriteQuery
       .toArray()

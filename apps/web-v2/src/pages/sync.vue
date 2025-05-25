@@ -1,9 +1,9 @@
 <script setup lang="tsx">
-import type { FetchConfig, Post, UserInfo } from '@weibo-archiver/core'
+import type { FetchConfig, Following, Post, UserInfo } from '@weibo-archiver/core'
 import type { Status } from '@/components/sync/FetchStatus'
 import { useStorage } from '@vueuse/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
-import { reactive, ref } from 'vue'
+import { onBeforeMount, reactive, ref } from 'vue'
 import { onMessage, sendMessage } from 'webext-bridge/window'
 import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
@@ -45,10 +45,18 @@ async function startArchive() {
 
   await userStore.importUser(selectedUser.value)
 
-  await sendMessage('fetch:all-posts', {
-    ...fetchConfig.value,
-    uid: selectedUser.value.uid,
-  })
+  if (fetchConfig.value.hasWeibo) {
+    await sendMessage('fetch:all-posts', {
+      ...fetchConfig.value,
+      uid: selectedUser.value.uid,
+    })
+  }
+
+  if (fetchConfig.value.hasFollowings) {
+    const data = await sendMessage<Following[]>('fetch:followings', { uid: selectedUser.value.uid })
+    await userStore.updateFollowings(data, [])
+    fetchCount.followers = data.length
+  }
 
   fetchingStatus.value = 'completed'
 }
@@ -63,6 +71,11 @@ onMessage<{
   fetchConfig.value.sinceId = data.sinceId
   await postStore.saveWeibo(data.posts)
   fetchCount.posts = await postStore.getAllPostsTotal()
+})
+
+onBeforeMount(async () => {
+  fetchCount.posts = await postStore.getAllPostsTotal()
+  fetchCount.followers = await userStore.getFollowingsCount()
 })
 </script>
 
