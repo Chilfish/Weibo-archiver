@@ -2,7 +2,7 @@ import type { Following, UserInfo } from '@weibo-archiver/core'
 import { useStorage } from '@vueuse/core'
 import { idb } from '@weibo-archiver/core'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const curUid = useStorage<string>('curUid', '')
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', () => {
       return
     }
 
-    await idb.addUser(user)
+    await idb.addUser(toRaw(user))
   }
 
   async function importUser(user: UserInfo) {

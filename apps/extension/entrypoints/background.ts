@@ -1,3 +1,4 @@
+import type { FetchConfig } from '@weibo-archiver/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
 import { signal } from 'alien-signals'
 import { onMessage, sendMessage } from 'webext-bridge/background'
@@ -31,14 +32,6 @@ function setupMessage() {
     return fetchManager.searchUser(data)
   })
 
-  onMessage<string>('fetch:posts', async ({ data }) => {
-    return fetchManager.postService.getPostsBySinceId({
-      commentsCount: 5,
-      page: 0,
-      uid: data,
-    })
-  })
-
   onMessage<{ uid: string }>('fetch:followings', async ({ data }) => {
     const { uid } = (data || {})
     if (!uid) {
@@ -63,6 +56,24 @@ function setupMessage() {
       newestPostDate,
       async onFetch(count) {
         await sendMessage('state:fetch-count', count, {
+          tabId: curTabId(),
+          context: 'window',
+        })
+      },
+    })
+  })
+
+  // @ts-expect-error ok ok
+  onMessage<FetchConfig & { uid: string }>('fetch:all-posts', async ({ data }) => {
+    fetchManager.config = {
+      ...fetchManager.config,
+      ...data,
+    }
+
+    return fetchManager.fetchAllWeibo({
+      uid: data.uid,
+      async onFetch(data) {
+        await sendMessage('fetch:all-posts-paged', data, {
           tabId: curTabId(),
           context: 'window',
         })

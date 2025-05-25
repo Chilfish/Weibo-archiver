@@ -55,7 +55,7 @@ const curStep = defineModel<number>('curStep', {
         </StepperTitle>
         <StepperDescription
           :class="[state === 'active' && 'text-primary']"
-          class="sr-only text-xs text-muted-foreground transition md:not-sr-only lg:text-sm"
+          class="text-xs text-muted-foreground transition md:not-sr-only lg:text-sm"
         >
           {{ step.description }}
         </StepperDescription>

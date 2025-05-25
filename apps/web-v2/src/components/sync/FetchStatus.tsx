@@ -4,11 +4,13 @@ import {
   CheckCircle,
   Download,
   FileText,
+  InfoIcon,
   Loader2,
   Users,
 } from 'lucide-vue-next'
 import { computed, defineComponent } from 'vue'
 import { RouterLink } from 'vue-router'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
@@ -50,7 +52,7 @@ export const FetchStatus = defineComponent({
     const isCompleted = computed(() => props.status === 'completed')
 
     return () => (
-      <Card class="w-full sm:w-[80%]">
+      <Card class="gap-2 w-full sm:w-[80%]">
         <CardContent class="p-8 ">
           <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-2xl mb-4">
@@ -88,12 +90,19 @@ export const FetchStatus = defineComponent({
               </div>
             ))}
           </div>
+
+          <Alert class="mt-4">
+            <InfoIcon class="h-4 w-4" />
+            <AlertTitle>提示</AlertTitle>
+            <AlertDescription>
+              数据展示的是已经保存在本地中的数量
+            </AlertDescription>
+          </Alert>
         </CardContent>
 
         {/* TODO: loggers */}
 
         <CardFooter>
-
           {isCompleted.value && (
             <div class="flex items-center justify-between w-full">
               <Button

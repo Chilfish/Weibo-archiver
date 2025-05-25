@@ -33,7 +33,7 @@ export class FetchManager {
   curUid = ''
 
   constructor(
-    private config: Config,
+    public config: Config,
   ) {
     this.setCookie(config.cookie)
   }
@@ -58,7 +58,14 @@ export class FetchManager {
     return await this.userService.getDetail(uid)
   }
 
-  async fetchAllWeibo(uid: string) {
+  async fetchAllWeibo(args: {
+    uid: string
+    onFetch: (args: {
+      posts: Post[]
+      page: number
+      sinceId: string
+    }) => any
+  }) {
     const {
       isFetchAll,
       startAt,
@@ -72,6 +79,7 @@ export class FetchManager {
     } = this.config
 
     this.fetchState.fetchType = 'weibo'
+    this.userService.uid = args.uid
     await this.postService.getAllPosts({
       isFetchAll,
       startAt: new Date(startAt),
@@ -89,6 +97,11 @@ export class FetchManager {
             return !!post.retweet?.mblogid
           })
         this.fetchCount.posts += filtered.length
+        await args.onFetch({
+          posts: filtered,
+          page,
+          sinceId: sinceId || '',
+        })
       },
     })
   }

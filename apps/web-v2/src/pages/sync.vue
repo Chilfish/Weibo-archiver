@@ -1,18 +1,29 @@
 <script setup lang="tsx">
-import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
+import type { FetchConfig, Post, UserInfo } from '@weibo-archiver/core'
 import type { Status } from '@/components/sync/FetchStatus'
+import { useStorage } from '@vueuse/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
 import { reactive, ref } from 'vue'
-import { onMessage } from 'webext-bridge/window'
+import { onMessage, sendMessage } from 'webext-bridge/window'
 import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
 import { FetchStatus } from '@/components/sync/FetchStatus'
 import { UserSearch } from '@/components/sync/UserSearch'
+import { usePostStore, useUserStore } from '@/stores'
 
 const selectedUser = ref<UserInfo>()
 const curStep = ref(1)
-const fetchConfig = reactive<FetchConfig>({ ...DEFAULT_FETCH_CONFIG })
+const fetchConfig = useStorage<FetchConfig>('fetch-config', { ...DEFAULT_FETCH_CONFIG })
 const fetchingStatus = ref<Status>('fetching')
+
+const postStore = usePostStore()
+const userStore = useUserStore()
+
+const fetchCount = reactive({
+  posts: 0,
+  favorites: 0,
+  followers: 0,
+})
 
 const steps = [
   { step: 1, title: '选择用户', description: '搜索并选择目标用户' },
@@ -21,22 +32,37 @@ const steps = [
 ]
 
 async function startArchive() {
+  if (!selectedUser.value) {
+    return
+  }
+
   curStep.value = 3
 
-  setTimeout(() => fetchingStatus.value = 'completed', 1000)
+  if (!fetchConfig.value.restore) {
+    fetchConfig.value.curPage = 1
+    fetchConfig.value.sinceId = ''
+  }
+
+  await userStore.importUser(selectedUser.value)
+
+  await sendMessage('fetch:all-posts', {
+    ...fetchConfig.value,
+    uid: selectedUser.value.uid,
+  })
+
+  fetchingStatus.value = 'completed'
 }
 
-const fetchCount = ref({
-  posts: 0,
-  favorites: 0,
-  followers: 0,
-})
 onMessage<{
-  posts: number
-  favorites: number
-  followers: number
-}>('state:fetch-all', ({ data }) => {
-  fetchCount.value = data
+  posts: Post[]
+  page: number
+  sinceId: string
+}>('fetch:all-posts-paged', async ({ data }) => {
+  console.log(data)
+  fetchConfig.value.curPage = data.page
+  fetchConfig.value.sinceId = data.sinceId
+  await postStore.saveWeibo(data.posts)
+  fetchCount.posts = await postStore.getAllPostsTotal()
 })
 </script>
 

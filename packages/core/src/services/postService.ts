@@ -53,8 +53,6 @@ export class PostService {
       ...restArgs
     } = args
 
-    console.log(args)
-
     if (isFetchAll) {
       // 这种方法在第60页就返回空了，需要转到下一个窗口
       // 但实际上微博官方返回的接口不全，漏了非常多
@@ -104,7 +102,7 @@ export class PostService {
 
       await args.onFetched({
         posts,
-        page: args.page,
+        page,
         sinceId: this.sinceId,
         fetchedCount: this.fetchedCount,
         postsTotal: this.postsTotal,
