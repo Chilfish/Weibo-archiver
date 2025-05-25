@@ -50,7 +50,6 @@ export class PostService {
       page = 0,
       startAt,
       commentsCount,
-      onFetched,
       ...restArgs
     } = args
 
@@ -71,7 +70,6 @@ export class PostService {
         since_id: sinceId,
         page,
         commentsCount,
-        onFetched,
         ...restArgs,
       })
     }
@@ -84,7 +82,6 @@ export class PostService {
       endAt,
       page,
       commentsCount,
-      onFetched,
       ...restArgs,
     })
   }
@@ -131,10 +128,9 @@ export class PostService {
     endAt.setHours(23, 59, 0, 0)
 
     const starttime = startAt.getTime() / 1000
-    let endtime = endAt.getTime() / 1000
+    const endtime = endAt.getTime() / 1000
 
     let page = args.page || 1
-    let lastPostDate = new Date()
 
     while (true) {
       const posts = await this.getPostsByDate({
@@ -155,17 +151,10 @@ export class PostService {
       await new Promise(r => setTimeout(r, 1000))
 
       page++
-      if (posts.at(-1)?.createdAt)
-        lastPostDate = new Date(posts.at(-1)!.createdAt)
 
-      if (posts.length === 0) {
-        if (this.fetchedCount >= this.postsTotal)
-          break
-
-        // 还没获取完，转到下一个窗口
-        page = 1
-        lastPostDate.setHours(23, 59, 0, 0)
-        endtime = lastPostDate.getTime() / 1000
+      if (posts.length === 0 || this.fetchedCount >= this.postsTotal) {
+        console.log('no more posts')
+        break
       }
     }
   }
@@ -210,13 +199,23 @@ export class PostService {
       this.postsTotal = data.total
     }
 
-    const posts = WeiboParser.parseAll(data.list)
-    this.fetchedCount += posts.length
+    try {
+      const posts = WeiboParser.parseAll(data.list)
+      this.fetchedCount += posts.length
 
-    if (args.commentsCount) {
-      await this._setComments(posts, args.commentsCount)
+      if (args.commentsCount) {
+        await this._setComments(posts, args.commentsCount)
+      }
+
+      return posts
     }
-    return posts
+    catch (err: any) {
+      console.error(err)
+      if (err.name === 'CanceledError') {
+        throw err
+      }
+      return []
+    }
   }
 
   async getComments(
@@ -304,7 +303,6 @@ export class PostService {
     }
     catch (err: any) {
       console.error(err)
-      // await this.onError({ data, sinceId: this.sinceId, postsTotal: this.postsTotal }).catch()
       if (err.name === 'CanceledError') {
         throw err
       }

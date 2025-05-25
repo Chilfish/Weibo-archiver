@@ -55,12 +55,12 @@ const options: Option[] = [
   {
     label: '继续上次的记录',
     value: 'restore',
-    remark: '从上次终止的地方继续，不清除本地缓存',
+    remark: '从上次终止的地方继续，不清除本地数据',
   },
   {
     label: '导出收藏',
     value: 'hasFavorites',
-    remark: '导出自己收藏的微博，对其他人无效',
+    remark: '导出自己（已登录微博网页版的用户）收藏的微博，对其他人无效',
   },
   {
     label: '导出微博',

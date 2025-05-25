@@ -114,7 +114,7 @@ async function loadLocalCount() {
         微博备份
       </h1>
       <p class="text-muted-foreground mt-2">
-        备份并保存您的微博数据到本地
+        备份并保存您的微博数据到本地。建议操作前点设置导出自己的数据备份，以免发生覆盖错误。
       </p>
     </header>
     <main
