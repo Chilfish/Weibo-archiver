@@ -4,7 +4,7 @@ import { RefreshCwIcon } from 'lucide-vue-next'
 defineProps<{
   isLoading: boolean
   syncedCount: number
-  newPostsCont: number
+  newPostsCount: number
 }>()
 
 const openDialog = defineModel<boolean>('openDialog', {
@@ -32,10 +32,10 @@ const openDialog = defineModel<boolean>('openDialog', {
       </DialogHeader>
       <main>
         <p>
-          已获取了 {{ syncedCount }} 条微博
+          已获取了 {{ syncedCount || 0 }} 条微博
         </p>
         <p v-if="!isLoading">
-          新增了 {{ newPostsCount }} 条微博
+          新增了 {{ newPostsCount || 0 }} 条微博
         </p>
       </main>
 

@@ -112,7 +112,7 @@ export const UserSearch = defineComponent({
     }
 
     return () => (
-      <div class="space-y-6 w-full">
+      <div class="space-y-6 w-full px-6">
         <form
           onSubmit={e => handleSearch(e)}
           class="flex gap-3 bg-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
@@ -152,7 +152,7 @@ export const UserSearch = defineComponent({
             <RadioGroup
               modelValue={selectedUid.value}
               onUpdate:modelValue={handleSelectUser}
-              class="grid gap-4 w-[70%] mx-auto"
+              class="grid gap-4 w-full"
             >
               {searchResults.value.map(user => (
                 <UserCard

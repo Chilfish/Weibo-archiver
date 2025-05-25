@@ -92,19 +92,13 @@ function setupMessage() {
   })
 }
 
-function onTabLoaded() {
+function onTabLoaded(tabId: number) {
+  console.log('tab Reload')
+  fetchManager.fetchService.abortFetch(`${tabId} tab reload`)
 }
 
 browser.tabs.onActivated.addListener(({ tabId }) => {
   curTabId(tabId)
-})
-
-browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete') {
-    curTabId(tabId)
-    tabActiveTime(Date.now())
-    onTabLoaded()
-  }
 })
 
 export default defineBackground(async () => {
@@ -116,4 +110,15 @@ export default defineBackground(async () => {
   //   }
   // console.log(tabActiveTime())
   // })
+  browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete') {
+      curTabId(tabId)
+      tabActiveTime(Date.now())
+      onTabLoaded(tabId)
+    }
+  })
+
+  browser.tabs.onRemoved.addListener((tabId) => {
+    fetchManager.fetchService.abortFetch(`${tabId} tab close`)
+  })
 })

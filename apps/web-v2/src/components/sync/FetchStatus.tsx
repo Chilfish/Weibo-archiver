@@ -1,4 +1,4 @@
-import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
+import type { FetchConfig } from '@weibo-archiver/core'
 import {
   ArrowRightIcon,
   CheckCircle,
@@ -14,21 +14,17 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
-export type Status = 'fetching' | 'completed'
+export type Status = 'fetching' | 'completed' | 'preparing'
 
 export const FetchStatus = defineComponent({
   props: {
-    user: {
-      type: Object as () => UserInfo,
-      required: true,
-    },
     config: {
       type: Object as () => FetchConfig,
       required: true,
     },
     status: {
       type: String as () => Status,
-      default: 'fetching',
+      default: 'preparing',
     },
     stats: {
       type: Object as () => {
@@ -50,6 +46,13 @@ export const FetchStatus = defineComponent({
   emits: ['download'],
   setup(props, { emit }) {
     const isCompleted = computed(() => props.status === 'completed')
+    const promptText = computed(() => {
+      switch (props.status) {
+        case 'fetching': return '正在备份中……'
+        case 'completed': return '备份完成'
+        case 'preparing': default: return '请先确认配置'
+      }
+    })
 
     return () => (
       <Card class="gap-2 w-full sm:w-[80%]">
@@ -65,7 +68,7 @@ export const FetchStatus = defineComponent({
                   )}
             </div>
             <h2 class="text-2xl font-bold text-gray-900 mb-2">
-              {isCompleted.value ? '备份完成！' : '正在备份中...'}
+              { promptText.value }
             </h2>
           </div>
 

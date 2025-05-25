@@ -14,7 +14,8 @@ type OnFetched = (data: {
 }) => any
 
 export class PostService {
-  sinceId: string = ''
+  public sinceId: string = ''
+
   private fetchedCount: number = 0
   private postsTotal: number = 0
 
@@ -179,8 +180,11 @@ export class PostService {
 
       return PostParser.parseText(data.longTextContent, data.url_struct)
     }
-    catch (e) {
+    catch (e: any) {
       console.error(`[get long text]: ${postMBlogId}, ${e}`)
+      if (e.name === 'CanceledError')
+        throw e
+
       return undefined
     }
   }
@@ -298,9 +302,12 @@ export class PostService {
 
       return posts
     }
-    catch (err) {
+    catch (err: any) {
       console.error(err)
       // await this.onError({ data, sinceId: this.sinceId, postsTotal: this.postsTotal }).catch()
+      if (err.name === 'CanceledError') {
+        throw err
+      }
       return []
     }
   }
@@ -327,8 +334,12 @@ export class PostService {
       }
 
       post.comments = await this.getComments(post.id, post.isShowBulletIn, commentsCount)
-        .catch((e) => {
+        .catch((e: any) => {
           console.error(`get comments ${post.id}`, e)
+          if (e.name === 'CanceledError') {
+            throw e
+          }
+
           return [] as Comment[]
         })
     }

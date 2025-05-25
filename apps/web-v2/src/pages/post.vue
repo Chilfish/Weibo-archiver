@@ -121,7 +121,7 @@ onMessage<number>('state:fetch-count', async ({ data }) => {
   <DialogSyncedCount
     v-model:open-dialog="openDialog"
     :synced-count="syncedCount"
-    :new-posts-cont="newPostsCount"
+    :new-posts-count="newPostsCount"
     :is-loading="isLoading"
   />
 

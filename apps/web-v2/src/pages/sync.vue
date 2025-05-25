@@ -20,7 +20,7 @@ import { usePostStore, useUserStore } from '@/stores'
 const selectedUser = ref<UserInfo>()
 const curStep = ref(1)
 const fetchConfig = useStorage<FetchConfig>('fetch-config', { ...DEFAULT_FETCH_CONFIG })
-const fetchingStatus = ref<Status>('fetching')
+const fetchingStatus = ref<Status>('preparing')
 
 const postStore = usePostStore()
 const userStore = useUserStore()
@@ -112,7 +112,7 @@ onBeforeMount(async () => {
       </p>
     </header>
     <main
-      class="flex flex-col gap-8 items-center justify-center mx-auto p-8 sm:w-[70vw]"
+      class="flex flex-col gap-8 items-center justify-center mx-auto pb-8 px-4 lg:p-8 lg:w-[70vw]"
     >
       <StepIndicator
         v-model:cur-step="curStep"
@@ -134,9 +134,8 @@ onBeforeMount(async () => {
       />
 
       <FetchStatus
-        v-if="curStep === 3 && selectedUser"
+        v-if="curStep === 3"
         :config="fetchConfig"
-        :user="selectedUser"
         :stats="fetchCount"
         :status="fetchingStatus"
       />
