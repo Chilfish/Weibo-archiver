@@ -25,7 +25,7 @@ const UserCard = defineComponent({
         for={props.user.uid}
         class={cn(
           'flex gap-4 min-w-fit bg-card rounded-2xl p-4 shadow-sm border transition-all duration-300 cursor-pointer hover:border-orange-400',
-          props.selected ? 'border-orange-400 ring-2 ring-orange-400/20' : 'border-gray-100',
+          props.selected ? 'border-orange-400 ring-2 ring-orange-400/20' : '',
         )}
       >
         <Avatar
@@ -84,14 +84,15 @@ const UserCard = defineComponent({
   },
 })
 
+const searchResults = ref<UserInfo[]>([])
+const selectedUid = ref('')
+
 export const UserSearch = defineComponent({
   name: 'UserSearch',
   emits: ['selectUser'],
   setup(props, { emit }) {
     const isSearching = ref(false)
-    const searchResults = ref<UserInfo[]>([])
     const searchText = ref('')
-    const selectedUid = ref('')
 
     const handleSearch = async (e: Event) => {
       e.preventDefault()
@@ -114,14 +115,14 @@ export const UserSearch = defineComponent({
       <div class="space-y-6 w-full">
         <form
           onSubmit={e => handleSearch(e)}
-          class="flex gap-3 bg-card rounded-2xl p-6 shadow-sm border border-gray-100"
+          class="flex gap-3 bg-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
         >
           <div
             class="relative flex-1"
           >
             <Search class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <Input
-              placeholder="输入微博用户名或昵称..."
+              placeholder="输入微博用户名或数字uid..."
               modelValue={searchText.value}
               onUpdate:modelValue={val => searchText.value = val as string}
               class="pl-12 h-12 text-base border-gray-200 rounded-xl focus:border-orange-400 focus:ring-orange-400/20"
@@ -147,7 +148,7 @@ export const UserSearch = defineComponent({
 
         {searchResults.value.length > 0 && (
           <div class="space-y-4">
-            <h3 class="text-lg font-medium text-gray-900">搜索结果</h3>
+            <h3 class="text-lg font-medium ">搜索结果</h3>
             <RadioGroup
               modelValue={selectedUid.value}
               onUpdate:modelValue={handleSelectUser}
