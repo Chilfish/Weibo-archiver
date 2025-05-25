@@ -1,5 +1,11 @@
 <script setup lang="tsx">
-import type { FetchConfig, Following, Post, UserInfo } from '@weibo-archiver/core'
+import type {
+  Favorite,
+  FetchConfig,
+  Following,
+  Post,
+  UserInfo,
+} from '@weibo-archiver/core'
 import type { Status } from '@/components/sync/FetchStatus'
 import { useStorage } from '@vueuse/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
@@ -58,6 +64,12 @@ async function startArchive() {
     fetchCount.followers = data.length
   }
 
+  if (fetchConfig.value.hasFavorites) {
+    await sendMessage('fetch:favorites', {
+      uid: selectedUser.value.uid,
+    })
+  }
+
   fetchingStatus.value = 'completed'
 }
 
@@ -73,9 +85,17 @@ onMessage<{
   fetchCount.posts = await postStore.getAllPostsTotal()
 })
 
+onMessage<Favorite[]>('fetch:favorites-paged', async ({ data }) => {
+  console.log(data)
+
+  await postStore.saveFavorites(data)
+  fetchCount.favorites = await postStore.getAllFavoritesTotal()
+})
+
 onBeforeMount(async () => {
   fetchCount.posts = await postStore.getAllPostsTotal()
   fetchCount.followers = await userStore.getFollowingsCount()
+  fetchCount.favorites = await postStore.getAllFavoritesTotal()
 })
 </script>
 

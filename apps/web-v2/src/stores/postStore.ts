@@ -106,6 +106,10 @@ export const usePostStore = defineStore('post', () => {
     return idb.getAllFavoritesCount()
   }
 
+  async function saveFavorites(posts: Favorite[]) {
+    return idb.addFavorites(posts)
+  }
+
   async function getFavorites(
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
@@ -218,5 +222,6 @@ export const usePostStore = defineStore('post', () => {
     setupFuse,
     clearDB,
     exportAllData,
+    saveFavorites,
   }
 })

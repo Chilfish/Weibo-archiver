@@ -80,6 +80,16 @@ function setupMessage() {
       },
     })
   })
+
+  onMessage<{ uid: string }>('fetch:favorites', async ({ data }) => {
+    fetchManager.userService.uid = data.uid
+    return fetchManager.fetchFavorites({
+      onFetch: async posts => sendMessage('fetch:favorites-paged', posts, {
+        tabId: curTabId(),
+        context: 'window',
+      }),
+    })
+  })
 }
 
 function onTabLoaded() {

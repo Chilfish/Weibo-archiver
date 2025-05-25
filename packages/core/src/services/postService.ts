@@ -237,7 +237,9 @@ export class PostService {
       .slice(0, count)
   }
 
-  async getFavorites(): Promise<Favorite[]> {
+  async getFavorites(args?: {
+    onFetch: (posts: Favorite[]) => any
+  }): Promise<Favorite[]> {
     let page = 1
     const result: Favorite[] = []
     while (true) {
@@ -255,6 +257,7 @@ export class PostService {
 
       const parsed = WeiboParser.parseAll(data as any[])
 
+      await args?.onFetch(parsed)
       result.push(...parsed)
       page += 1
     }

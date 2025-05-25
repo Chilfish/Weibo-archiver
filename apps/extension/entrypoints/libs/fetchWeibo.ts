@@ -1,4 +1,10 @@
-import type { FetchConfig, Following, Post, UserInfo } from '@weibo-archiver/core'
+import type {
+  Favorite,
+  FetchConfig,
+  Following,
+  Post,
+  UserInfo,
+} from '@weibo-archiver/core'
 import {
   FetchService,
   PostService,
@@ -127,9 +133,11 @@ export class FetchManager {
     return Array.from(data)
   }
 
-  async fetchFavorites() {
+  async fetchFavorites(args: {
+    onFetch: (posts: Favorite[]) => any
+  }) {
     this.fetchState.fetchType = 'favorites'
-    const favorites = await this.postService.getFavorites()
+    return await this.postService.getFavorites(args)
   }
 
   async fetchNewPosts(args: {
