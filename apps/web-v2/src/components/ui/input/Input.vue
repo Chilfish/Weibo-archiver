@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { HTMLAttributes, InputHTMLAttributes } from 'vue'
+import type { HTMLAttributes } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { cn } from '@/lib/utils'
 
-type Props = /* @vue-ignore */ Partial<InputHTMLAttributes> & {
+interface Props {
   defaultValue?: string | number
   modelValue?: string | number
   class?: HTMLAttributes['class']

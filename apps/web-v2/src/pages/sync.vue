@@ -9,7 +9,7 @@ import type {
 import type { Status } from '@/components/sync/FetchStatus'
 import { useStorage } from '@vueuse/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
-import { onBeforeMount, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { onMessage, sendMessage } from 'webext-bridge/window'
 import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
@@ -43,13 +43,17 @@ async function startArchive() {
   }
 
   curStep.value = 3
+  fetchingStatus.value = 'fetching'
 
   if (!fetchConfig.value.restore) {
     fetchConfig.value.curPage = 1
     fetchConfig.value.sinceId = ''
+    await postStore.clearDB()
   }
 
   await userStore.importUser(selectedUser.value)
+
+  await loadLocalCount()
 
   if (fetchConfig.value.hasWeibo) {
     await sendMessage('fetch:all-posts', {
@@ -92,11 +96,13 @@ onMessage<Favorite[]>('fetch:favorites-paged', async ({ data }) => {
   fetchCount.favorites = await postStore.getAllFavoritesTotal()
 })
 
-onBeforeMount(async () => {
+onMessage('abort-fetch', () => fetchingStatus.value = 'abort')
+
+async function loadLocalCount() {
   fetchCount.posts = await postStore.getAllPostsTotal()
   fetchCount.followers = await userStore.getFollowingsCount()
   fetchCount.favorites = await postStore.getAllFavoritesTotal()
-})
+}
 </script>
 
 <template>
@@ -138,6 +144,7 @@ onBeforeMount(async () => {
         :config="fetchConfig"
         :stats="fetchCount"
         :status="fetchingStatus"
+        @download="postStore.exportAllData"
       />
     </main>
   </div>

@@ -1,7 +1,14 @@
 import type { DateValue } from '@internationalized/date'
 import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
 import { toDateValue } from '@weibo-archiver/core'
-import { ArrowLeft, Calendar, Download, MessageSquare, Settings2 } from 'lucide-vue-next'
+import {
+  ArrowLeft,
+  Calendar,
+  Download,
+  MessageSquare,
+  Settings2,
+  TextCursorInputIcon,
+} from 'lucide-vue-next'
 import { defineComponent, ref } from 'vue'
 import DatePicker from '@/components/DatePicker.vue'
 import { Button } from '@/components/ui/button'
@@ -13,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
@@ -127,7 +135,7 @@ const AdvancedSettings = defineComponent({
     const dateTo = ref<DateValue>(toDateValue(props.config.endAt))
 
     return () => (
-      <div class="space-y-4 mt-4">
+      <div class="mt-4">
         <div class="flex items-center gap-2 py-2 border-b border-gray-100">
           <div class="w-6 h-6 bg-orange-100 rounded-lg flex items-center justify-center">
             <Calendar class="w-4 h-4 text-orange-600" />
@@ -170,7 +178,7 @@ const AdvancedSettings = defineComponent({
             </div>
           </div>
 
-          <div class="flex gap-6">
+          <div class="flex gap-4 flex-wrap">
             <div class="flex items-center gap-2">
               <Label class="text-sm">开始日期：</Label>
               <DatePicker
@@ -197,6 +205,48 @@ const AdvancedSettings = defineComponent({
                 }}
               />
             </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50/50 rounded-xl p-4 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <TextCursorInputIcon class="w-5 h-5" />
+              <Label class="text-base font-medium">当前的游标信息</Label>
+            </div>
+          </div>
+
+          <div>
+            <Label
+              class="mb-2 text-base"
+            >
+              页码
+              {' '}
+              <span class="text-xs text-muted-foreground">若不继续上次的记录，将重置为1</span>
+            </Label>
+            <Input
+              type="number"
+              modelValue={props.config.curPage || 1}
+              onUpdate:modelValue={val => props.config.curPage = val as number}
+              min={1}
+            />
+          </div>
+
+          <div>
+            <Label
+              class="mb-2 text-base"
+            >
+              Since id
+              <span class="text-xs text-muted-foreground">
+                用于获取全部微博的重要参数，不能随意修改
+              </span>
+            </Label>
+            <Input
+              readonly
+              disabled
+              modelValue={props.config.sinceId || ''}
+              onUpdate:modelValue={val => props.config.sinceId = val as string}
+            />
           </div>
         </div>
       </div>

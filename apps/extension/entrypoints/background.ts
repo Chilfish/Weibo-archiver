@@ -8,6 +8,10 @@ import { getCookies } from '../utils/cookie'
 import { extensionStorage } from '../utils/storage'
 import { FetchManager } from './libs/fetchWeibo'
 
+const matchDomains = [
+  'localhost',
+  'weibo-archiver.chilfish.top',
+]
 const curTabId = signal(0)
 const tabActiveTime = signal(0)
 const fetchManager = new FetchManager({
@@ -92,14 +96,14 @@ function setupMessage() {
   })
 }
 
-function onTabLoaded(tabId: number) {
+async function onTabLoaded(tabId: number) {
   console.log('tab Reload')
   fetchManager.fetchService.abortFetch(`${tabId} tab reload`)
+  await sendMessage('abort-fetch', true, {
+    tabId: curTabId(),
+    context: 'window',
+  })
 }
-
-browser.tabs.onActivated.addListener(({ tabId }) => {
-  curTabId(tabId)
-})
 
 export default defineBackground(async () => {
   await main()
@@ -110,15 +114,34 @@ export default defineBackground(async () => {
   //   }
   // console.log(tabActiveTime())
   // })
+
+  browser.tabs.onActivated.addListener(({ tabId }) => {
+    curTabId(tabId)
+  })
+
   browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (
+      tab.url && (
+        !matchDomains.includes(new URL(tab.url).hostname)
+        && !tab.url.includes('weibo-archiver')
+      )) {
+      return
+    }
     if (changeInfo.status === 'complete') {
+      if (tabId === curTabId()) {
+        onTabLoaded(tabId)
+      }
       curTabId(tabId)
       tabActiveTime(Date.now())
-      onTabLoaded(tabId)
     }
   })
 
-  browser.tabs.onRemoved.addListener((tabId) => {
+  browser.tabs.onRemoved.addListener(async (tabId) => {
+    curTabId(0)
     fetchManager.fetchService.abortFetch(`${tabId} tab close`)
+    await sendMessage('abort-fetch', true, {
+      tabId: curTabId(),
+      context: 'window',
+    })
   })
 })
