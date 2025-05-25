@@ -1,14 +1,18 @@
 <script setup lang="tsx">
 import type { FetchConfig, UserInfo } from '@weibo-archiver/core'
+import type { Status } from '@/components/sync/FetchStatus'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
 import { reactive, ref } from 'vue'
+import { onMessage } from 'webext-bridge/window'
+import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
-import StepIndicator from '@/components/sync/StepIndicator.vue'
+import { FetchStatus } from '@/components/sync/FetchStatus'
 import { UserSearch } from '@/components/sync/UserSearch'
 
 const selectedUser = ref<UserInfo>()
 const curStep = ref(1)
 const fetchConfig = reactive<FetchConfig>({ ...DEFAULT_FETCH_CONFIG })
+const fetchingStatus = ref<Status>('fetching')
 
 const steps = [
   { step: 1, title: '选择用户', description: '搜索并选择目标用户' },
@@ -18,7 +22,22 @@ const steps = [
 
 async function startArchive() {
   curStep.value = 3
+
+  setTimeout(() => fetchingStatus.value = 'completed', 1000)
 }
+
+const fetchCount = ref({
+  posts: 0,
+  favorites: 0,
+  followers: 0,
+})
+onMessage<{
+  posts: number
+  favorites: number
+  followers: number
+}>('state:fetch-all', ({ data }) => {
+  fetchCount.value = data
+})
 </script>
 
 <template>
@@ -55,12 +74,13 @@ async function startArchive() {
         @start-archive="startArchive"
       />
 
-      <div
-        v-if="curStep === 3"
-        class="w-full"
-      >
-        {{ fetchConfig }}
-      </div>
+      <FetchStatus
+        v-if="curStep === 3 && selectedUser"
+        :config="fetchConfig"
+        :user="selectedUser"
+        :stats="fetchCount"
+        :status="fetchingStatus"
+      />
     </main>
   </div>
 </template>
