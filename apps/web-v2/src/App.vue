@@ -5,7 +5,7 @@ import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
-import { useEmoji } from '@/composables'
+import { useEmoji, useExtension } from '@/composables'
 import { useUserStore } from '@/stores'
 
 const appName = 'Weibo-Archiver'
@@ -57,8 +57,10 @@ const isLoading = ref(false)
 onBeforeMount(async () => {
   isDark.value = false
   isLoading.value = true
+  useExtension().ping()
   await userStore.load()
   await fetchEmojis()
+
   isLoading.value = false
 })
 </script>

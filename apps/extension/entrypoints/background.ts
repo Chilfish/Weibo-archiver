@@ -97,6 +97,11 @@ function setupMessage() {
       }),
     })
   })
+
+  onMessage('ping', (data) => {
+    console.log('pong', data)
+    return true
+  })
 }
 
 async function onTabLoaded(tabId: number) {

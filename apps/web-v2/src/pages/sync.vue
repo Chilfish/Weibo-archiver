@@ -15,12 +15,15 @@ import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
 import { FetchStatus } from '@/components/sync/FetchStatus'
 import { UserSearch } from '@/components/sync/UserSearch'
+import { useExtension } from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 
 const selectedUser = ref<UserInfo>()
 const curStep = ref(1)
 const fetchConfig = useStorage<FetchConfig>('fetch-config', { ...DEFAULT_FETCH_CONFIG })
 const fetchingStatus = ref<Status>('preparing')
+
+const { isConnected } = (useExtension())
 
 const postStore = usePostStore()
 const userStore = useUserStore()
@@ -118,6 +121,7 @@ async function loadLocalCount() {
       </p>
     </header>
     <main
+      v-if="isConnected"
       class="flex flex-col gap-8 items-center justify-center mx-auto pb-8 px-4 lg:p-8 lg:w-[70vw]"
     >
       <StepIndicator
@@ -146,6 +150,20 @@ async function loadLocalCount() {
         :status="fetchingStatus"
         @download="postStore.exportAllData"
       />
+    </main>
+
+    <main
+      v-else
+      class="flex flex-col gap-8 items-center justify-center mt-12"
+    >
+      <div class="flex flex-col gap-4 items-center justify-center">
+        <div class="text-3xl font-bold ">
+          未连接到浏览器插件
+        </div>
+        <div class="text-muted-foreground">
+          请先安装浏览器插件，然后刷新页面。
+        </div>
+      </div>
     </main>
   </div>
 </template>
