@@ -14,6 +14,7 @@ const matchDomains = [
 ]
 const curTabId = signal(0)
 const tabActiveTime = signal(0)
+const fetchingTabId = signal(0) // 添加变量追踪正在执行 fetch 的标签页
 const fetchManager = new FetchManager({
   ...DEFAULT_FETCH_CONFIG,
   cookie: '',
@@ -54,6 +55,7 @@ function setupMessage() {
     if (!uid) {
       return []
     }
+    fetchingTabId(curTabId()) // 设置 fetchingTabId
 
     return fetchManager.fetchNewPosts({
       uid,
@@ -73,6 +75,7 @@ function setupMessage() {
       ...fetchManager.config,
       ...data,
     }
+    fetchingTabId(curTabId()) // 设置 fetchingTabId
 
     return fetchManager.fetchAllWeibo({
       uid: data.uid,
@@ -97,23 +100,11 @@ function setupMessage() {
 }
 
 async function onTabLoaded(tabId: number) {
-  console.log('tab Reload')
-  fetchManager.fetchService.abortFetch(`${tabId} tab reload`)
-  await sendMessage('abort-fetch', true, {
-    tabId: curTabId(),
-    context: 'window',
-  })
 }
 
 export default defineBackground(async () => {
   await main()
   setupMessage()
-  // effect(async () => {
-  //   if (tabActiveTime() === 0) {
-  //     return
-  //   }
-  // console.log(tabActiveTime())
-  // })
 
   browser.tabs.onActivated.addListener(({ tabId }) => {
     curTabId(tabId)
@@ -137,11 +128,18 @@ export default defineBackground(async () => {
   })
 
   browser.tabs.onRemoved.addListener(async (tabId) => {
-    curTabId(0)
-    fetchManager.fetchService.abortFetch(`${tabId} tab close`)
-    await sendMessage('abort-fetch', true, {
-      tabId: curTabId(),
-      context: 'window',
-    })
+    if (tabId === fetchingTabId()) { // 只在执行 fetch 的标签页关闭时中止
+      console.log('fetching tab close')
+
+      fetchManager.fetchService.abortFetch(`${tabId} tab close`)
+      await sendMessage('abort-fetch', true, {
+        tabId,
+        context: 'window',
+      })
+      fetchingTabId(0) // 重置 fetchingTabId
+    }
+    if (tabId === curTabId()) {
+      curTabId(0)
+    }
   })
 })
