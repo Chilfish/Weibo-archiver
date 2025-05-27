@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { PrimitiveProps } from 'reka-ui'
-import type { HTMLAttributes } from 'vue'
+import type { ButtonHTMLAttributes, HTMLAttributes } from 'vue'
 import type { ButtonVariants } from '.'
-import { Primitive } from 'reka-ui'
+import { Primitive, useForwardPropsEmits } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '.'
 
-interface Props extends PrimitiveProps {
+type Props = PrimitiveProps & /* @vue-ignore */ Partial<ButtonHTMLAttributes> & {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
@@ -15,17 +15,22 @@ interface Props extends PrimitiveProps {
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
 })
+
+const emits = defineEmits<{
+  click: [e: Event]
+}>()
+
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
   <Primitive
     data-slot="button"
-    :as="as"
-    :as-child="asChild"
     :class="cn(
       buttonVariants({ variant, size }),
       props.class,
     )"
+    v-bind="forwarded"
   >
     <slot />
   </Primitive>

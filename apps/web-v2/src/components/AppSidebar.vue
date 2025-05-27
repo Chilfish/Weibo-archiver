@@ -2,6 +2,7 @@
 import {
   Album,
   Bookmark,
+  FolderSyncIcon,
   Heart,
   History,
   Home,
@@ -18,7 +19,7 @@ import { useUserStore } from '@/stores'
 const items = [
   {
     title: '首页',
-    url: '/post',
+    url: '/post?page=1',
     icon: Home,
   },
   {
@@ -45,6 +46,11 @@ const items = [
     title: '关注列表',
     url: '/followings',
     icon: Heart,
+  },
+  {
+    title: '爬取微博',
+    url: '/sync',
+    icon: FolderSyncIcon,
   },
 ]
 

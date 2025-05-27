@@ -290,7 +290,7 @@ export class WeiboParser {
       }
       catch (error) {
         console.error(`[parseAll], ${error}`, rawItem.mblogid)
-        throw error
+        // throw error
       }
     }
 

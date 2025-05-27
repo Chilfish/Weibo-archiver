@@ -57,6 +57,14 @@ export class IndexedDB extends Dexie {
     await this.followings.bulkPut(data)
   }
 
+  async removeFollowings(users: Following[]): Promise<void> {
+    const keys = await this.followingQuery
+      .and(dbUser => users.some(user => user.uid === dbUser.uid))
+      .primaryKeys()
+
+    await this.followings.bulkDelete(keys)
+  }
+
   async addFavorites(favorites: Favorite[]) {
     return this.favorites.bulkPut(favorites)
   }
@@ -64,6 +72,10 @@ export class IndexedDB extends Dexie {
   async getFollowings(): Promise<Following[]> {
     return this.followingQuery
       .toArray()
+  }
+
+  async getFollowingsCount(): Promise<number> {
+    return this.followingQuery.count()
   }
 
   async getAllFavorites(): Promise<Favorite[]> {
@@ -134,9 +146,11 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
-  async getLatestPost(): Promise<Post> {
+  async getLatestPost(): Promise<Post | undefined> {
     const post = await this.postQuery
       .limit(1)
+      .offset(0)
+      .reverse()
       .toArray()
 
     return post[0]
