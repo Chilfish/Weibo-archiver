@@ -8,6 +8,7 @@ import {
 } from '@weibo-archiver/core'
 import { computed } from 'vue'
 
+export * from './useExtension'
 export * from './useSearch'
 
 export const config = useStorage<AppConfig>('config', {
