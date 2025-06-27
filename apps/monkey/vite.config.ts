@@ -1,6 +1,5 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import monkey from 'vite-plugin-monkey'
@@ -27,7 +26,6 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
-    tailwindcss(),
 
     monkey({
       entry: 'src/main.ts',
