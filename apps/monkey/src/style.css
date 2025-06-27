@@ -1,10 +1,6 @@
-@import "tailwindcss";
-
-@plugin "daisyui" {
-   themes: all;
-   root: "#plugin-app";
-   log: true;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 img {
   display: initial;
