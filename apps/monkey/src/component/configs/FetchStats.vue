@@ -67,6 +67,6 @@ onBeforeMount(async () => {
 }
 
 .stat-value {
-  font-size: 1rem !important;
+  font-size: 1rem;
 }
 </style>

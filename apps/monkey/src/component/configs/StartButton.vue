@@ -8,11 +8,7 @@ import { usePost } from '@/composables/usePost'
 const postStore = usePost()
 
 const buttonText = computed(() => {
-  const name = config.value.user?.name
-  if (!name) {
-    return '未设置爬取的用户，请先在上面搜索'
-  }
-
+  const name = config.value.user?.name || '未设置'
   const type = config.value.isFetchAll ? '全部' : '部分'
   const statusText = fetchState.status === 'idle' ? '开始' : '正在'
 
@@ -39,8 +35,7 @@ async function handleStartExport() {
     class="mt-4 flex flex-col gap-2"
   >
     <button
-      class="btn btn-primary disabled:text-red-400"
-      :disabled="!config.user?.name"
+      class="btn btn-primary"
       @click="handleStartExport"
     >
       <Download
@@ -51,7 +46,7 @@ async function handleStartExport() {
         v-if="fetchState.status === 'running'"
         class="loading loading-spinner loading-sm"
       />
-      <span class="font-bold">{{ buttonText }}</span>
+      <span>{{ buttonText }}</span>
     </button>
 
     <button

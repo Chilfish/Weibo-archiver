@@ -37,13 +37,13 @@ onBeforeMount(async () => {
 
   <Logo
     v-show="config.isMinimize"
-    class="fixed-card border-2 border-gray-200 rounded-lg shadow-2xl"
+    class="fixed-card h-12 w-12 border-2 border-gray-200 rounded-lg shadow-2xl"
     @click="toggleMinimize"
   />
 </template>
 
 <style>
-#weibo-archiver-plugin {
+#plugin-app {
   z-index: 100;
   position: relative;
   width: 100%;

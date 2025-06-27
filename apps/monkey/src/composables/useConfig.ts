@@ -3,7 +3,7 @@ import { useStorage } from '@vueuse/core'
 import { DEFAULT_USER_CONFIG } from '@weibo-archiver/core'
 import { watch } from 'vue'
 
-const STORAGE_KEY = import.meta.env.DEV ? 'dev-weibo-archiver' : 'weibo-archiver'
+const STORAGE_KEY = 'weibo-archiver'
 
 const createInitialConfig = (): UserConfig => (DEFAULT_USER_CONFIG)
 

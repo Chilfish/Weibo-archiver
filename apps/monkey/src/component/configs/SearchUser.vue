@@ -48,14 +48,13 @@ watch(searchText, (value) => {
     >
       搜索用户
     </label>
-    <label class="input w-full flex items-center px-2">
-      <span class="label text-sm min-w-fit">
+    <label class="input w-full">
+      <span class="label">
         当前用户
       </span>
       <input
         id="wa-search-user"
         v-model="searchText"
-        class="h-full w-full  px-2"
         type="search"
         required
         placeholder="搜索昵称或数字 id"
@@ -75,15 +74,7 @@ watch(searchText, (value) => {
         v-if="searchResult.length < 1"
         class="text-sm text-center"
       >
-        暂无结果，可以试试搜索用户的数字 uid
-      </div>
-
-      <div
-        v-else
-      >
-        搜索到 {{ searchResult.length }} 个结果，点击昵称以设置。
-        <br>
-        若无满意结果，请尝试搜索ta的数字 uid。
+        暂无结果，可以试试搜索用户的数字 id
       </div>
 
       <div
@@ -105,7 +96,7 @@ watch(searchText, (value) => {
         </a>
         <div class="flex flex-col">
           <div class="text-sm font-bold">
-            @{{ user.name }}
+            {{ user.name }}
           </div>
           <div class="text-xs text-gray-500">
             uid: {{ user.uid }}；粉丝：{{ formatNumber(user.followers) }}

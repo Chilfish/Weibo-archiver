@@ -7,7 +7,7 @@ import './style.css'
 const app = createApp(App)
 
 const div = document.createElement('div')
-div.id = 'weibo-archiver-plugin'
+div.id = 'plugin-app'
 document.body.append(div)
 
 app.mount(div)

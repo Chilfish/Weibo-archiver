@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import monkey from 'vite-plugin-monkey'
@@ -9,8 +10,8 @@ export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
-const downloadURL = `${repo}/releases/latest/download/weibo-archiver.user.js`
-const updateURL = downloadURL.replace('.user.', '.meta.')
+const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
+const updateURL = downloadURL.replace('user', 'meta')
 
 export default defineConfig({
   resolve: {
@@ -26,6 +27,7 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
+    tailwindcss(),
 
     monkey({
       entry: 'src/main.ts',
