@@ -48,13 +48,14 @@ watch(searchText, (value) => {
     >
       搜索用户
     </label>
-    <label class="input w-full">
-      <span class="label">
+    <label class="input w-full flex items-center px-2">
+      <span class="label text-sm min-w-fit">
         当前用户
       </span>
       <input
         id="wa-search-user"
         v-model="searchText"
+        class="h-full w-full  px-2"
         type="search"
         required
         placeholder="搜索昵称或数字 id"
