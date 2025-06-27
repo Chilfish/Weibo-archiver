@@ -10,8 +10,8 @@ export const root = path.resolve(__dirname, '../../')
 export const packages = path.resolve(root, 'packages')
 
 const repo = 'https://github.com/Chilfish/Weibo-archiver'
-const downloadURL = `${repo}/raw/monkey/weibo-archiver.user.js`
-const updateURL = downloadURL.replace('user', 'meta')
+const downloadURL = `${repo}/releases/latest/download/weibo-archiver.user.js`
+const updateURL = downloadURL.replace('.user.', '.meta.')
 
 export default defineConfig({
   resolve: {
