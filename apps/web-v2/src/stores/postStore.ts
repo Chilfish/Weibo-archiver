@@ -1,6 +1,7 @@
 import type { Favorite, ImportedData, Post } from '@weibo-archiver/core'
 import type { SearchQuery } from '@/composables/useSearch'
-import { DEFAULT_PAGE_SIZE, exportData, idb, readFile, WeiboParser } from '@weibo-archiver/core'
+import { DEFAULT_PAGE_SIZE, idb, readFile, WeiboParser } from '@weibo-archiver/core'
+import { exportData } from '@weibo-archiver/core/src/utils/export'
 import { destr } from 'destr'
 import Fuse from 'fuse.js'
 import { defineStore } from 'pinia'
@@ -122,9 +123,9 @@ export const usePostStore = defineStore('post', () => {
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
   ): Promise<{
-      posts: Post[]
-      total: number
-    }> {
+    posts: Post[]
+    total: number
+  }> {
     const res = fuse.value
       .search(query.searchText)
       .filter(item => (item.score || 0) > 0.5)

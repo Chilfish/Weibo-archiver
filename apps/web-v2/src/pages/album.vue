@@ -21,8 +21,8 @@ const curPage = ref(Number(route.query.page) || 1)
 const postsTotal = ref(0)
 
 onBeforeMount(async () => {
-  await getPosts()
   postsTotal.value = await postStore.getAllPostsTotal()
+  await getPosts()
 })
 
 watch(() => route.query.page, async (newPage) => {
@@ -38,7 +38,7 @@ async function getPosts() {
   const posts = await postStore.getPosts(curPage.value, pageSize)
     .then(posts => posts.filter(post => post.imgs.length > 0))
 
-  noMore.value = posts.length < 1
+  noMore.value = posts.length < 1 && (curPage.value > postsTotal.value / pageSize)
 
   weiboArr.value.push(...posts)
   isLoading.value = false
@@ -87,16 +87,6 @@ useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
           cb(newPosts)
         }"
       />
-
-      <Button
-        v-if="!isLoading && !noMore"
-        ref="loadMoreBtn"
-        class="mt-4 mx-auto block"
-        variant="outline"
-        @click="loadingMore"
-      >
-        加载更多
-      </Button>
     </main>
 
     <main
@@ -105,5 +95,15 @@ useIntersectionObserver(loadMoreBtn, ([{ isIntersecting }]) => {
     >
       暂时还没发现微博里有图片
     </main>
+
+    <Button
+      v-if="!isLoading && !noMore"
+      ref="loadMoreBtn"
+      class="mt-4 mx-auto block"
+      variant="outline"
+      @click="loadingMore"
+    >
+      加载更多
+    </Button>
   </div>
 </template>

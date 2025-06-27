@@ -9,7 +9,7 @@ import {
   FetchService,
   PostService,
   UserService,
-} from '@weibo-archiver/core/src/services'
+} from '@weibo-archiver/core'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'
