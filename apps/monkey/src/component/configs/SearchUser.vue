@@ -74,7 +74,15 @@ watch(searchText, (value) => {
         v-if="searchResult.length < 1"
         class="text-sm text-center"
       >
-        暂无结果，可以试试搜索用户的数字 id
+        暂无结果，可以试试搜索用户的数字 uid
+      </div>
+
+      <div
+        v-else
+      >
+        搜索到 {{ searchResult.length }} 个结果，点击昵称以设置。
+        <br>
+        若无满意结果，请尝试搜索ta的数字 uid。
       </div>
 
       <div
@@ -96,7 +104,7 @@ watch(searchText, (value) => {
         </a>
         <div class="flex flex-col">
           <div class="text-sm font-bold">
-            {{ user.name }}
+            @{{ user.name }}
           </div>
           <div class="text-xs text-gray-500">
             uid: {{ user.uid }}；粉丝：{{ formatNumber(user.followers) }}
