@@ -5,8 +5,9 @@ import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
-import { useEmoji, useExtension } from '@/composables'
+import { useEmoji } from '@/composables'
 import { useUserStore } from '@/stores'
+import { SidebarProvider } from './components/ui/sidebar'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
@@ -31,7 +32,8 @@ useSeoMeta({
   twitterImage: ogImage,
   twitterImageAlt: appName,
   twitterSite: '@chilfish_',
-  keywords: '微博,备份,工具,微博备份,微博备份工具,备份微博,存档,油猴脚本,backup',
+  keywords:
+    '微博,备份,工具,微博备份,微博备份工具,备份微博,存档,油猴脚本,backup',
 })
 
 useHead({
@@ -52,12 +54,11 @@ const isIndex = computed(() => route.name === 'index')
 
 const userStore = useUserStore()
 const { fetchEmojis } = useEmoji()
-const isLoading = ref(false)
+const isLoading = ref(true)
 
 onBeforeMount(async () => {
   isDark.value = false
   isLoading.value = true
-  useExtension().ping()
   await userStore.load()
   await fetchEmojis()
 
@@ -68,12 +69,21 @@ onBeforeMount(async () => {
 <template>
   <RouterView v-if="isIndex" />
 
-  <SidebarProvider v-else>
+  <SidebarProvider
+    v-else
+    v-extension-check="{
+      autoCheck: true,
+      showDialog: true,
+      onConnected: () => console.log('Extension connected'),
+      onDisconnected: () => console.log('Extension not connected'),
+    }"
+  >
     <AppSidebar />
-    <RouterView
-      v-if="!isLoading"
-      class="m-6  w-full"
-    />
+    <RouterView v-if="!isLoading" class="m-6 w-full" />
+    <div v-else>
+      Loading....
+    </div>
+
     <ImagePreview />
   </SidebarProvider>
 </template>

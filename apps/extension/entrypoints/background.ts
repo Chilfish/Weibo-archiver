@@ -71,10 +71,7 @@ function setupMessage() {
 
   // @ts-expect-error ok ok
   onMessage<FetchConfig & { uid: string }>('fetch:all-posts', async ({ data }) => {
-    fetchManager.config = {
-      ...fetchManager.config,
-      ...data,
-    }
+    Object.assign(fetchManager.config, data)
     fetchingTabId(curTabId()) // 设置 fetchingTabId
 
     return fetchManager.fetchAllWeibo({

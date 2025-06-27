@@ -4,7 +4,8 @@ import type {
   Post,
   UserInfo,
 } from '@weibo-archiver/core'
-import { exportData, idb } from '@weibo-archiver/core'
+import { idb } from '@weibo-archiver/core'
+import { exportData } from '@weibo-archiver/core/src/utils/export'
 import { toRaw } from 'vue'
 import { config, useConfig } from './useConfig'
 import { fetchCount, userService } from './useFetch'

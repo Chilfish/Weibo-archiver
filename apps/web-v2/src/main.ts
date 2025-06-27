@@ -4,14 +4,20 @@ import { createApp } from 'vue'
 import { setNamespace } from 'webext-bridge/window'
 import App from './App.vue'
 
+import { installDirectives } from './directives'
 import routes from './routes'
 
 import './style.css'
 
 setNamespace(window.origin)
 
-createApp(App)
+const app = createApp(App)
+
+app
   .use(routes)
   .use(createHead())
   .use(createPinia())
-  .mount('#app')
+
+installDirectives(app)
+
+app.mount('#app')

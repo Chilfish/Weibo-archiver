@@ -16,15 +16,11 @@
     "types": [
       "vite/client"
     ],
-    "allowJs": false,
+    "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "skipLibCheck": true
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  }
 }
