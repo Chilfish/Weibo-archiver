@@ -1,6 +1,6 @@
 import type { CalendarDate } from '@internationalized/date'
 import type { Table } from 'dexie'
-import type { Favorite, Following, Post, User, UserInfo } from '../types'
+import type { Favorite, Following, Post, UserInfo } from '../types'
 import { parseAbsolute, today } from '@internationalized/date'
 import Dexie from 'dexie'
 import { DEFAULT_PAGE_SIZE } from '../constants'
@@ -28,7 +28,7 @@ export class IndexedDB extends Dexie {
       .stores({
         users: 'uid, createdAt',
         posts: 'id, mblogid, userId, createdAt',
-        followings: 'uid, followBy',
+        followings: 'uid',
         favorites: 'id, mblogid, favBy',
       })
   }
@@ -54,14 +54,8 @@ export class IndexedDB extends Dexie {
     return this.posts.bulkPut(posts)
   }
 
-  async addFollowings(users: User[]) {
-    const data: Following[] = users.map((user) => {
-      if (this.curUid) {
-        (user as Following).followBy = this.curUid
-      }
-      return user as Following
-    })
-    await this.followings.bulkPut(data)
+  async addFollowings(users: Following[]) {
+    await this.followings.bulkPut(users)
   }
 
   async addFavorites(favorites: Favorite[]) {
@@ -72,8 +66,18 @@ export class IndexedDB extends Dexie {
   }
 
   async getFollowings(): Promise<Following[]> {
+    const curUserFollowingIds = this.curUser?.followingIds || []
+
     return this.followingQuery
+      .filter(user => curUserFollowingIds.includes(user.uid))
       .toArray()
+  }
+
+  /**
+   * 油猴脚本端不存在多用户
+   */
+  async getAllFollowings(): Promise<Following[]> {
+    return this.followingQuery.toArray()
   }
 
   async getAllFavorites(): Promise<Favorite[]> {
@@ -163,7 +167,7 @@ export class IndexedDB extends Dexie {
 
   async clearDB() {
     const postsCount = await this.postQuery.delete()
-    const followingsCount = await this.followingQuery.delete()
+    const followingsCount = await this.followingQuery.clear()
     const favoritesCount = await this.favoriteQuery.delete()
     const usersCount = await this.users.where('uid').equals(this.curUid).delete()
 
@@ -189,8 +193,6 @@ export class IndexedDB extends Dexie {
 
   private get followingQuery() {
     return this.followings
-      .where('followBy')
-      .equals(this.curUid)
   }
 }
 

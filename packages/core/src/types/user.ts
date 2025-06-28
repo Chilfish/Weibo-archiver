@@ -19,11 +19,11 @@ const userInfoSchema = userWithBioSchema.extend({
   createdAt: z.string().optional(),
   birthday: z.string().optional(),
   postCount: z.number().optional(),
+  followingIds: z.array(z.string()),
   exportedAt: z.string().optional(),
 })
 
 const followingSchema = userSchema.extend({
-  followBy: z.string(),
   followers: z.number(),
   followings: z.number(),
   bio: z.string(),
