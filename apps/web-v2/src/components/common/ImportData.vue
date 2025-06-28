@@ -40,12 +40,6 @@ async function processImport() {
   data.value.weibo.forEach((item) => {
     item.userId = selectedUid.value
   })
-  data.value.favorites.forEach((item) => {
-    item.userId = selectedUid.value
-  })
-  data.value.followings.forEach((item) => {
-    item.followBy = selectedUid.value
-  })
   const users = await userStore.getAllUsers()
   const selectedUser = users.find(user => user.uid === selectedUid.value)
   if (selectedUser) {

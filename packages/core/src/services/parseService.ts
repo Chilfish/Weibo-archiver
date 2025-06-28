@@ -50,6 +50,7 @@ export class UserParser {
       bio: user.description,
       createdAt: '',
       birthday: '',
+      followingIds: [],
     }
   }
 
@@ -62,7 +63,6 @@ export class UserParser {
       remark: user.remark || undefined,
       followings: user.friends_count,
       followers: user.followers_count,
-      followBy: '',
       createdAt: user.created_at,
       location: user.location,
     }
