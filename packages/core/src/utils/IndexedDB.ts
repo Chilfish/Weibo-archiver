@@ -1,6 +1,4 @@
-import type {
-  CalendarDate,
-} from '@internationalized/date'
+import type { CalendarDate } from '@internationalized/date'
 import type { Table } from 'dexie'
 import type { Favorite, Following, Post, User, UserInfo } from '../types'
 import { parseAbsolute, today } from '@internationalized/date'
@@ -18,12 +16,26 @@ export class IndexedDB extends Dexie {
   constructor() {
     super('Weibo-archiver')
 
-    this.version(1).stores({
-      users: 'uid, createdAt',
-      posts: 'id, mblogid, userId, createdAt',
-      followings: 'uid, followBy',
-      favorites: 'id, mblogid, userId',
-    })
+    this.version(1)
+      .stores({
+        users: 'uid, createdAt',
+        posts: 'id, mblogid, userId, createdAt',
+        followings: 'uid, followBy',
+        favorites: 'id, mblogid, userId',
+      })
+
+    this.version(2)
+      .stores({
+        users: 'uid, createdAt',
+        posts: 'id, mblogid, userId, createdAt',
+        followings: 'uid, followBy',
+        favorites: 'id, mblogid, favBy',
+      })
+      .upgrade((trans) => {
+        return trans.table('favorites').toCollection().modify((favorite) => {
+          favorite.favBy = this.curUid || localStorage.getItem('curUid') || ''
+        })
+      })
   }
 
   get curUid() {
@@ -58,6 +70,9 @@ export class IndexedDB extends Dexie {
   }
 
   async addFavorites(favorites: Favorite[]) {
+    for (const favorite of favorites) {
+      favorite.favBy = this.curUid
+    }
     return this.favorites.bulkPut(favorites)
   }
 
@@ -173,7 +188,7 @@ export class IndexedDB extends Dexie {
 
   private get favoriteQuery() {
     return this.favorites
-      .where('userId')
+      .where('favBy')
       .equals(this.curUid)
   }
 
