@@ -357,6 +357,25 @@ export class WeiboParser {
     return posts
   }
 
+  static parseBookmarks(rawData: RawFavorite[], favBy: string): Favorite[] {
+    const posts: Favorite[] = []
+
+    for (const rawItem of rawData) {
+      try {
+        const post = PostParser.parseBookmark(rawItem, favBy)
+        if (post) {
+          posts.push(post)
+        }
+      }
+      catch (error) {
+        console.error(`[parse bookmarks], ${error}`, rawItem.mblogid)
+        throw error
+      }
+    }
+
+    return posts
+  }
+
   /**
    * 提取所有图片链接
    */
