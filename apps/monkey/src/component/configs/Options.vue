@@ -16,11 +16,6 @@ const options: Option[] = [
     value: 'isFetchAll',
     remark: '导出全部微博，不限制时间范围',
   },
-  // {
-  //   label: '使用原图',
-  //   value: 'largePic',
-  //   remark: '导出微博图片列表时使用原图',
-  // },
   {
     label: '包含转发的微博',
     value: 'hasRepost',
@@ -56,7 +51,6 @@ const options: Option[] = [
     value: 'hasFollowings',
     remark: '',
   },
-
 ] as const
 </script>
 

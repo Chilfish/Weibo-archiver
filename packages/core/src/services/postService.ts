@@ -3,7 +3,6 @@ import type { FetchArgs } from '../types/fetchArgs'
 import type { RawPostsTimeline } from '../types/raw'
 import type { FetchService } from './fetchService'
 import type { UserService } from './userService'
-import { PQueue } from '../utils/pqueue'
 import { PostParser, WeiboParser } from './parseService'
 
 type OnFetched = (data: {
@@ -15,10 +14,10 @@ type OnFetched = (data: {
 }) => any
 
 export class PostService {
-  private sinceId: string = ''
+  public sinceId: string = ''
+
   private fetchedCount: number = 0
   private postsTotal: number = 0
-  private pqueue = new PQueue({ concurrency: 3 })
 
   onError = (data: {
     data: any
@@ -51,11 +50,8 @@ export class PostService {
       page = 0,
       startAt,
       commentsCount,
-      onFetched,
       ...restArgs
     } = args
-
-    console.log(args)
 
     if (isFetchAll) {
       // 这种方法在第60页就返回空了，需要转到下一个窗口
@@ -74,7 +70,6 @@ export class PostService {
         since_id: sinceId,
         page,
         commentsCount,
-        onFetched,
         ...restArgs,
       })
     }
@@ -87,7 +82,6 @@ export class PostService {
       endAt,
       page,
       commentsCount,
-      onFetched,
       ...restArgs,
     })
   }
@@ -106,7 +100,7 @@ export class PostService {
 
       await args.onFetched({
         posts,
-        page: args.page,
+        page,
         sinceId: this.sinceId,
         fetchedCount: this.fetchedCount,
         postsTotal: this.postsTotal,
@@ -134,10 +128,9 @@ export class PostService {
     endAt.setHours(23, 59, 0, 0)
 
     const starttime = startAt.getTime() / 1000
-    let endtime = endAt.getTime() / 1000
+    const endtime = endAt.getTime() / 1000
 
     let page = args.page || 1
-    let lastPostDate = new Date()
 
     while (true) {
       const posts = await this.getPostsByDate({
@@ -158,17 +151,10 @@ export class PostService {
       await new Promise(r => setTimeout(r, 1000))
 
       page++
-      if (posts.at(-1)?.createdAt)
-        lastPostDate = new Date(posts.at(-1)!.createdAt)
 
-      if (posts.length === 0) {
-        if (this.fetchedCount >= this.postsTotal)
-          break
-
-        // 还没获取完，转到下一个窗口
-        page = 1
-        lastPostDate.setHours(23, 59, 0, 0)
-        endtime = lastPostDate.getTime() / 1000
+      if (posts.length === 0 || this.fetchedCount >= this.postsTotal) {
+        console.log('no more posts')
+        break
       }
     }
   }
@@ -183,8 +169,11 @@ export class PostService {
 
       return PostParser.parseText(data.longTextContent, data.url_struct)
     }
-    catch (e) {
+    catch (e: any) {
       console.error(`[get long text]: ${postMBlogId}, ${e}`)
+      if (e.name === 'CanceledError')
+        throw e
+
       return undefined
     }
   }
@@ -210,13 +199,23 @@ export class PostService {
       this.postsTotal = data.total
     }
 
-    const posts = WeiboParser.parseAll(data.list)
-    this.fetchedCount += posts.length
+    try {
+      const posts = WeiboParser.parseAll(data.list)
+      this.fetchedCount += posts.length
 
-    if (args.commentsCount) {
-      await this._setComments(posts, args.commentsCount)
+      if (args.commentsCount) {
+        await this._setComments(posts, args.commentsCount)
+      }
+
+      return posts
     }
-    return posts
+    catch (err: any) {
+      console.error(err)
+      if (err.name === 'CanceledError') {
+        throw err
+      }
+      return []
+    }
   }
 
   async getComments(
@@ -241,7 +240,9 @@ export class PostService {
       .slice(0, count)
   }
 
-  async getFavorites(): Promise<Favorite[]> {
+  async getFavorites(args?: {
+    onFetch: (posts: Favorite[]) => any
+  }): Promise<Favorite[]> {
     let page = 1
     const result: Favorite[] = []
     while (true) {
@@ -259,6 +260,7 @@ export class PostService {
 
       const parsed = WeiboParser.parseBookmarks(data as any[], this.uid)
 
+      await args?.onFetch(parsed)
       result.push(...parsed)
       page += 1
     }
@@ -266,12 +268,12 @@ export class PostService {
     return result
   }
 
-  async getPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature' | 'uid'> & {
+  async getPostsBySinceId(args: Omit<Partial<FetchArgs['postAll']>, 'feature'> & {
     commentsCount: number
   }): Promise<Post[]> {
     const data = await this.fetchService.postsBySinceId({
-      uid: this.uid,
-      since_id: this.sinceId,
+      uid: args.uid || this.uid,
+      since_id: args.since_id || this.sinceId,
       page: args.page || 1,
       feature: 0,
       hasmuisc: args.hasmuisc || '1',
@@ -299,9 +301,11 @@ export class PostService {
 
       return posts
     }
-    catch (err) {
+    catch (err: any) {
       console.error(err)
-      // await this.onError({ data, sinceId: this.sinceId, postsTotal: this.postsTotal }).catch()
+      if (err.name === 'CanceledError') {
+        throw err
+      }
       return []
     }
   }
@@ -322,16 +326,20 @@ export class PostService {
   }
 
   private async _setComments(posts: Post[], commentsCount: number) {
-    posts.forEach((post) => {
-      if (post.commentsCount < 1)
-        return
-      this.pqueue.add(() =>
-        this.getComments(post.id, post.isShowBulletIn, commentsCount)
-          .catch(() => [] as Comment[])
-          .then(comments => post.comments = comments),
-      )
-    })
+    for (const post of posts) {
+      if (post.commentsCount < 1) {
+        continue
+      }
 
-    await this.pqueue.onIdle()
+      post.comments = await this.getComments(post.id, post.isShowBulletIn, commentsCount)
+        .catch((e: any) => {
+          console.error(`get comments ${post.id}`, e)
+          if (e.name === 'CanceledError') {
+            throw e
+          }
+
+          return [] as Comment[]
+        })
+    }
   }
 }
