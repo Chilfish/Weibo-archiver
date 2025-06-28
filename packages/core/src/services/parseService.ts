@@ -5,6 +5,7 @@ import type {
   LinkCard,
   Post,
   PostMeta,
+  RawFavorite,
   RawFollowingUser,
   RawMyFollowUser,
   Retweet,
@@ -49,6 +50,7 @@ export class UserParser {
       bio: user.description,
       createdAt: '',
       birthday: '',
+      followingIds: [],
     }
   }
 
@@ -61,7 +63,6 @@ export class UserParser {
       remark: user.remark || undefined,
       followings: user.friends_count,
       followers: user.followers_count,
-      followBy: '',
       createdAt: user.created_at,
       location: user.location,
     }
@@ -270,6 +271,46 @@ export class PostParser {
       user,
     }
   }
+
+  static parseBookmark(rawBookmark: RawFavorite, favBy: string): Favorite | undefined {
+    const mblogid = rawBookmark.mblogid
+    if (!mblogid) {
+      console.warn('Skipping post due to missing mblogid:', rawBookmark)
+      return undefined
+    }
+
+    let retweeted_status: Retweet | undefined
+    const hasRetweeted = 'retweeted_status' in rawBookmark && rawBookmark.retweeted_status?.id
+    if (hasRetweeted) {
+      retweeted_status = PostParser.parseRetweet(rawBookmark.retweeted_status, rawBookmark.url_struct || [])
+    }
+
+    const meta = PostParser.parseMeta(rawBookmark)
+    const text = PostParser.parseText(rawBookmark.text_raw, rawBookmark.url_struct || [])
+    const imgs = PostParser.parseImage(rawBookmark)
+    const card = PostParser.parseLinkCard(rawBookmark)
+    const user = UserParser.parseFromPost(rawBookmark)!
+
+    const {
+      reposts_count,
+      comments_count,
+      attitudes_count,
+    } = rawBookmark
+
+    return {
+      ...meta,
+      mblogid,
+      text,
+      imgs,
+      repostsCount: reposts_count,
+      commentsCount: comments_count,
+      likesCount: attitudes_count,
+      card,
+      retweet: retweeted_status,
+      user,
+      favBy,
+    }
+  }
 }
 
 export class WeiboParser {
@@ -297,10 +338,29 @@ export class WeiboParser {
     return posts
   }
 
+  static parseBookmarks(rawData: RawFavorite[], favBy: string): Favorite[] {
+    const posts: Favorite[] = []
+
+    for (const rawItem of rawData) {
+      try {
+        const post = PostParser.parseBookmark(rawItem, favBy)
+        if (post) {
+          posts.push(post)
+        }
+      }
+      catch (error) {
+        console.error(`[parse bookmarks], ${error}`, rawItem.mblogid)
+        throw error
+      }
+    }
+
+    return posts
+  }
+
   /**
    * 提取所有图片链接
    */
-  static parseImgs(posts: Post[] | Favorite[]): string[] {
+  static parseImgs(posts: Post[]): string[] {
     const imgs = posts
       .map((post) => {
         const imageLinks: string[] = []

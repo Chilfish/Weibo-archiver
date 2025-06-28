@@ -1,4 +1,6 @@
+import type { RawPostSchema } from '../statuses/mymblog'
 import * as z from 'zod'
+import { UrlStructSchema } from '../statuses/mymblog'
 
 const NameEnumSchema = z.enum([
   'icon',
@@ -426,29 +428,6 @@ const ScreenNameSuffixNewSchema = z.object({
   actionlog: ScreenNameSuffixNewActionlogSchema.optional(),
 })
 
-const UrlStructSchema = z.object({
-  url_title: z.string(),
-  url_type_pic: z.string().optional(),
-  ori_url: z.string(),
-  short_url: z.string(),
-  long_url: z.string().optional(),
-  url_type: z.union([z.number(), z.string()]),
-  result: z.boolean(),
-  actionlog: UrlStructActionlogSchema,
-  storage_type: z.string().optional(),
-  hide: z.number().optional(),
-  position: z.number().optional(),
-  need_save_obj: z.number().optional(),
-  log: z.string().optional(),
-  page_id: z.string().optional(),
-  object_type: z.string().optional(),
-  h5_target_url: z.string().optional(),
-  order: z.number().optional(),
-  conflict_low_level: z.boolean().optional(),
-  conflict_low_level_v2: z.number().optional(),
-  ttl: z.number().optional(),
-})
-
 const StatusUserSchema = z.object({
   id: z.number(),
   idstr: z.string(),
@@ -776,4 +755,6 @@ const FavoriteSchema = z.object({
   status: z.array(StatusSchema),
   total_number: z.number(),
 })
-export type RawFavorite = z.infer<typeof FavoriteSchema>
+
+export type RawFavoriteList = z.infer<typeof FavoriteSchema>
+export type RawFavorite = z.infer<typeof RawPostSchema>
