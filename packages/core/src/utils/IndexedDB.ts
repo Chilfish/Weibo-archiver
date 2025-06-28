@@ -31,11 +31,6 @@ export class IndexedDB extends Dexie {
         followings: 'uid, followBy',
         favorites: 'id, mblogid, favBy',
       })
-      .upgrade((trans) => {
-        return trans.table('favorites').toCollection().modify((favorite) => {
-          favorite.favBy = this.curUid || localStorage.getItem('curUid') || ''
-        })
-      })
   }
 
   get curUid() {
