@@ -3,6 +3,8 @@ import type { Post } from '@weibo-archiver/core'
 import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
 import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import BookmarkMigrationDialog
+  from '@/components/bookmarks/BookmarkMigrationDialog.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
 import { usePostStore } from '@/stores'
@@ -50,6 +52,8 @@ async function changePage(newPage: number, newPageSize: number) {
   <main
     class="flex flex-col relative w-full"
   >
+    <BookmarkMigrationDialog />
+
     <h2
       class="text-xl font-bold mb-4"
     >
