@@ -66,11 +66,18 @@ export class IndexedDB extends Dexie {
   }
 
   async getFollowings(): Promise<Following[]> {
-    const curUserFollowingIds = this.curUser.followingIds
+    const curUserFollowingIds = this.curUser?.followingIds || []
 
     return this.followingQuery
       .filter(user => curUserFollowingIds.includes(user.uid))
       .toArray()
+  }
+
+  /**
+   * 油猴脚本端不存在多用户
+   */
+  async getAllFollowings(): Promise<Following[]> {
+    return this.followingQuery.toArray()
   }
 
   async getAllFavorites(): Promise<Favorite[]> {
@@ -160,12 +167,13 @@ export class IndexedDB extends Dexie {
 
   async clearDB() {
     const postsCount = await this.postQuery.delete()
+    const followingsCount = await this.followingQuery.clear()
     const favoritesCount = await this.favoriteQuery.delete()
     const usersCount = await this.users.where('uid').equals(this.curUid).delete()
 
     return {
       postsCount,
-      followingsCount: 0,
+      followingsCount,
       favoritesCount,
       usersCount,
     }
