@@ -92,14 +92,15 @@ export function usePost() {
       const { hasFavorites, hasFollowings, hasWeibo } = config.value
 
       const weibo = hasWeibo ? await idb.getAllPosts() : []
-      const followings = hasFollowings ? await idb.getFollowings() : []
+      const followings = hasFollowings ? await idb.getAllFollowings() : []
       const favorites = hasFavorites ? await idb.getAllFavorites() : []
+      const user = idb.curUser
 
       await exportData({
         weibo,
         favorites,
         followings,
-        user: idb.curUser,
+        user,
       })
     }
     catch (error) {

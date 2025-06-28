@@ -1,8 +1,6 @@
-import type {
-  CalendarDate,
-} from '@internationalized/date'
+import type { CalendarDate } from '@internationalized/date'
 import type { Table } from 'dexie'
-import type { Favorite, Following, Post, User, UserInfo } from '../types'
+import type { Favorite, Following, Post, UserInfo } from '../types'
 import { parseAbsolute, today } from '@internationalized/date'
 import Dexie from 'dexie'
 import { DEFAULT_PAGE_SIZE } from '../constants'
@@ -18,12 +16,21 @@ export class IndexedDB extends Dexie {
   constructor() {
     super('Weibo-archiver')
 
-    this.version(1).stores({
-      users: 'uid, createdAt',
-      posts: 'id, mblogid, userId, createdAt',
-      followings: 'uid, followBy',
-      favorites: 'id, mblogid, userId',
-    })
+    this.version(1)
+      .stores({
+        users: 'uid, createdAt',
+        posts: 'id, mblogid, userId, createdAt',
+        followings: 'uid, followBy',
+        favorites: 'id, mblogid, userId',
+      })
+
+    this.version(2)
+      .stores({
+        users: 'uid, createdAt',
+        posts: 'id, mblogid, userId, createdAt',
+        followings: 'uid',
+        favorites: 'id, mblogid, favBy',
+      })
   }
 
   get curUid() {
@@ -47,14 +54,8 @@ export class IndexedDB extends Dexie {
     return this.posts.bulkPut(posts)
   }
 
-  async addFollowings(users: User[]) {
-    const data: Following[] = users.map((user) => {
-      if (this.curUid) {
-        (user as Following).followBy = this.curUid
-      }
-      return user as Following
-    })
-    await this.followings.bulkPut(data)
+  async addFollowings(users: Following[]) {
+    await this.followings.bulkPut(users)
   }
 
   async removeFollowings(users: Following[]): Promise<void> {
@@ -66,16 +67,25 @@ export class IndexedDB extends Dexie {
   }
 
   async addFavorites(favorites: Favorite[]) {
+    for (const favorite of favorites) {
+      favorite.favBy = this.curUid
+    }
     return this.favorites.bulkPut(favorites)
   }
 
   async getFollowings(): Promise<Following[]> {
+    const curUserFollowingIds = this.curUser?.followingIds || []
+
     return this.followingQuery
+      .filter(user => curUserFollowingIds.includes(user.uid))
       .toArray()
   }
 
-  async getFollowingsCount(): Promise<number> {
-    return this.followingQuery.count()
+  /**
+   * 油猴脚本端不存在多用户
+   */
+  async getAllFollowings(): Promise<Following[]> {
+    return this.followingQuery.toArray()
   }
 
   async getAllFavorites(): Promise<Favorite[]> {
@@ -167,7 +177,7 @@ export class IndexedDB extends Dexie {
 
   async clearDB() {
     const postsCount = await this.postQuery.delete()
-    const followingsCount = await this.followingQuery.delete()
+    const followingsCount = await this.followingQuery.clear()
     const favoritesCount = await this.favoriteQuery.delete()
     const usersCount = await this.users.where('uid').equals(this.curUid).delete()
 
@@ -187,14 +197,12 @@ export class IndexedDB extends Dexie {
 
   private get favoriteQuery() {
     return this.favorites
-      .where('userId')
+      .where('favBy')
       .equals(this.curUid)
   }
 
   private get followingQuery() {
     return this.followings
-      .where('followBy')
-      .equals(this.curUid)
   }
 }
 

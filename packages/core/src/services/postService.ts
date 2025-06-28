@@ -258,7 +258,7 @@ export class PostService {
 
       await this._setLongText(data as any)
 
-      const parsed = WeiboParser.parseAll(data as any[])
+      const parsed = WeiboParser.parseBookmarks(data as any[], this.uid)
 
       await args?.onFetch(parsed)
       result.push(...parsed)

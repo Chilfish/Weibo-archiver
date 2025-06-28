@@ -5,29 +5,24 @@ const ObjectTypeSchema = z.enum([
   'live',
   'video',
 ])
-type ObjectType = z.infer<typeof ObjectTypeSchema>
 
 const VideoOrientationSchema = z.enum([
   'horizontal',
   'vertical',
 ])
-type VideoOrientation = z.infer<typeof VideoOrientationSchema>
 
 const SceneidSchema = z.enum([
   'profile_mb',
 ])
-type Sceneid = z.infer<typeof SceneidSchema>
 
 const FormatSchema = z.enum([
   'mp4',
 ])
-type Format = z.infer<typeof FormatSchema>
 
 const TextSchema = z.enum([
   '',
   '重播',
 ])
-type Text = z.infer<typeof TextSchema>
 
 const LabelSchema = z.enum([
   'mp4_1080p',
@@ -36,20 +31,17 @@ const LabelSchema = z.enum([
   'mp4_ld',
   'scrubber_hd',
 ])
-type Label = z.infer<typeof LabelSchema>
 
 const QualityClassSchema = z.enum([
   'HD',
   'SD',
 ])
-type QualityClass = z.infer<typeof QualityClassSchema>
 
 const QualityDescSchema = z.enum([
   '标清',
   '流畅',
   '高清',
 ])
-type QualityDesc = z.infer<typeof QualityDescSchema>
 
 const QualityLabelSchema = z.enum([
   '1080p',
@@ -57,45 +49,37 @@ const QualityLabelSchema = z.enum([
   '480p',
   '720p',
 ])
-type QualityLabel = z.infer<typeof QualityLabelSchema>
 
 const AudioCodecsSchema = z.enum([
   'mp4a.40.5',
 ])
-type AudioCodecs = z.infer<typeof AudioCodecsSchema>
 
 const AudioSampleFmtSchema = z.enum([
   'fltp',
 ])
-type AudioSampleFmt = z.infer<typeof AudioSampleFmtSchema>
 
 const ColorTransferSchema = z.enum([
   'bt709',
 ])
-type ColorTransfer = z.infer<typeof ColorTransferSchema>
 
 const AbStrategiesSchema = z.enum([
   '13038-g1,,15568-g4,8013-g0,3601-g39',
   '13038-g1,,15568-g4,8013-g0,3601-g39,3601-g32,3601-g39',
   '13038-g1,,15568-g4,8013-g0,3601-g39,3601-g36,3601-g39',
 ])
-type AbStrategies = z.infer<typeof AbStrategiesSchema>
 
 const OriginVideoDrSchema = z.enum([
   'SDR',
 ])
-type OriginVideoDr = z.infer<typeof OriginVideoDrSchema>
 
 const MimeSchema = z.enum([
   'image/jpeg',
   'video/mp4',
 ])
-type Mime = z.infer<typeof MimeSchema>
 
 const PlayInfoProtocolSchema = z.enum([
   'general',
 ])
-type PlayInfoProtocol = z.infer<typeof PlayInfoProtocolSchema>
 
 const VideoCodecsSchema = z.enum([
   'avc1.640016',
@@ -103,48 +87,39 @@ const VideoCodecsSchema = z.enum([
   'avc1.64001f',
   'avc1.640032',
 ])
-type VideoCodecs = z.infer<typeof VideoCodecsSchema>
 
 const VideoDecoderSchema = z.enum([
   'hard',
 ])
-type VideoDecoder = z.infer<typeof VideoDecoderSchema>
 
 const WatermarkSchema = z.enum([
   'none',
 ])
-type Watermark = z.infer<typeof WatermarkSchema>
 
 const MediaInfoProtocolSchema = z.enum([
   'general,dash',
 ])
-type MediaInfoProtocol = z.infer<typeof MediaInfoProtocolSchema>
 
 const SearchSchemeSchema = z.enum([
   'sinaweibo://svssearch?containerid=232080',
 ])
-type SearchScheme = z.infer<typeof SearchSchemeSchema>
 
 const StorageTypeSchema = z.enum([
   '',
   'oss',
 ])
-type StorageType = z.infer<typeof StorageTypeSchema>
 
 const PicInfoTypeSchema = z.enum([
   'pic',
 ])
-type PicInfoType = z.infer<typeof PicInfoTypeSchema>
 
 const ReadtimetypeSchema = z.enum([
   'mblog',
 ])
-type Readtimetype = z.infer<typeof ReadtimetypeSchema>
 
 const IconListTypeSchema = z.enum([
   'vip',
 ])
-type IconListType = z.infer<typeof IconListTypeSchema>
 
 const ActionlogActionlogSchema = z.object({
   act_code: z.number(),
@@ -179,7 +154,6 @@ const AnnotationClassSchema = z.object({
   type: ObjectTypeSchema.optional(),
   shooting: z.number().optional(),
 })
-type AnnotationClass = z.infer<typeof AnnotationClassSchema>
 
 const CommentManageInfoSchema = z.object({
   comment_permission_type: z.number(),
@@ -189,14 +163,12 @@ const CommentManageInfoSchema = z.object({
   ai_assistant_comment_type: z.number().optional(),
   ai_play_picture_type: z.number().optional(),
 })
-type CommentManageInfo = z.infer<typeof CommentManageInfoSchema>
 
 const ContentAuthListSchema = z.object({
   content_auth: z.number(),
   show_type: z.number(),
   rank: z.number(),
 })
-type ContentAuthList = z.infer<typeof ContentAuthListSchema>
 
 const ContinueTagSchema = z.object({
   title: z.string(),
@@ -204,14 +176,12 @@ const ContinueTagSchema = z.object({
   scheme: z.string(),
   cleaned: z.boolean(),
 })
-type ContinueTag = z.infer<typeof ContinueTagSchema>
 
 const NumberDisplayStrategySchema = z.object({
   apply_scenario_flag: z.number(),
   display_text_min_number: z.number(),
   display_text: z.string(),
 })
-type NumberDisplayStrategy = z.infer<typeof NumberDisplayStrategySchema>
 
 const PageInfoActionlogSchema = z.object({
   act_type: z.number(),
@@ -229,13 +199,11 @@ const PageInfoActionlogSchema = z.object({
   lfid: z.string().optional(),
   fromlog: z.string().optional(),
 })
-type PageInfoActionlog = z.infer<typeof PageInfoActionlogSchema>
 
 const AuthorSchema = z.object({
   vip: z.string(),
   screen_name: z.string(),
 })
-type Author = z.infer<typeof AuthorSchema>
 
 const ButtonActionlogSchema = z.object({
   act_code: z.number(),
@@ -245,19 +213,16 @@ const ButtonActionlogSchema = z.object({
   fid: z.string(),
   ext: z.string(),
 })
-type ButtonActionlog = z.infer<typeof ButtonActionlogSchema>
 
 const ParamsSchema = z.object({
   uid: z.string(),
 })
-type Params = z.infer<typeof ParamsSchema>
 
 const LiveSchema = z.object({
   height: z.string(),
   width: z.string(),
   bitrate: z.string(),
 })
-type Live = z.infer<typeof LiveSchema>
 
 const AuthorInfoSchema = z.object({
   id: z.number(),
@@ -293,24 +258,20 @@ const AuthorInfoSchema = z.object({
   vvip: z.number(),
   cover_image_phone: z.string(),
 })
-type AuthorInfo = z.infer<typeof AuthorInfoSchema>
 
 const BigPicInfoPicBigSchema = z.object({
   height: z.number(),
   url: z.string(),
   width: z.number(),
 })
-type BigPicInfoPicBig = z.infer<typeof BigPicInfoPicBigSchema>
 
 const ExtInfoSchema = z.object({
   video_orientation: z.string(),
 })
-type ExtInfo = z.infer<typeof ExtInfoSchema>
 
 const ExtraInfoSchema = z.object({
   sceneid: z.string(),
 })
-type ExtraInfo = z.infer<typeof ExtraInfoSchema>
 
 const PlayCompletionActionActionlogSchema = z.object({
   oid: z.string(),
@@ -319,7 +280,6 @@ const PlayCompletionActionActionlogSchema = z.object({
   source: ObjectTypeSchema,
   ext: z.string().optional(),
 })
-type PlayCompletionActionActionlog = z.infer<typeof PlayCompletionActionActionlogSchema>
 
 const ExtSchema = z.object({
   uid: z.string(),
@@ -331,7 +291,6 @@ const ExtSchema = z.object({
   verified_reason: z.string(),
   level: z.number(),
 })
-type Ext = z.infer<typeof ExtSchema>
 
 const MetaSchema = z.object({
   label: LabelSchema,
@@ -343,7 +302,6 @@ const MetaSchema = z.object({
   quality_group: z.number(),
   is_hidden: z.boolean(),
 })
-type Meta = z.infer<typeof MetaSchema>
 
 const TranscodeInfoSchema = z.object({
   pcdn_rule_id: z.number(),
@@ -351,7 +309,6 @@ const TranscodeInfoSchema = z.object({
   origin_video_dr: OriginVideoDrSchema,
   ab_strategies: AbStrategiesSchema,
 })
-type TranscodeInfo = z.infer<typeof TranscodeInfoSchema>
 
 const SubscribeSchema = z.object({
   is_subscribe: z.boolean(),
@@ -365,24 +322,20 @@ const SubscribeSchema = z.object({
   background_custom_pid: z.string(),
   is_expired: z.boolean(),
 })
-type Subscribe = z.infer<typeof SubscribeSchema>
 
 const VideoDownloadStrategySchema = z.object({
   abandon_download: z.number(),
 })
-type VideoDownloadStrategy = z.infer<typeof VideoDownloadStrategySchema>
 
 const PicInfoPicBigSchema = z.object({
   height: z.string(),
   url: z.string(),
   width: z.string(),
 })
-type PicInfoPicBig = z.infer<typeof PicInfoPicBigSchema>
 
 const TransitionPicSchema = z.object({
   pic_big: PicInfoPicBigSchema,
 })
-type TransitionPic = z.infer<typeof TransitionPicSchema>
 
 const PageInfoUserSchema = z.object({
   id: z.string(),
@@ -390,7 +343,6 @@ const PageInfoUserSchema = z.object({
   profile_image_url: z.string(),
   avatar_large: z.string(),
 })
-type PageInfoUser = z.infer<typeof PageInfoUserSchema>
 
 const FocusPointSchema = z.object({
   left: z.number(),
@@ -398,7 +350,6 @@ const FocusPointSchema = z.object({
   width: z.number(),
   height: z.number(),
 })
-type FocusPoint = z.infer<typeof FocusPointSchema>
 
 const BmiddleSchema = z.object({
   url: z.string(),
@@ -407,7 +358,6 @@ const BmiddleSchema = z.object({
   cut_type: z.number(),
   type: z.string(),
 })
-type Bmiddle = z.infer<typeof BmiddleSchema>
 
 const DataSchema = z.object({
   mbrank: z.number(),
@@ -415,13 +365,11 @@ const DataSchema = z.object({
   svip: z.number(),
   vvip: z.number(),
 })
-type Data = z.infer<typeof DataSchema>
 
 const VisibleSchema = z.object({
   type: z.number(),
   list_id: z.number(),
 })
-type Visible = z.infer<typeof VisibleSchema>
 
 const TopicStructSchema = z.object({
   title: z.string(),
@@ -431,7 +379,6 @@ const TopicStructSchema = z.object({
   topic_title_color: z.string().optional(),
   topic_title_color_dark: z.string().optional(),
 })
-type TopicStruct = z.infer<typeof TopicStructSchema>
 
 const UrlStructActionlogSchema = z.object({
   act_type: z.number(),
@@ -449,7 +396,6 @@ const UrlStructActionlogSchema = z.object({
   source: ObjectTypeSchema.optional(),
   fromlog: z.string().optional(),
 })
-type UrlStructActionlog = z.infer<typeof UrlStructActionlogSchema>
 
 const ButtonSchema = z.object({
   skip_format: z.number(),
@@ -458,14 +404,12 @@ const ButtonSchema = z.object({
   params: ParamsSchema,
   actionlog: ButtonActionlogSchema,
 })
-type Button = z.infer<typeof ButtonSchema>
 
 const BigPicInfoSchema = z.object({
   pic_big: BigPicInfoPicBigSchema,
   pic_small: BigPicInfoPicBigSchema,
   pic_middle: BigPicInfoPicBigSchema,
 })
-type BigPicInfo = z.infer<typeof BigPicInfoSchema>
 
 const PlayCompletionActionSchema = z.object({
   type: z.union([z.number(), z.string()]),
@@ -483,25 +427,21 @@ const PlayCompletionActionSchema = z.object({
   ext: ExtSchema.optional(),
   display_type: z.number().optional(),
 })
-type PlayCompletionAction = z.infer<typeof PlayCompletionActionSchema>
 
 const ExtensionSchema = z.object({
   transcode_info: TranscodeInfoSchema,
 })
-type Extension = z.infer<typeof ExtensionSchema>
 
 const PageInfoPicInfoSchema = z.object({
   pic_big: PicInfoPicBigSchema,
   pic_small: PicInfoPicBigSchema.optional(),
   pic_middle: PicInfoPicBigSchema.optional(),
 })
-type PageInfoPicInfo = z.infer<typeof PageInfoPicInfoSchema>
 
 const PicFocusPointSchema = z.object({
   focus_point: FocusPointSchema,
   pic_id: z.string(),
 })
-type PicFocusPoint = z.infer<typeof PicFocusPointSchema>
 
 const PicInfoValueSchema = z.object({
   thumbnail: BmiddleSchema,
@@ -518,13 +458,11 @@ const PicInfoValueSchema = z.object({
   pic_status: z.number(),
   focus_point: FocusPointSchema.optional(),
 })
-type PicInfoValue = z.infer<typeof PicInfoValueSchema>
 
 const IconListSchema = z.object({
   type: IconListTypeSchema,
   data: DataSchema,
 })
-type IconList = z.infer<typeof IconListSchema>
 
 const ImageMetaSchema = z.object({
   croped: z.boolean().optional(),
@@ -600,7 +538,6 @@ const PlayInfoSchema = z.object({
   urls: z.array(z.string()).optional(),
   color_transfer: ColorTransferSchema.optional(),
 })
-type PlayInfo = z.infer<typeof PlayInfoSchema>
 
 const RetweetedStatusUserSchema = z.object({
   id: z.number(),
@@ -625,13 +562,11 @@ const RetweetedStatusUserSchema = z.object({
   planet_video: z.boolean(),
   icon_list: z.array(IconListSchema),
 })
-type RetweetedStatusUser = z.infer<typeof RetweetedStatusUserSchema>
 
 const PlaybackListSchema = z.object({
   meta: MetaSchema,
   play_info: PlayInfoSchema,
 })
-type PlaybackList = z.infer<typeof PlaybackListSchema>
 
 const RetweetedStatusSchema = z.object({
   visible: VisibleSchema,
@@ -746,7 +681,6 @@ const MediaInfoSchema = z.object({
   subscribe: SubscribeSchema.optional(),
   video_title: z.string().optional(),
 })
-type MediaInfo = z.infer<typeof MediaInfoSchema>
 
 const PageInfoSchema = z.object({
   type: z.string(),
@@ -789,9 +723,8 @@ const PageInfoSchema = z.object({
   pause_time: z.string().optional(),
   buttons: z.array(ButtonSchema).optional(),
 })
-type PageInfo = z.infer<typeof PageInfoSchema>
 
-const RawPostSchema = z.object({
+export const RawPostSchema = z.object({
   visible: VisibleSchema,
   created_at: z.string(),
   id: z.number(),

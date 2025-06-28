@@ -103,6 +103,8 @@ export class UserService {
         page,
       })
 
+      const _users = data.users.map(UserParser.parseFollowing)
+
       users.push(..._users)
       page += 1
 

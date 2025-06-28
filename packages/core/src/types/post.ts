@@ -49,9 +49,16 @@ const postSchema = _postSchema.extend({
   isShowBulletIn: z.enum(['0', '2']),
 })
 
+const bookmarkSchema = _postSchema.extend({
+  favBy: z.string(),
+  user: userSchema,
+  retweet: retweetSchema.optional(),
+  card: linkCardSchema.optional(),
+})
+
 export type LinkCard = z.infer<typeof linkCardSchema>
 export type PostMeta = z.infer<typeof postMetaSchema>
 export type Post = z.infer<typeof postSchema>
 export type Retweet = z.infer<typeof retweetSchema>
 export type Comment = z.infer<typeof commentSchema>
-export type Favorite = Post
+export type Favorite = z.infer<typeof bookmarkSchema>
