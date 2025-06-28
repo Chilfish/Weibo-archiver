@@ -15,25 +15,14 @@ import ImportData from '@/components/common/ImportData.vue'
     </p>
 
     <div
-      class="flex gap-4 justify-center items-center"
+      class="flex gap-4 justify-center"
     >
       <Button
-        class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg rounded-full px-10 relative"
+        class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg rounded-full px-10 mb-12 relative"
       >
         <ImportData />
         <Import />
         导入数据
-      </Button>
-
-      或者
-
-      <Button
-        class="rounded-full"
-        as-child
-      >
-        <RouterLink to="/sync">
-          在线爬取您的微博
-        </RouterLink>
       </Button>
     </div>
   </div>

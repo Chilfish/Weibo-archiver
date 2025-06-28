@@ -1,7 +1,6 @@
 import type { Favorite, ImportedData, Post } from '@weibo-archiver/core'
 import type { SearchQuery } from '@/composables/useSearch'
-import { DEFAULT_PAGE_SIZE, idb, readFile, WeiboParser } from '@weibo-archiver/core'
-import { exportData } from '@weibo-archiver/core/src/utils/export'
+import { DEFAULT_PAGE_SIZE, exportData, idb, readFile, WeiboParser } from '@weibo-archiver/core'
 import { destr } from 'destr'
 import Fuse from 'fuse.js'
 import { defineStore } from 'pinia'
@@ -77,10 +76,6 @@ export const usePostStore = defineStore('post', () => {
     })
   }
 
-  async function saveWeibo(posts: Post[]) {
-    return idb.addPosts(posts)
-  }
-
   async function getPosts(
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
@@ -96,20 +91,8 @@ export const usePostStore = defineStore('post', () => {
     return idb.getAllPostsCount()
   }
 
-  async function getNewestPostDate(): Promise<number> {
-    const post = await idb.getLatestPost()
-    if (!post) {
-      return 0
-    }
-    return new Date(post.createdAt).getTime()
-  }
-
   async function getAllFavoritesTotal(): Promise<number> {
     return idb.getAllFavoritesCount()
-  }
-
-  async function saveFavorites(posts: Favorite[]) {
-    return idb.addFavorites(posts)
   }
 
   async function getFavorites(
@@ -124,9 +107,9 @@ export const usePostStore = defineStore('post', () => {
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
   ): Promise<{
-    posts: Post[]
-    total: number
-  }> {
+      posts: Post[]
+      total: number
+    }> {
     const res = fuse.value
       .search(query.searchText)
       .filter(item => (item.score || 0) > 0.5)
@@ -210,7 +193,6 @@ export const usePostStore = defineStore('post', () => {
   return {
     importing,
 
-    saveWeibo,
     getPosts,
     getAllPostsTotal,
     getPostById,
@@ -219,11 +201,9 @@ export const usePostStore = defineStore('post', () => {
     searchPosts,
     saveImportedData,
     parseImport,
-    getNewestPostDate,
     getTodayInLastYears,
     setupFuse,
     clearDB,
     exportAllData,
-    saveFavorites,
   }
 })

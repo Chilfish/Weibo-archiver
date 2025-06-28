@@ -12,8 +12,5 @@
     "dexie": "^4.0.11",
     "file-saver": "^2.0.5",
     "fuse.js": "^7.1.0"
-  },
-  "devDependencies": {
-    "@types/file-saver": "^2.0.7"
   }
 }

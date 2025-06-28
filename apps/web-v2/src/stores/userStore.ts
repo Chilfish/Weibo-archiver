@@ -2,7 +2,7 @@ import type { Following, UserInfo } from '@weibo-archiver/core'
 import { useStorage } from '@vueuse/core'
 import { idb } from '@weibo-archiver/core'
 import { defineStore } from 'pinia'
-import { ref, toRaw } from 'vue'
+import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const curUid = useStorage<string>('curUid', '')
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', () => {
       return
     }
 
-    await idb.addUser(toRaw(user))
+    await idb.addUser(user)
   }
 
   async function importUser(user: UserInfo) {
@@ -44,17 +44,8 @@ export const useUserStore = defineStore('user', () => {
     return idb.getFollowings()
   }
 
-  async function getFollowingsCount(): Promise<number> {
-    return idb.getFollowingsCount()
-  }
-
   async function getAllUsers(): Promise<UserInfo[]> {
     return idb.getUsers()
-  }
-
-  async function updateFollowings(addFollowings: Following[], removeFollowings: Following[]) {
-    await idb.addFollowings(toRaw(addFollowings))
-    await idb.removeFollowings(removeFollowings)
   }
 
   return {
@@ -68,7 +59,5 @@ export const useUserStore = defineStore('user', () => {
     setCurUid,
     getFollowings,
     getAllUsers,
-    updateFollowings,
-    getFollowingsCount,
   }
 })

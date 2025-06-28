@@ -1,9 +1,0 @@
-{
-  "extends": "./.wxt/tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@weibo-archiver/core": ["../../packages/core"]
-    }
-  }
-}
