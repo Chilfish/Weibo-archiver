@@ -6,7 +6,7 @@ import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const curUid = useStorage<string>('curUid', '')
-  const users = ref<UserInfo[]>([])
+  const users = useStorage<UserInfo[]>('users', [])
   const curUser = ref<UserInfo>({} as unknown as UserInfo)
   const isLoadingUser = ref(false)
 
