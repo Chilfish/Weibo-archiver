@@ -61,7 +61,11 @@ export const usePostStore = defineStore('post', () => {
     importing.value = true
     const { user, followings, weibo, favorites } = data
 
-    user.followingIds = followings.map(data => data.uid)
+    const followingIds = followings.map(data => data.uid)
+    if (followingIds.length > 0) {
+      user.followingIds = followingIds
+    }
+
     await userStore.importUser(user)
     await idb.addFollowings(followings)
     await idb.addPosts(WeiboParser.migrateFromOld(weibo, user.uid))
