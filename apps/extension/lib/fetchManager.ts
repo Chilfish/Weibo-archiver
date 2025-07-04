@@ -1,5 +1,5 @@
-import type { Favorite, FetchConfig, Following, Post, UserInfo } from '@/types'
-import { FetchService, PostService, UserService } from './services'
+import type { Favorite, FetchConfig, Following, Post, UserInfo } from '@weibo-archiver/core'
+import { FetchService, PostService, UserService } from '@weibo-archiver/core'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'

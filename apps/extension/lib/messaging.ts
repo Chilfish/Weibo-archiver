@@ -1,4 +1,4 @@
-import type { UserInfo } from '@/types'
+import type { UserInfo } from '@weibo-archiver/core'
 import type { TaskConfig, TaskStatus } from '@/types/storage'
 import { sendMessage } from 'webext-bridge/popup'
 import { browser } from 'wxt/browser'

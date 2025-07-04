@@ -1,4 +1,4 @@
-import type { UserInfo } from '@/types'
+import type { UserInfo } from '@weibo-archiver/core'
 import type { TaskConfig } from '@/types/storage'
 import {
   AlertCircle,

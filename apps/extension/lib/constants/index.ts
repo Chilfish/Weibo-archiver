@@ -1,4 +1,5 @@
-import type { AppConfig, FetchConfig, TaskConfig } from '@/types'
+import type { FetchConfig } from '@weibo-archiver/core'
+import type { AppConfig, TaskConfig } from '@/types'
 
 /**
  * 默认的图片 CDN
@@ -6,22 +7,6 @@ import type { AppConfig, FetchConfig, TaskConfig } from '@/types'
 export const imgCdn = 'https://image.baidu.com/search/down?url='
 
 export const WEIBO_BASE_URL = 'https://weibo.com/ajax'
-
-export const FETCH_PATH = {
-  PROFILE: '/profile/info',
-  PROFILE_DETAIL: '/profile/detail',
-  FOLLOWINGS: '/friendships/friends',
-  FOLLOWINGS_MINE: '/profile/followContent',
-
-  SEARCH: '/side/search',
-
-  POSTS_ALL: '/statuses/mymblog',
-  POSTS_RANGE: '/statuses/searchProfile',
-  POST_LONGTEXT: '/statuses/longtext',
-  POST_COMMENTS: '/statuses/buildComments',
-
-  FAVORITES: '/favorites/all_fav',
-} as const
 
 export const DEFAULT_FETCH_CONFIG: FetchConfig = {
   restore: false,
@@ -64,11 +49,3 @@ export const DEFAULT_TASK_CONFIG: Omit<
   isFirstBackup: true,
   nextRunTime: 0,
 }
-
-// 存储键名
-export const STORAGE_KEYS = {
-  TASKS: 'weibo_backup_tasks',
-  CONFIG: 'weibo_backup_config',
-  TASK_STATUSES: 'weibo_backup_task_statuses',
-  BACKUP_META: 'weibo_backup_meta',
-} as const

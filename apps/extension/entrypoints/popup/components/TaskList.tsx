@@ -1,4 +1,5 @@
 import type { TaskConfig, TaskStatus } from '@/types/storage'
+import { formatDate } from '@weibo-archiver/core'
 import {
   AlertCircle,
   Calendar,
@@ -47,7 +48,6 @@ import {
 import { imgCdn } from '@/lib/constants'
 import { formatInterval } from '@/lib/messaging'
 import { useTaskStore, useUIStore } from '@/lib/stores'
-import { formatDate } from '@/lib/utils/format'
 import { EditTaskDialog } from './EditTaskDialog'
 
 interface TaskItemProps {

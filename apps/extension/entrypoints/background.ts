@@ -1,4 +1,4 @@
-import type { Post } from '@/types'
+import type { Post } from '@weibo-archiver/core'
 import type { BackupData, TaskConfig, TaskStatus } from '@/types/storage'
 import { onMessage } from 'webext-bridge/background'
 import { defineBackground } from 'wxt/utils/define-background'

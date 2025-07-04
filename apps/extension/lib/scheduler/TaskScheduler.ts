@@ -165,11 +165,7 @@ export class TaskScheduler {
     }
 
     // 如果到了运行时间
-    if (task.nextRunTime <= now) {
-      return true
-    }
-
-    return false
+    return task.nextRunTime <= now
   }
 
   /**

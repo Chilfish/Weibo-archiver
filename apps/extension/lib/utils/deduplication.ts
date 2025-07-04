@@ -1,4 +1,5 @@
-import type { BackupData, Post } from '@/types'
+import type { Post } from '@weibo-archiver/core'
+import type { BackupData } from '@/types'
 
 /**
  * 数据去重和增量获取工具类

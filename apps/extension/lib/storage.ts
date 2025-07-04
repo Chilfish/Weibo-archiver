@@ -1,3 +1,4 @@
+import type { UserInfo } from '@weibo-archiver/core'
 import type {
   AppConfig,
   BackupData,
@@ -59,7 +60,7 @@ class StorageManager {
   }
 
   // 批量添加任务（从本地用户数据）
-  async addTasksFromUsers(users: import('@/types').UserInfo[]): Promise<{
+  async addTasksFromUsers(users: UserInfo[]): Promise<{
     added: number
     skipped: number
     errors: string[]

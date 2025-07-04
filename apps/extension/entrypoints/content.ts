@@ -1,4 +1,4 @@
-import type { UserInfo } from '@/types'
+import type { UserInfo } from '@weibo-archiver/core'
 import type { BackupData } from '@/types/storage'
 import {
   allowWindowMessaging,
