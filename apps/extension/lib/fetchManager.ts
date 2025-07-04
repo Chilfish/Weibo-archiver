@@ -147,10 +147,6 @@ export class FetchManager {
   }
 
   async fetchFavorites(args: { onFetch: (posts: Favorite[]) => any }) {
-    if (this.userService.uid !== this.curUid) {
-      return []
-    }
-
     this.fetchState.fetchType = 'favorites'
     return await this.postService.getFavorites(args)
   }

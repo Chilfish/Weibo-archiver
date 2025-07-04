@@ -1,20 +1,19 @@
 <script setup lang="tsx">
 import type {
-  Favorite,
   FetchConfig,
   Following,
-  Post,
   UserInfo,
 } from '@weibo-archiver/core'
 import type { Status } from '@/components/sync/FetchStatus'
 import { useStorage } from '@vueuse/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
-import { reactive, ref } from 'vue'
+import { reactive, ref, toRaw } from 'vue'
 import { onMessage, sendMessage } from 'webext-bridge/window'
 import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
 import { FetchStatus } from '@/components/sync/FetchStatus'
 import { UserSearch } from '@/components/sync/UserSearch'
+import { useSyncBookmarks, useSyncPosts } from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 
 const selectedUser = ref<UserInfo>()
@@ -24,6 +23,8 @@ const fetchingStatus = ref<Status>('preparing')
 
 const postStore = usePostStore()
 const userStore = useUserStore()
+const syncBookmarks = useSyncBookmarks()
+const syncPosts = useSyncPosts()
 
 const fetchCount = reactive({
   posts: 0,
@@ -55,11 +56,22 @@ async function startArchive() {
 
   await loadLocalCount()
 
+  console.log(toRaw(fetchConfig.value))
+
+  syncBookmarks.onFetch.value = async (data) => {
+    await postStore.saveFavorites(data)
+    fetchCount.favorites = await postStore.getAllFavoritesTotal()
+  }
+
+  syncPosts.onFetch.value = async (data) => {
+    fetchConfig.value.curPage = data.page
+    fetchConfig.value.sinceId = data.sinceId
+    await postStore.saveWeibo(data.posts)
+    fetchCount.posts = await postStore.getAllPostsTotal()
+  }
+
   if (fetchConfig.value.hasWeibo) {
-    await sendMessage('fetch:all-posts', {
-      ...fetchConfig.value,
-      uid: selectedUser.value.uid,
-    })
+    await syncPosts.start(fetchConfig.value, selectedUser.value.uid)
   }
 
   if (fetchConfig.value.hasFollowings) {
@@ -69,32 +81,11 @@ async function startArchive() {
   }
 
   if (fetchConfig.value.hasFavorites) {
-    await sendMessage('fetch:favorites', {
-      uid: selectedUser.value.uid,
-    })
+    await syncBookmarks.start(selectedUser.value.uid)
   }
 
   fetchingStatus.value = 'completed'
 }
-
-onMessage<{
-  posts: Post[]
-  page: number
-  sinceId: string
-}>('fetch:all-posts-paged', async ({ data }) => {
-  console.log(data)
-  fetchConfig.value.curPage = data.page
-  fetchConfig.value.sinceId = data.sinceId
-  await postStore.saveWeibo(data.posts)
-  fetchCount.posts = await postStore.getAllPostsTotal()
-})
-
-onMessage<Favorite[]>('fetch:favorites-paged', async ({ data }) => {
-  console.log(data)
-
-  await postStore.saveFavorites(data)
-  fetchCount.favorites = await postStore.getAllFavoritesTotal()
-})
 
 onMessage('abort-fetch', () => fetchingStatus.value = 'abort')
 
