@@ -153,7 +153,7 @@ export class PostService {
       page++
 
       if (posts.length === 0 || this.fetchedCount >= this.postsTotal) {
-        console.log('no more posts')
+        console.log('no more posts', this.fetchedCount, this.postsTotal)
         break
       }
     }
