@@ -45,7 +45,7 @@ async function onConfirm([selectedAdd, selectedRemove]: [Following[], Following[
   followings.value = [...followings.value, ...selectedAdd]
   followings.value = followings.value.filter(user => !selectedRemove.some(seletedUser => seletedUser.uid === user.uid))
 
-  await userStore.updateFollowings(selectedAdd, selectedRemove)
+  await userStore.updateFollowings(selectedAdd, selectedRemove, followings.value)
   isSyncLoading.value = false
 }
 

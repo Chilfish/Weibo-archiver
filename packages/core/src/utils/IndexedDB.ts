@@ -58,6 +58,14 @@ export class IndexedDB extends Dexie {
     await this.followings.bulkPut(users)
   }
 
+  async removeFollowings(users: Following[]): Promise<void> {
+    const keys = await this.followings
+      .filter(dbUser => users.some(user => user.uid === dbUser.uid))
+      .primaryKeys()
+
+    await this.followings.bulkDelete(keys)
+  }
+
   async addFavorites(favorites: Favorite[]) {
     for (const favorite of favorites) {
       favorite.favBy = this.curUid
@@ -68,7 +76,7 @@ export class IndexedDB extends Dexie {
   async getFollowings(): Promise<Following[]> {
     const curUserFollowingIds = this.curUser?.followingIds || []
 
-    return this.followingQuery
+    return this.followings
       .filter(user => curUserFollowingIds.includes(user.uid))
       .toArray()
   }
@@ -77,7 +85,7 @@ export class IndexedDB extends Dexie {
    * 油猴脚本端不存在多用户
    */
   async getAllFollowings(): Promise<Following[]> {
-    return this.followingQuery.toArray()
+    return this.followings.toArray()
   }
 
   async getAllFavorites(): Promise<Favorite[]> {
@@ -148,26 +156,17 @@ export class IndexedDB extends Dexie {
       .toArray()
   }
 
-  async getLatestPost(): Promise<Post> {
-    const post = await this.postQuery
-      .limit(1)
-      .toArray()
-
-    return post[0]
-  }
-
   async getAllPostsCount(): Promise<number> {
     return this.postQuery.count()
   }
 
   async getAllFollowingsCount(): Promise<number> {
-    return this.followingQuery
-      .count()
+    return this.followings.count()
   }
 
   async clearDB() {
     const postsCount = await this.postQuery.delete()
-    const followingsCount = await this.followingQuery.clear()
+    const followingsCount = await this.followings.clear()
     const favoritesCount = await this.favoriteQuery.delete()
     const usersCount = await this.users.where('uid').equals(this.curUid).delete()
 
@@ -189,10 +188,6 @@ export class IndexedDB extends Dexie {
     return this.favorites
       .where('favBy')
       .equals(this.curUid)
-  }
-
-  private get followingQuery() {
-    return this.followings
   }
 }
 

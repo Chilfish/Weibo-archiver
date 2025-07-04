@@ -100,14 +100,6 @@ export const usePostStore = defineStore('post', () => {
     return idb.getAllPostsCount()
   }
 
-  async function getNewestPostDate(): Promise<number> {
-    const post = await idb.getLatestPost()
-    if (!post) {
-      return 0
-    }
-    return new Date(post.createdAt).getTime()
-  }
-
   async function getAllFavoritesTotal(): Promise<number> {
     return idb.getAllFavoritesCount()
   }
@@ -223,7 +215,6 @@ export const usePostStore = defineStore('post', () => {
     searchPosts,
     saveImportedData,
     parseImport,
-    getNewestPostDate,
     getTodayInLastYears,
     setupFuse,
     clearDB,

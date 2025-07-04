@@ -18,7 +18,6 @@ const isLoading = ref(false)
 const curPage = ref(Number(route.query.page) || 1)
 const pageSize = ref(Number(route.query.pageSize) || DEFAULT_PAGE_SIZE)
 const postsTotal = ref(0)
-const newestPostDate = ref(Date.now())
 
 const weiboArr = ref<Post[]>([])
 
@@ -33,14 +32,12 @@ onBeforeMount(async () => {
   }
   await getPosts()
   postsTotal.value = await postStore.getAllPostsTotal()
-  newestPostDate.value = await postStore.getNewestPostDate()
 })
 
 watch(() => postStore.importing, async (importing) => {
   if (importing === false) {
     await getPosts()
     postsTotal.value = await postStore.getAllPostsTotal()
-    newestPostDate.value = await postStore.getNewestPostDate()
   }
 })
 
