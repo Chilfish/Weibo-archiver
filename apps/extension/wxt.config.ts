@@ -17,13 +17,12 @@ export default defineConfig({
     permissions: [
       'cookies',
       'storage',
-      'notifications',
       'activeTab',
       'tabs',
-      'alarms',
     ],
     name: `Weibo Archiver${isDev ? ' (Dev)' : ''}`,
     description: 'Backup your Weibo posts automatically',
+    homepage_url: 'https://weibo-archiver.chilfish.top/',
   },
   imports: false,
 })
