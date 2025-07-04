@@ -6,6 +6,7 @@ import App from './App.vue'
 
 import { installDirectives } from './directives'
 import routes from './routes'
+import './lib/importFromExt'
 
 import './style.css'
 

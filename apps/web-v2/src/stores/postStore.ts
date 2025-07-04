@@ -62,7 +62,11 @@ export const usePostStore = defineStore('post', () => {
     importing.value = true
     const { user, followings, weibo, favorites } = data
 
-    user.followingIds = followings.map(data => data.uid)
+    const followingIds = followings.map(data => data.uid)
+    if (followingIds.length > 0) {
+      user.followingIds = followingIds
+    }
+
     await userStore.importUser(user)
     await idb.addFollowings(followings)
     await idb.addPosts(WeiboParser.migrateFromOld(weibo, user.uid))
@@ -124,9 +128,9 @@ export const usePostStore = defineStore('post', () => {
     curPage: number,
     pageSize: number = DEFAULT_PAGE_SIZE,
   ): Promise<{
-    posts: Post[]
-    total: number
-  }> {
+      posts: Post[]
+      total: number
+    }> {
     const res = fuse.value
       .search(query.searchText)
       .filter(item => (item.score || 0) > 0.5)
