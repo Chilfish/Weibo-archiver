@@ -1,5 +1,5 @@
 import type { TaskConfig } from '@/types/storage'
-import { storageManager } from '@/lib/storage'
+import { storageManager } from '@/lib/storageManager'
 
 export interface SchedulerConfig {
   checkInterval: number // 检查间隔（毫秒）

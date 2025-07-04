@@ -3,18 +3,17 @@ import type { BackupData, TaskConfig, TaskStatus } from '@/types/storage'
 import { onMessage } from 'webext-bridge/background'
 import { defineBackground } from 'wxt/utils/define-background'
 import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
+import { getCookies } from '@/lib/cookie'
+import {
+  DataDeduplicator,
+  PaginationController,
+} from '@/lib/deduplication'
 import { FetchManager } from '@/lib/fetchManager'
 import {
   DEFAULT_SCHEDULER_CONFIG,
   TaskScheduler,
 } from '@/lib/scheduler/TaskScheduler'
-import { fileSystemManager, storageManager } from '@/lib/storage'
-import { getCookies } from '@/lib/utils/cookie'
-import {
-  DataDeduplicator,
-  PaginationController,
-} from '@/lib/utils/deduplication'
-import { extensionStorage } from '@/lib/utils/storage'
+import { extensionStorage, fileSystemManager, storageManager } from '@/lib/storageManager'
 
 // 全局变量
 let fetchManager: FetchManager

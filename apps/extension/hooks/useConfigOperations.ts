@@ -1,7 +1,7 @@
 import type { AppConfig } from '@/types/storage'
 import { useCallback } from 'react'
 import { messageManager } from '@/lib/messaging'
-import { storageManager } from '@/lib/storage'
+import { storageManager } from '@/lib/storageManager'
 import { useConfigStore } from '@/lib/stores/useConfigStore'
 import { useUIStore } from '@/lib/stores/useUIStore'
 

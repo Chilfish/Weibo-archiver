@@ -1,7 +1,7 @@
 import type { TaskConfig } from '@/types/storage'
 import { useCallback } from 'react'
 import { messageManager } from '@/lib/messaging'
-import { storageManager } from '@/lib/storage'
+import { storageManager } from '@/lib/storageManager'
 import { useTaskStore } from '@/lib/stores/useTaskStore'
 import { useUIStore } from '@/lib/stores/useUIStore'
 

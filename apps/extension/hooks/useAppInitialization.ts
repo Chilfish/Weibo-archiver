@@ -3,7 +3,7 @@ import type { TaskConfig } from '@/types/storage'
 import { useEffect } from 'react'
 import { DEFAULT_TASK_CONFIG } from '@/lib/constants'
 import { generateTaskId, messageManager } from '@/lib/messaging'
-import { storageManager } from '@/lib/storage'
+import { storageManager } from '@/lib/storageManager'
 import { useConfigStore } from '@/lib/stores/useConfigStore'
 import { useTaskStore } from '@/lib/stores/useTaskStore'
 
