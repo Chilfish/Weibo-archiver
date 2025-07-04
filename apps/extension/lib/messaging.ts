@@ -25,12 +25,6 @@ export interface MessageTypes {
     return: undefined
   }
 
-  // 停止备份任务
-  'stop-backup': {
-    data: { taskId: string }
-    return: undefined
-  }
-
   // 获取任务状态
   'get-task-status': {
     data: { taskId: string }
@@ -49,40 +43,10 @@ export interface MessageTypes {
     return: Record<string, TaskStatus>
   }
 
-  // 检查 Cookie 状态
-  'check-cookies': {
-    data: object
-    return: { valid: boolean, uid?: string }
-  }
-
   // 设置全局配置
   'set-global-config': {
     data: { interval: number, autoStart: boolean }
     return: undefined
-  }
-
-  // 获取备份统计
-  'get-backup-stats': {
-    data: { taskId: string }
-    return: {
-      totalPosts: number
-      lastBackup: number
-      nextBackup: number
-    }
-  }
-
-  // 获取调度器统计
-  'get-scheduler-stats': {
-    data: object
-    return: {
-      totalTasks: number
-      enabledTasks: number
-      runningTasks: number
-      completedTasks: number
-      failedTasks: number
-      nextRunTime: number | null
-      lastCheckTime: number
-    }
   }
 
   // 获取本地存储的用户数据
@@ -154,11 +118,6 @@ class MessageManager {
     return this.send('start-backup', { taskId })
   }
 
-  // 停止备份任务
-  async stopBackup(taskId: string): Promise<void> {
-    return this.send('stop-backup', { taskId })
-  }
-
   // 获取任务状态
   async getTaskStatus(taskId: string): Promise<TaskStatus> {
     return this.send('get-task-status', { taskId })
@@ -174,36 +133,9 @@ class MessageManager {
     return this.send('get-all-statuses', {})
   }
 
-  // 检查 Cookie 状态
-  async checkCookies(): Promise<{ valid: boolean, uid?: string }> {
-    return this.send('check-cookies', {})
-  }
-
   // 设置全局配置
   async setGlobalConfig(interval: number, autoStart: boolean): Promise<void> {
     return this.send('set-global-config', { interval, autoStart })
-  }
-
-  // 获取备份统计
-  async getBackupStats(taskId: string): Promise<{
-    totalPosts: number
-    lastBackup: number
-    nextBackup: number
-  }> {
-    return this.send('get-backup-stats', { taskId })
-  }
-
-  // 获取调度器统计
-  async getSchedulerStats(): Promise<{
-    totalTasks: number
-    enabledTasks: number
-    runningTasks: number
-    completedTasks: number
-    failedTasks: number
-    nextRunTime: number | null
-    lastCheckTime: number
-  }> {
-    return this.send('get-scheduler-stats', {})
   }
 
   // 获取本地存储的用户数据

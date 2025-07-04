@@ -423,27 +423,6 @@ function setupMessage() {
     await executeTask((data as any).taskId)
   })
 
-  onMessage('stop-backup', async ({ data }) => {
-    if (!data || typeof data !== 'object' || !('taskId' in data)) {
-      throw new Error('Invalid data')
-    }
-    // 停止任务：禁用并清除下次运行时间
-    const taskId = (data as any).taskId
-    await storageManager.updateTask(taskId, {
-      enabled: false,
-      nextRunTime: 0,
-    })
-
-    await storageManager.updateTaskStatus(taskId, {
-      status: 'idle',
-      message: '任务已停止',
-      progress: 0,
-      nextRun: 0,
-    })
-
-    console.log(`Task ${taskId} stopped`)
-  })
-
   onMessage('get-task-status', async ({ data }) => {
     if (!data || typeof data !== 'object' || !('taskId' in data)) {
       throw new Error('Invalid data')
@@ -467,10 +446,6 @@ function setupMessage() {
     return await getAllStatuses()
   })
 
-  onMessage('check-cookies', async () => {
-    return await checkCookies()
-  })
-
   onMessage('set-global-config', async ({ data }) => {
     if (
       !data
@@ -481,13 +456,6 @@ function setupMessage() {
       throw new Error('Invalid data')
     }
     await setGlobalConfig((data as any).interval, (data as any).autoStart)
-  })
-
-  onMessage('get-backup-stats', async ({ data }) => {
-    if (!data || typeof data !== 'object' || !('taskId' in data)) {
-      throw new Error('Invalid data')
-    }
-    return await getBackupStats((data as any).taskId)
   })
 
   onMessage('get-scheduler-stats', async () => {
@@ -503,6 +471,15 @@ function setupMessage() {
       '个用户',
     )
     return allBackupData
+  })
+
+  onMessage<{ uid: string }>('fetch:followings', async ({ data }) => {
+    const { uid } = (data || {})
+    if (!uid) {
+      return []
+    }
+
+    return fetchManager.fetchFollowings(uid)
   })
 }
 

@@ -4,18 +4,14 @@ import {
   ArrowDownIcon,
   ArrowUpDownIcon,
   ArrowUpIcon,
-  CalendarIcon,
   ClockIcon,
   MessageCircleIcon,
-  RefreshCwIcon,
   RepeatIcon,
   TrendingUpIcon,
 } from 'lucide-vue-next'
 import { reactive } from 'vue'
 
 defineProps<{
-  isLoading: boolean
-  lastSyncTime: Date
   totalPosts: number
 }>()
 
@@ -23,20 +19,6 @@ const emits = defineEmits<{
   sortChange: [sort: SortOption]
   manualSync: []
 }>()
-
-const formatTime = (date: Date) => {
-  const now = new Date()
-  const diff = now.getTime() - date.getTime()
-  const minutes = Math.floor(diff / 60000)
-
-  if (minutes < 1)
-    return '刚刚'
-  if (minutes < 60)
-    return `${minutes}分钟前`
-  if (minutes < 1440)
-    return `${Math.floor(minutes / 60)}小时前`
-  return date.toLocaleDateString('zh-CN')
-}
 
 const sortBy = reactive<SortOption>({
   field: 'time',
@@ -74,22 +56,9 @@ const handleSortChange = (field: SortOption['field']) => {
             {{ totalPosts }} 条微博
           </Badge>
         </div>
-        <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-          <CalendarIcon class="h-4 w-4" />
-          <span>最后更新: {{ formatTime(lastSyncTime) }}</span>
-        </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
-        <Button
-          :disabled="isLoading"
-          class="sm:mr-auto"
-          variant="outline"
-          @click="emits('manualSync')"
-        >
-          <RefreshCwIcon class="mr-2 h-4 w-4" :class="[{ 'animate-spin': isLoading }]" />
-          {{ isLoading ? "同步中" : "手动同步" }}
-        </Button>
         <Button
           :variant="sortBy.field === 'time' ? 'default' : 'outline'"
           size="sm"

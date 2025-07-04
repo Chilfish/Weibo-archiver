@@ -3,13 +3,9 @@ import type { Post } from '@weibo-archiver/core'
 import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { onMessage, sendMessage } from 'webext-bridge/window'
 import Pagination from '@/components/common/Pagination.vue'
-import DialogSyncedCount from '@/components/home/DialogSyncedCount.vue'
 import EmptyWeibo from '@/components/home/EmptyWeibo.vue'
-import HomeHeader from '@/components/home/HomeHeader.vue'
 import Weibo from '@/components/weibo/Weibo.vue'
-import { config } from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 
 const postStore = usePostStore()
@@ -89,53 +85,17 @@ async function changePage(newPage: number, newPageSize: number) {
   await getPosts()
   scrollToTop()
 }
-
-const syncedCount = ref(0)
-const newPostsCount = ref(0)
-const openDialog = ref(false)
-async function onManualSync() {
-  isLoading.value = true
-  openDialog.value = true
-  const posts = await sendMessage<Post[]>('fetch:posts', {
-    uid: userStore.curUid,
-    newestPostDate: newestPostDate.value,
-  })
-
-  const firstPagePosts = await postStore.getPosts(1, 20)
-  const newPosts = posts.filter(fetchedPost => !firstPagePosts.some(post => post.id === fetchedPost.id))
-  newPostsCount.value = newPosts.length
-
-  await postStore.saveWeibo(posts)
-  await getPosts()
-
-  config.value.syncTime.weibo = Date.now()
-  isLoading.value = false
-}
-
-onMessage<number>('state:fetch-count', async ({ data }) => {
-  syncedCount.value = data || 0
-})
 </script>
 
 <template>
-  <DialogSyncedCount
-    v-model:open-dialog="openDialog"
-    :synced-count="syncedCount"
-    :new-posts-count="newPostsCount"
-    :is-loading="isLoading"
-  />
-
   <main
     class="flex flex-col gap-4 items-center relative w-full"
   >
-    <HomeHeader
-      v-if="postsTotal > 1"
-      :last-sync-time="new Date(config.syncTime.weibo)"
-      :is-loading="isLoading"
-      :total-posts="postsTotal"
-      @sort-change="console.log"
-      @manual-sync="onManualSync"
-    />
+    <!--    <HomeHeader -->
+    <!--      v-if="postsTotal > 1" -->
+    <!--      :total-posts="postsTotal" -->
+    <!--      @sort-change="console.log" -->
+    <!--    /> -->
 
     <section
       v-if="weiboArr.length > 0"
