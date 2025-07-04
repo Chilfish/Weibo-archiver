@@ -80,10 +80,7 @@ export class UserService {
       return []
     }
 
-    const users = data.users.map(user => ({
-      ...UserParser.parseFollowing(user),
-      followBy: uid,
-    }))
+    const users = data.users.map(user => UserParser.parseFollowing(user))
 
     await args.onFetch?.({ data: users, page })
 
@@ -102,8 +99,6 @@ export class UserService {
         ...args,
         page,
       })
-
-      const _users = data.users.map(UserParser.parseFollowing)
 
       users.push(..._users)
       page += 1
