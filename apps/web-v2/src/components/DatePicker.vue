@@ -8,12 +8,6 @@ import { CalendarIcon } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import CalendarView from './CalendarView.vue'
 
-const props = withDefaults(defineProps<{
-  disabled?: boolean
-}>(), {
-  disabled: false,
-})
-
 const value = defineModel<DateValue | undefined>('value')
 const df = new DateFormatter('zh-CN', {
   dateStyle: 'long',
@@ -26,10 +20,9 @@ const df = new DateFormatter('zh-CN', {
       <Button
         variant="outline"
         :class="cn(
-          'w-fit justify-start text-left font-normal',
+          'w-[280px] justify-start text-left font-normal',
           !value && 'text-muted-foreground',
         )"
-        :disabled="props.disabled"
       >
         <CalendarIcon class="mr-2 h-4 w-4" />
         {{ value ? df.format(value.toDate(getLocalTimeZone())) : "请选一个日期" }}

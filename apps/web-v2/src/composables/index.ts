@@ -1,4 +1,4 @@
-import type { AlbumPreviewEvent, AppConfig, ImagePreviewEvent } from '../types'
+import type { AlbumPreviewEvent, AppConfig, ImagePreviewEvent } from '@/types'
 import { useStorage } from '@vueuse/core'
 import {
   emitter as _emitter,
@@ -15,20 +15,7 @@ export const config = useStorage<AppConfig>('config', {
   theme: 'light',
   imgHost: 'cdn',
   customImageUrl: 'http://localhost:3000/images/',
-  syncTime: {
-    weibo: Date.now(),
-    followings: Date.now(),
-    bookmarks: Date.now(),
-  },
 })
-
-if (!config.value.syncTime?.weibo) {
-  config.value.syncTime = {
-    weibo: Date.now(),
-    followings: Date.now(),
-    bookmarks: Date.now(),
-  }
-}
 
 export const emitter = _emitter<{
   'open-image-preview': ImagePreviewEvent

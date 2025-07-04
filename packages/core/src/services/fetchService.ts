@@ -18,12 +18,11 @@ import { createFetcher } from '../utils/fetch'
 
 export class FetchService {
   fetcher: Fetcher
-  abortController = new AbortController()
 
   onRawFetch: (args: { data: any, type: string }) => any = () => {}
 
   constructor(
-    private cookies?: string,
+    cookies?: string,
   ) {
     this.fetcher = this.setFetcher(cookies || '')
   }
@@ -65,14 +64,14 @@ export class FetchService {
     return data
   }
 
-  async myFollowings(args: FetchArgs['myFollowings']): Promise<RawMyFollowings['follows']> {
+  async myFollowings(args: FetchArgs['myFollowings']): Promise<RawMyFollowings> {
     const { data } = await this.fetcher<RawMyFollowings, FetchArgs['myFollowings']>(
-      FETCH_PATH.FOLLOWINGS_MINE,
+      FETCH_PATH.FOLLOWINGS,
       args,
     )
 
     await this.onRawFetch({ data, type: FETCH_PATH.FOLLOWINGS })
-    return data.follows
+    return data
   }
 
   async searchUser(keyword: string): Promise<RawSearchUser> {
@@ -143,21 +142,11 @@ export class FetchService {
     return data.status
   }
 
-  abortFetch(reason: string) {
-    this.abortController.abort(reason)
-    this.setFetcher()
-  }
-
-  setFetcher(cookies?: string) {
-    if (cookies) {
-      this.cookies = cookies
-    }
-    this.abortController = new AbortController()
+  setFetcher(cookies: string) {
     this.fetcher = createFetcher({
       headers: {
-        Cookie: this.cookies || undefined,
+        Cookie: cookies || undefined,
       },
-      signal: this.abortController.signal,
     })
     return this.fetcher
   }
