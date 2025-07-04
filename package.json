@@ -53,8 +53,13 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
       "esbuild",
-      "simple-git-hooks"
+      "msw",
+      "simple-git-hooks",
+      "spawn-sync",
+      "unrs-resolver",
+      "vue-demi"
     ],
     "overrides": {
       "css-select": "5.1.0"
