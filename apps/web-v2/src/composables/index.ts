@@ -9,6 +9,7 @@ import {
 import { computed } from 'vue'
 
 export * from './useSearch'
+export * from './useSync'
 
 export const config = useStorage<AppConfig>('config', {
   theme: 'light',

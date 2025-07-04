@@ -752,7 +752,7 @@ const StatusSchema = z.object({
 })
 
 const FavoriteSchema = z.object({
-  status: z.array(StatusSchema),
+  status: z.array(RawPostSchema),
   total_number: z.number(),
 })
 
