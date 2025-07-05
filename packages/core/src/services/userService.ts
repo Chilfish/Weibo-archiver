@@ -59,11 +59,13 @@ export class UserService {
     isMe?: boolean
     onFetch?: (args: { data: Following[], page: number }) => any
   }): Promise<Following[]> {
-    const { page, uid, isMe } = args
+    const { page, uid } = args
 
-    const fetchFn = isMe
-      ? this.fetchService.myFollowings.bind(this.fetchService)
-      : this.fetchService.userFollowings.bind(this.fetchService)
+    // const fetchFn = isMe
+    //   ? this.fetchService.myFollowings.bind(this.fetchService)
+    //   : this.fetchService.userFollowings.bind(this.fetchService)
+
+    const fetchFn = this.fetchService.userFollowings.bind(this.fetchService)
 
     const data = await fetchFn({
       page,
@@ -111,10 +113,10 @@ export class UserService {
     return users
   }
 
-  async getMyFollowings(page: number): Promise<Following[]> {
-    const data = await this.fetchService.myFollowings({ page })
-    const users = data.users
-
-    return users.map(UserParser.parseFollowing)
-  }
+  // async getMyFollowings(page: number): Promise<Following[]> {
+  //   const data = await this.fetchService.myFollowings({ page })
+  //   const users = data.users
+  //
+  //   return users.map(UserParser.parseFollowing)
+  // }
 }

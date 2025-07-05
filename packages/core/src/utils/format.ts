@@ -1,3 +1,10 @@
+import type { DateValue } from '@internationalized/date'
+import { parseAbsolute } from '@internationalized/date'
+
+export function toDateValue(date: string | number | Date): DateValue {
+  return parseAbsolute(new Date(date).toISOString(), 'Asia/Shanghai')
+}
+
 /**
  * Format the date string
  * @param time the date string

@@ -4,7 +4,7 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
-    "typecheck": "tsc --noEmit -p ./tsconfig.json"
+    "typecheck": "tsc --noEmit ./src/**/**.ts"
   },
   "dependencies": {
     "@internationalized/date": "^3.8.0",

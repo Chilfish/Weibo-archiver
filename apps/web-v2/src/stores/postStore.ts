@@ -194,6 +194,13 @@ export const usePostStore = defineStore('post', () => {
     })
   }
 
+  async function saveWeibo(posts: Post[]) {
+    return idb.addPosts(posts)
+  }
+  async function saveFavorites(posts: Favorite[]) {
+    return idb.addFavorites(posts)
+  }
+
   return {
     importing,
 
@@ -209,5 +216,7 @@ export const usePostStore = defineStore('post', () => {
     setupFuse,
     clearDB,
     exportAllData,
+    saveWeibo,
+    saveFavorites,
   }
 })
