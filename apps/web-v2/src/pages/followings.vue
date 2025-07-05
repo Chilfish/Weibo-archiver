@@ -43,9 +43,9 @@ async function syncData() {
 
 async function onConfirm([selectedAdd, selectedRemove]: [Following[], Following[]]) {
   followings.value = [...followings.value, ...selectedAdd]
-  followings.value = followings.value.filter(user => !selectedRemove.some(seletedUser => seletedUser.uid === user.uid))
+  followings.value = followings.value.filter(user => !selectedRemove.some(selectedUser => selectedUser.uid === user.uid))
 
-  await userStore.updateFollowings(selectedAdd, selectedRemove, followings.value)
+  await userStore.updateFollowings(followings.value)
   isSyncLoading.value = false
 }
 

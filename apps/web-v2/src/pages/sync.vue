@@ -76,7 +76,7 @@ async function startArchive() {
 
   if (fetchConfig.value.hasFollowings) {
     const data = await sendMessage<Following[]>('fetch:followings', { uid: selectedUser.value.uid })
-    await userStore.updateFollowings(data, [], data || [])
+    await userStore.updateFollowings(data || [])
     fetchCount.followers = data.length
   }
 
