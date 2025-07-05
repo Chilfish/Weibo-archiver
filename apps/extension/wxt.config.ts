@@ -4,11 +4,15 @@ import { defineConfig } from 'wxt'
 
 const isDev = process.env.NODE_ENV === 'development'
 
+const root = path.resolve(__dirname, './')
+const packages = path.resolve(root, '../../packages')
+
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   alias: {
-    '@': path.resolve(__dirname, './'),
+    '@': root,
+    '@weibo-archiver/core': path.resolve(packages, 'core'),
   },
   vite: () => ({
     plugins: [tailwindcss()],
