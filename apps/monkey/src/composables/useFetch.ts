@@ -74,7 +74,7 @@ export async function startFetch() {
 
   if (hasFollowings) {
     fetchState.fetchType = 'followings'
-    const followings = await userService.getFollowings(user!.uid)
+    const followings = await userService.getAllFollowings({ uid: user!.uid })
     await postStore.addFollowingUsers(followings)
   }
 

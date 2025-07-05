@@ -3,6 +3,7 @@ import type {
   RawComment,
   RawComments,
   RawFavorite,
+  RawFavoriteList,
   RawFollowings,
   RawLongText,
   RawMyFollowings,
@@ -131,8 +132,8 @@ export class FetchService {
     return data
   }
 
-  async favorites(args: FetchArgs['favorites']): Promise<RawFavorite['status']> {
-    const { data } = await this.fetcher<RawFavorite, FetchArgs['favorites']>(
+  async favorites(args: FetchArgs['favorites']): Promise<RawFavorite[]> {
+    const { data } = await this.fetcher<RawFavoriteList, FetchArgs['favorites']>(
       FETCH_PATH.FAVORITES,
       args,
     )

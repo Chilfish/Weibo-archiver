@@ -52,11 +52,20 @@ jobs:
           name: weibo-archiver.user.js
           path: apps/monkey/dist/weibo-archiver.user.js
 
+      - name: build browser extension
+        run: pnpm run build:ext
+
       - name: upload Web App
         uses: actions/upload-artifact@v4
         with:
           name: weibo-archiver-web
           path: apps/web-v2/dist
+
+      - name: upload Browser extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-web
+          path: apps/extension/.output/
 
       - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4
