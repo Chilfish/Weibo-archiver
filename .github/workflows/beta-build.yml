@@ -40,6 +40,9 @@ jobs:
       - name: build monkey script
         run: pnpm run build:monkey
 
+      - name: build browser extension
+        run: pnpm run build:ext
+
       - name: build Web App
         run: pnpm run build:web
 
@@ -67,6 +70,12 @@ jobs:
         with:
           name: weibo-archiver-web
           path: apps/web-v2/dist
+
+      - name: upload Browser extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: weibo-archiver-web
+          path: apps/extension/.output/
 
       - name: upload go binaries (Windows)
         uses: actions/upload-artifact@v4

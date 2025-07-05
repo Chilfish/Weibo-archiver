@@ -16,6 +16,7 @@
     "build:edge": "wxt build -b edge",
     "build:safari": "wxt build -b safari",
     "zip": "wxt zip",
+    "zip:all": "pnpm zip:chrome && pnpm zip:firefox && pnpm zip:edge",
     "zip:chrome": "wxt zip -b chrome",
     "zip:firefox": "wxt zip -b firefox",
     "zip:edge": "wxt zip -b edge",

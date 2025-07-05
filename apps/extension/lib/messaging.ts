@@ -296,7 +296,6 @@ export function formatFileSize(bytes: number): string {
 // 检查content script是否可用
 export async function isContentScriptAvailable(): Promise<boolean> {
   try {
-    const { browser } = await import('wxt/browser')
     const tabs = await browser.tabs.query({
       active: true,
       currentWindow: true,
@@ -323,40 +322,4 @@ export async function isContentScriptAvailable(): Promise<boolean> {
 // 生成任务 ID（使用用户UID）
 export function generateTaskId(uid: string): string {
   return uid
-}
-
-// 错误处理工具
-export class MessageError extends Error {
-  constructor(
-    message: string,
-    public code?: string,
-    public details?: any,
-  ) {
-    super(message)
-    this.name = 'MessageError'
-  }
-}
-
-// 重试机制
-export async function withRetry<T>(
-  fn: () => Promise<T>,
-  maxRetries = 3,
-  delay = 1000,
-): Promise<T> {
-  let lastError: Error
-
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      return await fn()
-    }
-    catch (error) {
-      lastError = error as Error
-      if (i < maxRetries - 1) {
-        await new Promise(resolve => setTimeout(resolve, delay * (i + 1)))
-      }
-    }
-  }
-
-  // eslint-disable-next-line no-throw-literal
-  throw lastError!
 }

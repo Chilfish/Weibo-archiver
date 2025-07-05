@@ -28,5 +28,8 @@ export default defineConfig({
     description: 'Backup your Weibo posts automatically',
     homepage_url: 'https://weibo-archiver.chilfish.top/',
   },
+  zip: {
+    name: 'weibo-archiver',
+  },
   imports: false,
 })
