@@ -1,16 +1,15 @@
 import { signal } from 'alien-signals'
-import { configService } from '@/lib/background/configService'
+import { backupService } from '@/lib/background/backupService'
 import { executeTask } from '@/lib/background/runTask'
 import { setupMessage } from '@/lib/background/setupMessage'
-import { backupService } from '@/lib/background/taskService'
 import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
 import { getCookies } from '@/lib/cookie'
 import { FetchManager } from '@/lib/fetchManager'
+import { storageManager } from '@/lib/storageManager'
 import {
   DEFAULT_SCHEDULER_CONFIG,
   TaskScheduler,
-} from '@/lib/scheduler/TaskScheduler'
-import { extensionStorage, storageManager } from '@/lib/storageManager'
+} from './TaskScheduler'
 
 export const fetchManager = new FetchManager({
   ...DEFAULT_FETCH_CONFIG,
@@ -40,27 +39,11 @@ export async function initialize() {
   }
 }
 
-export async function handleGetAllWeiboData() {
-  try {
-    const allBackupData = await storageManager.getAllWeiboData()
-    console.log(
-      '获取所有备份数据:',
-      Object.keys(allBackupData).length,
-      '个用户',
-    )
-    return allBackupData
-  }
-  catch (error) {
-    console.error('获取所有备份数据失败:', error)
-    throw error
-  }
-}
-
 async function initializeCookie() {
-  let cookie = await extensionStorage.getItem('cookies')
+  let cookie = await storageManager.getCookie()
   if (!cookie?.trim()) {
     cookie = await getCookies()
-    await extensionStorage.setItem('cookies', cookie)
+    await storageManager.setCookie(cookie)
   }
   fetchManager.setCookie(cookie)
 }
@@ -70,4 +53,4 @@ async function initializeTaskScheduler() {
   await taskScheduler.initializeTaskSchedules()
 }
 
-export { backupService, configService, executeTask, storageManager }
+export { backupService, executeTask, storageManager }

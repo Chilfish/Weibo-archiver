@@ -3,19 +3,19 @@ import type { TaskConfig, WeiboData } from '@/types'
 import { DataDeduplicator, PaginationController } from '@/lib/deduplication'
 import { storageManager } from '@/lib/storageManager'
 
-export class TaskService {
-  private static instance: TaskService
+export class BackupService {
+  private static instance: BackupService
 
   private constructor() {}
 
-  static getInstance(): TaskService {
-    if (!TaskService.instance) {
-      TaskService.instance = new TaskService()
+  static getInstance(): BackupService {
+    if (!BackupService.instance) {
+      BackupService.instance = new BackupService()
     }
-    return TaskService.instance
+    return BackupService.instance
   }
 
-  async runTask(
+  async runBackup(
     task: TaskConfig,
     fetchManager: any,
   ): Promise<WeiboData> {
@@ -141,9 +141,7 @@ export class TaskService {
           totalFetched: totalFetched + newPosts.length,
         })
 
-        const deduplicatedPosts
-          = DataDeduplicator.deduplicateByMblogId(newPosts)
-        const duplicateCount = newPosts.length - deduplicatedPosts.length
+        const deduplicatedPosts = DataDeduplicator.deduplicateByMblogId(newPosts)
 
         // 过滤掉已存在的微博（如果有本地数据）
         let filteredPosts = deduplicatedPosts
@@ -214,4 +212,4 @@ export class TaskService {
   }
 }
 
-export const backupService = TaskService.getInstance()
+export const backupService = BackupService.getInstance()

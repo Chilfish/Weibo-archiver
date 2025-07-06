@@ -53,8 +53,6 @@ const INTERVAL_OPTIONS = [
   { value: 15, label: '15 分钟' },
   { value: 30, label: '30 分钟' },
   { value: 60, label: '1 小时' },
-  { value: 120, label: '2 小时' },
-  { value: 360, label: '6 小时' },
   { value: 720, label: '12 小时' },
   { value: 1440, label: '24 小时' },
 ]

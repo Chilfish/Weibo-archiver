@@ -1,12 +1,10 @@
 import type { FetchConfig } from '@weibo-archiver/core'
 import type { TaskConfig } from '@/types'
 import { onMessage, sendMessage } from 'webext-bridge/background'
-import { configService } from '@/lib/background/configService'
 import {
   curTabId,
   fetchingTabId,
   fetchManager,
-  handleGetAllWeiboData,
   taskScheduler,
 } from '@/lib/background/index'
 import {
@@ -120,7 +118,7 @@ export function setupMessage() {
   onMessage<{ interval: number, autoStart: boolean }>(
     'set-global-config',
     async ({ data }) => {
-      await configService.setGlobalConfig(
+      await storageManager.setGlobalConfig(
         data.interval,
         data.autoStart,
         taskScheduler,
@@ -128,12 +126,8 @@ export function setupMessage() {
     },
   )
 
-  onMessage('get-global-config', async () => {
-    return await configService.getConfig()
-  })
-
   onMessage('get-all-backup-data', async () => {
-    return await handleGetAllWeiboData()
+    return await storageManager.getAllWeiboData()
   })
 
   // ==================== 系统相关 ====================

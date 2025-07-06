@@ -1,7 +1,5 @@
 import type { TaskConfig, TaskStatus } from '@/types'
-import { configService } from '@/lib/background/configService'
-import { fetchManager, taskScheduler } from '@/lib/background/index'
-import { backupService } from '@/lib/background/taskService'
+import { backupService, fetchManager, taskScheduler } from '@/lib/background'
 import { storageManager } from '@/lib/storageManager'
 
 export async function getTaskStatus(taskId: string): Promise<TaskStatus> {
@@ -50,7 +48,7 @@ export async function executeTask(taskId: string) {
     })
 
     // 执行备份
-    const backupData = await backupService.runTask(task, fetchManager)
+    const backupData = await backupService.runBackup(task, fetchManager)
 
     console.log(`Task ${taskId} backup completed:`, {
       posts: backupData.weibo.length,
@@ -84,7 +82,7 @@ export async function executeTask(taskId: string) {
     })
 
     // 获取配置
-    const config = await configService.getConfig()
+    const config = await storageManager.getConfig()
 
     // 计算新增微博数量
     const previousTotal = task.totalPosts

@@ -9,7 +9,7 @@ import { defineExtensionStorage } from '@webext-core/storage'
 import browser from 'webextension-polyfill'
 import { DEFAULT_APP_CONFIG } from './constants'
 
-export interface ExtensionStorageSchema {
+export interface StorageSchema {
   cookies: string
   curUid: string
   weibo_backup_tasks: TaskConfig[]
@@ -19,7 +19,9 @@ export interface ExtensionStorageSchema {
   weibo_backup_data: Record<string, WeiboData>
 }
 
-export const extensionStorage = defineExtensionStorage<ExtensionStorageSchema>(
+export type StorageKey = keyof StorageSchema
+
+const extensionStorage = defineExtensionStorage<StorageSchema>(
   browser.storage.local,
 )
 
@@ -35,26 +37,29 @@ class StorageManager {
     return StorageManager.instance
   }
 
-  // ============ 任务管理 ============
+  static async getItem<K extends StorageKey>(
+    key: K,
+    fallback: StorageSchema[K],
+  ): Promise<StorageSchema[K]> {
+    return extensionStorage
+      .getItem(key)
+      .then(value => value || fallback)
+      .catch(() => fallback)
+  }
+
+  static async setItem<K extends StorageKey>(
+    key: K,
+    value: StorageSchema[K],
+  ): Promise<void> {
+    await extensionStorage.setItem(key, value)
+  }
+
   async getTasks(): Promise<TaskConfig[]> {
-    try {
-      const tasks = await extensionStorage.getItem('weibo_backup_tasks')
-      return (tasks as TaskConfig[]) || []
-    }
-    catch (error) {
-      console.error('Failed to get tasks:', error)
-      return []
-    }
+    return StorageManager.getItem('weibo_backup_tasks', [])
   }
 
   async saveTasks(tasks: TaskConfig[]): Promise<void> {
-    try {
-      await extensionStorage.setItem('weibo_backup_tasks', tasks)
-    }
-    catch (error) {
-      console.error('Failed to save tasks:', error)
-      throw error
-    }
+    return StorageManager.setItem('weibo_backup_tasks', tasks)
   }
 
   async addTask(task: TaskConfig): Promise<void> {
@@ -95,50 +100,53 @@ class StorageManager {
 
   // ============ 配置管理 ============
   async getConfig(): Promise<AppConfig> {
-    try {
-      const config = await extensionStorage.getItem('weibo_backup_config')
-      return { ...DEFAULT_APP_CONFIG, ...(config as Partial<AppConfig>) }
-    }
-    catch (error) {
-      console.error('Failed to get config:', error)
-      return DEFAULT_APP_CONFIG
-    }
+    const config = await StorageManager.getItem(
+      'weibo_backup_config',
+      DEFAULT_APP_CONFIG,
+    )
+    return { ...DEFAULT_APP_CONFIG, ...(config as Partial<AppConfig>) }
   }
 
   async saveConfig(config: Partial<AppConfig>): Promise<void> {
-    try {
-      const currentConfig = await this.getConfig()
-      const newConfig = { ...currentConfig, ...config }
-      await extensionStorage.setItem('weibo_backup_config', newConfig)
+    const currentConfig = await this.getConfig()
+    const newConfig = { ...currentConfig, ...config }
+    await StorageManager.setItem('weibo_backup_config', newConfig)
+  }
+
+  async setGlobalConfig(
+    interval: number,
+    autoStart: boolean,
+    taskScheduler: any,
+  ): Promise<void> {
+    await this.saveConfig({
+      globalInterval: interval,
+      autoStart,
+    })
+
+    if (autoStart) {
+      // 重新初始化任务调度
+      await taskScheduler.initializeTaskSchedules()
+      console.log('Global config updated, tasks re-initialized')
     }
-    catch (error) {
-      console.error('Failed to save config:', error)
-      throw error
+    else {
+      // 停用所有任务
+      const tasks = await this.getTasks()
+      for (const task of tasks) {
+        if (task.enabled) {
+          await taskScheduler.unscheduleTask(task.id)
+        }
+      }
+      console.log('Auto start disabled, all tasks stopped')
     }
   }
 
   // ============ 任务状态管理 ============
   async getTaskStatuses(): Promise<Record<string, TaskStatus>> {
-    try {
-      const statuses = await extensionStorage.getItem(
-        'weibo_backup_task_statuses',
-      )
-      return (statuses as Record<string, TaskStatus>) || {}
-    }
-    catch (error) {
-      console.error('Failed to get task statuses:', error)
-      return {}
-    }
+    return await StorageManager.getItem('weibo_backup_task_statuses', {})
   }
 
   async saveTaskStatuses(statuses: Record<string, TaskStatus>): Promise<void> {
-    try {
-      await extensionStorage.setItem('weibo_backup_task_statuses', statuses)
-    }
-    catch (error) {
-      console.error('Failed to save task statuses:', error)
-      throw error
-    }
+    return await StorageManager.setItem('weibo_backup_task_statuses', statuses)
   }
 
   async updateTaskStatus(
@@ -157,10 +165,8 @@ class StorageManager {
   // ============ 备份数据管理 ============
   async saveBackupData(taskId: string, data: WeiboData): Promise<void> {
     try {
-      const allData
-        = (await extensionStorage.getItem('weibo_backup_data')) || {}
+      const allData = await StorageManager.getItem('weibo_backup_data', {})
 
-      // 智能合并数据
       const existingData = allData[taskId]
       if (existingData && existingData.weibo && existingData.weibo.length > 0) {
         const allPosts = [...existingData.weibo, ...data.weibo]
@@ -177,16 +183,10 @@ class StorageManager {
           weibo: uniquePosts,
           lastUpdated: Date.now(),
         }
-
-        console.log(`Merged backup data for task ${taskId}:`, {
-          previousCount: existingData.weibo.length,
-          newCount: data.weibo.length - existingData.weibo.length,
-          totalCount: data.weibo.length,
-        })
       }
 
       allData[taskId] = data
-      await extensionStorage.setItem('weibo_backup_data', allData)
+      await StorageManager.setItem('weibo_backup_data', allData)
 
       // 更新备份元数据
       await this.updateBackupMeta(taskId, {
@@ -206,60 +206,27 @@ class StorageManager {
   }
 
   async getBackupData(taskId: string): Promise<WeiboData | null> {
-    try {
-      const allData
-        = (await extensionStorage.getItem('weibo_backup_data')) || {}
-      return allData[taskId] || null
-    }
-    catch (error) {
-      console.error('Failed to get backup data:', error)
-      return null
-    }
+    const data = await this.getAllWeiboData()
+    return data[taskId] || null
   }
 
   async getAllWeiboData(): Promise<Record<string, WeiboData>> {
-    try {
-      return (await extensionStorage.getItem('weibo_backup_data')) || {}
-    }
-    catch (error) {
-      console.error('Failed to get all backup data:', error)
-      return {}
-    }
+    return StorageManager.getItem('weibo_backup_data', {})
   }
 
   async deleteBackupData(taskId: string): Promise<void> {
-    try {
-      const allData
-        = (await extensionStorage.getItem('weibo_backup_data')) || {}
-      delete allData[taskId]
-      await extensionStorage.setItem('weibo_backup_data', allData)
-    }
-    catch (error) {
-      console.error('Failed to delete backup data:', error)
-      throw error
-    }
+    const allData = await this.getAllWeiboData()
+    delete allData[taskId]
+    await StorageManager.setItem('weibo_backup_data', allData)
   }
 
   // ============ 备份元数据管理 ============
   async getBackupMeta(): Promise<Record<string, any>> {
-    try {
-      const meta = await extensionStorage.getItem('weibo_backup_meta')
-      return (meta as Record<string, any>) || {}
-    }
-    catch (error) {
-      console.error('Failed to get backup meta:', error)
-      return {}
-    }
+    return StorageManager.getItem('weibo_backup_meta', {})
   }
 
   async saveBackupMeta(meta: Record<string, any>): Promise<void> {
-    try {
-      await extensionStorage.setItem('weibo_backup_meta', meta)
-    }
-    catch (error) {
-      console.error('Failed to save backup meta:', error)
-      throw error
-    }
+    return StorageManager.setItem('weibo_backup_meta', meta)
   }
 
   async updateBackupMeta(taskId: string, meta: any): Promise<void> {
@@ -321,6 +288,14 @@ class StorageManager {
       console.error('Failed to import data:', error)
       throw new Error(`导入数据失败：${(error as Error).message}`)
     }
+  }
+
+  async getCookie(): Promise<string> {
+    return StorageManager.getItem('cookies', '')
+  }
+
+  async setCookie(cookie: string): Promise<void> {
+    return StorageManager.setItem('cookies', cookie)
   }
 
   // ============ 工具方法 ============
