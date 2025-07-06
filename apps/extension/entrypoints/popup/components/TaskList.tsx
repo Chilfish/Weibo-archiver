@@ -46,8 +46,8 @@ import {
   useTaskOperations,
 } from '@/hooks'
 import { imgCdn } from '@/lib/constants'
-import { formatInterval } from '@/lib/messaging'
 import { useTaskStore, useUIStore } from '@/lib/stores'
+import { formatInterval } from '@/lib/utils'
 import { EditTaskDialog } from './EditTaskDialog'
 
 interface TaskItemProps {

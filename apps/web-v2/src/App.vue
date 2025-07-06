@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useHead, useSeoMeta } from '@unhead/vue'
 import { useDark } from '@vueuse/core'
+import { LoaderIcon } from 'lucide-vue-next'
 import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
 import { AlertDialogProvider } from '@/components/ui/alert-dialog'
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { useEmoji } from '@/composables'
+import { sendMessageToWxt, useEmoji } from '@/composables'
 import { useUserStore } from '@/stores'
 
 const appName = 'Weibo-Archiver'
@@ -61,6 +62,7 @@ onBeforeMount(async () => {
   isLoading.value = true
   await userStore.load()
   await fetchEmojis()
+  await sendMessageToWxt('ping', {}, null, 500)
   isLoading.value = false
 })
 </script>
@@ -75,6 +77,12 @@ onBeforeMount(async () => {
         v-if="!isLoading"
         class="m-6  w-full"
       />
+      <div
+        v-else
+        class="w-full h-screen"
+      >
+        <LoaderIcon class="animate-spin text-secondary-foreground size-12 m-auto my-16" />
+      </div>
       <ImagePreview />
     </SidebarProvider>
   </AlertDialogProvider>

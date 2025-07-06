@@ -1,9 +1,9 @@
 import type { TaskConfig } from '@/types/storage'
 import { useCallback } from 'react'
-import { messageManager } from '@/lib/messaging'
 import { storageManager } from '@/lib/storageManager'
 import { useTaskStore } from '@/lib/stores/useTaskStore'
 import { useUIStore } from '@/lib/stores/useUIStore'
+import { popupBackgroundClient } from '@/lib/utils'
 
 export const useTaskOperations = () => {
   const { addTask, updateTask, removeTask, setError, clearError }
@@ -21,7 +21,7 @@ export const useTaskOperations = () => {
 
         // 添加任务后立即开始备份
         console.log(`Starting backup for newly added task: ${taskConfig.id}`)
-        await messageManager.startBackup(taskConfig.id)
+        await popupBackgroundClient.startBackup({ taskId: taskConfig.id })
       }
       catch (error) {
         console.error('Failed to add task:', error)
@@ -38,7 +38,7 @@ export const useTaskOperations = () => {
 
         // 如果更新了间隔，通知调度器重新计算时间
         if ('interval' in updates) {
-          await messageManager.updateTask(taskId, updates)
+          await popupBackgroundClient.updateTask({ taskId, config: updates })
         }
         else {
           await storageManager.updateTask(taskId, updates)

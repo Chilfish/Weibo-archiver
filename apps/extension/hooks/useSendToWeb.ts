@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { messageManager } from '@/lib/messaging'
+import { backgroundContentClient } from '@/lib/utils'
 
 export function useSendToWeb() {
   const [isSending, setIsSending] = useState(false)
@@ -9,11 +9,7 @@ export function useSendToWeb() {
     try {
       setIsSending(true)
 
-      const response = await messageManager.send(
-        'send-data-to-web',
-        {},
-        'content-script',
-      )
+      const response = await backgroundContentClient.sendDataToWeb()
 
       if (response.success) {
         setLastSendTime(Date.now())

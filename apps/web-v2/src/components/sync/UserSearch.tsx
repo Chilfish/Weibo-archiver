@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { sendingMessage } from '@/composables'
+import { windowClient } from '@/composables'
 import { cn } from '@/lib/utils'
 
 const UserCard = defineComponent({
@@ -101,7 +101,7 @@ export const UserSearch = defineComponent({
         return
 
       isSearching.value = true
-      searchResults.value = await sendingMessage.searchUser({ searchText: searchText.value })
+      searchResults.value = await windowClient.searchUser({ searchText: searchText.value })
       isSearching.value = false
     }
 

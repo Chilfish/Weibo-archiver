@@ -2,10 +2,10 @@ import type { UserInfo } from '@weibo-archiver/core'
 import type { TaskConfig } from '@/types/storage'
 import { useEffect } from 'react'
 import { DEFAULT_TASK_CONFIG } from '@/lib/constants'
-import { generateTaskId, messageManager } from '@/lib/messaging'
 import { storageManager } from '@/lib/storageManager'
 import { useConfigStore } from '@/lib/stores/useConfigStore'
 import { useTaskStore } from '@/lib/stores/useTaskStore'
+import { backgroundContentClient, generateTaskId } from '@/lib/utils'
 
 export const useAppInitialization = () => {
   const {
@@ -43,9 +43,9 @@ export const useAppInitialization = () => {
       // 异步处理本地用户数据导入，不阻塞初始化
       setTimeout(async () => {
         try {
-          const localUsers = await messageManager.getLocalUsers()
-          if (localUsers.success && localUsers.users.length > 0) {
-            await handleLocalUsersImport(localUsers.users, tasks)
+          const localUsers = await backgroundContentClient.getLocalUsers()
+          if (localUsers.length > 0) {
+            await handleLocalUsersImport(localUsers, tasks)
           }
         }
         catch (error) {

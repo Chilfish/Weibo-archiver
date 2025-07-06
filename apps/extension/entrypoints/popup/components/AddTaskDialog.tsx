@@ -33,13 +33,13 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { useTaskOperations } from '@/hooks'
 import { DEFAULT_TASK_CONFIG, imgCdn } from '@/lib/constants'
+import { useUIStore } from '@/lib/stores'
 import {
   formatInterval,
   generateTaskId,
-  messageManager,
   parseWeiboUrl,
-} from '@/lib/messaging'
-import { useUIStore } from '@/lib/stores'
+  popupBackgroundClient,
+} from '@/lib/utils'
 import { LoadingSpinner } from './LoadingSpinner'
 
 interface UserPreview {
@@ -120,7 +120,7 @@ export function AddTaskDialog() {
       }
 
       // 获取用户信息
-      const userInfo = await messageManager.getUserInfo(uid)
+      const userInfo = await popupBackgroundClient.getUserInfo({ uid })
 
       setUserPreview({
         userInfo,

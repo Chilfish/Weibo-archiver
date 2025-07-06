@@ -1,10 +1,16 @@
+import { createTipcHandler } from '@weibo-archiver/core'
 import { signal } from 'alien-signals'
+import { onMessage } from 'webext-bridge/background'
 import { backupService } from '@/lib/background/backupService'
 import { executeTask } from '@/lib/background/runTask'
-import { setupMessage } from '@/lib/background/setupMessage'
 import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
 import { getCookies } from '@/lib/cookie'
 import { FetchManager } from '@/lib/fetchManager'
+import {
+  content_background_router,
+  popup_background_router,
+  window_background_router,
+} from '@/lib/message'
 import { storageManager } from '@/lib/storageManager'
 import {
   DEFAULT_SCHEDULER_CONFIG,
@@ -29,8 +35,20 @@ export const matchDomains = ['localhost', 'weibo-archiver.chilfish.top']
 
 export async function initialize() {
   try {
+    createTipcHandler({
+      router: popup_background_router(),
+      receiver: onMessage,
+    })
+    createTipcHandler({
+      router: window_background_router(),
+      receiver: onMessage,
+    })
+    createTipcHandler({
+      router: content_background_router(),
+      receiver: onMessage,
+    })
+
     await initializeCookie()
-    setupMessage()
     await initializeTaskScheduler()
   }
   catch (error) {

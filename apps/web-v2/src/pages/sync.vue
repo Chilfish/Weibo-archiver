@@ -12,7 +12,12 @@ import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
 import { FetchStatus } from '@/components/sync/FetchStatus'
 import { UserSearch } from '@/components/sync/UserSearch'
-import { sendingMessage, useSyncBookmarks, useSyncPosts } from '@/composables'
+import {
+
+  useSyncBookmarks,
+  useSyncPosts,
+  windowClient,
+} from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 
 const selectedUser = ref<UserInfo>()
@@ -74,7 +79,7 @@ async function startArchive() {
   }
 
   if (fetchConfig.value.hasFollowings) {
-    const data = await sendingMessage.fetchFollowings({ uid: selectedUser.value.uid })
+    const data = await windowClient.fetchFollowings({ uid: selectedUser.value.uid })
     await userStore.updateFollowings(data || [])
     fetchCount.followers = data.length
   }

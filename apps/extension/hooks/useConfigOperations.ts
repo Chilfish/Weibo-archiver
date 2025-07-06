@@ -1,9 +1,9 @@
 import type { AppConfig } from '@/types/storage'
 import { useCallback } from 'react'
-import { messageManager } from '@/lib/messaging'
 import { storageManager } from '@/lib/storageManager'
 import { useConfigStore } from '@/lib/stores/useConfigStore'
 import { useUIStore } from '@/lib/stores/useUIStore'
+import { popupBackgroundClient } from '@/lib/utils'
 
 export const useConfigOperations = () => {
   const { updateConfig, setError, clearError } = useConfigStore()
@@ -21,10 +21,10 @@ export const useConfigOperations = () => {
         // 如果更新了全局配置，通知后台脚本
         if ('globalInterval' in newConfig || 'autoStart' in newConfig) {
           const currentConfig = useConfigStore.getState().config
-          await messageManager.setGlobalConfig(
-            newConfig.globalInterval ?? currentConfig.globalInterval,
-            newConfig.autoStart ?? currentConfig.autoStart,
-          )
+          await popupBackgroundClient.setGlobalConfig({
+            interval: newConfig.globalInterval ?? currentConfig.globalInterval,
+            autoStart: newConfig.autoStart ?? currentConfig.autoStart,
+          })
         }
       }
       catch (error) {

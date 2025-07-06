@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from 'react'
-import { messageManager } from '@/lib/messaging'
 import { useTaskStore } from '@/lib/stores/useTaskStore'
+import { popupBackgroundClient } from '@/lib/utils'
 
 export const useTaskStatusUpdater = () => {
   const { tasks, setTaskStatuses, updateTaskStatus, setError } = useTaskStore()
 
   const updateTaskStatuses = useCallback(async () => {
     try {
-      const statuses = await messageManager.getAllStatuses()
+      const statuses = await popupBackgroundClient.getAllTaskStatus()
       setTaskStatuses(statuses)
     }
     catch (error) {
@@ -19,7 +19,7 @@ export const useTaskStatusUpdater = () => {
   const updateSingleTaskStatus = useCallback(
     async (taskId: string) => {
       try {
-        const status = await messageManager.getTaskStatus(taskId)
+        const status = await popupBackgroundClient.getTaskStatus({ taskId })
         if (status) {
           updateTaskStatus(taskId, status)
         }

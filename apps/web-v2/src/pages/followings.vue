@@ -5,7 +5,7 @@ import { computed, ref, watch } from 'vue'
 import FollowingsTable from '@/components/followings/FollowingsTable.vue'
 import SyncComparisonModal from '@/components/followings/SyncComparisonModal'
 import { Button } from '@/components/ui/button'
-import { sendingMessage } from '@/composables'
+import { windowClient } from '@/composables'
 import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()
@@ -38,7 +38,7 @@ watch(() => userStore.isLoadingUser, async (loading) => {
 
 async function syncData() {
   isSyncLoading.value = true
-  fetchedFollowings.value = await sendingMessage.fetchFollowings({ uid: userStore.curUid })
+  fetchedFollowings.value = await windowClient.fetchFollowings({ uid: userStore.curUid })
   openDialog.value = true
 }
 

@@ -1,14 +1,14 @@
 import type { Favorite, FetchConfig, Post } from '@weibo-archiver/core'
 import { ref } from 'vue'
 import { onMessage } from 'webext-bridge/window'
-import { sendingMessage } from '@/composables/useMessage'
+import { windowClient } from '@/composables/useMessage'
 
 export function useSyncBookmarks() {
   const onFetch = ref<(data: Favorite[]) => any>(() => {
   })
 
   async function start(uid: string) {
-    return await sendingMessage.fetchFavorites({
+    return await windowClient.fetchFavorites({
       uid,
     })
   }
@@ -34,7 +34,7 @@ export function useSyncPosts() {
   })
 
   async function start(fetchConfig: FetchConfig, uid: string) {
-    return await sendingMessage.fetchAllPosts({
+    return await windowClient.fetchAllPosts({
       ...fetchConfig,
       uid,
     })

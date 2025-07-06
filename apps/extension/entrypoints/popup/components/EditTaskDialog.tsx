@@ -19,8 +19,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useTaskOperations } from '@/hooks'
-import { formatInterval } from '@/lib/messaging'
 import { useTaskStore, useUIStore } from '@/lib/stores'
+import { formatInterval } from '@/lib/utils'
 
 const INTERVAL_OPTIONS = [
   { value: 15, label: '15 分钟' },
