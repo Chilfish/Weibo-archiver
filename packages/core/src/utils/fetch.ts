@@ -23,9 +23,9 @@ export function createFetcher(args: CreateAxiosDefaults) {
           throw new SyntaxError('Not a JSON')
         }
 
-        const { ok, data, ...restData } = rawData || {}
+        const { ok, data, msg, ...restData } = rawData || {}
         if (ok !== 1) {
-          throw new WeiboError(`成功码不为 1: ${ok}`)
+          throw new WeiboError(`成功码不为 1: ${msg}`)
         }
         if (!data && restData) {
           return {
@@ -38,7 +38,7 @@ export function createFetcher(args: CreateAxiosDefaults) {
         if (err.name === `SyntaxError`) {
           throw new WeiboError(`未获取到 JSON，Cookie 可能已过期 [${url}]`)
         }
-        throw new WeiboError(`获取失败：${err.message} [${url}]`)
+        throw new WeiboError(`${err.message} [${url}]`)
       }
     })
   }

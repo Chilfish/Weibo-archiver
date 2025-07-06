@@ -11,3 +11,10 @@ export class WeiboError extends Error {
     }
   }
 }
+
+export class TimeoutError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'Timeout'
+  }
+}

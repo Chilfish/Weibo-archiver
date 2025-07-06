@@ -30,13 +30,8 @@ export class UserService {
   }
 
   async getDetail(uid?: string): Promise<UserInfo> {
-    const [
-      baseInfo,
-      detailInfo,
-    ] = await Promise.all([
-      this.fetchService.userInfo(uid || this.uid),
-      this.fetchService.userDetail(uid || this.uid),
-    ])
+    const detailInfo = await this.fetchService.userDetail(uid || this.uid)
+    const baseInfo = await this.fetchService.userInfo(uid || this.uid)
 
     const userInfo = UserParser.parse(baseInfo.user)
 

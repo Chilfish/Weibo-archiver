@@ -8,7 +8,8 @@ import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
 import { AlertDialogProvider } from '@/components/ui/alert-dialog'
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { sendMessageToWxt, useEmoji } from '@/composables'
+import { useEmoji } from '@/composables'
+import { pingExtension } from '@/composables/usePingExtension'
 import { useUserStore } from '@/stores'
 
 const appName = 'Weibo-Archiver'
@@ -62,7 +63,7 @@ onBeforeMount(async () => {
   isLoading.value = true
   await userStore.load()
   await fetchEmojis()
-  await sendMessageToWxt('ping', {}, null, 500)
+  await pingExtension()
   isLoading.value = false
 })
 </script>
