@@ -1,7 +1,7 @@
 {
   "name": "@weibo-archiver/extension",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.6.2",
   "private": true,
   "description": "Browser extension for weibo-archiver",
   "scripts": {

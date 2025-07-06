@@ -51,12 +51,16 @@ export default defineConfig({
         link: '/intro',
       },
       {
-        text: '使用油猴脚本',
-        link: '/monkey',
+        text: '安装浏览器插件',
+        link: '/extension',
       },
       {
         text: '在线网页查看',
         link: '/web',
+      },
+      {
+        text: '使用油猴脚本',
+        link: '/monkey',
       },
       {
         text: '图片服务器',

@@ -571,20 +571,4 @@ export default defineBackground(async () => {
       tabActiveTime(Date.now())
     }
   })
-
-  browser.tabs.onRemoved.addListener(async (tabId) => {
-    if (tabId === fetchingTabId()) { // 只在执行 fetch 的标签页关闭时中止
-      console.log('fetching tab close')
-
-      fetchManager.fetchService.abortFetch(`${tabId} tab close`)
-      await sendMessage('abort-fetch', true, {
-        tabId,
-        context: 'window',
-      })
-      fetchingTabId(0) // 重置 fetchingTabId
-    }
-    if (tabId === curTabId()) {
-      curTabId(0)
-    }
-  })
 })
