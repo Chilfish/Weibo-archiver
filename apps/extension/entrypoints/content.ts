@@ -13,7 +13,7 @@ export default defineContentScript({
     isDev ? '*://localhost/*' : '',
     'https://weibo.com/*',
     'https://weibo-archiver.chilfish.top/*',
-    'https://weibo-archiver-preivew.vercel.app/*',
+    'https://weibo-archiver-preview.vercel.app/*',
   ].filter(Boolean),
   async main() {
     createTipcHandler({

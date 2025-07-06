@@ -53,7 +53,6 @@ async function startArchive() {
   if (!fetchConfig.value.restore) {
     fetchConfig.value.curPage = 1
     fetchConfig.value.sinceId = ''
-    await postStore.clearDB()
   }
 
   await userStore.importUser(selectedUser.value)
