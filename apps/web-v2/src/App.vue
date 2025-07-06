@@ -63,7 +63,9 @@ onBeforeMount(async () => {
   isLoading.value = true
   await userStore.load()
   await fetchEmojis()
-  await pingExtension()
+  if (!isIndex.value) {
+    await pingExtension()
+  }
   isLoading.value = false
 })
 </script>
