@@ -460,8 +460,8 @@ function setupMessage() {
     return allBackupData
   })
 
-  onMessage<string>('fetch:search-user', async ({ data }) => {
-    return fetchManager.searchUser(data)
+  onMessage<{ searchText: string }>('fetch:search-user', async ({ data }) => {
+    return fetchManager.searchUser(data.searchText)
   })
 
   onMessage<{ uid: string }>('fetch:followings', async ({ data }) => {

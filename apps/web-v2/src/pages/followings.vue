@@ -2,10 +2,10 @@
 import type { Following } from '@weibo-archiver/core'
 import { Loader2Icon } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
-import { sendMessage } from 'webext-bridge/window'
 import FollowingsTable from '@/components/followings/FollowingsTable.vue'
 import SyncComparisonModal from '@/components/followings/SyncComparisonModal'
 import { Button } from '@/components/ui/button'
+import { sendingMessage } from '@/composables'
 import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()
@@ -38,7 +38,7 @@ watch(() => userStore.isLoadingUser, async (loading) => {
 
 async function syncData() {
   isSyncLoading.value = true
-  fetchedFollowings.value = await sendMessage<Following[]>('fetch:followings', { uid: userStore.curUid })
+  fetchedFollowings.value = await sendingMessage.fetchFollowings({ uid: userStore.curUid })
   openDialog.value = true
 }
 

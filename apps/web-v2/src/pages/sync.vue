@@ -1,19 +1,18 @@
 <script setup lang="tsx">
 import type {
   FetchConfig,
-  Following,
   UserInfo,
 } from '@weibo-archiver/core'
 import type { Status } from '@/components/sync/FetchStatus'
 import { useStorage } from '@vueuse/core'
 import { DEFAULT_FETCH_CONFIG } from '@weibo-archiver/core'
 import { reactive, ref, toRaw } from 'vue'
-import { onMessage, sendMessage } from 'webext-bridge/window'
+import { onMessage } from 'webext-bridge/window'
 import StepIndicator from '@/components/common/StepIndicator.vue'
 import { ArchiveConfiguration } from '@/components/sync/ArchiveConfiguration'
 import { FetchStatus } from '@/components/sync/FetchStatus'
 import { UserSearch } from '@/components/sync/UserSearch'
-import { useSyncBookmarks, useSyncPosts } from '@/composables'
+import { sendingMessage, useSyncBookmarks, useSyncPosts } from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 
 const selectedUser = ref<UserInfo>()
@@ -75,7 +74,7 @@ async function startArchive() {
   }
 
   if (fetchConfig.value.hasFollowings) {
-    const data = await sendMessage<Following[]>('fetch:followings', { uid: selectedUser.value.uid })
+    const data = await sendingMessage.fetchFollowings({ uid: selectedUser.value.uid })
     await userStore.updateFollowings(data || [])
     fetchCount.followers = data.length
   }

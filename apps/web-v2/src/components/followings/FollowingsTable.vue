@@ -24,7 +24,7 @@ const props = defineProps<{
   data: Following[]
 }>()
 
-const emits = defineEmits<{
+defineEmits<{
   sync: []
 }>()
 

@@ -8,6 +8,7 @@ import {
 } from '@weibo-archiver/core'
 import { computed } from 'vue'
 
+export * from './useMessage'
 export * from './useSearch'
 export * from './useSync'
 

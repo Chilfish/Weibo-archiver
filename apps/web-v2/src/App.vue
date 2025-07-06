@@ -5,6 +5,7 @@ import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
+import { AlertDialogProvider } from '@/components/ui/alert-dialog'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { useEmoji } from '@/composables'
 import { useUserStore } from '@/stores'
@@ -65,14 +66,16 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <RouterView v-if="isIndex" />
+  <AlertDialogProvider>
+    <RouterView v-if="isIndex" />
 
-  <SidebarProvider v-else>
-    <AppSidebar />
-    <RouterView
-      v-if="!isLoading"
-      class="m-6  w-full"
-    />
-    <ImagePreview />
-  </SidebarProvider>
+    <SidebarProvider v-else>
+      <AppSidebar />
+      <RouterView
+        v-if="!isLoading"
+        class="m-6  w-full"
+      />
+      <ImagePreview />
+    </SidebarProvider>
+  </AlertDialogProvider>
 </template>

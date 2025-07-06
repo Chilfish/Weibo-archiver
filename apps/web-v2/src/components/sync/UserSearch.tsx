@@ -2,12 +2,12 @@ import type { UserInfo } from '@weibo-archiver/core'
 import { formatNumber } from '@weibo-archiver/core'
 import { Loader2, Search, UserPlus, Users } from 'lucide-vue-next'
 import { defineComponent, ref } from 'vue'
-import { sendMessage } from 'webext-bridge/window'
 import Avatar from '@/components/common/Avatar.vue'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { sendingMessage } from '@/composables'
 import { cn } from '@/lib/utils'
 
 const UserCard = defineComponent({
@@ -101,7 +101,7 @@ export const UserSearch = defineComponent({
         return
 
       isSearching.value = true
-      searchResults.value = await sendMessage<UserInfo[]>('fetch:search-user', searchText.value)
+      searchResults.value = await sendingMessage.searchUser({ searchText: searchText.value })
       isSearching.value = false
     }
 
