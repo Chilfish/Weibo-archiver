@@ -1,6 +1,6 @@
 import type { UserInfo } from '@weibo-archiver/core'
 import type { WeiboData } from '@/types'
-import { contentBackgroundClient } from '@/lib/utils'
+import { storageManager } from '@/lib/storageManager'
 
 /**
  * 向当前页面发送数据
@@ -11,7 +11,7 @@ export async function sendDataToWeb(): Promise<{
   message?: string
 }> {
   try {
-    const response = await contentBackgroundClient.getAllBackupData()
+    const response = await storageManager.getAllWeiboData()
 
     if (!response) {
       return { success: false, error: '获取备份数据失败' }

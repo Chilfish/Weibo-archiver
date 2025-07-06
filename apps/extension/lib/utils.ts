@@ -1,23 +1,31 @@
 import type { ClassValue } from 'clsx'
 import type {
   BackgroundContentRouter,
-  ContentBackgroundRouter,
   PopupBackgroundRouter,
+  PopupContentRouter,
 } from '@/lib/message'
 import { createTipcClient } from '@weibo-archiver/core'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { sendMessage as background_sendMessage } from 'webext-bridge/background'
-import { sendMessage as content_sendMessage } from 'webext-bridge/content-script'
 import { sendMessage as popup_sendMessage } from 'webext-bridge/popup'
 import { browser } from 'wxt/browser'
 
 export const popupBackgroundClient = createTipcClient<PopupBackgroundRouter>({
-  sender: popup_sendMessage,
+  async sender(key, message) {
+    return popup_sendMessage(key, message, 'background')
+  },
 })
 
-export const contentBackgroundClient = createTipcClient<ContentBackgroundRouter>({
-  sender: content_sendMessage,
+export const popupContentClient = createTipcClient<PopupContentRouter>({
+  async sender(key, message) {
+    const tabs = await browser.tabs.query({
+      active: true,
+      currentWindow: true,
+    })
+    const dest = `content-script@${tabs[0].id}`
+    return popup_sendMessage(key, message, dest)
+  },
 })
 
 export const backgroundContentClient = createTipcClient<BackgroundContentRouter>({

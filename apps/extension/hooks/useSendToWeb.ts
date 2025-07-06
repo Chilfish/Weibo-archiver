@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { backgroundContentClient } from '@/lib/utils'
+import { popupContentClient } from '@/lib/utils'
 
 export function useSendToWeb() {
   const [isSending, setIsSending] = useState(false)
@@ -9,7 +9,7 @@ export function useSendToWeb() {
     try {
       setIsSending(true)
 
-      const response = await backgroundContentClient.sendDataToWeb()
+      const response = await popupContentClient.sendDataToWeb()
 
       if (response.success) {
         setLastSendTime(Date.now())

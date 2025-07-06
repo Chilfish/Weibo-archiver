@@ -7,7 +7,6 @@ import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
 import { getCookies } from '@/lib/cookie'
 import { FetchManager } from '@/lib/fetchManager'
 import {
-  content_background_router,
   popup_background_router,
   window_background_router,
 } from '@/lib/message'
@@ -35,6 +34,8 @@ export const matchDomains = ['localhost', 'weibo-archiver.chilfish.top']
 
 export async function initialize() {
   try {
+    await initializeCookie()
+
     createTipcHandler({
       router: popup_background_router(),
       receiver: onMessage,
@@ -43,12 +44,6 @@ export async function initialize() {
       router: window_background_router(),
       receiver: onMessage,
     })
-    createTipcHandler({
-      router: content_background_router(),
-      receiver: onMessage,
-    })
-
-    await initializeCookie()
     await initializeTaskScheduler()
   }
   catch (error) {

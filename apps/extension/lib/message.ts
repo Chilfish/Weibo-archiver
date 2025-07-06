@@ -14,8 +14,8 @@ import { getTaskStatus, updateTaskConfig } from '@/lib/background/runTask'
 import { getLocalUsers, sendDataToWeb } from '@/lib/contentScript'
 
 export type PopupBackgroundRouter = ReturnType<typeof popup_background_router>
+export type PopupContentRouter = ReturnType<typeof popup_content_router>
 export type WindowBackgroundRouter = ReturnType<typeof window_background_router>
-export type ContentBackgroundRouter = ReturnType<typeof content_background_router>
 export type BackgroundContentRouter = ReturnType<typeof background_content_router>
 
 export function popup_background_router() {
@@ -72,6 +72,13 @@ export function popup_background_router() {
   }
 }
 
+export function popup_content_router() {
+  const t = initTipc()
+  return {
+    sendDataToWeb: t.procedure.action(async () => await sendDataToWeb()),
+  }
+}
+
 export function window_background_router() {
   const t = initTipc()
   return {
@@ -123,22 +130,10 @@ export function window_background_router() {
   }
 }
 
-export function content_background_router() {
-  const t = initTipc()
-
-  return {
-    getAllBackupData: t.procedure
-      .action(async () => {
-        return await storageManager.getAllWeiboData()
-      }),
-  }
-}
-
 export function background_content_router() {
   const t = initTipc()
 
   return {
     getLocalUsers: t.procedure.action(() => getLocalUsers()),
-    sendDataToWeb: t.procedure.action(async () => sendDataToWeb()),
   }
 }
