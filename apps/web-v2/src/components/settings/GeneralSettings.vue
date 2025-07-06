@@ -13,6 +13,8 @@ import {
   UploadIcon,
 } from 'lucide-vue-next'
 import ImportData from '@/components/common/ImportData.vue'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { config } from '@/composables'
 import { usePostStore, useUserStore } from '@/stores'
 import ImageSourceOption from './ImageSourceOption.vue'

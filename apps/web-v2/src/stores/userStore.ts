@@ -53,7 +53,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function updateFollowings(allFollowings: Following[]) {
-    await idb.addFollowings(toRaw(allFollowings))
+    await idb.addFollowings(allFollowings.map(toRaw))
 
     curUser.value.followingIds = allFollowings.map(user => user.uid)
 

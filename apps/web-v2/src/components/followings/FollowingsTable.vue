@@ -15,6 +15,8 @@ import {
 import { computed, ref } from 'vue'
 import DataTablePagination
   from '@/components/followings/DataTablePagination.vue'
+import { Input } from '@/components/ui/input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { valueUpdater } from '@/lib/utils'
 import { columns } from './dataColumns'
 

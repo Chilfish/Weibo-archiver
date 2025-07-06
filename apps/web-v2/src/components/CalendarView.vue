@@ -7,6 +7,8 @@ import { useVModel } from '@vueuse/core'
 import { CalendarRoot, useDateFormatter, useForwardPropsEmits } from 'reka-ui'
 import { createDecade, createYear, toDate } from 'reka-ui/date'
 import { computed } from 'vue'
+import { CalendarCell, CalendarCellTrigger, CalendarGrid, CalendarGridBody, CalendarGridHead, CalendarGridRow, CalendarHeadCell, CalendarHeader, CalendarHeading } from '@/components/ui/calendar'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
 const props = withDefaults(defineProps<CalendarRootProps & { class?: HTMLAttributes['class'] }>(), {
@@ -14,7 +16,9 @@ const props = withDefaults(defineProps<CalendarRootProps & { class?: HTMLAttribu
   placeholder() {
     return today(getLocalTimeZone())
   },
-  weekdayFormat: 'short',
+  weekdayFormat: 'narrow',
+  locale: 'zh-cn',
+  weekStartsOn: 6,
 })
 const emits = defineEmits<CalendarRootEmits>()
 

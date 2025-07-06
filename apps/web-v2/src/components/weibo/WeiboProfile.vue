@@ -3,6 +3,8 @@ import type { PostMeta, User } from '@weibo-archiver/core'
 import { formatDate } from '@weibo-archiver/core'
 import { ArrowUpRightFromCircleIcon, EllipsisIcon } from 'lucide-vue-next'
 import { computed } from 'vue'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useUserStore } from '@/stores'
 import Avatar from '../common/Avatar.vue'
 

@@ -5,6 +5,7 @@ import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import { useEmoji } from '@/composables'
 import { useUserStore } from '@/stores'
 

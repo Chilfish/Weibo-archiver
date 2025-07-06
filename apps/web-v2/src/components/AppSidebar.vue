@@ -13,6 +13,18 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Setting from '@/components/settings/Settings.vue'
 import SwitchUser from '@/components/SwitchUser.vue'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar'
 import { useUserStore } from '@/stores'
 
 // Menu items.

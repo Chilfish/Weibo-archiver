@@ -1,6 +1,14 @@
 <script setup lang="tsx">
 import type { ImportedData } from '@weibo-archiver/core'
 import { onBeforeMount, ref, toRaw } from 'vue'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogFooter,
+  DialogHeader,
+  DialogScrollContent,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { usePostStore, useUserStore } from '@/stores'
 import ImportDataPreview from './ImportDataPreview'
 

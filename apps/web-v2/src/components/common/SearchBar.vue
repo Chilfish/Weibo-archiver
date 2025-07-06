@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search } from 'lucide-vue-next'
+import { SearchIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const query = ref('')
@@ -20,7 +20,7 @@ async function onSearch() {
       placeholder="搜索微博内容..."
       @keyup.enter="onSearch"
     >
-    <Search
+    <SearchIcon
       class="h-[1em] cursor-pointer"
       @click="onSearch"
     />

@@ -6,6 +6,9 @@ import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import AlbumPreviewWeibo from '@/components/album/AlbumPreviewWeibo.vue'
 import LazyImage from '@/components/common/LazyImage.vue'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { emitter } from '@/composables'
 
 const emits = defineEmits<{

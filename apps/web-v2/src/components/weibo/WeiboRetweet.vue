@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
 import { computed } from 'vue'
+import { Card, CardContent } from '@/components/ui/card'
 import WeiboActions from './WeiboActions.vue'
 import WeiboCard from './WeiboCard.vue'
 import WeiboProfile from './WeiboProfile.vue'

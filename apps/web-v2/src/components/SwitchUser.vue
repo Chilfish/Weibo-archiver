@@ -3,6 +3,8 @@ import type { UserInfo } from '@weibo-archiver/core'
 import { ChevronDown, UserRoundPlus } from 'lucide-vue-next'
 import { computed, watch } from 'vue'
 import ImportData from '@/components/common/ImportData.vue'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useUserStore } from '@/stores'
 import Avatar from './common/Avatar.vue'
 
@@ -68,7 +70,7 @@ watch(curUid, (newUid) => {
           <Avatar
             :src="user.avatar"
             :alt="user.name"
-            :size="8"
+            size="size-8"
           />
           <span class="max-w-22 truncate">
             {{ user.name }}

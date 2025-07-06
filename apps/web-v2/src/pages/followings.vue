@@ -5,6 +5,7 @@ import { computed, ref, watch } from 'vue'
 import { sendMessage } from 'webext-bridge/window'
 import FollowingsTable from '@/components/followings/FollowingsTable.vue'
 import SyncComparisonModal from '@/components/followings/SyncComparisonModal'
+import { Button } from '@/components/ui/button'
 import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()

@@ -3,6 +3,12 @@ import type { ImagePreviewEvent } from '@/types'
 import { useEventListener } from '@vueuse/core'
 import { ArrowLeftIcon, ArrowRightIcon, XIcon } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+} from '@/components/ui/dialog'
 import { emitter } from '@/composables'
 import LazyImage from './LazyImage.vue'
 

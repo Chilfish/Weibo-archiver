@@ -21,7 +21,7 @@ function previewImage(url: string) {
 
 <template>
   <ul
-    class="list"
+    class="pt-2"
   >
     <li
       v-for="comment in comments"
@@ -31,7 +31,7 @@ function previewImage(url: string) {
       <Avatar
         :src="comment.user.avatar"
         :alt="comment.user.name"
-        :size="8"
+        size="size-8"
       />
       <div class="flex flex-col w-full">
         <a

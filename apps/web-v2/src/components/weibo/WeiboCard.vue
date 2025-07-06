@@ -2,6 +2,7 @@
 import type { Comment, LinkCard, Post, Retweet } from '@weibo-archiver/core'
 import { computed, ref } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
+import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import ImageGallery from '../common/ImageGallery.vue'
 import WeiboActions from './WeiboActions.vue'
 import WeiboComments from './WeiboComments.vue'

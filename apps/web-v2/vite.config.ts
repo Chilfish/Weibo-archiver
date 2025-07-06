@@ -4,7 +4,6 @@ import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
-import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import pkg from './package.json'
 
@@ -32,13 +31,6 @@ export default defineConfig({
     VueJsx(),
 
     tailwindcss(),
-    // https://github.com/antfu/vite-plugin-components
-    Components({
-      dts: 'src/auto-components.d.ts',
-      dirs: [
-        './src/components/ui',
-      ],
-    }),
   ],
   define: {
     __VERSION__: JSON.stringify(pkg.version),

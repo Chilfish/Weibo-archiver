@@ -2,6 +2,7 @@
 import type { CSSProperties } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref, useTemplateRef, watch } from 'vue'
+import { Skeleton } from '@/components/ui/skeleton'
 import { replaceImg } from '@/composables'
 
 type Numberish = number | string

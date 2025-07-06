@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
 import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 const shouldShowDialog = useStorage('dialog:show:bookmark-migrate', true)
 const openDialog = ref(shouldShowDialog.value)

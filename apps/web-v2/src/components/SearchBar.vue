@@ -12,6 +12,10 @@ import {
   XIcon,
 } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 import { useSearch } from '@/composables'
 import { cn } from '@/lib/utils'
 import DatePicker from './DatePicker.vue'

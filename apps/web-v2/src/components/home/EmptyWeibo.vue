@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Import } from 'lucide-vue-next'
+import { ImportIcon } from 'lucide-vue-next'
 import ImportData from '@/components/common/ImportData.vue'
+import { Button } from '@/components/ui/button'
 </script>
 
 <template>
@@ -21,7 +22,7 @@ import ImportData from '@/components/common/ImportData.vue'
         class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg rounded-full px-10 mb-12 relative"
       >
         <ImportData />
-        <Import />
+        <ImportIcon />
         导入数据
       </Button>
     </div>
