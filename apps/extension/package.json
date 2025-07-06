@@ -55,6 +55,6 @@
     "@types/react-dom": "^19.1.6",
     "@weibo-archiver/core": "workspace:^",
     "@wxt-dev/module-react": "^1.1.3",
-    "wxt": "^0.20.6"
+    "wxt": "^0.20.7"
   }
 }
