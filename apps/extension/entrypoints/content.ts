@@ -1,5 +1,5 @@
 import type { UserInfo } from '@weibo-archiver/core'
-import type { BackupData } from '@/types/storage'
+import type { WeiboData } from '@/types/storage'
 import {
   allowWindowMessaging,
   onMessage,
@@ -12,6 +12,8 @@ export default defineContentScript({
     '*://localhost/*',
     'https://weibo.com/*',
     'https://weibo-archiver.chilfish.top/*',
+    'https://weibo-archiver.vercel.app/*',
+    'https://weibo-archiver-preivew.vercel.app/*',
   ],
   async main() {
     const isNotInWeb = !document.URL.includes('weibo-archiver.chilfish.top')
@@ -118,7 +120,7 @@ async function sendDataToCurrentPage(): Promise<{
     let totalPosts = 0
 
     for (const [userId, backupData] of Object.entries(backupDataMap)) {
-      const data = backupData as BackupData
+      const data = backupData as WeiboData
       importData[userId] = {
         weibo: data.weibo,
         user: data.user,
@@ -151,7 +153,7 @@ async function sendDataToCurrentPage(): Promise<{
 /**
  * 通过 CustomEvent 向目标网站导入数据
  */
-async function importDataToTargetSite(backupData: BackupData): Promise<void> {
+async function importDataToTargetSite(backupData: WeiboData): Promise<void> {
   try {
     // 构造目标网站期望的数据格式
     const importData = {

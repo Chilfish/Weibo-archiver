@@ -96,7 +96,14 @@ class MessageManager {
         currentWindow: true,
       })
       if (_dest === 'content-script') {
+        // @see https://serversideup.net/open-source/webext-bridge/docs/guide/examples#popup-content-script
         _dest = `content-script@${tabs[0].id}`
+      }
+      else if (_dest === 'window') {
+        (_dest as any) = {
+          context: 'window',
+          tabId: tabs[0].id,
+        }
       }
 
       const response = await sendMessage(type, data as any, _dest)
@@ -260,11 +267,6 @@ export function parseWeiboUrl(
   }
 }
 
-// 验证 UID 格式
-export function isValidUid(uid: string): boolean {
-  return /^\d+$/.test(uid) && uid.length >= 8
-}
-
 // 格式化时间间隔
 export function formatInterval(minutes: number): string {
   if (minutes < 60) {
@@ -282,15 +284,6 @@ export function formatInterval(minutes: number): string {
   return remainingHours > 0
     ? `${days} 天 ${remainingHours} 小时`
     : `${days} 天`
-}
-
-// 格式化文件大小
-export function formatFileSize(bytes: number): string {
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  if (bytes === 0)
-    return '0 B'
-  const i = Math.floor(Math.log(bytes) / Math.log(1024))
-  return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`
 }
 
 // 检查content script是否可用

@@ -60,7 +60,7 @@ export const useConfigOperations = () => {
   const handleExportAllBackupData = useCallback(async () => {
     try {
       clearError()
-      const allData = await storageManager.getAllBackupData()
+      const allData = await storageManager.getAllWeiboData()
       if (Object.keys(allData).length === 0) {
         throw new Error('没有备份数据可导出')
       }

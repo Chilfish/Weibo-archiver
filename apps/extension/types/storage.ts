@@ -35,7 +35,7 @@ export interface TaskStatus {
   nextRun: number
 }
 
-export interface BackupData {
+export interface WeiboData {
   user: UserInfo
   weibo: Post[]
   followings: Following[]

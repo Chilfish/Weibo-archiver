@@ -1,5 +1,5 @@
 import type { Post } from '@weibo-archiver/core'
-import type { BackupData } from '@/types'
+import type { WeiboData } from '@/types'
 
 /**
  * 数据去重和增量获取工具类
@@ -21,22 +21,6 @@ export class DataDeduplicator {
   }
 
   /**
-   * 根据用户ID和微博ID组合去重
-   */
-  static deduplicateByUserAndPost(posts: Post[]): Post[] {
-    const uniquePosts = new Map<string, Post>()
-
-    for (const post of posts) {
-      const key = `${post.userId}_${post.mblogid}`
-      if (!uniquePosts.has(key)) {
-        uniquePosts.set(key, post)
-      }
-    }
-
-    return Array.from(uniquePosts.values())
-  }
-
-  /**
    * 过滤掉已存在的微博（基于本地数据）
    */
   static filterNewPosts(newPosts: Post[], existingPosts: Post[]): Post[] {
@@ -47,7 +31,7 @@ export class DataDeduplicator {
   /**
    * 获取本地最新微博的时间戳
    */
-  static getLatestPostTime(backupData: BackupData | null): number {
+  static getLatestPostTime(backupData: WeiboData | null): number {
     if (!backupData || !backupData.weibo || backupData.weibo.length === 0) {
       return 0
     }
@@ -60,16 +44,6 @@ export class DataDeduplicator {
     })
 
     return new Date(sortedPosts[0].createdAt).getTime()
-  }
-
-  /**
-   * 过滤掉早于指定时间的微博
-   */
-  static filterPostsAfterTime(posts: Post[], afterTime: number): Post[] {
-    return posts.filter((post) => {
-      const postTime = new Date(post.createdAt).getTime()
-      return postTime > afterTime
-    })
   }
 
   /**
@@ -183,9 +157,9 @@ export class DataDeduplicator {
    * 合并新旧备份数据
    */
   static mergeBackupData(
-    existingData: BackupData | null,
-    newData: BackupData,
-  ): BackupData {
+    existingData: WeiboData | null,
+    newData: WeiboData,
+  ): WeiboData {
     if (!existingData) {
       return newData
     }
