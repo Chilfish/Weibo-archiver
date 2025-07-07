@@ -13,6 +13,7 @@ import {
 import { getTaskStatus, updateTaskConfig } from '@/lib/background/runTask'
 import { getLocalUsers, sendDataToWeb } from '@/lib/contentScript'
 
+export * from './window/message'
 export type PopupBackgroundRouter = ReturnType<typeof popup_background_router>
 export type PopupContentRouter = ReturnType<typeof popup_content_router>
 export type WindowBackgroundRouter = ReturnType<typeof window_background_router>
@@ -61,11 +62,10 @@ export function popup_background_router() {
       }),
 
     setGlobalConfig: t.procedure
-      .input<{ interval: number, autoStart: boolean }>()
+      .input<{ interval: number }>()
       .action(async ({ input }) => {
         return await storageManager.setGlobalConfig(
           input.interval,
-          input.autoStart,
           taskScheduler,
         )
       }),

@@ -115,29 +115,12 @@ class StorageManager {
 
   async setGlobalConfig(
     interval: number,
-    autoStart: boolean,
     taskScheduler: any,
   ): Promise<void> {
     await this.saveConfig({
       globalInterval: interval,
-      autoStart,
     })
-
-    if (autoStart) {
-      // 重新初始化任务调度
-      await taskScheduler.initializeTaskSchedules()
-      console.log('Global config updated, tasks re-initialized')
-    }
-    else {
-      // 停用所有任务
-      const tasks = await this.getTasks()
-      for (const task of tasks) {
-        if (task.enabled) {
-          await taskScheduler.unscheduleTask(task.id)
-        }
-      }
-      console.log('Auto start disabled, all tasks stopped')
-    }
+    await taskScheduler.initializeTaskSchedules()
   }
 
   // ============ 任务状态管理 ============

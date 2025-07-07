@@ -19,11 +19,10 @@ export const useConfigOperations = () => {
         setShowSettingsDialog(false)
 
         // 如果更新了全局配置，通知后台脚本
-        if ('globalInterval' in newConfig || 'autoStart' in newConfig) {
+        if ('globalInterval' in newConfig) {
           const currentConfig = useConfigStore.getState().config
           await popupBackgroundClient.setGlobalConfig({
             interval: newConfig.globalInterval ?? currentConfig.globalInterval,
-            autoStart: newConfig.autoStart ?? currentConfig.autoStart,
           })
         }
       }

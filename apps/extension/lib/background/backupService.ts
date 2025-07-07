@@ -1,7 +1,10 @@
 import type { Post } from '@weibo-archiver/core'
+import type { FetchManager } from '@/lib/fetchManager'
 import type { TaskConfig, WeiboData } from '@/types'
+import { sendMessage } from 'webext-bridge/background'
 import { DataDeduplicator, PaginationController } from '@/lib/deduplication'
 import { storageManager } from '@/lib/storageManager'
+import { getTabId } from '@/lib/utils'
 
 export class BackupService {
   private static instance: BackupService
@@ -72,13 +75,6 @@ export class BackupService {
     // 最终去重处理
     const finalPosts = DataDeduplicator.deduplicateByMblogId(allPosts)
 
-    // 按时间倒序排列
-    finalPosts.sort((a, b) => {
-      const timeA = new Date(a.createdAt).getTime()
-      const timeB = new Date(b.createdAt).getTime()
-      return timeB - timeA
-    })
-
     await storageManager.updateTaskStatus(task.id, {
       status: 'running',
       message: `数据处理完成，去重后获得 ${finalPosts.length} 条微博`,
@@ -118,7 +114,7 @@ export class BackupService {
 
   private async fetchWeiboData(
     task: TaskConfig,
-    fetchManager: any,
+    fetchManager: FetchManager,
     existingData: WeiboData | null,
     latestLocalTime: number,
   ): Promise<Post[]> {
@@ -126,6 +122,16 @@ export class BackupService {
     const paginationController = new PaginationController()
     let totalFetched = 0
     let newPostsCount = 0
+
+    // TODO: 用RPC的方式会报错 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+    const newestPost = await sendMessage<Post | null>('getNewestPost', { uid: task.uid }, `window@${await getTabId()}`)
+    // const newestPost = {}
+    let startAtDate = new Date()
+    if (newestPost?.createdAt) {
+      startAtDate = new Date(newestPost.createdAt)
+    }
+
+    fetchManager.config.startAt = startAtDate.getTime()
 
     await fetchManager.fetchAllWeibo({
       uid: task.uid,

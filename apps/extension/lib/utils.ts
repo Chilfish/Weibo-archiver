@@ -20,32 +20,37 @@ export const popupBackgroundClient = createTipcClient<PopupBackgroundRouter>({
 
 export const popupContentClient = createTipcClient<PopupContentRouter>({
   async sender(key, message) {
-    const tabs = await browser.tabs.query({
-      active: true,
-      currentWindow: true,
-    })
-    const dest = `content-script@${tabs[0].id}`
+    const tabId = await getTabId()
+    const dest = `content-script@${tabId}`
     return popup_sendMessage(key, message, dest)
   },
 })
 
 export const backgroundContentClient = createTipcClient<BackgroundContentRouter>({
   async sender(key, message) {
-    const tabs = await browser.tabs.query({
-      active: true,
-      currentWindow: true,
-    })
-    // @see https://serversideup.net/open-source/webext-bridge/docs/guide/examples#popup-content-script
-    const dest = `content-script@${tabs[0].id}`
+    const tabId = await getTabId()
+    const dest = `content-script@${tabId}`
     return background_sendMessage(key, message, dest)
   },
 })
 
 export const backgroundWindowClient = createTipcClient<BackgroundWindowRouter>({
   async sender(key, message) {
-    return background_sendMessage(key, message, 'window')
+    const tabId = await getTabId()
+    const dest = `window@${tabId}`
+    return background_sendMessage(key, message, dest)
   },
 })
+
+export async function getTabId() {
+  // @see https://serversideup.net/open-source/webext-bridge/docs/api/notes
+  const tabs = await browser.tabs.query({
+    active: true,
+    currentWindow: true,
+  })
+
+  return tabs[0].id || 0
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

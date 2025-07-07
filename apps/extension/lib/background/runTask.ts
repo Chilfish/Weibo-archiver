@@ -62,27 +62,13 @@ export async function executeTask(taskId: string) {
     const now = Date.now()
     const nextRunTime = now + task.interval * 60 * 1000
 
-    // 更新最新微博时间戳
-    const latestPostDate
-      = backupData.weibo.length > 0
-        ? Math.max(
-            ...backupData.weibo.map(post =>
-              new Date(post.createdAt).getTime(),
-            ),
-          )
-        : task.lastPostDate
-
     // 更新任务配置
     await storageManager.updateTask(taskId, {
       lastCheck: now,
       nextRunTime,
       totalPosts: backupData.weibo.length,
-      lastPostDate: latestPostDate,
       isFirstBackup: false,
     })
-
-    // 获取配置
-    const config = await storageManager.getConfig()
 
     // 计算新增微博数量
     const previousTotal = task.totalPosts
@@ -92,9 +78,7 @@ export async function executeTask(taskId: string) {
     // 生成成功消息
     let successMessage = ''
     if (task.isFirstBackup) {
-      successMessage = config.enableFullBackup
-        ? `首次全量备份完成，共获取 ${backupData.weibo.length} 条历史微博`
-        : `首次快速备份完成，共获取 ${backupData.weibo.length} 条最近微博`
+      successMessage = `备份完成，共获取 ${backupData.weibo.length} 条最近微博`
     }
     else {
       successMessage = `增量备份完成，新增 ${newPostsAdded} 条微博，总计 ${backupData.weibo.length} 条`

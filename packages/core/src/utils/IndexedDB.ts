@@ -150,10 +150,24 @@ export class IndexedDB extends Dexie {
 
   async getLatestPost(): Promise<Post> {
     const post = await this.postQuery
+      .reverse()
+      .offset(0)
       .limit(1)
       .toArray()
 
     return post[0]
+  }
+
+  async getNewestPost(uid: string): Promise<Post | null> {
+    const posts = await this.posts
+      .where('userId')
+      .equals(uid)
+      .reverse()
+      .offset(0)
+      .limit(1)
+      .toArray()
+
+    return posts.length > 0 ? posts[0] : null
   }
 
   async getAllPostsCount(): Promise<number> {

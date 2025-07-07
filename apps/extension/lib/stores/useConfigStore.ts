@@ -21,11 +21,7 @@ type ConfigStore = ConfigState & ConfigActions
 const DEFAULT_CONFIG: AppConfig = {
   saveDirectory: 'weibo_backup',
   globalInterval: 30,
-  autoStart: false,
   maxRetries: 3,
-  enableNotifications: true,
-  theme: 'auto',
-  enableFullBackup: false,
 }
 
 export const useConfigStore = create<ConfigStore>()(

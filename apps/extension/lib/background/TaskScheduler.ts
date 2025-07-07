@@ -48,9 +48,8 @@ export class TaskScheduler {
   /**
    * 启动调度器
    */
-  start(): void {
+  start() {
     if (this.isRunning) {
-      this.log('warn', 'Scheduler is already running')
       return
     }
 
@@ -62,9 +61,6 @@ export class TaskScheduler {
     this.log('info', 'Scheduler started', {
       checkInterval: this.config.checkInterval,
     })
-
-    // 立即检查一次
-    this.checkAndRunTasks()
   }
 
   /**
@@ -265,21 +261,6 @@ export class TaskScheduler {
   }
 
   /**
-   * 立即调度任务
-   */
-  async scheduleTask(taskId: string, delay = 5000): Promise<void> {
-    const now = Date.now()
-    const nextRunTime = now + delay
-
-    await storageManager.updateTask(taskId, { nextRunTime })
-
-    this.log('info', 'Task scheduled', {
-      taskId,
-      nextRunTime: new Date(nextRunTime).toLocaleString(),
-    })
-  }
-
-  /**
    * 取消任务调度
    */
   async unscheduleTask(taskId: string): Promise<void> {
@@ -335,33 +316,10 @@ export class TaskScheduler {
   }
 
   /**
-   * 获取正在运行的任务
-   */
-  getRunningTasks(): string[] {
-    return Array.from(this.runningTasks.keys())
-  }
-
-  /**
-   * 检查任务是否正在运行
-   */
-  isTaskRunning(taskId: string): boolean {
-    return this.runningTasks.get(taskId) === true
-  }
-
-  /**
    * 初始化任务调度时间
    */
   async initializeTaskSchedules(): Promise<void> {
     try {
-      const config = await storageManager.getConfig()
-      if (!config.autoStart) {
-        this.log(
-          'info',
-          'Auto start is disabled, skipping task initialization',
-        )
-        return
-      }
-
       const tasks = await storageManager.getTasks()
       const now = Date.now()
       let updatedCount = 0

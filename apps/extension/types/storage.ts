@@ -19,11 +19,7 @@ export interface TaskConfig {
 export interface AppConfig {
   saveDirectory: string // 导出文件名前缀
   globalInterval: number // 全局检查间隔（分钟）
-  autoStart: boolean // 是否自动开始检查
   maxRetries: number // 最大重试次数
-  enableNotifications: boolean // 是否启用通知
-  theme: 'light' | 'dark' | 'auto'
-  enableFullBackup: boolean // 是否启用首次全量备份
 }
 
 export interface TaskStatus {

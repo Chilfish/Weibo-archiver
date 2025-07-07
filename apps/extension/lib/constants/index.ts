@@ -30,11 +30,7 @@ export const DEFAULT_FETCH_CONFIG: FetchConfig = {
 export const DEFAULT_APP_CONFIG: AppConfig = {
   saveDirectory: 'weibo_backup', // 导出文件名前缀
   globalInterval: 30, // 30分钟
-  autoStart: false,
   maxRetries: 3,
-  enableNotifications: true,
-  theme: 'auto',
-  enableFullBackup: false, // 默认首次只备份一天
 }
 
 export const DEFAULT_TASK_CONFIG: Omit<

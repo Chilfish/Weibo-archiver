@@ -8,9 +8,10 @@ import {
   taskScheduler,
 } from '@/lib/background'
 
-export default defineBackground(async () => {
-  await initialize()
+async function onTabLoaded(tabId: number) {
+}
 
+export default defineBackground(async () => {
   // 确保扩展关闭时清理资源
   if (typeof globalThis !== 'undefined' && 'addEventListener' in globalThis) {
     globalThis.addEventListener('beforeunload', () => {
@@ -24,7 +25,7 @@ export default defineBackground(async () => {
     curTabId(tabId)
   })
 
-  browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (
       tab.url && (
         !matchDomains.includes(new URL(tab.url).hostname)
@@ -33,11 +34,11 @@ export default defineBackground(async () => {
       return
     }
     if (changeInfo.status === 'complete') {
-      if (tabId === curTabId()) {
-        // onTabLoaded(tabId)
-      }
       curTabId(tabId)
       tabActiveTime(Date.now())
+      await onTabLoaded(tabId)
     }
   })
+
+  await initialize()
 })

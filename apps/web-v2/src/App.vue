@@ -66,6 +66,7 @@ onBeforeMount(async () => {
   if (!isIndex.value) {
     await pingExtension()
   }
+
   isLoading.value = false
 })
 </script>
