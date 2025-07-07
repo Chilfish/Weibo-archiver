@@ -314,17 +314,12 @@ export function AddTaskDialog() {
                 ))}
               </SelectContent>
             </Select>
-            <div className="text-xs text-muted-foreground space-y-1">
-              <div>
-                系统将每隔
-                {' '}
-                {formatInterval(interval)}
-                {' '}
-                自动检查并备份新的微博内容
-              </div>
-              <div className="text-amber-600 dark:text-amber-400">
-                💡 首次备份只会获取最近一天的微博，后续备份会增量获取新内容
-              </div>
+            <div className="text-xs text-muted-foreground">
+              系统将每隔
+              {' '}
+              {formatInterval(interval)}
+              {' '}
+              自动检查并备份新的微博内容
             </div>
           </div>
 

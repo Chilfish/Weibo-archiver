@@ -16,6 +16,8 @@ export default defineContentScript({
     'https://weibo-archiver-preview.vercel.app/*',
   ].filter(Boolean),
   async main() {
+    allowWindowMessaging(window.origin)
+
     createTipcHandler({
       router: background_content_router(),
       receiver: onMessage,
@@ -26,7 +28,5 @@ export default defineContentScript({
     })
 
     console.log('微博自动备份 Content Script 已加载')
-
-    allowWindowMessaging(window.origin)
   },
 })

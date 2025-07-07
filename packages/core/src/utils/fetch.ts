@@ -24,7 +24,10 @@ export function createFetcher(args: CreateAxiosDefaults) {
         }
 
         const { ok, data, msg, ...restData } = rawData || {}
-        if (ok !== 1) {
+        if (ok === -100) {
+          throw new WeiboError('登录状态已过期，请先登录微博网页版')
+        }
+        else if (ok !== 1) {
           throw new WeiboError(`成功码不为 1: ${msg}`)
         }
         if (!data && restData) {

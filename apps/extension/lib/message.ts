@@ -82,6 +82,11 @@ export function popup_content_router() {
 export function window_background_router() {
   const t = initTipc()
   return {
+    fetchMe: t.procedure
+      .action(async () => {
+        return fetchManager.getCurUserInfo()
+      }),
+
     searchUser: t.procedure
       .input<{ searchText: string }>()
       .action(async ({ input }) => {

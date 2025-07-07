@@ -1,6 +1,7 @@
 import type { ClassValue } from 'clsx'
 import type {
   BackgroundContentRouter,
+  BackgroundWindowRouter,
   PopupBackgroundRouter,
   PopupContentRouter,
 } from '@/lib/message'
@@ -37,6 +38,12 @@ export const backgroundContentClient = createTipcClient<BackgroundContentRouter>
     // @see https://serversideup.net/open-source/webext-bridge/docs/guide/examples#popup-content-script
     const dest = `content-script@${tabs[0].id}`
     return background_sendMessage(key, message, dest)
+  },
+})
+
+export const backgroundWindowClient = createTipcClient<BackgroundWindowRouter>({
+  async sender(key, message) {
+    return background_sendMessage(key, message, 'window')
   },
 })
 

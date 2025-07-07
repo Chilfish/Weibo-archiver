@@ -24,6 +24,7 @@ const routes: RouteRecordRaw[] = [
   'followings',
   'search',
   'sync',
+  'test',
 ].map(useDefaultRoute)
 
 routes.push({

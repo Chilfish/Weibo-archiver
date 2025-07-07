@@ -179,13 +179,15 @@
   body {
     @apply text-foreground;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+  *::-webkit-resizer,
+  *::-webkit-scrollbar-thumb {
+    background: #aaa !important;
+    border-radius: 4px !important;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  *::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
   }
 }

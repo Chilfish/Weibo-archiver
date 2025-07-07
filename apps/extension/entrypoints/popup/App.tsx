@@ -4,7 +4,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   useAppInitialization,
-  useRealTimeUpdate,
   useTaskStatusUpdater,
 } from '@/hooks'
 import { useTaskStore, useUIStore } from '@/lib/stores'
@@ -22,9 +21,6 @@ function AppContent() {
   // 定期更新任务状态
   useTaskStatusUpdater()
 
-  // 实时更新时间
-  const currentTime = useRealTimeUpdate(1000)
-
   if (isLoading) {
     return (
       <div className="w-96 h-64 flex items-center justify-center">
@@ -37,7 +33,7 @@ function AppContent() {
   }
 
   return (
-    <div className="w-96 pb-4 overflow-hidden bg-background">
+    <div className="w-96 min-h-120 pb-4 overflow-hidden bg-background">
       <div className="flex flex-col h-full px-3">
         <AppHeader />
 

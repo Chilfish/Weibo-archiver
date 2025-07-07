@@ -19,7 +19,7 @@ export async function sendMessageToWxt<K extends string>(
   fallback: any,
 ) {
   try {
-    return await sendMessage(key, args)
+    return await sendMessage(key, args, 'background')
   }
   catch (e: any) {
     console.error(e)

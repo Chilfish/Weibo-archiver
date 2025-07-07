@@ -4,7 +4,7 @@ import { useAlertDialog } from '@/components/ui/alert-dialog'
 import { sendMessageToWxt } from '@/composables/useMessage'
 
 export async function pingExtension() {
-  const timeout = 1000
+  const timeout = 1500
   const timeoutPromise = new Promise<never>((_, reject) => {
     setTimeout(() => {
       reject(new TimeoutError(`请求超时，超过了 ${timeout / 1000} 秒`))
@@ -16,6 +16,7 @@ export async function pingExtension() {
     await Promise.race([messagePromise, timeoutPromise])
   }
   catch (e: any) {
+    console.error(e)
     if (e.name !== 'Timeout') {
       return
     }

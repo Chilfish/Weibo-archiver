@@ -1,5 +1,16 @@
-import type { Favorite, FetchConfig, Following, Post, UserInfo } from '@weibo-archiver/core'
-import { FetchService, PostService, UserService } from '@weibo-archiver/core'
+import type {
+  Favorite,
+  FetchConfig,
+  Following,
+  Post,
+  UserInfo,
+} from '@weibo-archiver/core'
+import {
+  FetchService,
+  PostService,
+  UserParser,
+  UserService,
+} from '@weibo-archiver/core'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'
@@ -36,16 +47,27 @@ export class FetchManager {
     this.fetchService.setFetcher(cookie)
   }
 
-  async getCurCookieUid() {
-    const data = await this.fetchService.userDetail('')
-    const re = /uid=(\d+)/
-    const [_, result] = data.verified_url.match(re) || []
-
-    if (result) {
-      this.curUid = result
+  async getCurUserInfo(): Promise<UserInfo | null> {
+    const detailInfo = await this.fetchService.userDetail('')
+    if (!detailInfo?.created_at) {
+      return null
     }
-    console.log('curUid', result)
-    return this.curUid
+
+    const re = /uid=(\d+)/
+    const [_, uid] = detailInfo.verified_url.match(re) || []
+
+    if (!uid?.trim()) {
+      return null
+    }
+
+    const baseInfo = await this.fetchService.userInfo(uid)
+    const userInfo = UserParser.parse(baseInfo.user)
+
+    return {
+      ...userInfo,
+      createdAt: detailInfo.created_at,
+      birthday: detailInfo.birthday,
+    }
   }
 
   async fetchUser(uid: string): Promise<UserInfo> {

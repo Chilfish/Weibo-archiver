@@ -8,6 +8,7 @@ import {
   Upload,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/animate-ui/radix/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   AlertDialog,
@@ -39,7 +40,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useConfigOperations } from '@/hooks'
 import { useConfigStore, useUIStore } from '@/lib/stores'
 
@@ -127,7 +127,7 @@ export function SettingsDialog() {
 
   return (
     <Dialog open={showSettingsDialog} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>应用设置</DialogTitle>
           <DialogDescription>

@@ -1,7 +1,7 @@
 import type { TaskConfig, TaskStatus } from '@/types/storage'
 import { formatDate } from '@weibo-archiver/core'
 import {
-  AlertCircle,
+  AlertCircleIcon,
   Calendar,
   Clock,
   Download,
@@ -12,6 +12,7 @@ import {
   User,
 } from 'lucide-react'
 import { useState } from 'react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -90,7 +91,7 @@ function TaskItem({ task, status }: TaskItemProps) {
   return (
     <>
       <Card>
-        <CardHeader className="pb-0">
+        <CardHeader className="pb-0 px-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3 flex-1">
               <Avatar className="h-10 w-10">
@@ -156,7 +157,7 @@ function TaskItem({ task, status }: TaskItemProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="pt-0">
+        <CardContent className="pt-0 px-4">
           <div className="grid grid-cols-2 gap-4 text-xs">
             <div className="space-y-1">
               <div className="flex items-center gap-1 text-muted-foreground">
@@ -203,15 +204,17 @@ function TaskItem({ task, status }: TaskItemProps) {
           {hasError && status?.message && (
             <>
               <Separator className="my-3" />
-              <div className="flex items-center justify-center">
-                <div
-                  className="text-xs text-destructive text-center"
-                  title={status.message}
-                >
-                  <AlertCircle className="h-4 w-4 mx-auto mb-1" />
+              <Alert
+                variant="destructive"
+              >
+                <AlertTitle className="flex gap-2 mb-1 items-center">
+                  <AlertCircleIcon className="size-4" />
+                  上次运行时出错
+                </AlertTitle>
+                <AlertDescription>
                   {status.message}
-                </div>
-              </div>
+                </AlertDescription>
+              </Alert>
             </>
           )}
         </CardContent>

@@ -34,7 +34,7 @@ export const matchDomains = ['localhost', 'weibo-archiver.chilfish.top']
 
 export async function initialize() {
   try {
-    await initializeCookie()
+    // await initializeCookie()
 
     createTipcHandler({
       router: popup_background_router(),
@@ -53,11 +53,8 @@ export async function initialize() {
 }
 
 async function initializeCookie() {
-  let cookie = await storageManager.getCookie()
-  if (!cookie?.trim()) {
-    cookie = await getCookies()
-    await storageManager.setCookie(cookie)
-  }
+  const cookie = await getCookies()
+  await storageManager.setCookie(cookie)
   fetchManager.setCookie(cookie)
 }
 
