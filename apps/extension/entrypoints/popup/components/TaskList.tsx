@@ -62,7 +62,6 @@ function TaskItem({ task, status }: TaskItemProps) {
   const { handleRemoveTask, handleExportTask } = useTaskOperations()
   const currentTime = useRealTimeUpdate(1000)
 
-  const isRunning = status?.status === 'running'
   const hasError = status?.status === 'error'
 
   const handleDelete = async () => {
@@ -119,7 +118,6 @@ function TaskItem({ task, status }: TaskItemProps) {
                   • 间隔:
                   {' '}
                   {formatInterval(task.interval)}
-                  {task.isFirstBackup && ' • 首次备份仅获取最近一天'}
                 </CardDescription>
               </div>
             </div>

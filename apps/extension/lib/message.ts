@@ -4,14 +4,14 @@ import { initTipc } from '@weibo-archiver/core'
 import { sendMessage } from 'webext-bridge/background'
 import {
   curTabId,
-  executeTask,
-  fetchingTabId,
   fetchManager,
-  storageManager,
-  taskScheduler,
 } from '@/lib/background'
-import { getTaskStatus, updateTaskConfig } from '@/lib/background/runTask'
+import {
+  executeTask,
+  updateTaskConfig,
+} from '@/lib/background/runTask'
 import { getLocalUsers, sendDataToWeb } from '@/lib/contentScript'
+import { storageManager } from '@/lib/storageManager'
 
 export * from './window/message'
 export type PopupBackgroundRouter = ReturnType<typeof popup_background_router>
@@ -40,34 +40,10 @@ export function popup_background_router() {
         return await updateTaskConfig(input.taskId, input.config)
       }),
 
-    getTaskStatus: t.procedure
-      .input<{ taskId: string }>()
-      .action(async ({ input }) => {
-        return await getTaskStatus(input.taskId)
-      }),
-
-    getAllTaskStatus: t.procedure
-      .action(async () => {
-        return await storageManager.getTaskStatuses()
-      }),
-
-    getSchedulerTaskStats: t.procedure
-      .action(() => {
-        return taskScheduler.getStats()
-      }),
-
-    getAllBackupData: t.procedure
-      .action(async () => {
-        return await storageManager.getAllWeiboData()
-      }),
-
     setGlobalConfig: t.procedure
       .input<{ interval: number }>()
       .action(async ({ input }) => {
-        return await storageManager.setGlobalConfig(
-          input.interval,
-          taskScheduler,
-        )
+        return await storageManager.setGlobalConfig(input.interval)
       }),
   }
 }
@@ -103,7 +79,6 @@ export function window_background_router() {
       .input<{ uid: string } & FetchConfig>()
       .action(async ({ input }) => {
         Object.assign(fetchManager.config, input)
-        fetchingTabId(curTabId())
 
         return fetchManager.fetchAllWeibo({
           uid: input.uid,

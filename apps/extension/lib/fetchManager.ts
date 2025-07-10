@@ -17,10 +17,6 @@ interface FetchState {
   fetchType: 'weibo' | 'followings' | 'favorites'
 }
 
-interface Config extends FetchConfig {
-  cookie: string
-}
-
 export class FetchManager {
   fetchService = new FetchService()
   userService = new UserService(this.fetchService)
@@ -39,8 +35,7 @@ export class FetchManager {
 
   curUid = ''
 
-  constructor(public config: Config) {
-    this.setCookie(config.cookie)
+  constructor(public config: FetchConfig) {
   }
 
   setCookie(cookie: string) {

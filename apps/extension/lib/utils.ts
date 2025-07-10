@@ -1,7 +1,6 @@
 import type { ClassValue } from 'clsx'
 import type {
   BackgroundContentRouter,
-  BackgroundWindowRouter,
   PopupBackgroundRouter,
   PopupContentRouter,
 } from '@/lib/message'
@@ -30,14 +29,6 @@ export const backgroundContentClient = createTipcClient<BackgroundContentRouter>
   async sender(key, message) {
     const tabId = await getTabId()
     const dest = `content-script@${tabId}`
-    return background_sendMessage(key, message, dest)
-  },
-})
-
-export const backgroundWindowClient = createTipcClient<BackgroundWindowRouter>({
-  async sender(key, message) {
-    const tabId = await getTabId()
-    const dest = `window@${tabId}`
     return background_sendMessage(key, message, dest)
   },
 })

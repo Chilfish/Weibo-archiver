@@ -54,10 +54,10 @@ export class DataDeduplicator {
     posts: Post[],
     latestLocalTime: number,
   ): {
-      hasOldData: boolean
-      oldDataCount: number
-      newDataCount: number
-    } {
+    hasOldData: boolean
+    oldDataCount: number
+    newDataCount: number
+  } {
     let oldDataCount = 0
     let newDataCount = 0
 
@@ -91,15 +91,15 @@ export class DataDeduplicator {
     latestLocalTime: number,
     threshold = 0.8,
   ): {
-      shouldContinue: boolean
-      reason: string
-      stats: {
-        totalPosts: number
-        newPosts: number
-        oldPosts: number
-        oldDataRatio: number
-      }
-    } {
+    shouldContinue: boolean
+    reason: string
+    stats: {
+      totalPosts: number
+      newPosts: number
+      oldPosts: number
+      oldDataRatio: number
+    }
+  } {
     if (posts.length === 0) {
       return {
         shouldContinue: false,
@@ -190,12 +190,12 @@ export class DataDeduplicator {
     deduplicatedCount: number,
     newPostsCount: number,
   ): {
-      originalCount: number
-      deduplicatedCount: number
-      newPostsCount: number
-      duplicatesRemoved: number
-      deduplicationRate: number
-    } {
+    originalCount: number
+    deduplicatedCount: number
+    newPostsCount: number
+    duplicatesRemoved: number
+    deduplicationRate: number
+  } {
     const duplicatesRemoved = originalCount - deduplicatedCount
     const deduplicationRate
       = originalCount > 0 ? duplicatesRemoved / originalCount : 0
@@ -216,11 +216,11 @@ export class DataDeduplicator {
     lastBackupTime: number,
     currentTime: number = Date.now(),
   ): {
-      strategy: 'full' | 'incremental' | 'recent'
-      startTime: number
-      endTime: number
-      description: string
-    } {
+    strategy: 'full' | 'incremental' | 'recent'
+    startTime: number
+    endTime: number
+    description: string
+  } {
     const timeDiff = currentTime - lastBackupTime
     const oneDayMs = 24 * 60 * 60 * 1000
     const oneWeekMs = 7 * oneDayMs
@@ -287,10 +287,10 @@ export class PaginationController {
     latestLocalTime: number,
     threshold = 0.9,
   ): {
-      shouldContinue: boolean
-      reason: string
-      consecutiveOldPages: number
-    } {
+    shouldContinue: boolean
+    reason: string
+    consecutiveOldPages: number
+  } {
     const { hasOldData, oldDataCount } = DataDeduplicator.checkForOldData(
       posts,
       latestLocalTime,

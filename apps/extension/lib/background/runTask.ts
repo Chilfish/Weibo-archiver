@@ -1,5 +1,7 @@
 import type { TaskConfig, TaskStatus } from '@/types'
-import { backupService, fetchManager, taskScheduler } from '@/lib/background'
+import { fetchManager } from '@/lib/background'
+import { backupService } from '@/lib/background/backupService'
+import { taskScheduler } from '@/lib/background/TaskScheduler'
 import { storageManager } from '@/lib/storageManager'
 
 export async function getTaskStatus(taskId: string): Promise<TaskStatus> {

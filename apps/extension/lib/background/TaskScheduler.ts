@@ -1,4 +1,5 @@
 import type { TaskConfig } from '@/types/storage'
+import { executeTask } from '@/lib/background/runTask'
 import { storageManager } from '@/lib/storageManager'
 
 export interface SchedulerConfig {
@@ -61,6 +62,7 @@ export class TaskScheduler {
     this.log('info', 'Scheduler started', {
       checkInterval: this.config.checkInterval,
     })
+    this.checkAndRunTasks()
   }
 
   /**
@@ -261,23 +263,6 @@ export class TaskScheduler {
   }
 
   /**
-   * 取消任务调度
-   */
-  async unscheduleTask(taskId: string): Promise<void> {
-    await storageManager.updateTask(taskId, {
-      enabled: false,
-      nextRunTime: 0,
-    })
-
-    // 如果任务正在运行，标记为需要停止
-    if (this.runningTasks.get(taskId)) {
-      this.log('warn', `Task ${taskId} is running and will be stopped`)
-    }
-
-    this.log('info', 'Task unscheduled', { taskId })
-  }
-
-  /**
    * 更新任务调度
    */
   async updateTaskSchedule(
@@ -306,13 +291,6 @@ export class TaskScheduler {
       nextRunTime:
         nextRunTime > 0 ? new Date(nextRunTime).toLocaleString() : 'disabled',
     })
-  }
-
-  /**
-   * 获取调度器状态
-   */
-  getStats(): SchedulerStats {
-    return { ...this.stats }
   }
 
   /**
@@ -346,6 +324,8 @@ export class TaskScheduler {
       }
 
       this.log('info', `Initialized ${updatedCount} task schedules`)
+
+      this.start()
     }
     catch (error) {
       this.log('error', 'Failed to initialize task schedules', { error })
@@ -379,3 +359,5 @@ export const DEFAULT_SCHEDULER_CONFIG: SchedulerConfig = {
   retryDelay: 30 * 60 * 1000, // 失败后30分钟重试
   logLevel: 'info',
 }
+
+export const taskScheduler = new TaskScheduler(DEFAULT_SCHEDULER_CONFIG, executeTask)

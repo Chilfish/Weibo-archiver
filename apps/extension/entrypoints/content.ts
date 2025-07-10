@@ -26,7 +26,5 @@ export default defineContentScript({
       router: popup_content_router(),
       receiver: onMessage,
     })
-
-    console.log('微博自动备份 Content Script 已加载')
   },
 })

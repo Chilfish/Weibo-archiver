@@ -1,10 +1,32 @@
 import type { Post } from '@weibo-archiver/core'
 import type { FetchManager } from '@/lib/fetchManager'
+import type { BackgroundWindowRouter } from '@/lib/window/message'
 import type { TaskConfig, WeiboData } from '@/types'
-import { sendMessage } from 'webext-bridge/background'
+import { createTipcClient } from '@weibo-archiver/core'
+import {
+  sendMessage as background_sendMessage,
+} from 'webext-bridge/background'
+import { browser } from 'wxt/browser'
 import { DataDeduplicator, PaginationController } from '@/lib/deduplication'
 import { storageManager } from '@/lib/storageManager'
-import { getTabId } from '@/lib/utils'
+// import { getTabId } from '@/lib/utils'
+async function getTabId() {
+  // @see https://serversideup.net/open-source/webext-bridge/docs/api/notes
+  const tabs = await browser.tabs.query({
+    active: true,
+    currentWindow: true,
+  })
+
+  return tabs[0].id || 0
+}
+
+export const backgroundWindowClient = createTipcClient<BackgroundWindowRouter>({
+  async sender(key, message) {
+    const tabId = await getTabId()
+    const dest = `window@${tabId}`
+    return background_sendMessage(key, message, dest)
+  },
+})
 
 export class BackupService {
   private static instance: BackupService
@@ -123,9 +145,8 @@ export class BackupService {
     let totalFetched = 0
     let newPostsCount = 0
 
-    // TODO: 用RPC的方式会报错 Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
-    const newestPost = await sendMessage<Post | null>('getNewestPost', { uid: task.uid }, `window@${await getTabId()}`)
-    // const newestPost = {}
+    const newestPost = await backgroundWindowClient.getNewestPost({ uid: task.uid })
+    console.log(newestPost)
     let startAtDate = new Date()
     if (newestPost?.createdAt) {
       startAtDate = new Date(newestPost.createdAt)

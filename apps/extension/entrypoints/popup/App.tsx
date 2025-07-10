@@ -4,7 +4,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
   useAppInitialization,
-  useTaskStatusUpdater,
 } from '@/hooks'
 import { useTaskStore, useUIStore } from '@/lib/stores'
 import { AddTaskDialog, SettingsDialog, TaskList } from './components'
@@ -17,9 +16,6 @@ function AppContent() {
 
   // 初始化应用
   useAppInitialization()
-
-  // 定期更新任务状态
-  useTaskStatusUpdater()
 
   if (isLoading) {
     return (

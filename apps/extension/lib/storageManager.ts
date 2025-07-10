@@ -115,12 +115,10 @@ class StorageManager {
 
   async setGlobalConfig(
     interval: number,
-    taskScheduler: any,
   ): Promise<void> {
     await this.saveConfig({
       globalInterval: interval,
     })
-    await taskScheduler.initializeTaskSchedules()
   }
 
   // ============ 任务状态管理 ============
