@@ -14,6 +14,7 @@ declare module 'vue' {
     ImgViewer: typeof import('./../../../packages/ui/src/ImgViewer.vue')['default']
     MainHeader: typeof import('./../../../packages/ui/src/MainHeader.vue')['default']
     MainImage: typeof import('./../../../packages/ui/src/MainImage.vue')['default']
+    NAlert: typeof import('naive-ui')['NAlert']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NBackTop: typeof import('naive-ui')['NBackTop']
     NButton: typeof import('naive-ui')['NButton']

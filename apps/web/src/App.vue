@@ -55,6 +55,29 @@ const isIndex = computed(() => route.path === '/')
         'pt-16': !isIndex,
       }"
     >
+      <n-alert
+        class="mx-auto my-2 w-50%"
+        title="升级迁移通知"
+        type="warning"
+        closable
+      >
+        网站和油猴脚本已经升级改版，迁移到了
+        <a
+          href="https://weibo-archiver.chilfish.top/"
+          target="_blank"
+        >
+          weibo-archiver.chilfish.top
+        </a>。
+        <br>
+        新的数据文件不再支持导入到本网站，可查看
+        <a
+          href="https://weibo-archiver.chilfish.top/docs/intro.html#从旧版本迁移"
+          target="_blank"
+        >
+          迁移文档
+        </a>
+        完成数据迁移。
+      </n-alert>
       <router-view />
     </main>
   </app-main>
