@@ -2,16 +2,10 @@ import type { FetchConfig } from '@weibo-archiver/core'
 import type { TaskConfig } from '@/types'
 import { initTipc } from '@weibo-archiver/core'
 import { sendMessage } from 'webext-bridge/background'
-import {
-  curTabId,
-  fetchManager,
-} from '@/lib/background'
-import {
-  executeTask,
-  updateTaskConfig,
-} from '@/lib/background/runTask'
-import { getLocalUsers, sendDataToWeb } from '@/lib/contentScript'
+import { curTabId, fetchManager } from '@/entrypoints/background'
+import { taskScheduler } from '@/entrypoints/background/TaskScheduler'
 import { storageManager } from '@/lib/storageManager'
+import { getLocalUsers, sendDataToWeb } from './contentScript'
 
 export * from './window/message'
 export type PopupBackgroundRouter = ReturnType<typeof popup_background_router>
@@ -28,16 +22,10 @@ export function popup_background_router() {
         return await fetchManager.fetchUser(input.uid)
       }),
 
-    startBackup: t.procedure
-      .input<{ taskId: string }>()
-      .action(async ({ input }) => {
-        return await executeTask(input.taskId)
-      }),
-
     updateTask: t.procedure
       .input<{ taskId: string, config: Partial<TaskConfig> }>()
       .action(async ({ input }) => {
-        return await updateTaskConfig(input.taskId, input.config)
+        return await taskScheduler.updateTaskSchedule(input.taskId, input.config)
       }),
 
     setGlobalConfig: t.procedure

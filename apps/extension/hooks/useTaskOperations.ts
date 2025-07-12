@@ -18,10 +18,6 @@ export const useTaskOperations = () => {
         await storageManager.addTask(taskConfig)
         addTask(taskConfig)
         setShowAddTaskDialog(false)
-
-        // 添加任务后立即开始备份
-        console.log(`Starting backup for newly added task: ${taskConfig.id}`)
-        await popupBackgroundClient.startBackup({ taskId: taskConfig.id })
       }
       catch (error) {
         console.error('Failed to add task:', error)

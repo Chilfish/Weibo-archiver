@@ -2,19 +2,20 @@ import { createTipcHandler } from '@weibo-archiver/core'
 import { signal } from 'alien-signals'
 import { onMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
-import { taskScheduler } from '@/lib/background/TaskScheduler'
-import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
-import { FetchManager } from '@/lib/fetchManager'
+import { defineBackground } from 'wxt/utils/define-background'
 import {
   popup_background_router,
   window_background_router,
 } from '@/lib/message'
+import { fetchManager } from './backupService'
+import { taskScheduler } from './TaskScheduler'
 
-export const fetchManager = new FetchManager(DEFAULT_FETCH_CONFIG)
-
+export {
+  fetchManager,
+}
 export const curTabId = signal(0)
 
-export async function initialize() {
+async function initialize() {
   try {
     setupTab()
 
@@ -51,3 +52,7 @@ function setupTab() {
     }
   })
 }
+
+export default defineBackground(async () => {
+  await initialize()
+})

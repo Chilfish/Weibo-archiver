@@ -7,6 +7,8 @@ import type {
 } from '@/types/storage'
 import { defineExtensionStorage } from '@webext-core/storage'
 import browser from 'webextension-polyfill'
+import { taskScheduler } from '@/entrypoints/background/TaskScheduler'
+import { DataDeduplicator } from '@/lib/deduplication'
 import { DEFAULT_APP_CONFIG } from './constants'
 
 export interface StorageSchema {
@@ -71,6 +73,8 @@ class StorageManager {
 
     tasks.push(task)
     await this.saveTasks(tasks)
+    // 加入之后就立刻运行
+    await taskScheduler.executeTask(task)
   }
 
   async removeTask(taskId: string): Promise<void> {
@@ -151,7 +155,7 @@ class StorageManager {
       const existingData = allData[taskId]
       if (existingData && existingData.weibo && existingData.weibo.length > 0) {
         const allPosts = [...existingData.weibo, ...data.weibo]
-        const uniquePosts = this.deduplicatePostsByMblogId(allPosts)
+        const uniquePosts = DataDeduplicator.deduplicateByMblogId(allPosts)
 
         uniquePosts.sort((a, b) => {
           const timeA = new Date(a.createdAt).getTime()
@@ -269,27 +273,6 @@ class StorageManager {
       console.error('Failed to import data:', error)
       throw new Error(`导入数据失败：${(error as Error).message}`)
     }
-  }
-
-  async getCookie(): Promise<string> {
-    return StorageManager.getItem('cookies', '')
-  }
-
-  async setCookie(cookie: string): Promise<void> {
-    return StorageManager.setItem('cookies', cookie)
-  }
-
-  // ============ 工具方法 ============
-  private deduplicatePostsByMblogId(posts: any[]): any[] {
-    const uniquePosts = new Map<string, any>()
-
-    for (const post of posts) {
-      if (post.mblogid && !uniquePosts.has(post.mblogid)) {
-        uniquePosts.set(post.mblogid, post)
-      }
-    }
-
-    return Array.from(uniquePosts.values())
   }
 }
 

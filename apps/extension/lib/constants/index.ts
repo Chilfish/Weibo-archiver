@@ -1,5 +1,5 @@
 import type { FetchConfig } from '@weibo-archiver/core'
-import type { AppConfig, TaskConfig } from '@/types'
+import type { AppConfig, SchedulerConfig, TaskConfig } from '@/types'
 
 /**
  * 默认的图片 CDN
@@ -44,4 +44,11 @@ export const DEFAULT_TASK_CONFIG: Omit<
   totalPosts: 0,
   isFirstBackup: true,
   nextRunTime: 0,
+}
+
+export const DEFAULT_SCHEDULER_CONFIG: SchedulerConfig = {
+  checkInterval: 60 * 1000, // 每分钟检查一次
+  maxConcurrentTasks: 3, // 最多同时运行3个任务
+  retryDelay: 30 * 60 * 1000, // 失败后30分钟重试
+  logLevel: 'info',
 }
