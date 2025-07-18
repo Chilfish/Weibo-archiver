@@ -360,7 +360,7 @@ export class WeiboParser {
   /**
    * 提取所有图片链接
    */
-  static parseImgs(posts: Post[]): string[] {
+  static parseImgs(posts: Post[] | Favorite[]): string[] {
     const imgs = posts
       .map((post) => {
         const imageLinks: string[] = []
@@ -374,7 +374,7 @@ export class WeiboParser {
         return [
           post.imgs,
           post.retweet?.imgs,
-          post.comments.map(e => e.img),
+          'comments' in post ? post.comments.map(e => e.img) : [],
           post.card?.img,
           imageLinks,
         ]

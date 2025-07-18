@@ -44,8 +44,12 @@ export async function exportData(data: {
   const dataBlob = new Blob([dataStr], { type: 'application/json' })
   fileSaver.saveAs(dataBlob, `weibo-data-${username}.json`)
 
-  const imgsData = [data.weibo, data.favorites]
+  const imgsData = [
+    data.weibo,
+    data.favorites,
+  ]
     .flatMap(WeiboParser.parseImgs)
+    .filter(Boolean)
     .join(',\n') // csv 格式
 
   if (imgsData.length) {
