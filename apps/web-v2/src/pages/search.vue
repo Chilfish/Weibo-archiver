@@ -108,7 +108,7 @@ onMounted(async () => {
       暂无微博
     </div>
     <div
-      v-else-if="!searchQuery.searchText"
+      v-else-if="!searchQuery.searchText && weiboArr.length < 1"
       class="flex flex-col items-center mt-12"
     >
       <SearchIcon class="size-16 text-accent" />

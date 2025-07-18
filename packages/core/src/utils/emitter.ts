@@ -52,9 +52,9 @@ export interface Emitter<Events extends Record<EventType, unknown>> {
 export function emitter<Events extends Record<EventType, unknown>>(
   all?: EventHandlerMap<Events>,
 ): Emitter<Events> {
-  type GenericEventHandler =
-    | Handler<Events[keyof Events]>
-    | WildcardHandler<Events>
+  type GenericEventHandler
+    = | Handler<Events[keyof Events]>
+      | WildcardHandler<Events>
   all = all || new Map()
 
   return {

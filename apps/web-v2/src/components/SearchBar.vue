@@ -75,10 +75,6 @@ const {
 } = useSearch()
 
 function onSearch() {
-  if (!searchText.value) {
-    return
-  }
-
   const searchQuery = toSearchQuery()
   emits('search', searchQuery)
 }

@@ -5,6 +5,18 @@ import { parseAbsolute, today } from '@internationalized/date'
 import Dexie from 'dexie'
 import { DEFAULT_PAGE_SIZE } from '../constants'
 
+export interface PostFilterOptions {
+  candidateIds?: string[] | null
+  dateFrom?: Date
+  dateTo?: Date
+  withImage?: boolean
+  withRepost?: boolean
+  withOriginal?: boolean
+  withText?: boolean
+  page: number
+  pageSize: number
+}
+
 export class IndexedDB extends Dexie {
   users!: Table<UserInfo, number>
   posts!: Table<Post, number>
@@ -16,21 +28,19 @@ export class IndexedDB extends Dexie {
   constructor() {
     super('Weibo-archiver')
 
-    this.version(1)
-      .stores({
-        users: 'uid, createdAt',
-        posts: 'id, mblogid, userId, createdAt',
-        followings: 'uid, followBy',
-        favorites: 'id, mblogid, userId',
-      })
+    this.version(1).stores({
+      users: 'uid, createdAt',
+      posts: 'id, mblogid, userId, createdAt',
+      followings: 'uid, followBy',
+      favorites: 'id, mblogid, userId',
+    })
 
-    this.version(2)
-      .stores({
-        users: 'uid, createdAt',
-        posts: 'id, mblogid, userId, createdAt',
-        followings: 'uid',
-        favorites: 'id, mblogid, favBy',
-      })
+    this.version(2).stores({
+      users: 'uid, createdAt',
+      posts: 'id, mblogid, userId, createdAt',
+      followings: 'uid',
+      favorites: 'id, mblogid, favBy',
+    })
   }
 
   get curUid() {
@@ -38,10 +48,7 @@ export class IndexedDB extends Dexie {
   }
 
   async setCurUser(userId: string) {
-    const data = await this.users
-      .where('uid')
-      .equals(userId)
-      .toArray()
+    const data = await this.users.where('uid').equals(userId).toArray()
 
     this.curUser = data[0]
   }
@@ -81,8 +88,7 @@ export class IndexedDB extends Dexie {
   }
 
   async getAllFavorites(): Promise<Favorite[]> {
-    return this.favoriteQuery
-      .toArray()
+    return this.favoriteQuery.toArray()
   }
 
   async getFavorites(
@@ -97,8 +103,7 @@ export class IndexedDB extends Dexie {
   }
 
   async getAllFavoritesCount(): Promise<number> {
-    return this.favoriteQuery
-      .count()
+    return this.favoriteQuery.count()
   }
 
   async getUsers(): Promise<UserInfo[]> {
@@ -107,6 +112,10 @@ export class IndexedDB extends Dexie {
 
   async getAllPosts(): Promise<Post[]> {
     return this.postQuery.toArray()
+  }
+
+  async getAllPostIds(): Promise<string[]> {
+    return (await this.getAllPosts()).map(post => post.id)
   }
 
   async getPosts(
@@ -135,11 +144,16 @@ export class IndexedDB extends Dexie {
     return post.length > 0 ? post[0] : undefined
   }
 
-  async getPostsByDay(day: CalendarDate = today('Asia/Shanghai')): Promise<Post[]> {
+  async getPostsByDay(
+    day: CalendarDate = today('Asia/Shanghai'),
+  ): Promise<Post[]> {
     const monthDay = `${day.month}-${day.day}`
     return this.postQuery
       .and((post) => {
-        const date = parseAbsolute(new Date(post.createdAt).toISOString(), 'Asia/Shanghai')
+        const date = parseAbsolute(
+          new Date(post.createdAt).toISOString(),
+          'Asia/Shanghai',
+        )
 
         const postMonthDay = `${date.month}-${date.day}`
         return monthDay === postMonthDay
@@ -149,11 +163,7 @@ export class IndexedDB extends Dexie {
   }
 
   async getLatestPost(): Promise<Post> {
-    const post = await this.postQuery
-      .reverse()
-      .offset(0)
-      .limit(1)
-      .toArray()
+    const post = await this.postQuery.reverse().offset(0).limit(1).toArray()
 
     return post[0]
   }
@@ -181,7 +191,10 @@ export class IndexedDB extends Dexie {
   async clearDB() {
     const postsCount = await this.postQuery.delete()
     const favoritesCount = await this.favoriteQuery.delete()
-    const usersCount = await this.users.where('uid').equals(this.curUid).delete()
+    const usersCount = await this.users
+      .where('uid')
+      .equals(this.curUid)
+      .delete()
 
     return {
       postsCount,
@@ -192,15 +205,79 @@ export class IndexedDB extends Dexie {
   }
 
   private get postQuery() {
-    return this.posts
-      .where('userId')
-      .equals(this.curUid)
+    return this.posts.where('userId').equals(this.curUid)
   }
 
   private get favoriteQuery() {
-    return this.favorites
-      .where('favBy')
-      .equals(this.curUid)
+    return this.favorites.where('favBy').equals(this.curUid)
+  }
+
+  async searchPostsWithFilter(options: PostFilterOptions): Promise<{
+    posts: Post[]
+    total: number
+  }> {
+    const {
+      candidateIds,
+      dateFrom,
+      dateTo,
+      withImage,
+      withRepost,
+      withOriginal,
+      withText,
+      page,
+      pageSize,
+    } = options
+
+    let query = this.postQuery
+
+    // 如果有搜索结果的候选ID，先按ID筛选
+    if (candidateIds && candidateIds.length > 0) {
+      query = query.and(post => candidateIds.includes(post.id))
+    }
+
+    // 日期筛选（利用索引）
+    if (dateFrom && dateTo) {
+      const fromTime = dateFrom.getTime()
+      const toTime = dateTo.getTime()
+      query = query.and((post) => {
+        const postTime = new Date(post.createdAt).getTime()
+        return postTime >= fromTime && postTime <= toTime
+      })
+    }
+
+    // 应用其他筛选条件
+    if (withImage === false) {
+      query = query.and(post => !post.imgs || post.imgs.length === 0)
+    }
+
+    if (withRepost === false) {
+      query = query.and(post => !post.retweet)
+    }
+
+    if (withOriginal === false) {
+      query = query.and(post => !!post.retweet)
+    }
+
+    if (withText === false) {
+      query = query.and(
+        post => (post.imgs && post.imgs.length > 0) || !!post.retweet,
+      )
+    }
+
+    // 获取总数
+    const total = await query.count()
+
+    // 分页获取结果
+    const posts = await query
+      .reverse()
+      .offset((page - 1) * pageSize)
+      .limit(pageSize)
+      .toArray()
+
+    return {
+      posts,
+      total,
+    }
   }
 }
 
