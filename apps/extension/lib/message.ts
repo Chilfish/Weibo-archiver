@@ -2,8 +2,9 @@ import type { FetchConfig } from '@weibo-archiver/core'
 import type { TaskConfig } from '@/types'
 import { initTipc } from '@weibo-archiver/core'
 import { sendMessage } from 'webext-bridge/background'
-import { curTabId, fetchManager } from '@/entrypoints/background'
-import { taskScheduler } from '@/entrypoints/background/TaskScheduler'
+import { curTabId } from '@/entrypoints/background'
+import { taskScheduler } from '@/entrypoints/background/taskScheduler'
+import { fetchManager } from '@/lib/fetchManager'
 import { storageManager } from '@/lib/storageManager'
 import { getLocalUsers, sendDataToWeb } from './contentScript'
 
@@ -82,7 +83,7 @@ export function window_background_router() {
     fetchFavorites: t.procedure
       .input<{ uid: string }>()
       .action(async ({ input }) => {
-        fetchManager.userService.uid = input.uid
+        fetchManager.setUid(input.uid)
         return fetchManager.fetchFavorites({
           onFetch: async posts =>
             sendMessage('fetch:favorites-paged', posts, {

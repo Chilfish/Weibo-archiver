@@ -7,7 +7,7 @@ import type {
 } from '@/types/storage'
 import { defineExtensionStorage } from '@webext-core/storage'
 import browser from 'webextension-polyfill'
-import { taskScheduler } from '@/entrypoints/background/TaskScheduler'
+import { taskScheduler } from '@/entrypoints/background/taskScheduler'
 import { DataDeduplicator } from '@/lib/deduplication'
 import { DEFAULT_APP_CONFIG } from './constants'
 

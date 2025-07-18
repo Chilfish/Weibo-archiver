@@ -1,15 +1,23 @@
+import type {
+  BackupService,
+} from '@/entrypoints/background/backupService'
 import type { SchedulerConfig, SchedulerStats } from '@/types'
 import type { TaskConfig } from '@/types/storage'
+import {
+  backupService,
+} from '@/entrypoints/background/backupService'
 import { DEFAULT_SCHEDULER_CONFIG } from '@/lib/constants'
 import { storageManager } from '@/lib/storageManager'
-import { backupService } from './backupService'
 
 /**
  * TaskRunner 负责执行单个备份任务的完整逻辑。
  * 它封装了从状态更新、数据备份到结果处理的所有步骤。
  */
 class TaskRunner {
-  constructor(private task: TaskConfig) {}
+  constructor(
+    private task: TaskConfig,
+    private backupService: BackupService,
+  ) {}
 
   /**
    * 运行备份任务。
@@ -21,7 +29,7 @@ class TaskRunner {
     try {
       await this.updateStatus('running', '正在获取数据...', 0)
 
-      const backupData = await backupService.runBackup(this.task)
+      const backupData = await this.backupService.runBackup(this.task)
       await storageManager.saveBackupData(taskId, backupData)
 
       await this.handleSuccess(backupData)
@@ -114,7 +122,10 @@ export class TaskScheduler {
     lastCheckTime: 0,
   }
 
-  constructor(private config: SchedulerConfig) {
+  constructor(
+    private config: SchedulerConfig,
+    private backupService: BackupService,
+  ) {
     this.log('info', 'TaskScheduler initialized', { config })
   }
 
@@ -225,7 +236,7 @@ export class TaskScheduler {
     this.log('info', 'Starting task execution', { taskId, username: task.username })
 
     try {
-      const runner = new TaskRunner(task)
+      const runner = new TaskRunner(task, this.backupService)
       await runner.run()
       this.stats.completedTasks++
       this.log('info', 'Task completed successfully', { taskId })
@@ -365,4 +376,4 @@ export class TaskScheduler {
   }
 }
 
-export const taskScheduler = new TaskScheduler(DEFAULT_SCHEDULER_CONFIG)
+export const taskScheduler = new TaskScheduler(DEFAULT_SCHEDULER_CONFIG, backupService)

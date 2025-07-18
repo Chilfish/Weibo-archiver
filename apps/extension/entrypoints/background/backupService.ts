@@ -1,15 +1,13 @@
 import type { Post } from '@weibo-archiver/core'
+import type { FetchManager } from '@/lib/fetchManager'
 import type { BackgroundWindowRouter } from '@/lib/window/message'
 import type { TaskConfig, WeiboData } from '@/types'
 import { createTipcClient } from '@weibo-archiver/core'
 import { sendMessage as background_sendMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
-import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
 import { DataDeduplicator } from '@/lib/deduplication'
-import { FetchManager } from '@/lib/fetchManager'
+import { fetchManager } from '@/lib/fetchManager'
 import { storageManager } from '@/lib/storageManager'
-
-export const fetchManager = new FetchManager(DEFAULT_FETCH_CONFIG)
 
 async function getTabId(): Promise<number> {
   const tabs = await browser.tabs.query({ active: true, currentWindow: true })
@@ -22,21 +20,17 @@ export const backgroundWindowClient = createTipcClient<BackgroundWindowRouter>({
     if (!tabId) {
       throw new Error('No active tab found to send message.')
     }
-    return background_sendMessage(key, message, `content-script@${tabId}`)
+    return background_sendMessage(key, message, {
+      tabId,
+      context: 'window',
+    })
   },
 })
 
 export class BackupService {
-  private static instance: BackupService
-
-  private constructor() {}
-
-  static getInstance(): BackupService {
-    if (!BackupService.instance) {
-      BackupService.instance = new BackupService()
-    }
-    return BackupService.instance
-  }
+  constructor(
+    private fetchManager: FetchManager,
+  ) {}
 
   async runBackup(
     task: TaskConfig,
@@ -47,7 +41,7 @@ export class BackupService {
     })
 
     // 获取用户信息
-    const userInfo = await fetchManager.fetchUser(task.uid)
+    const userInfo = await this.fetchManager.fetchUser(task.uid)
 
     // 获取现有备份数据以进行去重和增量获取
     const existingData = await storageManager.getBackupData(task.id)
@@ -62,8 +56,8 @@ export class BackupService {
     })
 
     // 配置获取管理器
-    fetchManager.config = {
-      ...fetchManager.config,
+    this.fetchManager.config = {
+      ...this.fetchManager.config,
       isFetchAll: false,
       startAt: latestLocalTime,
       endAt: Date.now(),
@@ -108,9 +102,9 @@ export class BackupService {
       startAtDate = new Date(newestPost.createdAt)
     }
 
-    fetchManager.config.startAt = startAtDate.getTime()
+    this.fetchManager.config.startAt = startAtDate.getTime()
 
-    await fetchManager.fetchAllWeibo({
+    await this.fetchManager.fetchAllWeibo({
       uid: task.uid,
       onFetch: async ({
         posts: newPosts,
@@ -144,4 +138,4 @@ export class BackupService {
   }
 }
 
-export const backupService = BackupService.getInstance()
+export const backupService = new BackupService(fetchManager)

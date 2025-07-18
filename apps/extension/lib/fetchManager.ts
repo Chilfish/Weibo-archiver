@@ -11,6 +11,7 @@ import {
   UserParser,
   UserService,
 } from '@weibo-archiver/core'
+import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'
@@ -18,10 +19,6 @@ interface FetchState {
 }
 
 export class FetchManager {
-  fetchService = new FetchService()
-  userService = new UserService(this.fetchService)
-  postService = new PostService(this.userService, this.fetchService)
-
   fetchState: FetchState = {
     status: 'idle',
     fetchType: 'weibo',
@@ -35,7 +32,16 @@ export class FetchManager {
 
   curUid = ''
 
-  constructor(public config: FetchConfig) {
+  constructor(
+    public config: FetchConfig,
+    private fetchService: FetchService,
+    private userService: UserService,
+    private postService: PostService,
+  ) {
+  }
+
+  setUid(uid: string) {
+    this.userService.uid = uid
   }
 
   setCookie(cookie: string) {
@@ -215,3 +221,8 @@ export class FetchManager {
       : await this.userService.searchUser(keyword)
   }
 }
+
+const fetchService = new FetchService()
+const userService = new UserService(fetchService)
+const postService = new PostService(userService, fetchService)
+export const fetchManager = new FetchManager(DEFAULT_FETCH_CONFIG, fetchService, userService, postService)

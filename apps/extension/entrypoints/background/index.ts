@@ -3,16 +3,12 @@ import { signal } from 'alien-signals'
 import { onMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
 import { defineBackground } from 'wxt/utils/define-background'
+import { taskScheduler } from '@/entrypoints/background/taskScheduler'
 import {
   popup_background_router,
   window_background_router,
 } from '@/lib/message'
-import { fetchManager } from './backupService'
-import { taskScheduler } from './TaskScheduler'
 
-export {
-  fetchManager,
-}
 export const curTabId = signal(0)
 
 async function initialize() {
