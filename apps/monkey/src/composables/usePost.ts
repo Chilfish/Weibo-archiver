@@ -70,7 +70,7 @@ export function usePost() {
   }
 
   async function addUser(user: UserInfo) {
-    userService.uid = user.uid
+    userService.cookieUid = user.uid
     await idb.addUser(toRaw(user))
     await idb.setCurUser(user.uid)
     await getFetchCount()

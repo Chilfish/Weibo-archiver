@@ -6,12 +6,14 @@ import type {
   UserInfo,
 } from '@weibo-archiver/core'
 import {
+  FETCH_PATH,
   FetchService,
   PostService,
   UserParser,
   UserService,
 } from '@weibo-archiver/core'
 import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
+import { storageManager } from '@/lib/storageManager'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'
@@ -30,22 +32,12 @@ export class FetchManager {
     favorites: 0,
   }
 
-  curUid = ''
-
   constructor(
     public config: FetchConfig,
     private fetchService: FetchService,
     private userService: UserService,
     private postService: PostService,
   ) {
-  }
-
-  setUid(uid: string) {
-    this.userService.uid = uid
-  }
-
-  setCookie(cookie: string) {
-    this.fetchService.setFetcher(cookie)
   }
 
   async getCurUserInfo(): Promise<UserInfo | null> {
@@ -92,11 +84,12 @@ export class FetchManager {
     } = this.config
 
     this.fetchState.fetchType = 'weibo'
-    this.userService.uid = args.uid
+    this.userService.cookieUid = args.uid
 
     // 根据 isFetchAll 决定使用哪种获取方式
     if (isFetchAll) {
       await this.postService.getAllPosts({
+        uid: args.uid,
         isFetchAll: true,
         startAt: new Date(startAt),
         endAt: new Date(endAt),
@@ -123,6 +116,7 @@ export class FetchManager {
     else {
       // 按时间范围获取
       await this.postService.getAllPosts({
+        uid: args.uid,
         isFetchAll: false,
         startAt: new Date(startAt),
         endAt: new Date(endAt),
@@ -150,7 +144,7 @@ export class FetchManager {
 
   async fetchFollowings(uid: string) {
     this.fetchState.fetchType = 'followings'
-    this.userService.uid = uid
+    this.userService.cookieUid = uid
 
     let page = 1
     const data = new Set<Following>()
@@ -158,7 +152,7 @@ export class FetchManager {
       const followings = await this.userService.getFollowings({
         page,
         uid,
-        isMe: uid === this.curUid,
+        isMe: uid === this.userService.cookieUid,
       })
       page += 1
       followings.forEach(user => data.add(user))
@@ -169,8 +163,14 @@ export class FetchManager {
     return Array.from(data)
   }
 
-  async fetchFavorites(args: { onFetch: (posts: Favorite[]) => any }) {
+  async fetchFavorites(args: {
+    onFetch: (posts: Favorite[]) => any
+    uid: string
+  }): Promise<Favorite[]> {
     this.fetchState.fetchType = 'favorites'
+    if (!await isMe(args.uid)) {
+      return []
+    }
     return await this.postService.getFavorites(args)
   }
 
@@ -183,7 +183,6 @@ export class FetchManager {
     let isOutDate = false
     const allPosts: Post[] = []
     this.postService.sinceId = ''
-    this.userService.uid = args.uid
 
     while (true) {
       const posts = (
@@ -222,7 +221,40 @@ export class FetchManager {
   }
 }
 
-const fetchService = new FetchService()
-const userService = new UserService(fetchService)
-const postService = new PostService(userService, fetchService)
+async function isMe(uid: string): Promise<boolean> {
+  const cookieUid = await storageManager.getCurUid()
+  return cookieUid === uid
+}
+
+export async function setupUserService(userService: UserService) {
+  userService.cookieUid = await storageManager.getCurUid()
+}
+
+export const fetchService = new FetchService()
+export const userService = new UserService(fetchService)
+export const postService = new PostService(userService, fetchService)
+
+fetchService.onBeforeFetch = async (path: string) => {
+  if (path === FETCH_PATH.PROFILE_DETAIL) {
+    return
+  }
+
+  let storageUid = await storageManager.getCurUid()
+  if (!storageUid) {
+    const detailInfo = await fetchService.userDetail('')
+    if (!detailInfo?.created_at) {
+      return null
+    }
+    const re = /uid=(\d+)/
+    const [_, uid] = detailInfo.verified_url.match(re) || []
+    if (!uid?.trim()) {
+      return null
+    }
+    storageUid = uid
+    await storageManager.setCurUid(uid)
+  }
+  userService.cookieUid = storageUid
+}
+fetchService.setFetcher('')
+
 export const fetchManager = new FetchManager(DEFAULT_FETCH_CONFIG, fetchService, userService, postService)

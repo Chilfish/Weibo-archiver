@@ -20,6 +20,7 @@ export class FetchService {
   fetcher: Fetcher
 
   onRawFetch: (args: { data: any, type: string }) => any = () => {}
+  onBeforeFetch: (path: string) => any = () => {}
 
   constructor(
     cookies?: string,
@@ -147,6 +148,7 @@ export class FetchService {
       headers: {
         Cookie: cookies || undefined,
       },
+      beforeFetch: this.onBeforeFetch,
     })
     return this.fetcher
   }

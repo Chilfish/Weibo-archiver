@@ -4,6 +4,7 @@ import { onMessage } from 'webext-bridge/background'
 import { browser } from 'wxt/browser'
 import { defineBackground } from 'wxt/utils/define-background'
 import { taskScheduler } from '@/entrypoints/background/taskScheduler'
+import { setupUserService, userService } from '@/lib/fetchManager'
 import {
   popup_background_router,
   window_background_router,
@@ -23,6 +24,8 @@ async function initialize() {
       router: popup_background_router(),
       receiver: onMessage,
     })
+
+    await setupUserService(userService)
 
     await taskScheduler.initializeTaskSchedules()
   }

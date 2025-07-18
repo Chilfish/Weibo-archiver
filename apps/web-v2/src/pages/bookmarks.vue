@@ -1,25 +1,32 @@
 <script setup lang="ts">
-import type { Post } from '@weibo-archiver/core'
+import type { Favorite, Post } from '@weibo-archiver/core'
 import { DEFAULT_PAGE_SIZE, scrollToTop } from '@weibo-archiver/core'
+import { Loader2Icon } from 'lucide-vue-next'
 import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { toast } from 'vue-sonner'
+import { onMessage } from 'webext-bridge/window'
 import BookmarkMigrationDialog
   from '@/components/bookmarks/BookmarkMigrationDialog.vue'
 import Pagination from '@/components/common/Pagination.vue'
+import { Button } from '@/components/ui/button'
 import Weibo from '@/components/weibo/Weibo.vue'
-import { usePostStore } from '@/stores'
+import { windowClient } from '@/composables'
+import { usePostStore, useUserStore } from '@/stores'
 
 const postStore = usePostStore()
+const userStore = useUserStore()
 
 const route = useRoute()
 const router = useRouter()
 
 const isLoading = ref(false)
+const isSyncing = ref(false)
 const curPage = ref(Number(route.query.page) || 1)
 const pageSize = ref(Number(route.query.pageSize) || DEFAULT_PAGE_SIZE)
 const postsTotal = ref(0)
 
-const weiboArr = ref<Post[]>([])
+const weiboArr = ref<Favorite[]>([])
 
 onBeforeMount(async () => {
   postsTotal.value = await postStore.getAllFavoritesTotal()
@@ -46,6 +53,25 @@ async function changePage(newPage: number, newPageSize: number) {
   await getPosts()
   scrollToTop()
 }
+
+async function syncData() {
+  isSyncing.value = true
+  const data = await windowClient.fetchFavorites({ uid: userStore.curUid }) as Favorite[]
+  toast.success('获取收藏微博成功', {
+    description: `已获取到共 ${data.length} 条微博`,
+    action: {
+      label: '保存',
+      onClick: async () => {
+        postStore.saveFavorites(data)
+        weiboArr.value = await postStore.getFavorites(curPage.value, pageSize.value)
+      },
+    },
+    duration: 1000 * 60,
+  })
+  isSyncing.value = false
+}
+
+onMessage('fetch:favorites-paged', () => {})
 </script>
 
 <template>
@@ -54,11 +80,27 @@ async function changePage(newPage: number, newPageSize: number) {
   >
     <BookmarkMigrationDialog />
 
-    <h2
-      class="text-xl font-bold mb-4"
+    <header
+      class="flex items-center justify-between"
     >
-      微博收藏
-    </h2>
+      <h2
+        class="text-xl font-bold mb-4"
+      >
+        微博收藏
+      </h2>
+
+      <Button
+        variant="outline"
+        size="sm"
+        @click="syncData"
+      >
+        <Loader2Icon
+          v-if="isSyncing"
+          class="w-4 h-4 mr-2 animate-spin"
+        />
+        同步
+      </Button>
+    </header>
 
     <section
       v-if="weiboArr.length > 0"
@@ -67,7 +109,7 @@ async function changePage(newPage: number, newPageSize: number) {
       <Weibo
         v-for="post in weiboArr"
         :key="post.id"
-        :post="post"
+        :post="post as unknown as Post"
       />
 
       <Pagination

@@ -211,7 +211,7 @@ importers:
         version: 13.5.0(vue-router@4.5.1(vue@3.5.17(typescript@5.8.2)))(vue@3.5.17(typescript@5.8.2))
       axios:
         specifier: ^1.6.8
-        version: 1.9.0
+        version: 1.10.0
       destr:
         specifier: ^2.0.5
         version: 2.0.5
@@ -233,6 +233,9 @@ importers:
       vue-router:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.17(typescript@5.8.2))
+      vue-sonner:
+        specifier: ^2.0.2
+        version: 2.0.2
     devDependencies:
       '@chromatic-com/storybook':
         specifier: '3'
@@ -296,7 +299,7 @@ importers:
         version: 7.0.2(@types/node@24.0.10)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.85.1)(stylus@0.57.0)(terser@5.28.1)(tsx@4.19.4)(yaml@2.8.0)
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.25.0)(@types/node@24.0.10)(@types/react@19.1.8)(axios@1.9.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.85.1)(search-insights@2.17.3)(stylus@0.57.0)(terser@5.28.1)(typescript@5.8.2)
+        version: 1.6.3(@algolia/client-search@5.25.0)(@types/node@24.0.10)(@types/react@19.1.8)(axios@1.10.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.85.1)(search-insights@2.17.3)(stylus@0.57.0)(terser@5.28.1)(typescript@5.8.2)
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.0.10)(@vitest/browser@3.2.4)(happy-dom@17.4.7)(jiti@2.4.2)(lightningcss@1.30.1)(msw@2.7.3(@types/node@24.0.10)(typescript@5.8.2))(sass@1.85.1)(stylus@0.57.0)(terser@5.28.1)(tsx@4.19.4)(yaml@2.8.0)
@@ -3556,9 +3559,6 @@ packages:
 
   axios@1.10.0:
     resolution: {integrity: sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==}
-
-  axios@1.9.0:
-    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
 
   babel-walk@3.0.0-canary-5:
     resolution: {integrity: sha512-GAwkz0AihzY5bkwIY5QDR+LvsRQgB/B+1foMPvi0FZPMl5fjD7ICiznUiBdLYMH1QYe6vqu4gWYytZOccLouFw==}
@@ -7545,8 +7545,8 @@ packages:
   vue-component-type-helpers@2.2.8:
     resolution: {integrity: sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==}
 
-  vue-component-type-helpers@3.0.1:
-    resolution: {integrity: sha512-j23mCB5iEbGsyIhnVdXdWUOg+UdwmVxpKnYYf2j+4ppCt5VSFXKjwu9YFt0QYxUaf5G99PuHsVfRScjHCRSsGQ==}
+  vue-component-type-helpers@3.0.2:
+    resolution: {integrity: sha512-pbzPt5TlLZijRXt+/uhYRxTkIQkY09Ylx9t9lSk2ZjCv+bqyDRWH0RDUso7kOYQhG7m6SHXPhXEjD27LxKFryA==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -7589,6 +7589,9 @@ packages:
     resolution: {integrity: sha512-ogAF3P97NPm8fJsE4by9dwSYtDwXIY1nFY9T6DyQnGHd1E2Da94w9JIolpe42LJGIl0DwOHBi8TcRPlPGwbTtw==}
     peerDependencies:
       vue: ^3.2.0
+
+  vue-sonner@2.0.2:
+    resolution: {integrity: sha512-cN6onnN6aBOZ56YWN8CMj6t4zqbz/XlenE+jx5z+mgduMMelFo6B6G+e2Q6hhxU9YFiV16MXG2MBPluZabyElQ==}
 
   vue-tsc@3.0.1:
     resolution: {integrity: sha512-UvMLQD0hAGL1g/NfEQelnSVB4H5gtf/gz2lJKjMMwWNOUmSNyWkejwJagAxEbSjtV5CPPJYslOtoSuqJ63mhdg==}
@@ -10204,7 +10207,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.17(typescript@5.8.2)
-      vue-component-type-helpers: 3.0.1
+      vue-component-type-helpers: 3.0.2
 
   '@stylistic/eslint-plugin@5.1.0(eslint@9.30.1(jiti@2.4.2))':
     dependencies:
@@ -11094,13 +11097,13 @@ snapshots:
       '@vueuse/shared': 13.5.0(vue@3.5.17(typescript@5.8.2))
       vue: 3.5.17(typescript@5.8.2)
 
-  '@vueuse/integrations@12.8.2(axios@1.9.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.2)':
+  '@vueuse/integrations@12.8.2(axios@1.10.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.2)':
     dependencies:
       '@vueuse/core': 12.8.2(typescript@5.8.2)
       '@vueuse/shared': 12.8.2(typescript@5.8.2)
       vue: 3.5.17(typescript@5.8.2)
     optionalDependencies:
-      axios: 1.9.0
+      axios: 1.10.0
       focus-trap: 7.6.4
       fuse.js: 7.1.0
     transitivePeerDependencies:
@@ -11338,14 +11341,6 @@ snapshots:
       possible-typed-array-names: 1.1.0
 
   axios@1.10.0:
-    dependencies:
-      follow-redirects: 1.15.6
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
-  axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -15761,7 +15756,7 @@ snapshots:
       tsx: 4.19.4
       yaml: 2.8.0
 
-  vitepress@1.6.3(@algolia/client-search@5.25.0)(@types/node@24.0.10)(@types/react@19.1.8)(axios@1.9.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.85.1)(search-insights@2.17.3)(stylus@0.57.0)(terser@5.28.1)(typescript@5.8.2):
+  vitepress@1.6.3(@algolia/client-search@5.25.0)(@types/node@24.0.10)(@types/react@19.1.8)(axios@1.10.0)(fuse.js@7.1.0)(lightningcss@1.30.1)(postcss@8.5.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(sass@1.85.1)(search-insights@2.17.3)(stylus@0.57.0)(terser@5.28.1)(typescript@5.8.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.25.0)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(search-insights@2.17.3)
@@ -15774,7 +15769,7 @@ snapshots:
       '@vue/devtools-api': 7.7.2
       '@vue/shared': 3.5.14
       '@vueuse/core': 12.8.2(typescript@5.8.2)
-      '@vueuse/integrations': 12.8.2(axios@1.9.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.2)
+      '@vueuse/integrations': 12.8.2(axios@1.10.0)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.8.2)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.2
@@ -15914,7 +15909,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.8: {}
 
-  vue-component-type-helpers@3.0.1: {}
+  vue-component-type-helpers@3.0.2: {}
 
   vue-demi@0.14.10(vue@3.5.17(typescript@5.8.2)):
     dependencies:
@@ -15999,6 +15994,8 @@ snapshots:
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.17(typescript@5.8.2)
+
+  vue-sonner@2.0.2: {}
 
   vue-tsc@3.0.1(typescript@5.8.3):
     dependencies:

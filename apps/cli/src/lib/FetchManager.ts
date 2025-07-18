@@ -54,7 +54,7 @@ export class FetchManager {
       cookie,
     } = config
 
-    this.userService.uid = uid
+    this.userService.cookieUid = uid
     this.fetchService.setFetcher(cookie)
 
     this.filenameSuffix = Date.now()

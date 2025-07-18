@@ -8,9 +8,11 @@ import AppSidebar from '@/components/AppSidebar.vue'
 import ImagePreview from '@/components/common/ImagePreview.vue'
 import { AlertDialogProvider } from '@/components/ui/alert-dialog'
 import { SidebarProvider } from '@/components/ui/sidebar'
+import { Toaster } from '@/components/ui/sonner'
 import { useEmoji } from '@/composables'
 import { pingExtension } from '@/composables/usePingExtension'
 import { useUserStore } from '@/stores'
+import 'vue-sonner/style.css'
 
 const appName = 'Weibo-Archiver'
 const title = `${appName} - 备份你的微博`
@@ -88,6 +90,7 @@ onBeforeMount(async () => {
         <LoaderIcon class="animate-spin text-secondary-foreground size-12 m-auto my-16" />
       </div>
       <ImagePreview />
+      <Toaster close-button />
     </SidebarProvider>
   </AlertDialogProvider>
 </template>

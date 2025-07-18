@@ -32,10 +32,6 @@ export class PostService {
 
   }
 
-  get uid() {
-    return this.userService.uid
-  }
-
   get total() {
     return this.fetchedCount
   }
@@ -86,7 +82,7 @@ export class PostService {
     })
   }
 
-  async getAllPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature' | 'uid'> & {
+  async getAllPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature'> & {
     commentsCount: number
     onFetched: OnFetched
   }): Promise<void> {
@@ -115,7 +111,7 @@ export class PostService {
   }
 
   async getAllPostsByDate(
-    args: Omit<FetchArgs['postRange'], 'uid' | 'starttime' | 'endtime'> & {
+    args: Omit<FetchArgs['postRange'], 'starttime' | 'endtime'> & {
       startAt: Date | string
       endAt: Date | string
       commentsCount?: number
@@ -138,7 +134,6 @@ export class PostService {
         starttime,
         endtime,
         page,
-        uid: this.uid,
       })
 
       await args.onFetched?.({
@@ -182,7 +177,7 @@ export class PostService {
     commentsCount?: number
   }): Promise<Post[]> {
     const data = await this.fetchService.postsByDate({
-      uid: this.uid,
+      uid: args.uid,
       hasmuisc: args.hasmuisc || '1',
       haspic: args.haspic || '1',
       hastext: args.hastext || '1',
@@ -224,7 +219,6 @@ export class PostService {
     count: number = 20,
   ): Promise<Comment[]> {
     const data = await this.fetchService.comments({
-      uid: this.uid,
       id: postId,
       count,
       is_show_bulletin: isShowBulletIn,
@@ -247,7 +241,7 @@ export class PostService {
     const result: Favorite[] = []
     while (true) {
       const data = await this.fetchService.favorites({
-        uid: this.uid,
+        uid: this.userService.cookieUid,
         page,
         with_total: true,
       })
@@ -258,7 +252,7 @@ export class PostService {
 
       await this._setLongText(data as any)
 
-      const parsed = WeiboParser.parseBookmarks(data as any[], this.uid)
+      const parsed = WeiboParser.parseBookmarks(data as any[], this.userService.cookieUid)
 
       await args?.onFetch(parsed)
       result.push(...parsed)
@@ -268,11 +262,11 @@ export class PostService {
     return result
   }
 
-  async getPostsBySinceId(args: Omit<Partial<FetchArgs['postAll']>, 'feature'> & {
+  async getPostsBySinceId(args: Omit<FetchArgs['postAll'], 'feature'> & {
     commentsCount: number
   }): Promise<Post[]> {
     const data = await this.fetchService.postsBySinceId({
-      uid: args.uid || this.uid,
+      uid: args.uid,
       since_id: args.since_id || this.sinceId,
       page: args.page || 1,
       feature: 0,

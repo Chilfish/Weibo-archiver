@@ -9,7 +9,7 @@ const { updateConfig } = useConfig()
 const postStore = usePost()
 
 const fetchService = new FetchService()
-export const userService = new UserService(fetchService, config.value.user?.uid)
+export const userService = new UserService(fetchService)
 export const postService = new PostService(userService, fetchService)
 
 export const fetchState = reactive<FetchState>({
@@ -52,6 +52,7 @@ export async function startFetch() {
       startAt: new Date(startAt),
       endAt: new Date(endAt),
       sinceId,
+      uid: user!.uid,
       page: curPage,
       hasret: hasRepost ? '1' : '0',
       hasRepostPic: repostPic,

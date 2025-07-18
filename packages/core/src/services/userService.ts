@@ -4,34 +4,33 @@ import { WeiboError } from '../utils/error'
 import { UserParser } from './parseService'
 
 export class UserService {
-  private _uid: string = ''
+  private _cookieUid: string = ''
 
   constructor(
     private fetchService: FetchService,
-    uid?: string,
   ) {
-    if (uid) {
-      this.uid = uid
-    }
   }
 
-  set uid(uid: string) {
+  set cookieUid(uid: string) {
     if (Number.isNaN(Number(uid))) {
       throw new WeiboError('用户 uid 应为纯数字')
     }
-    this._uid = uid
+    this._cookieUid = uid
   }
 
-  get uid() {
-    if (!this._uid) {
+  /**
+   * 当前 cookie 的 userId
+   */
+  get cookieUid() {
+    if (!this._cookieUid) {
       throw new WeiboError('未设置用户的数字 uid')
     }
-    return this._uid
+    return this._cookieUid
   }
 
   async getDetail(uid?: string): Promise<UserInfo> {
-    const detailInfo = await this.fetchService.userDetail(uid || this.uid)
-    const baseInfo = await this.fetchService.userInfo(uid || this.uid)
+    const detailInfo = await this.fetchService.userDetail(uid || this.cookieUid)
+    const baseInfo = await this.fetchService.userInfo(uid || this.cookieUid)
 
     const userInfo = UserParser.parse(baseInfo.user)
 

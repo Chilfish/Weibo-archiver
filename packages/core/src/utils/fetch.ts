@@ -3,7 +3,9 @@ import axios from 'axios'
 import { WEIBO_BASE_URL } from '../constants'
 import { WeiboError } from './error'
 
-export function createFetcher(args: CreateAxiosDefaults) {
+export function createFetcher(args: CreateAxiosDefaults & {
+  beforeFetch?: (path: string) => any
+}) {
   const _fetcher = axios.create({
     ...args,
     baseURL: WEIBO_BASE_URL,
@@ -16,6 +18,8 @@ export function createFetcher(args: CreateAxiosDefaults) {
     path: string,
     params?: R,
   ): Promise<{ data: T }> {
+    await args.beforeFetch?.(path)
+
     return _fetcher(path, { params }).then(({ data: rawData, request }) => {
       const url = request.res?.responseUrl || path
       try {

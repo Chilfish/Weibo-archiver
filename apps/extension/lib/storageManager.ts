@@ -14,11 +14,11 @@ import { DEFAULT_APP_CONFIG } from './constants'
 export interface StorageSchema {
   cookies: string
   curUid: string
-  weibo_backup_tasks: TaskConfig[]
-  weibo_backup_config: AppConfig
-  weibo_backup_task_statuses: Record<string, TaskStatus>
-  weibo_backup_meta: Record<string, any>
-  weibo_backup_data: Record<string, WeiboData>
+  tasks: TaskConfig[]
+  config: AppConfig
+  task_statuses: Record<string, TaskStatus>
+  meta: Record<string, any>
+  data: Record<string, WeiboData>
 }
 
 export type StorageKey = keyof StorageSchema
@@ -28,17 +28,7 @@ const extensionStorage = defineExtensionStorage<StorageSchema>(
 )
 
 class StorageManager {
-  private static instance: StorageManager
-
-  private constructor() {}
-
-  static getInstance(): StorageManager {
-    if (!StorageManager.instance) {
-      StorageManager.instance = new StorageManager()
-    }
-    return StorageManager.instance
-  }
-
+  constructor() {}
   static async getItem<K extends StorageKey>(
     key: K,
     fallback: StorageSchema[K],
@@ -56,12 +46,20 @@ class StorageManager {
     await extensionStorage.setItem(key, value)
   }
 
+  async getCurUid(): Promise<string> {
+    return StorageManager.getItem('curUid', '')
+  }
+
+  async setCurUid(uid: string): Promise<void> {
+    return StorageManager.setItem('curUid', uid)
+  }
+
   async getTasks(): Promise<TaskConfig[]> {
-    return StorageManager.getItem('weibo_backup_tasks', [])
+    return StorageManager.getItem('tasks', [])
   }
 
   async saveTasks(tasks: TaskConfig[]): Promise<void> {
-    return StorageManager.setItem('weibo_backup_tasks', tasks)
+    return StorageManager.setItem('tasks', tasks)
   }
 
   async addTask(task: TaskConfig): Promise<void> {
@@ -105,7 +103,7 @@ class StorageManager {
   // ============ 配置管理 ============
   async getConfig(): Promise<AppConfig> {
     const config = await StorageManager.getItem(
-      'weibo_backup_config',
+      'config',
       DEFAULT_APP_CONFIG,
     )
     return { ...DEFAULT_APP_CONFIG, ...(config as Partial<AppConfig>) }
@@ -114,7 +112,7 @@ class StorageManager {
   async saveConfig(config: Partial<AppConfig>): Promise<void> {
     const currentConfig = await this.getConfig()
     const newConfig = { ...currentConfig, ...config }
-    await StorageManager.setItem('weibo_backup_config', newConfig)
+    await StorageManager.setItem('config', newConfig)
   }
 
   async setGlobalConfig(
@@ -127,11 +125,11 @@ class StorageManager {
 
   // ============ 任务状态管理 ============
   async getTaskStatuses(): Promise<Record<string, TaskStatus>> {
-    return await StorageManager.getItem('weibo_backup_task_statuses', {})
+    return await StorageManager.getItem('task_statuses', {})
   }
 
   async saveTaskStatuses(statuses: Record<string, TaskStatus>): Promise<void> {
-    return await StorageManager.setItem('weibo_backup_task_statuses', statuses)
+    return await StorageManager.setItem('task_statuses', statuses)
   }
 
   async updateTaskStatus(
@@ -150,7 +148,7 @@ class StorageManager {
   // ============ 备份数据管理 ============
   async saveBackupData(taskId: string, data: WeiboData): Promise<void> {
     try {
-      const allData = await StorageManager.getItem('weibo_backup_data', {})
+      const allData = await StorageManager.getItem('data', {})
 
       const existingData = allData[taskId]
       if (existingData && existingData.weibo && existingData.weibo.length > 0) {
@@ -171,7 +169,7 @@ class StorageManager {
       }
 
       allData[taskId] = data
-      await StorageManager.setItem('weibo_backup_data', allData)
+      await StorageManager.setItem('data', allData)
 
       // 更新备份元数据
       await this.updateBackupMeta(taskId, {
@@ -196,22 +194,22 @@ class StorageManager {
   }
 
   async getAllWeiboData(): Promise<Record<string, WeiboData>> {
-    return StorageManager.getItem('weibo_backup_data', {})
+    return StorageManager.getItem('data', {})
   }
 
   async deleteBackupData(taskId: string): Promise<void> {
     const allData = await this.getAllWeiboData()
     delete allData[taskId]
-    await StorageManager.setItem('weibo_backup_data', allData)
+    await StorageManager.setItem('data', allData)
   }
 
   // ============ 备份元数据管理 ============
   async getBackupMeta(): Promise<Record<string, any>> {
-    return StorageManager.getItem('weibo_backup_meta', {})
+    return StorageManager.getItem('meta', {})
   }
 
   async saveBackupMeta(meta: Record<string, any>): Promise<void> {
-    return StorageManager.setItem('weibo_backup_meta', meta)
+    return StorageManager.setItem('meta', meta)
   }
 
   async updateBackupMeta(taskId: string, meta: any): Promise<void> {
@@ -240,11 +238,11 @@ class StorageManager {
   async clearAllData(): Promise<void> {
     try {
       await Promise.all([
-        extensionStorage.removeItem('weibo_backup_tasks'),
-        extensionStorage.removeItem('weibo_backup_config'),
-        extensionStorage.removeItem('weibo_backup_task_statuses'),
-        extensionStorage.removeItem('weibo_backup_meta'),
-        extensionStorage.removeItem('weibo_backup_data'),
+        extensionStorage.removeItem('tasks'),
+        extensionStorage.removeItem('config'),
+        extensionStorage.removeItem('task_statuses'),
+        extensionStorage.removeItem('meta'),
+        extensionStorage.removeItem('data'),
       ])
     }
     catch (error) {
@@ -276,4 +274,4 @@ class StorageManager {
   }
 }
 
-export const storageManager = StorageManager.getInstance()
+export const storageManager = new StorageManager()

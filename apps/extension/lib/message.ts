@@ -83,8 +83,8 @@ export function window_background_router() {
     fetchFavorites: t.procedure
       .input<{ uid: string }>()
       .action(async ({ input }) => {
-        fetchManager.setUid(input.uid)
         return fetchManager.fetchFavorites({
+          uid: input.uid,
           onFetch: async posts =>
             sendMessage('fetch:favorites-paged', posts, {
               tabId: curTabId(),

@@ -47,7 +47,7 @@ const FetchArgsSchema = z.object({
   }),
   postComments: z.object({
     id: z.string().describe('Post Id'),
-    uid: z.string(),
+    uid: z.string().optional(),
     is_show_bulletin: z.enum(['0', '2']),
     flow: zNumBoolean.describe('是否以热评排序'),
     is_reload: zNumBoolean.default('1').describe('获取详情页的评论'),
@@ -62,6 +62,7 @@ const FetchArgsSchema = z.object({
     endAt: z.union([z.date(), z.string()]).default('2000-01-01').optional(),
     sinceId: z.string().optional(),
     page: z.number().optional(),
+    uid: z.string(),
     hasRepostPic: z.boolean().default(true).optional(),
     commentsCount: z.number().default(10),
     ...rangeOptions.shape,
