@@ -24,6 +24,7 @@ window.addEventListener<any>('importFromExt', async (e: CustomEvent) => {
 
     console.log(`Saving posts for user ID: ${userId}`, userData.user)
 
+    await idb.addUser(userData.user)
     await idb.setCurUser(userId)
 
     await idb.addPosts(userData.weibo)

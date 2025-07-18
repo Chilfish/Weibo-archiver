@@ -144,7 +144,6 @@ export function createTipcHandler<TRouter extends AnyRouter>({
       })
     }
   }
-  console.log('[tipc server] All procedures registered.')
 }
 
 // --- 5. Client 创建器 ---
