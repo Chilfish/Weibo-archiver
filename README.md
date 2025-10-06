@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=Chilfish&project=Weibo-archiver&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 <div align="center">
   <img
     alt="logo"
