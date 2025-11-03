@@ -27,7 +27,7 @@ const extensionStorage = defineExtensionStorage<StorageSchema>(
   browser.storage.local,
 )
 
-class StorageManager {
+export class StorageManager {
   constructor() {}
   static async getItem<K extends StorageKey>(
     key: K,

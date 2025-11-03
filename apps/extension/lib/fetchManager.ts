@@ -14,6 +14,7 @@ import {
 } from '@weibo-archiver/core'
 import { DEFAULT_FETCH_CONFIG } from '@/lib/constants'
 import { storageManager } from '@/lib/storageManager'
+import { getCookies } from './cookie'
 
 interface FetchState {
   status: 'idle' | 'running' | 'finish'
@@ -254,6 +255,16 @@ fetchService.onBeforeFetch = async (path: string) => {
     await storageManager.setCurUid(uid)
   }
   userService.cookieUid = storageUid
+}
+fetchService.on403Error = async (path: string) => {
+  // if (path === FETCH_PATH.PROFILE_DETAIL) {
+  //   return
+  // }
+  const cookies = await getCookies()
+  if (!cookies) {
+    return
+  }
+  fetchService.setFetcher(cookies)
 }
 fetchService.setFetcher('')
 

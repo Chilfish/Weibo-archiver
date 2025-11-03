@@ -30,6 +30,9 @@ export default defineConfig({
     name: `Weibo Archiver${isDev ? ' (Dev)' : ''}`,
     description: 'Backup your Weibo posts automatically',
     homepage_url: 'https://weibo-archiver.chilfish.top/',
+    host_permissions: [
+      '*://*.weibo.com/',
+    ],
   },
   zip: {
     name: 'weibo-archiver',

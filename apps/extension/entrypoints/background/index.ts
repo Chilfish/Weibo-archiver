@@ -5,10 +5,7 @@ import { browser } from 'wxt/browser'
 import { defineBackground } from 'wxt/utils/define-background'
 import { taskScheduler } from '@/entrypoints/background/taskScheduler'
 import { setupUserService, userService } from '@/lib/fetchManager'
-import {
-  popup_background_router,
-  window_background_router,
-} from '@/lib/message'
+import { window_background_router } from '@/lib/message'
 
 export const curTabId = signal(0)
 
@@ -18,10 +15,6 @@ async function initialize() {
 
     createTipcHandler({
       router: window_background_router(),
-      receiver: onMessage,
-    })
-    createTipcHandler({
-      router: popup_background_router(),
       receiver: onMessage,
     })
 

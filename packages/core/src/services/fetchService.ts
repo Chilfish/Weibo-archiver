@@ -21,6 +21,7 @@ export class FetchService {
 
   onRawFetch: (args: { data: any, type: string }) => any = () => {}
   onBeforeFetch: (path: string) => any = () => {}
+  on403Error: (path: string) => any = () => {}
 
   constructor(
     cookies?: string,
@@ -149,6 +150,7 @@ export class FetchService {
         Cookie: cookies || undefined,
       },
       beforeFetch: this.onBeforeFetch,
+      on403Error: this.on403Error,
     })
     return this.fetcher
   }
