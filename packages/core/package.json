@@ -7,9 +7,9 @@
     "typecheck": "tsc --noEmit ./src/**/**.ts"
   },
   "dependencies": {
-    "@internationalized/date": "^3.8.2",
-    "axios": "^1.10.0",
-    "dexie": "^4.0.11",
+    "@internationalized/date": "^3.10.0",
+    "axios": "^1.13.1",
+    "dexie": "^4.2.1",
     "file-saver": "^2.0.5",
     "fuse.js": "^7.1.0"
   }
