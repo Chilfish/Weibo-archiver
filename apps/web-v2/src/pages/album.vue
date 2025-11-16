@@ -1,36 +1,25 @@
 <script setup lang="ts">
 import type { Post } from '@weibo-archiver/core'
 import { useIntersectionObserver } from '@vueuse/core'
-import { onBeforeMount, ref, useTemplateRef, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onBeforeMount, ref, useTemplateRef } from 'vue'
 import AlbumPhotos from '@/components/album/AlbumPhotos.vue'
 import AlbumPreview from '@/components/album/AlbumPreview.vue'
 import { Button } from '@/components/ui/button'
 import { usePostStore } from '@/stores'
 
 const postStore = usePostStore()
-const route = useRoute()
-const router = useRouter()
 
 const pageSize = 40
 
 const weiboArr = ref<Post[]>([])
 const isLoading = ref(false)
 const noMore = ref(false)
-const curPage = ref(Number(route.query.page) || 1)
+const curPage = ref(1)
 const postsTotal = ref(0)
 
 onBeforeMount(async () => {
   await getPosts()
   postsTotal.value = await postStore.getAllPostsTotal()
-})
-
-watch(() => route.query.page, async (newPage) => {
-  if (!newPage) {
-    curPage.value = 1
-    weiboArr.value = []
-    await getPosts()
-  }
 })
 
 async function getPosts() {
@@ -47,11 +36,6 @@ async function getPosts() {
 
 async function loadingMore() {
   curPage.value += 1
-  await router.push(({
-    query: {
-      page: curPage.value,
-    },
-  }))
   return await getPosts()
 }
 
