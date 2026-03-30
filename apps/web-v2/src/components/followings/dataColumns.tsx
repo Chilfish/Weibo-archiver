@@ -37,15 +37,31 @@ export const columns: ColumnDef<Following>[] = [
         title: '用户名',
       })
     },
+    filterFn: (row, _columnId, filterValue) => {
+      const keyword = String(filterValue ?? '').trim().toLowerCase()
+      if (!keyword)
+        return true
+
+      const name = String(row.original.name ?? '').trim().toLowerCase()
+      const remark = String(row.original.remark ?? '').trim().toLowerCase()
+
+      return name.includes(keyword) || remark.includes(keyword)
+    },
     cell: ({ row }) => {
       const uid = row.original.uid
+      const remark = row.original.remark?.trim()
       return (
         <a
           href={`https://weibo.com/u/${uid}`}
           target="_blank"
           class="hover:text-primary"
         >
-          {row.getValue('name')}
+          <div class="flex flex-col gap-1">
+            <span>{row.getValue('name')}</span>
+            {remark
+              ? <span class="text-xs text-muted-foreground">{remark}</span>
+              : null}
+          </div>
         </a>
       )
     },
