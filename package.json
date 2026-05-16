@@ -2,7 +2,7 @@
   "type": "module",
   "version": "0.6.2",
   "private": true,
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@11.1.2",
   "description": "Archive your Weibo posts before being banned completely.",
   "author": {
     "name": "Chilfish",
@@ -34,21 +34,21 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.562.0",
-    "reka-ui": "^2.7.0",
-    "tailwind-merge": "^3.4.0"
+    "reka-ui": "^2.9.7",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^7.0.1",
-    "eslint": "^9.39.2",
-    "eslint-plugin-format": "^1.3.1",
-    "lint-staged": "^16.2.7",
-    "pnpm": "^10.28.0",
+    "@antfu/eslint-config": "^9.0.0",
+    "eslint": "^10.4.0",
+    "eslint-plugin-format": "^2.0.1",
+    "lint-staged": "^17.0.4",
+    "pnpm": "^11.1.2",
     "simple-git-hooks": "^2.13.1",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "unbuild": "^3.6.1",
     "unocss-preset-animations": "^1.3.0",
-    "unplugin-vue-components": "^31.0.0",
-    "vue-tsc": "^3.2.2"
+    "unplugin-vue-components": "^32.0.0",
+    "vue-tsc": "^3.2.9"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

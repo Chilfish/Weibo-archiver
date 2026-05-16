@@ -1,0 +1,4 @@
+ruleDirs:
+  - I:\Weibo-archiver\./.vscode/ast-grep
+utilDirs:
+  - I:\Weibo-archiver\./.vscode/ast-grep/utils

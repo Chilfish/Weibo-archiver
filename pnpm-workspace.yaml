@@ -1,14 +1,21 @@
 shellEmulator: true
 
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  - semver@6.3.1
 
 packages:
   - 'packages/*'
   - 'apps/*'
+
+verifyDepsBeforeRun: install
+
+ignoreWorkspaceCycles: true
 overrides:
   css-select: 5.1.0
-onlyBuiltDependencies:
-  - esbuild
-  - msw
-  - simple-git-hooks
-  - vue-demi
+
+allowBuilds:
+  esbuild: true
+  msw: true
+  simple-git-hooks: true
+  vue-demi: true

@@ -28,3 +28,4 @@ tmp/
 auto-components.d.ts
 
 cache/
+.alma-snapshots

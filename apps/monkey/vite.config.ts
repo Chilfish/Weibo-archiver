@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import tailwindcss from '@tailwindcss/vite'
 import Vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 import monkey from 'vite-plugin-monkey'
@@ -26,6 +27,7 @@ export default defineConfig({
   },
   plugins: [
     Vue(),
+    tailwindcss(),
 
     monkey({
       entry: 'src/main.ts',
@@ -62,15 +64,15 @@ export default defineConfig({
           ],
           'axios': [
             'axios',
-            'https://unpkg.com/axios@1.9.0/dist/axios.min.js',
+            'https://unpkg.com/axios@1.16.1/dist/axios.min.js',
           ],
           'fuse.js': [
             'Fuse',
-            'https://unpkg.com/fuse.js@7.1.0/dist/fuse.min.js',
+            'https://unpkg.com/fuse.js@7.3.0/dist/fuse.min.js',
           ],
           'dexie': [
             'Dexie',
-            'https://unpkg.com/dexie@4.0.11/dist/dexie.min.js',
+            'https://unpkg.com/dexie@4.4.2/dist/dexie.min.js',
           ],
         },
         fileName: 'weibo-archiver.user.js',

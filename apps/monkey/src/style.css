@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: all;
+  root: "#weibo-archiver-plugin";
+  logs: true;
+}
 
 img {
   display: initial;
