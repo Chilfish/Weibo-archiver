@@ -374,7 +374,7 @@ export class WeiboParser {
         return [
           post.imgs,
           post.retweet?.imgs,
-          post.comments.map(e => e.img),
+          post.comments?.map(e => e.img),
           post.card?.img,
           imageLinks,
         ]
