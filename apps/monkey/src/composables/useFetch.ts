@@ -61,7 +61,7 @@ export async function startFetch() {
           .filter((post) => {
             if (hasRepost)
               return true
-            return !!post.retweet?.mblogid
+            return !post.retweet?.mblogid
           })
         await postStore.addPosts(filtered)
         updateConfig({
